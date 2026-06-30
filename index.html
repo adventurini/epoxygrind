@@ -60,18 +60,17 @@
   .mobile.open{display:flex}.mobile a{padding:12px 0;border-bottom:1px solid var(--line);color:var(--ink);font-weight:500}
 
   /* hero */
-  .hero{position:relative;padding:84px 0 70px;overflow:hidden}
-  .hero::before{content:"";position:absolute;top:-30%;right:-10%;width:680px;height:680px;background:radial-gradient(circle,rgba(26,92,214,.12),transparent 62%);pointer-events:none}
-  .hero::after{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;opacity:.7;mask-image:radial-gradient(circle at 72% 18%,#000,transparent 68%);pointer-events:none}
-  .hero .wrap{position:relative;z-index:1}
-  .badge{display:inline-flex;align-items:center;gap:9px;background:var(--blue-soft);border:1px solid rgba(26,92,214,.25);color:var(--blue-deep);font-family:var(--ff-m);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:999px}
-  .badge .pulse{color:var(--red)}
-  .hero h1{font-size:clamp(42px,7vw,82px);font-weight:900;margin:22px 0 0;max-width:14ch}
-  .hero h1 .u{color:var(--blue)}
-  .hero .lede{font-size:clamp(17px,2.3vw,21px);color:var(--ink-soft);margin:24px 0 32px;max-width:600px}
-  .hero-cta{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
-  .hero .micro{font-family:var(--ff-m);font-size:12.5px;color:var(--muted);margin-top:22px}
-  .hero .micro b{color:var(--red)}
+  .hero{position:relative;padding:72px 0 80px;overflow:hidden;color:#fff}
+  .hero-bg{position:absolute;inset:0;background:url('/images/hero-bg.jpg') center/cover no-repeat}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(105deg,rgba(15,44,92,.93) 0%,rgba(15,44,92,.84) 45%,rgba(15,44,92,.62) 100%)}
+  .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
+  .hero-copy .eyebrow{font-family:var(--ff-m);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#7FB0FF;font-weight:500}
+  .hero-copy h1{font-size:clamp(36px,5.8vw,58px);font-weight:900;margin:16px 0 0;color:#fff;max-width:12ch;line-height:1.02}
+  .hero-copy .lede{font-size:clamp(16px,2.1vw,19px);color:#C5D2E8;margin:18px 0 0;max-width:480px;line-height:1.6}
+  .hero-copy .micro{font-family:var(--ff-m);font-size:12.5px;color:#FF9A9A;margin-top:22px}
+  .hero-copy .kicker{display:inline-flex;align-items:center;gap:9px;margin-top:26px;font-family:var(--ff-m);font-size:12px;letter-spacing:.06em;color:#B8C9E4}
+  .hero-copy .kicker b{color:#fff;font-weight:500}
+  .fcard{background:#fff;border-radius:16px;padding:30px;color:var(--ink);box-shadow:0 30px 70px -30px rgba(0,0,0,.55)}
 
   /* stat strip */
   .stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-2)}
@@ -200,8 +199,7 @@
   .final .eyebrow{color:#7FB0FF}
   .final .lede{color:#C5D2E8;margin-top:16px;max-width:440px;font-size:18px}
   .final .micro{font-family:var(--ff-m);font-size:12.5px;color:#FF9A9A;margin-top:20px}
-  .fcard{background:#fff;border-radius:16px;padding:30px;box-shadow:0 30px 70px -30px rgba(0,0,0,.5)}
-  .fcard h3{font-size:21px;font-weight:800}
+  .fcard h3{font-size:21px;font-weight:800;color:var(--ink)}
   .fcard p.sub{font-size:13.5px;color:var(--muted);margin:7px 0 20px}
   .field{margin-bottom:13px}
   .field label{display:block;font-family:var(--ff-m);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
@@ -227,7 +225,7 @@
   html:not(.no-js) .reveal.in{opacity:1;transform:none}
 
   @media (max-width:920px){
-    .hero-grid,.final-grid{grid-template-columns:1fr;gap:38px}
+    .hero-grid,.final-grid{grid-template-columns:1fr;gap:32px}
     .leaks,.tiers,.ba,.audit-cols{grid-template-columns:1fr}
     .steps{grid-template-columns:1fr 1fr}
     .stats .grid{grid-template-columns:1fr 1fr}.stat:nth-child(3){border-left:0}
@@ -237,8 +235,10 @@
   @media (max-width:680px){
     .nav-links,.nav .btn{display:none}.burger{display:inline-flex;align-items:center;justify-content:center}
     section{padding:62px 0}.steps{grid-template-columns:1fr}
+    .hero{padding:48px 0 56px}
+    .hero-copy h1{max-width:none}
   }
-  @media (prefers-reduced-motion:reduce){html:not(.no-js) .reveal{transform:none}.hero::before,.final::before{display:none}}
+  @media (prefers-reduced-motion:reduce){html:not(.no-js) .reveal{transform:none}.final::before{display:none}}
 </style>
 </head>
 <body>
@@ -263,16 +263,27 @@
 <main id="top">
 
   <!-- HERO -->
-  <section class="hero">
-    <div class="wrap">
-      <span class="badge"><span class="pulse">●</span> Built only for epoxy &amp; concrete coating pros</span>
-      <h1>Booked-out epoxy crews. <span class="u">On autopilot.</span></h1>
-      <p class="lede">We install the website, ads, and 24/7 lead follow-up that turn "just looking" homeowners into signed garage-floor jobs — while you stay on the grinder. You run the crew. We run the phone.</p>
-      <div class="hero-cta">
-        <a class="btn btn-p btn-lg" href="#start">Get your free audit →</a>
-        <a class="btn btn-o btn-lg" href="#proof">See the difference</a>
+  <section class="hero" id="start">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Free · no obligation</span>
+        <h1>Claim your market.</h1>
+        <p class="lede">Drop your website and we'll send back a free audit showing exactly what's costing you jobs — and what we'd fix. No pitch unless you want one.</p>
+        <p class="micro">One epoxy pro per market — first in wins the territory.</p>
+        <p class="kicker"><b>Booked-out epoxy crews.</b> Website, ads, and 24/7 follow-up — on autopilot.</p>
       </div>
-      <p class="micro">One epoxy pro per market. <b>First in locks out every competitor.</b></p>
+      <div class="fcard">
+        <h3>Get your free audit</h3>
+        <p class="sub">We review your site &amp; ads and reply within one business day.</p>
+        <form id="leadForm" novalidate>
+          <div class="field"><label for="site">Your website</label><input id="site" name="site" type="url" placeholder="yourepoxysite.com" required></div>
+          <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required></div>
+          <button class="btn btn-p" type="submit">Send me my free audit →</button>
+        </form>
+        <div class="ok" id="ok">Got it — your audit request is ready to send. We'll be in touch within one business day.</div>
+      </div>
     </div>
   </section>
 
@@ -589,23 +600,15 @@
   </section>
 
   <!-- FINAL CTA -->
-  <section class="final" id="start">
+  <section class="final">
     <div class="wrap final-grid">
       <div class="reveal">
-        <span class="eyebrow">Free · no obligation</span>
-        <h2>Claim your market.</h2>
-        <p class="lede">Drop your website and we'll send back a free audit showing exactly what's costing you jobs — and what we'd fix. No pitch unless you want one.</p>
-        <p class="micro">One epoxy pro per market — first in wins the territory.</p>
+        <span class="eyebrow">Built for epoxy pros</span>
+        <h2>One contractor per market. Locked.</h2>
+        <p class="lede">When you're in, your local competitors can't sign with us. Grab your free audit above before someone else claims your territory.</p>
       </div>
-      <div class="fcard reveal">
-        <h3>Get your free audit</h3>
-        <p class="sub">We review your site &amp; ads and reply within one business day.</p>
-        <form id="leadForm" novalidate>
-          <div class="field"><label for="site">Your website</label><input id="site" name="site" type="url" placeholder="yourepoxysite.com" required></div>
-          <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required></div>
-          <button class="btn btn-p" type="submit">Send me my free audit →</button>
-        </form>
-        <div class="ok" id="ok">Got it — your audit request is ready to send. We'll be in touch within one business day.</div>
+      <div class="reveal" style="display:flex;align-items:center">
+        <a class="btn btn-p btn-lg" href="#start">Get your free audit →</a>
       </div>
     </div>
   </section>
