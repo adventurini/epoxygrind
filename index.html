@@ -199,7 +199,7 @@
   .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
   .tier{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px}
   .tier.hot{border-color:var(--blue);background:linear-gradient(180deg,var(--blue-soft),#fff);box-shadow:0 40px 80px -50px rgba(26,92,214,.55);position:relative}
-  .tier.hot .flag{position:absolute;top:-12px;left:30px;background:var(--red);color:#fff;font-family:var(--ff-m);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:5px 13px;border-radius:999px}
+  .tier.hot .flag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;font-family:var(--ff-m);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:5px 13px;border-radius:999px}
   .tier .name{font-family:var(--ff-m);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
   .tier .price{font-family:var(--ff-d);font-weight:900;font-size:38px;letter-spacing:-.03em;margin:14px 0 4px;color:var(--navy)}
   .tier .price b{font-size:14px;font-weight:500;color:var(--muted);font-family:var(--ff)}
@@ -567,6 +567,19 @@
       <div class="sec-head reveal"><span class="eyebrow">The offer</span><h2>Start free. Scale when it's printing jobs.</h2><p>No long contracts. One epoxy pro per market.</p></div>
       <div class="tiers">
         <div class="tier reveal">
+          <div class="name">Site rebuild</div>
+          <div class="price">Starting at $1,500 <b>one-time</b></div>
+          <p class="desc">A site that books jobs — live in days, yours to keep.</p>
+          <ul>
+            <li><svg><use href="#chk"/></svg> Full custom rebuild</li>
+            <li><svg><use href="#chk"/></svg> Real photos, before/after, reviews</li>
+            <li><svg><use href="#chk"/></svg> Quote form + instant text-back</li>
+            <li><svg><use href="#chk"/></svg> Schema &amp; Google setup baked in</li>
+          </ul>
+          <a class="btn btn-o" href="#start">Rebuild my site</a>
+        </div>
+        <div class="tier hot reveal">
+          <span class="flag">Start here</span>
           <div class="name">Audit</div>
           <div class="price">Free</div>
           <p class="desc">See what's costing you jobs before you spend anything.</p>
@@ -575,32 +588,18 @@
             <li><svg><use href="#chk"/></svg> Exactly what's leaking, ranked</li>
             <li><svg><use href="#chk"/></svg> Zero obligation</li>
           </ul>
-          <a class="btn btn-o" href="#start">Get your free audit</a>
-        </div>
-        <div class="tier hot reveal">
-          <span class="flag">Start here</span>
-          <div class="name">Site rebuild</div>
-          <div class="price">from $1,500 <b>one-time</b></div>
-          <p class="desc">A site that books jobs — live in days, yours to keep.</p>
-          <ul>
-            <li><svg><use href="#chk"/></svg> Full custom rebuild</li>
-            <li><svg><use href="#chk"/></svg> Real photos, before/after, reviews</li>
-            <li><svg><use href="#chk"/></svg> Quote form + instant text-back</li>
-            <li><svg><use href="#chk"/></svg> Schema &amp; Google setup baked in</li>
-          </ul>
-          <a class="btn btn-p" href="#start">Rebuild my site</a>
+          <a class="btn btn-p" href="#start">Get your free audit</a>
         </div>
         <div class="tier reveal">
           <div class="name">Full System</div>
-          <div class="price">$1,997 <b>/mo</b></div>
+          <div class="price">Starting at $1,997 <b>/mo</b></div>
           <p class="desc">The whole machine, run for you. You stay on the floor.</p>
           <ul>
             <li><svg><use href="#chk"/></svg> Everything in Rebuild, maintained</li>
-            <li><svg><use href="#chk"/></svg> Google &amp; Meta ads managed</li>
+            <li><svg><use href="#chk"/></svg> Google &amp; Meta ads managed — minimum spend required, billed separately</li>
             <li><svg><use href="#chk"/></svg> Review engine + 24/7 follow-up</li>
             <li><svg><use href="#chk"/></svg> Local SEO · territory exclusive</li>
           </ul>
-          <a class="btn btn-o" href="#start">Book a call</a>
         </div>
       </div>
       <p class="muted" style="font-family:var(--ff-m);font-size:12px;margin-top:22px">Ad spend billed separately. Pricing shown is a starting point.</p>
@@ -645,7 +644,7 @@
       </div>
       <div class="foot-links">
         <div><h4>System</h4><a href="#system">The System</a><a href="#proof">What we build</a><a href="#audit-example">Sample audit</a><a href="#how">How it works</a><a href="#pricing">Pricing</a></div>
-        <div><h4>Start</h4><a href="#start">Free audit</a><a href="#start">Book a call</a><a href="#faq">FAQ</a></div>
+        <div><h4>Start</h4><a href="#start">Free audit</a><a href="#faq">FAQ</a></div>
       </div>
     </div>
     <div class="homeowner">Looking to get your own floor coated? <a href="#start">Find a vetted pro in your area →</a></div>
