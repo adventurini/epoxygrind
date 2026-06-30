@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+<title>EpoxyGrind | Marketing Systems for Epoxy &amp; Concrete Coating Contractors</title>
+<meta name="description" content="EpoxyGrind builds the website, ads, and 24/7 lead follow-up that keep epoxy &amp; concrete coating crews booked solid. Built exclusively for coating contractors. One pro per market. Start with a free website audit.">
+<link rel="canonical" href="https://epoxygrind.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="EpoxyGrind">
+<meta property="og:title" content="Booked-out epoxy crews. On autopilot.">
+<meta property="og:description" content="We install the marketing system that fills epoxy contractors' schedules — site, ads, 24/7 follow-up, reviews. One pro per market.">
+<meta property="og:url" content="https://epoxygrind.com/">
+<meta name="theme-color" content="#1A5CD6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231A5CD6'/%3E%3Ccircle cx='32' cy='32' r='15' fill='none' stroke='%23fff' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='4.5' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"EpoxyGrind","description":"Marketing systems and websites built exclusively for epoxy and concrete coating contractors.","url":"https://epoxygrind.com/","areaServed":"United States","serviceType":["Website design","Search engine optimization","Google Ads management","Lead generation","Reputation management"]}
+</script>
+<style>
+  :root{
+    --bg:#FFFFFF;--bg-2:#F4F7FC;--bg-3:#FFFFFF;--navy:#0F2C5C;
+    --line:#E3E9F2;--line-2:#CFDAEC;
+    --ink:#11213B;--ink-soft:#42506B;--muted:#647189;
+    --blue:#1A5CD6;--blue-deep:#0F3E96;--blue-soft:#E9F0FE;
+    --red:#DD2C2C;--red-deep:#C01F1F;--red-soft:#FCECEC;
+    --ff:"Inter",system-ui,-apple-system,sans-serif;
+    --ff-d:"Archivo",system-ui,sans-serif;
+    --ff-m:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ff);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3,h4{margin:0;font-family:var(--ff-d);font-weight:800;letter-spacing:-.02em;line-height:1.03;color:var(--ink)}
+  p{margin:0 0 1em}a{color:inherit;text-decoration:none}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+  .eyebrow{font-family:var(--ff-m);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);font-weight:500}
+  .muted{color:var(--muted)}
+  .em{color:var(--blue)}
+
+  .btn{display:inline-flex;align-items:center;gap:.5em;font-family:var(--ff-d);font-weight:800;font-size:15px;letter-spacing:-.01em;padding:15px 26px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:transform .14s,background .18s,box-shadow .2s,border-color .18s,color .18s;text-transform:uppercase}
+  .btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+  .btn-p{background:var(--blue);color:#fff;box-shadow:0 1px 2px rgba(15,62,150,.2)}
+  .btn-p:hover{background:var(--blue-deep);transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(26,92,214,.6)}
+  .btn-o{border-color:var(--line-2);color:var(--ink);background:#fff}
+  .btn-o:hover{border-color:var(--blue);color:var(--blue)}
+  .btn-lg{padding:18px 34px;font-size:16.5px}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;gap:20px;height:66px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--ff-d);font-weight:900;font-size:19px;letter-spacing:-.03em}
+  .brand .mk{width:28px;height:28px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;flex:none}
+  .brand .mk svg{width:17px;height:17px}
+  .nav-links{display:flex;gap:26px;margin-left:auto;font-size:14px;font-weight:500}
+  .nav-links a{color:var(--ink-soft)}.nav-links a:hover{color:var(--blue)}
+  .nav .btn{padding:10px 18px;font-size:13px}
+  .burger{display:none;margin-left:auto;background:none;border:1px solid var(--line-2);border-radius:8px;width:42px;height:42px;color:var(--ink);font-size:18px;cursor:pointer}
+  .mobile{display:none;flex-direction:column;padding:8px 24px 18px;border-bottom:1px solid var(--line);background:var(--bg)}
+  .mobile.open{display:flex}.mobile a{padding:12px 0;border-bottom:1px solid var(--line);color:var(--ink);font-weight:500}
+
+  /* hero */
+  .hero{position:relative;padding:84px 0 70px;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-30%;right:-10%;width:680px;height:680px;background:radial-gradient(circle,rgba(26,92,214,.12),transparent 62%);pointer-events:none}
+  .hero::after{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;opacity:.7;mask-image:radial-gradient(circle at 72% 18%,#000,transparent 68%);pointer-events:none}
+  .hero .wrap{position:relative;z-index:1}
+  .badge{display:inline-flex;align-items:center;gap:9px;background:var(--blue-soft);border:1px solid rgba(26,92,214,.25);color:var(--blue-deep);font-family:var(--ff-m);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:999px}
+  .badge .pulse{color:var(--red)}
+  .hero h1{font-size:clamp(42px,7vw,82px);font-weight:900;margin:22px 0 0;max-width:14ch}
+  .hero h1 .u{color:var(--blue)}
+  .hero .lede{font-size:clamp(17px,2.3vw,21px);color:var(--ink-soft);margin:24px 0 32px;max-width:600px}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .hero .micro{font-family:var(--ff-m);font-size:12.5px;color:var(--muted);margin-top:22px}
+  .hero .micro b{color:var(--red)}
+
+  /* stat strip */
+  .stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-2)}
+  .stats .grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .stat{padding:30px 24px;border-left:1px solid var(--line)}
+  .stat:first-child{border-left:0}
+  .stat .n{font-family:var(--ff-d);font-weight:900;font-size:clamp(30px,4vw,44px);letter-spacing:-.03em;line-height:1;color:var(--navy)}
+  .stat .n .em{font-size:.7em;color:var(--blue)}
+  .stat.hot .n{color:var(--red)}
+  .stat .l{font-family:var(--ff-m);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:9px}
+
+  section{padding:84px 0}
+  .sec-head{max-width:680px;margin-bottom:46px}
+  .sec-head h2{font-size:clamp(30px,4.6vw,50px);font-weight:900;margin-top:14px}
+  .sec-head p{margin-top:16px;color:var(--ink-soft);font-size:18px}
+
+  .excl-bar{background:var(--red);color:#fff}
+  .excl-bar .wrap{padding:18px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;text-align:center;font-family:var(--ff-d);font-weight:800;font-size:clamp(15px,2vw,19px);text-transform:uppercase;letter-spacing:-.01em}
+  .excl-bar svg{width:22px;height:22px;flex:none}
+
+  /* problem */
+  .prob{background:var(--bg)}
+  .leaks{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .leak{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:28px 26px;transition:box-shadow .18s,transform .18s}
+  .leak:hover{box-shadow:0 18px 40px -28px rgba(17,33,59,.3);transform:translateY(-2px)}
+  .leak .x{font-family:var(--ff-m);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:8px}
+  .leak h3{font-size:19px;font-weight:800;margin:14px 0 8px}
+  .leak p{font-size:14.5px;color:var(--muted);margin:0}
+
+  /* system */
+  .system{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .sys-list{display:grid;gap:14px}
+  .sys{display:grid;grid-template-columns:84px 1fr auto;gap:24px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px 28px;transition:border-color .18s,transform .18s,box-shadow .18s}
+  .sys:hover{border-color:var(--blue);transform:translateX(4px);box-shadow:0 18px 40px -30px rgba(26,92,214,.5)}
+  .sys .no{font-family:var(--ff-d);font-weight:900;font-size:40px;color:var(--blue);line-height:1;letter-spacing:-.04em}
+  .sys h3{font-size:21px;font-weight:800}
+  .sys p{font-size:15px;color:var(--muted);margin:7px 0 0;max-width:62ch}
+  .sys .tag{font-family:var(--ff-m);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);border:1px solid rgba(26,92,214,.3);border-radius:999px;padding:6px 12px;white-space:nowrap;background:var(--blue-soft)}
+  .sys.first{background:linear-gradient(180deg,var(--blue-soft),#fff);border-color:rgba(26,92,214,.35)}
+
+  /* what we build */
+  .proof{background:var(--bg)}
+  .ba{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .ba .panel{border:1px solid var(--line);border-radius:16px;padding:30px}
+  .ba .before{background:linear-gradient(180deg,var(--red-soft),#fff);border-color:rgba(221,44,44,.2)}
+  .ba .after{background:linear-gradient(180deg,var(--blue-soft),#fff);border-color:rgba(26,92,214,.25)}
+  .ba .tg{font-family:var(--ff-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px}
+  .ba .before .tg{color:var(--red)}.ba .after .tg{color:var(--blue)}
+  .ba h3{font-size:21px;font-weight:800;margin:12px 0 16px}
+  .ba ul{list-style:none;margin:0;padding:0;display:grid;gap:11px}
+  .ba li{font-size:14.5px;color:var(--ink-soft);display:flex;gap:11px;align-items:flex-start}
+  .ba li .m{font-family:var(--ff-m);flex:none;font-size:13px;margin-top:1px;font-weight:600}
+  .ba .before li .m{color:var(--red)}.ba .after li .m{color:var(--blue)}
+
+  /* audit example */
+  .audit-ex{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .audit-tabs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
+  .audit-tab{font-family:var(--ff-d);font-weight:800;font-size:14px;letter-spacing:-.01em;padding:12px 18px;border-radius:999px;border:1.5px solid var(--line-2);background:#fff;color:var(--ink-soft);cursor:pointer;transition:border-color .18s,color .18s,background .18s,box-shadow .18s}
+  .audit-tab:hover{border-color:var(--blue);color:var(--blue)}
+  .audit-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 10px 24px -14px rgba(26,92,214,.65)}
+  .audit-panel{display:none;animation:auditIn .35s ease}
+  .audit-panel.active{display:block}
+  @keyframes auditIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .audit-verdict{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:14px;padding:22px 24px;margin-bottom:22px}
+  .audit-verdict h3{font-size:18px;font-weight:800;margin:0 0 8px}
+  .audit-verdict p{margin:0;color:var(--ink-soft);font-size:15px;line-height:1.6}
+  .audit-verdict .grades{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .audit-verdict .g{font-family:var(--ff-m);font-size:11px;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border-radius:999px;font-weight:500}
+  .audit-verdict .g.bad{background:var(--red-soft);color:var(--red)}
+  .audit-verdict .g.good{background:var(--blue-soft);color:var(--blue-deep)}
+  .audit-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .audit-col{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .audit-col .head{padding:16px 20px;border-bottom:1px solid var(--line);font-family:var(--ff-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500}
+  .audit-col.bad .head{background:var(--red-soft);color:var(--red)}
+  .audit-col.good .head{background:var(--blue-soft);color:var(--blue-deep)}
+  .audit-col .head strong{display:block;font-family:var(--ff-d);font-size:17px;letter-spacing:-.02em;text-transform:none;margin-top:4px;font-weight:800}
+  .audit-col.bad .head strong{color:var(--red-deep)}.audit-col.good .head strong{color:var(--navy)}
+  .audit-rows{margin:0;padding:0;list-style:none}
+  .audit-rows li{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:15px 20px;border-top:1px solid var(--line);font-size:14.5px;line-height:1.5;color:var(--ink-soft);align-items:start}
+  .audit-rows li:first-child{border-top:0}
+  .audit-rows .ico{font-family:var(--ff-m);font-weight:700;font-size:14px;line-height:1;margin-top:2px;flex:none}
+  .audit-col.bad .ico{color:var(--red)}.audit-col.good .ico{color:var(--blue)}
+  .audit-rows b{display:block;font-family:var(--ff-d);font-weight:700;font-size:14.5px;color:var(--ink);margin-bottom:3px}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .stp{position:relative;padding-top:24px;border-top:3px solid var(--blue)}
+  .stp .n{font-family:var(--ff-m);font-size:12px;letter-spacing:.08em;color:var(--blue)}
+  .stp h3{font-size:19px;font-weight:800;margin:10px 0 7px}
+  .stp p{font-size:14.5px;color:var(--muted);margin:0}
+
+  /* guarantee */
+  .guarantee{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .gbox{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center;background:#fff;border:1px solid rgba(26,92,214,.3);border-radius:18px;padding:38px;box-shadow:0 30px 70px -50px rgba(26,92,214,.5)}
+  .gbox .seal{width:96px;height:96px;border-radius:50%;border:3px solid var(--blue);display:flex;align-items:center;justify-content:center;flex:none;background:var(--blue-soft)}
+  .gbox .seal svg{width:46px;height:46px;color:var(--blue)}
+  .gbox h2{font-size:clamp(24px,3.4vw,34px);font-weight:900}
+  .gbox p{font-size:16px;color:var(--ink-soft);margin:12px 0 0}
+
+  /* pricing */
+  .pricing{background:var(--bg)}
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+  .tier{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px}
+  .tier.hot{border-color:var(--blue);background:linear-gradient(180deg,var(--blue-soft),#fff);box-shadow:0 40px 80px -50px rgba(26,92,214,.55);position:relative}
+  .tier.hot .flag{position:absolute;top:-12px;left:30px;background:var(--red);color:#fff;font-family:var(--ff-m);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:5px 13px;border-radius:999px}
+  .tier .name{font-family:var(--ff-m);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .tier .price{font-family:var(--ff-d);font-weight:900;font-size:38px;letter-spacing:-.03em;margin:14px 0 4px;color:var(--navy)}
+  .tier .price b{font-size:14px;font-weight:500;color:var(--muted);font-family:var(--ff)}
+  .tier .desc{font-size:14.5px;color:var(--muted);margin:0 0 20px}
+  .tier ul{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:11px;flex:1}
+  .tier li{font-size:14.5px;display:flex;gap:10px;align-items:flex-start;color:var(--ink-soft)}
+  .tier li svg{width:18px;height:18px;color:var(--blue);flex:none;margin-top:2px}
+  .tier .btn{width:100%;justify-content:center}
+
+  /* faq */
+  .faq{border-top:1px solid var(--line)}
+  .qa{border-bottom:1px solid var(--line);padding:24px 0}
+  .qa h3{font-size:19px;font-weight:800;margin-bottom:9px}
+  .qa p{font-size:15px;color:var(--muted);margin:0}
+
+  /* final */
+  .final{position:relative;background:var(--navy);overflow:hidden}
+  .final::before{content:"";position:absolute;bottom:-40%;left:-5%;width:620px;height:620px;background:radial-gradient(circle,rgba(26,92,214,.4),transparent 62%);pointer-events:none}
+  .final-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+  .final h2{font-size:clamp(32px,5vw,52px);font-weight:900;color:#fff}
+  .final .eyebrow{color:#7FB0FF}
+  .final .lede{color:#C5D2E8;margin-top:16px;max-width:440px;font-size:18px}
+  .final .micro{font-family:var(--ff-m);font-size:12.5px;color:#FF9A9A;margin-top:20px}
+  .fcard{background:#fff;border-radius:16px;padding:30px;box-shadow:0 30px 70px -30px rgba(0,0,0,.5)}
+  .fcard h3{font-size:21px;font-weight:800}
+  .fcard p.sub{font-size:13.5px;color:var(--muted);margin:7px 0 20px}
+  .field{margin-bottom:13px}
+  .field label{display:block;font-family:var(--ff-m);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .field input{width:100%;background:var(--bg-2);border:1px solid var(--line-2);border-radius:9px;padding:13px 14px;font-family:var(--ff);font-size:15px;color:var(--ink)}
+  .field input::placeholder{color:#9AA6BA}
+  .field input:focus{outline:none;border-color:var(--blue);background:#fff}
+  .fcard .btn-p{width:100%;justify-content:center;margin-top:6px}
+  .ok{display:none;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:16px;color:var(--ink);font-size:14px}
+  .ok.show{display:block}
+
+  footer{background:var(--bg);border-top:1px solid var(--line);padding:50px 0 32px}
+  .foot{display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;align-items:flex-start}
+  .foot .muted{font-size:14px;max-width:340px;margin-top:14px}
+  .foot-links{display:flex;gap:46px;flex-wrap:wrap}
+  .foot-links h4{font-family:var(--ff-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:500}
+  .foot-links a{display:block;font-size:14px;color:var(--ink-soft);margin-bottom:9px}.foot-links a:hover{color:var(--blue)}
+  .homeowner{margin-top:34px;padding-top:24px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+  .homeowner a{color:var(--blue);font-weight:600}
+  .legal{margin-top:22px;font-size:12.5px;color:#9AA6BA}
+
+  .no-js .reveal{opacity:1}
+  html:not(.no-js) .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
+  html:not(.no-js) .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:920px){
+    .hero-grid,.final-grid{grid-template-columns:1fr;gap:38px}
+    .leaks,.tiers,.ba,.audit-cols{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr 1fr}
+    .stats .grid{grid-template-columns:1fr 1fr}.stat:nth-child(3){border-left:0}
+    .sys{grid-template-columns:60px 1fr;gap:18px}.sys .tag{display:none}
+    .gbox{grid-template-columns:1fr;text-align:center}.gbox .seal{margin:0 auto}
+  }
+  @media (max-width:680px){
+    .nav-links,.nav .btn{display:none}.burger{display:inline-flex;align-items:center;justify-content:center}
+    section{padding:62px 0}.steps{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){html:not(.no-js) .reveal{transform:none}.hero::before,.final::before{display:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="disc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="#fff" stroke-width="2.6"/><circle cx="12" cy="12" r="2.4" fill="#fff"/></symbol>
+  <symbol id="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12l5 5L20 6"/></symbol>
+</defs></svg>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top"><span class="mk"><svg><use href="#disc"/></svg></span> EpoxyGrind</a>
+    <nav class="nav-links">
+      <a href="#system">The System</a><a href="#proof">What we build</a><a href="#audit-example">Sample audit</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-p" href="#start">Free audit</a>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+  <div class="mobile" id="mobile"><a href="#system">The System</a><a href="#proof">What we build</a><a href="#audit-example">Sample audit</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a href="#start">Free audit</a></div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="badge"><span class="pulse">●</span> Built only for epoxy &amp; concrete coating pros</span>
+      <h1>Booked-out epoxy crews. <span class="u">On autopilot.</span></h1>
+      <p class="lede">We install the website, ads, and 24/7 lead follow-up that turn "just looking" homeowners into signed garage-floor jobs — while you stay on the grinder. You run the crew. We run the phone.</p>
+      <div class="hero-cta">
+        <a class="btn btn-p btn-lg" href="#start">Get your free audit →</a>
+        <a class="btn btn-o btn-lg" href="#proof">See the difference</a>
+      </div>
+      <p class="micro">One epoxy pro per market. <b>First in locks out every competitor.</b></p>
+    </div>
+  </section>
+
+  <!-- STAT STRIP -->
+  <div class="stats">
+    <div class="wrap"><div class="grid">
+      <div class="stat"><div class="n">DAYS</div><div class="l">From audit to a live site</div></div>
+      <div class="stat"><div class="n">&lt;60<span class="em">sec</span></div><div class="l">Every lead gets a reply</div></div>
+      <div class="stat hot"><div class="n">1<span class="em" style="color:var(--red)"> / market</span></div><div class="l">Territory-exclusive. Always.</div></div>
+      <div class="stat"><div class="n">~$50</div><div class="l">Typical cost of an epoxy lead*</div></div>
+    </div></div>
+  </div>
+
+  <!-- PROBLEM -->
+  <section class="prob" id="problem">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Where the money leaks out</span>
+        <h2>You're great on the floor. Your marketing is bleeding jobs.</h2>
+        <p>The path from "homeowner searches" to "you get the call" is full of holes — and every hole is a job your competitor books instead.</p>
+      </div>
+      <div class="leaks">
+        <div class="leak reveal"><div class="x">✗ Wasted ad spend</div><h3>Bare ads, burned cash</h3><p>A search ad with no call button or sitelinks gets outranked — you pay more per click for a worse spot.</p></div>
+        <div class="leak reveal"><div class="x">✗ A dead website</div><h3>A site that doesn't sell</h3><p>Dead links, stock photos, slow on mobile, no reviews. Visitors bounce instead of booking.</p></div>
+        <div class="leak reveal"><div class="x">✗ Invisible locally</div><h3>Nowhere on the map</h3><p>No optimized Google profile means you miss the map pack — where most floor leads actually start.</p></div>
+        <div class="leak reveal"><div class="x">✗ Cold leads</div><h3>Follow-up too slow</h3><p>A lead that waits an hour for a callback is already booked with whoever answered first.</p></div>
+        <div class="leak reveal"><div class="x">✗ No proof</div><h3>Nothing builds trust</h3><p>One stray review, no before/afters. Homeowners spending $3k want to see your work first.</p></div>
+        <div class="leak reveal"><div class="x">✗ No time</div><h3>You can't do it all</h3><p>You're running a crew and a grinder. Marketing is the thing that never gets done right.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXCLUSIVITY BAR -->
+  <div class="excl-bar">
+    <div class="wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg>
+      We take ONE epoxy contractor per market — and lock your competitors out.
+    </div>
+  </div>
+
+  <!-- THE SYSTEM -->
+  <section class="system" id="system">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">The EpoxyGrind System</span>
+        <h2>The whole machine that keeps your schedule full.</h2>
+        <p>It starts with a website that actually books jobs. Then we bolt on everything that drives traffic to it and follows up the second a lead comes in. Done-for-you, end to end.</p>
+      </div>
+      <div class="sys-list">
+        <div class="sys first reveal"><div class="no">01</div><div><h3>A website that books jobs</h3><p>We rebuild your site fast — modern, mobile, loaded with your real work, reviews, and a quote form that captures the lead. It's yours to keep.</p></div><span class="tag">Start here</span></div>
+        <div class="sys reveal"><div class="no">02</div><div><h3>Ads that print appointments</h3><p>Google &amp; Meta run right — call buttons, sitelinks, real landing pages, tight local targeting. Spend that turns into booked floors, not wasted clicks.</p></div><span class="tag">Traffic</span></div>
+        <div class="sys reveal"><div class="no">03</div><div><h3>24/7 instant lead follow-up</h3><p>The second a lead hits, it gets an automatic text back — in under a minute, day or night. The single biggest lever on whether a quote becomes a job.</p></div><span class="tag">Follow-up</span></div>
+        <div class="sys reveal"><div class="no">04</div><div><h3>A 5-star review engine</h3><p>We turn finished jobs into a steady stream of Google reviews automatically — the proof that wins the next homeowner before you even call.</p></div><span class="tag">Reputation</span></div>
+        <div class="sys reveal"><div class="no">05</div><div><h3>Local SEO &amp; Google profile</h3><p>We own your Google Business Profile and rank you for "epoxy garage floor near me" so you dominate the map pack in your area.</p></div><span class="tag">Visibility</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT WE BUILD -->
+  <section class="proof" id="proof">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">The difference</span>
+        <h2>Most epoxy sites lose the job. We build the ones that win it.</h2>
+        <p>This is the gap between a typical contractor site and what we build — the difference between a homeowner who bounces and one who books.</p>
+      </div>
+      <div class="ba">
+        <div class="panel before reveal">
+          <span class="tg">● A typical epoxy site</span>
+          <h3>Loses the job</h3>
+          <ul>
+            <li><span class="m">✗</span> Generic headline over a blurry stock photo</li>
+            <li><span class="m">✗</span> Service buttons that link to nothing</li>
+            <li><span class="m">✗</span> Slow on mobile, no schema, no Google preview</li>
+            <li><span class="m">✗</span> No real photos, no before/after, thin reviews</li>
+            <li><span class="m">✗</span> Estimate form buried on a separate page</li>
+          </ul>
+        </div>
+        <div class="panel after reveal">
+          <span class="tg">● What we build</span>
+          <h3>Books the job</h3>
+          <ul>
+            <li><span class="m">✓</span> Hard local offer + estimate form in view</li>
+            <li><span class="m">✓</span> Real job photos &amp; a drag before/after</li>
+            <li><span class="m">✓</span> Fast, mobile-first, tap-to-call everywhere</li>
+            <li><span class="m">✓</span> Schema &amp; a custom Google preview built in</li>
+            <li><span class="m">✓</span> Built to capture and follow up every lead</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUDIT EXAMPLE -->
+  <section class="audit-ex" id="audit-example">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">What you get</span>
+        <h2>See what a free audit looks like — side by side.</h2>
+        <p>Every audit maps what's broken today against what we install. Pick a section to see the comparison.</p>
+      </div>
+
+      <div class="audit-tabs reveal" role="tablist" aria-label="Audit sections">
+        <button class="audit-tab active" type="button" role="tab" aria-selected="true" aria-controls="audit-summary" id="tab-summary" data-audit="summary">Summary</button>
+        <button class="audit-tab" type="button" role="tab" aria-selected="false" aria-controls="audit-seo" id="tab-seo" data-audit="seo">SEO</button>
+        <button class="audit-tab" type="button" role="tab" aria-selected="false" aria-controls="audit-automation" id="tab-automation" data-audit="automation">Automation</button>
+        <button class="audit-tab" type="button" role="tab" aria-selected="false" aria-controls="audit-ads" id="tab-ads" data-audit="ads">Ad optimization</button>
+      </div>
+
+      <div class="audit-panel active reveal" id="audit-summary" role="tabpanel" aria-labelledby="tab-summary" data-panel="summary">
+        <div class="audit-verdict">
+          <h3>Audit verdict — typical epoxy contractor site</h3>
+          <p>Looks like a business online, but it's not a lead engine. Jobs leak between the ad click, the website visit, and the callback — and there's no system catching them.</p>
+          <div class="grades">
+            <span class="g bad">Lead capture — broken</span>
+            <span class="g bad">Follow-up — manual / slow</span>
+            <span class="g bad">Ads — underbuilt</span>
+            <span class="g good">Fixable in days</span>
+          </div>
+        </div>
+        <div class="audit-cols">
+          <div class="audit-col bad">
+            <div class="head">Your site today<strong>Losing jobs</strong></div>
+            <ul class="audit-rows">
+              <li><span class="ico">✗</span><div><b>No single priority list</b>Issues scattered across site, ads, and Google — nothing ranked by what costs you jobs first.</div></li>
+              <li><span class="ico">✗</span><div><b>Brochure, not a funnel</b>Homepage looks fine but nothing pushes a homeowner to quote or call right now.</div></li>
+              <li><span class="ico">✗</span><div><b>Trust gap</b>Thin reviews, stock photos, no proof the crew is real or local.</div></li>
+              <li><span class="ico">✗</span><div><b>Leads go cold</b>Form submits to email — no instant reply, no tracking, no backup if you're on a job.</div></li>
+              <li><span class="ico">✗</span><div><b>Ad spend untested</b>Paying for clicks with no clear picture of what's working or what's wasted.</div></li>
+            </ul>
+          </div>
+          <div class="audit-col good">
+            <div class="head">With EpoxyGrind<strong>Booked-out system</strong></div>
+            <ul class="audit-rows">
+              <li><span class="ico">✓</span><div><b>Ranked fix list</b>Every leak scored — site, SEO, automation, ads — so you know exactly what to fix first.</div></li>
+              <li><span class="ico">✓</span><div><b>Conversion-first rebuild</b>Offer, form, and tap-to-call above the fold — built to book garage floors.</div></li>
+              <li><span class="ico">✓</span><div><b>Real proof on page</b>Your jobs, before/afters, and live Google reviews wired in.</div></li>
+              <li><span class="ico">✓</span><div><b>24/7 lead response</b>Instant text-back the second a homeowner inquires — day or night.</div></li>
+              <li><span class="ico">✓</span><div><b>Full funnel map</b>Clear path from search → click → quote → booked job — with us running the machine.</div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="audit-panel reveal" id="audit-seo" role="tabpanel" aria-labelledby="tab-seo" data-panel="seo" hidden>
+        <div class="audit-cols">
+          <div class="audit-col bad">
+            <div class="head">Your site today<strong>Hard to find</strong></div>
+            <ul class="audit-rows">
+              <li><span class="ico">✗</span><div><b>Weak titles &amp; meta</b>Generic copy, duplicate descriptions, or template bugs shipped live.</div></li>
+              <li><span class="ico">✗</span><div><b>No schema markup</b>Missing LocalBusiness + FAQ JSON-LD — invisible to rich results.</div></li>
+              <li><span class="ico">✗</span><div><b>GBP neglected</b>Google Business Profile thin, miscategorized, or not tied to the site NAP.</div></li>
+              <li><span class="ico">✗</span><div><b>Slow on mobile</b>Heavy images, bloated page weight — hurts rankings and bounce rate.</div></li>
+              <li><span class="ico">✗</span><div><b>No local depth</b>Single page only — not ranking for "epoxy garage floor [city]" searches.</div></li>
+              <li><span class="ico">✗</span><div><b>Bad share preview</b>Social links show a generic or broken OG image.</div></li>
+            </ul>
+          </div>
+          <div class="audit-col good">
+            <div class="head">With EpoxyGrind<strong>Map pack ready</strong></div>
+            <ul class="audit-rows">
+              <li><span class="ico">✓</span><div><b>Clean on-page SEO</b>Local titles, meta, canonical, and geo tags built for epoxy searches.</div></li>
+              <li><span class="ico">✓</span><div><b>Schema baked in</b>LocalBusiness, services, FAQ, and rating markup from day one.</div></li>
+              <li><span class="ico">✓</span><div><b>GBP playbook</b>Profile optimized, categorized, and synced with your site and reviews.</div></li>
+              <li><span class="ico">✓</span><div><b>Mobile-first &amp; fast</b>Compressed assets, fast first load — built for Core Web Vitals.</div></li>
+              <li><span class="ico">✓</span><div><b>Local keyword targeting</b>Service + area copy that matches how homeowners actually search.</div></li>
+              <li><span class="ico">✓</span><div><b>Custom OG image</b>Professional share card when your link gets texted or posted.</div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="audit-panel reveal" id="audit-automation" role="tabpanel" aria-labelledby="tab-automation" data-panel="automation" hidden>
+        <div class="audit-cols">
+          <div class="audit-col bad">
+            <div class="head">Your site today<strong>Manual chaos</strong></div>
+            <ul class="audit-rows">
+              <li><span class="ico">✗</span><div><b>Form = email draft</b>Lead opens mail client — nothing stored, nothing tracked, easy to miss.</div></li>
+              <li><span class="ico">✗</span><div><b>No instant text-back</b>Homeowner waits hours. By then they've booked whoever answered first.</div></li>
+              <li><span class="ico">✗</span><div><b>Reviews left on table</b>No system turning finished jobs into Google reviews automatically.</div></li>
+              <li><span class="ico">✗</span><div><b>After-hours black hole</b>Nights and weekends — leads sit until Monday. Gone.</div></li>
+              <li><span class="ico">✗</span><div><b>No lead routing</b>Quotes scattered across voicemail, email, and DMs — no single inbox.</div></li>
+              <li><span class="ico">✗</span><div><b>Zero analytics</b>Can't tell which page, ad, or call actually booked the job.</div></li>
+            </ul>
+          </div>
+          <div class="audit-col good">
+            <div class="head">With EpoxyGrind<strong>Runs while you grind</strong></div>
+            <ul class="audit-rows">
+              <li><span class="ico">✓</span><div><b>Real lead capture</b>Every quote stored, notified to you instantly — not lost in an inbox.</div></li>
+              <li><span class="ico">✓</span><div><b>&lt;60 sec auto-reply</b>Instant SMS to every new lead — 24/7, without you touching your phone.</div></li>
+              <li><span class="ico">✓</span><div><b>Review engine</b>Automated post-job review requests that stack 5-star proof on Google.</div></li>
+              <li><span class="ico">✓</span><div><b>Always-on follow-up</b>Weekend and evening leads get the same fast response as Monday morning.</div></li>
+              <li><span class="ico">✓</span><div><b>One lead pipeline</b>Forms, calls, and ad leads routed to one place you can actually manage.</div></li>
+              <li><span class="ico">✓</span><div><b>Conversion tracking</b>Know what's printing jobs before you scale ad spend.</div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="audit-panel reveal" id="audit-ads" role="tabpanel" aria-labelledby="tab-ads" data-panel="ads" hidden>
+        <div class="audit-cols">
+          <div class="audit-col bad">
+            <div class="head">Your ads today<strong>Burning budget</strong></div>
+            <ul class="audit-rows">
+              <li><span class="ico">✗</span><div><b>No call button</b>Search ads without click-to-call — homeowner has to work to reach you.</div></li>
+              <li><span class="ico">✗</span><div><b>Missing sitelinks</b>No links to flake, metallic, gallery, or quote — less ad real estate, lower rank.</div></li>
+              <li><span class="ico">✗</span><div><b>Generic ad copy</b>"Flooring solutions" instead of "epoxy garage floor" + your city + offer.</div></li>
+              <li><span class="ico">✗</span><div><b>Landing page mismatch</b>Ad promises a quote; page sends them to a buried contact form.</div></li>
+              <li><span class="ico">✗</span><div><b>Broad targeting</b>Paying for clicks outside your service area or for DIY searchers.</div></li>
+              <li><span class="ico">✗</span><div><b>No conversion tracking</b>Can't tell cost-per-lead — flying blind on ROI.</div></li>
+            </ul>
+          </div>
+          <div class="audit-col good">
+            <div class="head">With EpoxyGrind<strong>Ads that book</strong></div>
+            <ul class="audit-rows">
+              <li><span class="ico">✓</span><div><b>Call extensions live</b>Tap-to-call straight from the search result — highest-intent leads.</div></li>
+              <li><span class="ico">✓</span><div><b>Full ad assets</b>Sitelinks, callouts, and structured snippets for flake, metallic, and free quotes.</div></li>
+              <li><span class="ico">✓</span><div><b>Local offer copy</b>Headlines matched to how homeowners search + your web special.</div></li>
+              <li><span class="ico">✓</span><div><b>Matched landing pages</b>Ad click lands on a page built to convert — form in view, phone one tap away.</div></li>
+              <li><span class="ico">✓</span><div><b>Tight geo targeting</b>Only the cities and ZIPs you actually coat — no wasted spend.</div></li>
+              <li><span class="ico">✓</span><div><b>Tracked to booked job</b>Call + form conversion tracking so you know cost per lead.</div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <p class="muted reveal" style="font-family:var(--ff-m);font-size:12.5px;margin-top:22px;text-align:center">Sample audit for illustration. Your free audit is customized to your URL, market, and ad account.</p>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="eyebrow">How it works</span><h2>Four steps to a booked-out schedule.</h2></div>
+      <div class="steps">
+        <div class="stp reveal"><div class="n">STEP 01</div><h3>Free audit</h3><p>Drop your URL. We show you exactly what's leaking on your site and ads — no cost, no pitch.</p></div>
+        <div class="stp reveal"><div class="n">STEP 02</div><h3>We rebuild</h3><p>A site built to book jobs, live in days — modern, mobile, and made to convert.</p></div>
+        <div class="stp reveal"><div class="n">STEP 03</div><h3>System goes live</h3><p>Ads, instant follow-up, reviews, and local SEO — switched on and managed for you.</p></div>
+        <div class="stp reveal"><div class="n">STEP 04</div><h3>You lock your market</h3><p>We make you the only epoxy pro we work with in your area. Competitors are out.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUARANTEE -->
+  <section class="guarantee">
+    <div class="wrap">
+      <div class="gbox reveal">
+        <div class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div>
+          <h2>See the work before you pay a dime.</h2>
+          <p>The audit is free and the rebuild is the first thing we show you — so you're judging real work, not a sales pitch. No long contracts. You own your site. If it's not better than what you've got, walk.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="eyebrow">The offer</span><h2>Start free. Scale when it's printing jobs.</h2><p>No long contracts. One epoxy pro per market.</p></div>
+      <div class="tiers">
+        <div class="tier reveal">
+          <div class="name">Audit</div>
+          <div class="price">Free</div>
+          <p class="desc">See what's costing you jobs before you spend anything.</p>
+          <ul>
+            <li><svg><use href="#chk"/></svg> Full site &amp; ad audit</li>
+            <li><svg><use href="#chk"/></svg> Exactly what's leaking, ranked</li>
+            <li><svg><use href="#chk"/></svg> Zero obligation</li>
+          </ul>
+          <a class="btn btn-o" href="#start">Get my free audit</a>
+        </div>
+        <div class="tier hot reveal">
+          <span class="flag">Start here</span>
+          <div class="name">Site rebuild</div>
+          <div class="price">from $1,500 <b>one-time</b></div>
+          <p class="desc">A site that books jobs — live in days, yours to keep.</p>
+          <ul>
+            <li><svg><use href="#chk"/></svg> Full custom rebuild</li>
+            <li><svg><use href="#chk"/></svg> Real photos, before/after, reviews</li>
+            <li><svg><use href="#chk"/></svg> Quote form + instant text-back</li>
+            <li><svg><use href="#chk"/></svg> Schema &amp; Google setup baked in</li>
+          </ul>
+          <a class="btn btn-p" href="#start">Rebuild my site</a>
+        </div>
+        <div class="tier reveal">
+          <div class="name">Full System</div>
+          <div class="price">$1,997 <b>/mo</b></div>
+          <p class="desc">The whole machine, run for you. You stay on the floor.</p>
+          <ul>
+            <li><svg><use href="#chk"/></svg> Everything in Rebuild, maintained</li>
+            <li><svg><use href="#chk"/></svg> Google &amp; Meta ads managed</li>
+            <li><svg><use href="#chk"/></svg> Review engine + 24/7 follow-up</li>
+            <li><svg><use href="#chk"/></svg> Local SEO · territory exclusive</li>
+          </ul>
+          <a class="btn btn-o" href="#start">Book a call</a>
+        </div>
+      </div>
+      <p class="muted" style="font-family:var(--ff-m);font-size:12px;margin-top:22px">* Lead cost is a typical industry range, not a guarantee. Ad spend billed separately. Pricing shown is a starting point.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap" style="max-width:840px">
+      <div class="sec-head reveal"><span class="eyebrow">FAQ</span><h2>Straight answers.</h2></div>
+      <div class="faq reveal">
+        <div class="qa"><h3>Do you work with my competitors?</h3><p>No. One epoxy &amp; concrete coating contractor per market, locked. When you're in, the locals you bid against can't sign with us.</p></div>
+        <div class="qa"><h3>How fast does it go live?</h3><p>Most sites launch within days of getting your info and photos. The free audit comes back faster than that.</p></div>
+        <div class="qa"><h3>Do I own my website?</h3><p>Yes — on your domain, yours to keep. If you ever leave, the site goes with you.</p></div>
+        <div class="qa"><h3>Do I have to manage anything?</h3><p>No. That's the whole point. Site, ads, Google profile, reviews, follow-up — handled. You handle floors.</p></div>
+        <div class="qa"><h3>What if I don't have good job photos yet?</h3><p>We get you launched looking sharp and swap in your real jobs as they come in. You won't look like a stock-photo brochure.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final" id="start">
+    <div class="wrap final-grid">
+      <div class="reveal">
+        <span class="eyebrow">Free · no obligation</span>
+        <h2>Claim your market.</h2>
+        <p class="lede">Drop your website and we'll send back a free audit showing exactly what's costing you jobs — and what we'd fix. No pitch unless you want one.</p>
+        <p class="micro">One epoxy pro per market — first in wins the territory.</p>
+      </div>
+      <div class="fcard reveal">
+        <h3>Get your free audit</h3>
+        <p class="sub">We review your site &amp; ads and reply within one business day.</p>
+        <form id="leadForm" novalidate>
+          <div class="field"><label for="site">Your website</label><input id="site" name="site" type="url" placeholder="yourepoxysite.com" required></div>
+          <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required></div>
+          <button class="btn btn-p" type="submit">Send me my free audit →</button>
+        </form>
+        <div class="ok" id="ok">Got it — your audit request is ready to send. We'll be in touch within one business day.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href="#top"><span class="mk"><svg><use href="#disc"/></svg></span> EpoxyGrind</a>
+        <p class="muted">The marketing system built only for epoxy &amp; concrete coating contractors. One pro per market.</p>
+      </div>
+      <div class="foot-links">
+        <div><h4>System</h4><a href="#system">The System</a><a href="#proof">What we build</a><a href="#audit-example">Sample audit</a><a href="#how">How it works</a><a href="#pricing">Pricing</a></div>
+        <div><h4>Start</h4><a href="#start">Free audit</a><a href="#start">Book a call</a><a href="#faq">FAQ</a></div>
+      </div>
+    </div>
+    <div class="homeowner">Looking to get your own floor coated? <a href="#start">Find a vetted pro in your area →</a></div>
+    <div class="legal">© 2026 EpoxyGrind. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  document.documentElement.classList.remove('no-js');
+  var b=document.getElementById('burger'),m=document.getElementById('mobile');
+  b.addEventListener('click',function(){m.classList.toggle('open')});
+  m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});}else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in')});}
+  document.querySelectorAll('.audit-tab').forEach(function(tab){
+    tab.addEventListener('click',function(){
+      var id=tab.getAttribute('data-audit');
+      document.querySelectorAll('.audit-tab').forEach(function(t){t.classList.remove('active');t.setAttribute('aria-selected','false')});
+      document.querySelectorAll('.audit-panel').forEach(function(p){p.classList.remove('active');p.hidden=true});
+      tab.classList.add('active');tab.setAttribute('aria-selected','true');
+      var panel=document.querySelector('.audit-panel[data-panel="'+id+'"]');
+      if(panel){panel.classList.add('active');panel.hidden=false}
+    });
+  });
+  document.getElementById('leadForm').addEventListener('submit',function(ev){ev.preventDefault();var f=ev.target,site=f.site.value.trim(),email=f.email.value.trim();if(!site||!email){(site?f.email:f.site).focus();return;}var body=encodeURIComponent('Website: '+site+'\nEmail: '+email);f.style.display='none';document.getElementById('ok').classList.add('show');window.location.href='mailto:hello@epoxygrind.com?subject='+encodeURIComponent('Audit request — '+site)+'&body='+body;});
+</script>
+</body>
+</html>
