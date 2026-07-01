@@ -1,6 +1,10 @@
 const ANGLES = ['door', 'corner', 'center', 'back'];
 
-import { getPatternsForFinish } from '/lib/finish-design.js';
+import {
+  BASE_COLORS,
+  FLAKE_COLORS,
+  getPatternsForFinish,
+} from '/lib/finish-design.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -8,13 +12,7 @@ let imageDataUrl = '';
 let currentEstimate = null;
 let selectedPattern = 'full-broadcast';
 
-const uploadZone = $('uploadZone');
-const photoInput = $('photoInput');
-const runBtn = $('runCalc');
-const finishSelect = $('finish');
-const patternSelect = $('pattern');
-const basePicker = $('baseColorPicker');
-const flakePicker = $('flakeColorPicker');
+let uploadZone, photoInput, runBtn, finishSelect, patternSelect, basePicker, flakePicker;
 
 function toast(msg) {
   const el = $('toast');
@@ -35,36 +33,39 @@ function syncPatternOptions() {
   ).join('');
 }
 
+function renderPresetSwatches(container, colors, activeHex, onPick) {
+  container.innerHTML = colors.map((c) =>
+    `<button type="button" class="swatch${c.hex.toUpperCase() === activeHex.toUpperCase() ? ' active' : ''}" style="background:${c.hex}" title="${c.label}" data-hex="${c.hex}" aria-label="${c.label}"></button>`,
+  ).join('');
+  container.querySelectorAll('.swatch').forEach((btn) => {
+    btn.addEventListener('click', () => onPick(btn.dataset.hex));
+  });
+}
+
+function setBaseColor(hex) {
+  basePicker.value = hex;
+  $('baseHex').textContent = hex.toUpperCase();
+  renderPresetSwatches($('baseSwatches'), BASE_COLORS, hex, setBaseColor);
+}
+
+function setFlakeColor(hex) {
+  flakePicker.value = hex;
+  $('flakeHex').textContent = hex.toUpperCase();
+  renderPresetSwatches($('flakeSwatches'), FLAKE_COLORS, hex, setFlakeColor);
+}
+
 function syncFinishUI() {
-  $('flakeColorField').hidden = finishSelect.value !== 'flake';
+  $('flakeColorWrap').hidden = finishSelect.value !== 'flake';
   syncPatternOptions();
 }
 
-function bindColorPickers() {
-  const syncBase = () => { $('baseHex').textContent = basePicker.value.toUpperCase(); };
-  const syncFlake = () => { $('flakeHex').textContent = flakePicker.value.toUpperCase(); };
-  basePicker.addEventListener('input', syncBase);
-  flakePicker.addEventListener('input', syncFlake);
-  syncBase();
-  syncFlake();
-}
-
-finishSelect.addEventListener('change', () => {
-  selectedPattern = getPatternsForFinish(finishSelect.value)[0].id;
-  syncFinishUI();
-});
-patternSelect.addEventListener('change', () => { selectedPattern = patternSelect.value; });
-
-syncFinishUI();
-bindColorPickers();
-
 function designChipsHtml(design) {
   if (!design) return '';
-  const flakeDot = design.flakeColorHex
+  const dots = design.flakeColorHex
     ? `<span class="dot" style="background:${design.baseColorHex}"></span><span class="dot" style="background:${design.flakeColorHex}"></span>`
     : `<span class="dot" style="background:${design.baseColorHex}"></span>`;
   return `
-    <div class="design-chip">${flakeDot}${escapeHtml(design.colorLabel)}</div>
+    <div class="design-chip">${dots}${escapeHtml(design.colorLabel)}</div>
     <div class="design-chip">${escapeHtml(design.patternLabel)}</div>`;
 }
 
@@ -85,18 +86,16 @@ async function resizeImage(dataUrl, maxWidth = 1200) {
   const img = new Image();
   await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = dataUrl; });
   const scale = Math.min(1, maxWidth / img.width);
-  const w = Math.round(img.width * scale);
-  const h = Math.round(img.height * scale);
   const canvas = document.createElement('canvas');
-  canvas.width = w;
-  canvas.height = h;
-  canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+  canvas.width = Math.round(img.width * scale);
+  canvas.height = Math.round(img.height * scale);
+  canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
   return canvas.toDataURL('image/jpeg', 0.85);
 }
 
 async function setPhoto(file) {
   if (!file || !file.type.startsWith('image/')) {
-    toast('Please upload an image.');
+    toast('Please upload an image file.');
     return;
   }
   imageDataUrl = await resizeImage(await readFileAsDataUrl(file));
@@ -106,17 +105,6 @@ async function setPhoto(file) {
   runBtn.disabled = false;
 }
 
-uploadZone.addEventListener('click', () => photoInput.click());
-$('changePhoto').addEventListener('click', (e) => { e.stopPropagation(); photoInput.click(); });
-photoInput.addEventListener('change', (e) => setPhoto(e.target.files[0]));
-uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('drag'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
-uploadZone.addEventListener('drop', (e) => {
-  e.preventDefault();
-  uploadZone.classList.remove('drag');
-  setPhoto(e.dataTransfer.files[0]);
-});
-
 function setLoading(on, status, pct) {
   $('progressPanel').hidden = !on;
   if (status) $('previewStatus').textContent = status;
@@ -124,15 +112,15 @@ function setLoading(on, status, pct) {
 }
 
 function showResults(on) {
+  $('resultPlaceholder').hidden = on;
   $('resultPanel').hidden = !on;
-  if (on) $('resultPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (on) $('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 async function runEstimate() {
   if (!imageDataUrl) return;
 
-  setLoading(true, 'Analyzing photo…', 8);
-  showResults(false);
+  setLoading(true, 'Analyzing your photo…', 10);
 
   const payload = {
     image: imageDataUrl,
@@ -167,7 +155,13 @@ async function runEstimate() {
     return;
   }
 
-  setLoading(true, 'Generating previews…', 25);
+  if (analyzeData.meta?.demoMode) {
+    $('apiNote').textContent = 'Demo mode — add OPENAI_API_KEY on Vercel for live AI analysis & previews.';
+  } else {
+    $('apiNote').textContent = 'Live AI connected.';
+  }
+
+  setLoading(true, 'Generating 4 concept views…', 30);
 
   const previews = [];
   let completed = 0;
@@ -189,7 +183,7 @@ async function runEstimate() {
       if (res.ok) previews.push(data);
     } catch { /* skip */ }
     completed += 1;
-    setLoading(true, `${completed} of 4 previews`, 25 + (completed / 4) * 70);
+    setLoading(true, `${completed} of 4 previews ready`, 30 + (completed / 4) * 65);
   }));
 
   currentEstimate = {
@@ -209,10 +203,13 @@ async function runEstimate() {
 function renderEstimate(data) {
   const { analysis, pricing, design, meta, previews, originalImage, customerName, projectName } = data;
   $('estTitle').textContent = projectName || `${analysis.spaceType || 'Garage'} — ${design?.summary || pricing.finishLabel}`;
-  $('estMeta').textContent = [customerName && `For ${customerName}`, meta.demoMode && 'Demo mode'].filter(Boolean).join(' · ');
+  $('estMeta').textContent = [
+    customerName && `Prepared for ${customerName}`,
+    meta.demoMode && 'Demo mode — connect OpenAI for live AI',
+  ].filter(Boolean).join(' · ');
   $('estOriginal').src = originalImage;
   $('estPrice').textContent = `${formatMoney(pricing.totalLow)} – ${formatMoney(pricing.totalHigh)}`;
-  $('estSqFt').textContent = `${Math.round(analysis.estimatedSqFt)} sq ft · ${pricing.finishLabel}`;
+  $('estSqFt').textContent = `${Math.round(analysis.estimatedSqFt)} sq ft · ${pricing.finishLabel}${pricing.minJobApplied ? ' · min job applied' : ''}`;
 
   const designEl = $('estDesign');
   if (design || pricing.design) {
@@ -221,7 +218,8 @@ function renderEstimate(data) {
   } else designEl.hidden = true;
 
   $('estSummary').textContent = analysis.analysisSummary || '';
-  $('estGenerated').textContent = `Generated ${new Date(meta.generatedAt).toLocaleString()} · Estimate only, not a contract.`;
+  $('estIssues').innerHTML = (analysis.surfaceIssues || []).map((x) => `<li>${escapeHtml(x)}</li>`).join('');
+  $('estGenerated').textContent = `Generated ${new Date(meta.generatedAt).toLocaleString()}`;
 
   $('estLineItems').innerHTML = [
     ...pricing.lineItems.map((row) => `
@@ -229,14 +227,16 @@ function renderEstimate(data) {
         <div><div class="name">${escapeHtml(row.label)}</div><div class="note">${escapeHtml(row.note)}</div></div>
         <div class="amt">${formatMoney(row.low)} – ${formatMoney(row.high)}</div>
       </div>`),
-    `<div class="line-total"><span>Total</span><span>${formatMoney(pricing.totalLow)} – ${formatMoney(pricing.totalHigh)}</span></div>`,
+    `<div class="line-total"><span>Estimated total</span><span>${formatMoney(pricing.totalLow)} – ${formatMoney(pricing.totalHigh)}</span></div>`,
   ].join('');
 
-  $('estPreviews').innerHTML = previews.map((p) => `
-    <div class="preview-card">
-      <img src="${p.image}" alt="${escapeHtml(p.label)}">
-      <div class="cap">${escapeHtml(p.label)}</div>
-    </div>`).join('');
+  $('estPreviews').innerHTML = previews.length
+    ? previews.map((p) => `
+      <div class="preview-card">
+        <img src="${p.image}" alt="${escapeHtml(p.label)}">
+        <div class="cap">${escapeHtml(p.label)}</div>
+      </div>`).join('')
+    : '<p class="muted">No previews generated — check OPENAI_API_KEY or OPENART_API_KEY on Vercel.</p>';
 }
 
 function escapeHtml(s) {
@@ -279,19 +279,10 @@ async function saveEstimateToSupabase(data) {
   return json.id;
 }
 
-function buildShareUrl(id) {
-  return `${location.origin}/estimate/?id=${encodeURIComponent(id)}`;
-}
-
 async function persistShareLink() {
-  try {
-    const id = await saveEstimateToSupabase(currentEstimate);
-    currentEstimate._shareRemote = true;
-    return buildShareUrl(id);
-  } catch {
-    if (currentEstimate?._shareId) return buildShareUrl(currentEstimate._shareId);
-    throw new Error('No link');
-  }
+  const id = await saveEstimateToSupabase(currentEstimate);
+  currentEstimate._shareRemote = true;
+  return `${location.origin}/estimate/?id=${encodeURIComponent(id)}`;
 }
 
 function downloadHtmlEstimate() {
@@ -299,29 +290,65 @@ function downloadHtmlEstimate() {
   const doc = $('estimateDoc').cloneNode(true);
   doc.querySelectorAll('img').forEach((img) => img.setAttribute('src', img.src));
   const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Epoxy Estimate</title>
-<style>body{font-family:system-ui,sans-serif;max-width:800px;margin:32px auto;padding:0 16px;color:#11213B}img{max-width:100%;border-radius:8px}.preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}</style>
+<style>body{font-family:system-ui,sans-serif;max-width:900px;margin:32px auto;padding:0 16px;color:#11213B}img{max-width:100%;border-radius:8px}.preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}</style>
 </head><body>${doc.outerHTML}</body></html>`;
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
   a.download = `epoxy-estimate-${Date.now()}.html`;
   a.click();
-  toast('Downloaded.');
+  toast('Estimate downloaded.');
 }
 
-runBtn.addEventListener('click', runEstimate);
-$('newEstimate').addEventListener('click', () => {
-  showResults(false);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-$('printEstimate').addEventListener('click', () => window.print());
-$('downloadEstimate').addEventListener('click', downloadHtmlEstimate);
-$('shareEstimate').addEventListener('click', async () => {
-  if (!currentEstimate) return toast('Generate an estimate first.');
-  try {
-    const url = await persistShareLink();
-    await navigator.clipboard.writeText(url);
-    toast(currentEstimate._shareRemote ? 'Share link copied.' : 'Link copied (same browser fallback).');
-  } catch {
-    toast('Could not save — try Download.');
-  }
-});
+function init() {
+  uploadZone = $('uploadZone');
+  photoInput = $('photoInput');
+  runBtn = $('runCalc');
+  finishSelect = $('finish');
+  patternSelect = $('pattern');
+  basePicker = $('baseColorPicker');
+  flakePicker = $('flakeColorPicker');
+
+  setBaseColor(basePicker.value);
+  setFlakeColor(flakePicker.value);
+  syncFinishUI();
+
+  basePicker.addEventListener('input', () => setBaseColor(basePicker.value));
+  flakePicker.addEventListener('input', () => setFlakeColor(flakePicker.value));
+
+  finishSelect.addEventListener('change', () => {
+    selectedPattern = getPatternsForFinish(finishSelect.value)[0].id;
+    syncFinishUI();
+  });
+  patternSelect.addEventListener('change', () => { selectedPattern = patternSelect.value; });
+
+  uploadZone.addEventListener('click', () => photoInput.click());
+  $('changePhoto').addEventListener('click', (e) => { e.stopPropagation(); photoInput.click(); });
+  photoInput.addEventListener('change', (e) => setPhoto(e.target.files[0]));
+  uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('drag'); });
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
+  uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.classList.remove('drag');
+    setPhoto(e.dataTransfer.files[0]);
+  });
+
+  runBtn.addEventListener('click', runEstimate);
+  $('newEstimate').addEventListener('click', () => {
+    showResults(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  $('printEstimate').addEventListener('click', () => window.print());
+  $('downloadEstimate').addEventListener('click', downloadHtmlEstimate);
+  $('shareEstimate').addEventListener('click', async () => {
+    if (!currentEstimate) return toast('Generate an estimate first.');
+    try {
+      const url = await persistShareLink();
+      await navigator.clipboard.writeText(url);
+      toast('Share link copied — works for anyone.');
+    } catch {
+      toast('Could not save — try Download HTML.');
+    }
+  });
+}
+
+init();
