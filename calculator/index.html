@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, viewport-fit=cover">
 <title>Job Calculator | Epoxy Grind</title>
-<meta name="description" content="Upload a garage photo, get an AI-powered epoxy floor estimate with concept previews from four angles.">
+<meta name="description" content="Upload a garage photo, pick colors, get an epoxy floor estimate with AI previews — in one screen.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="/logo.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,169 +15,146 @@
 
 <header class="site-header">
   <div class="wrap nav">
-    <a class="brand" href="/"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
-    <nav class="nav-links">
-      <a href="/">Home</a>
-      <a href="/calculator/" aria-current="page">Job calculator</a>
-    </nav>
-    <a class="btn btn-p" href="/#start">Free audit</a>
+    <a class="brand" href="/"><img src="/logo.png" alt="EpoxyGrind" width="28" height="28"> EpoxyGrind</a>
+    <a class="btn btn-p btn-sm" href="/#start">Free audit</a>
   </div>
 </header>
 
-<main class="calc-page">
-  <div class="wrap">
-    <div class="calc-hero">
-      <span class="eyebrow">AI job calculator</span>
-      <h1>Photo in. Estimate out.</h1>
-      <p class="lede">Upload a garage photo, pick a finish, and get a priced estimate plus four AI concept views you can share with the homeowner.</p>
-    </div>
-
-    <div class="calc-layout" id="calcApp">
-      <!-- INPUT -->
-      <section class="panel input-panel" id="inputPanel">
-        <h2>Project details</h2>
-
-        <div class="upload" id="uploadZone">
-          <input type="file" id="photoInput" accept="image/*" hidden>
-          <div class="upload-empty" id="uploadEmpty">
-            <div class="upload-icon">📷</div>
-            <p><strong>Drop a photo</strong> or click to upload</p>
-            <p class="muted">Garage, basement, or concrete floor — JPG or PNG</p>
-          </div>
-          <div class="upload-preview" id="uploadPreview" hidden>
-            <img id="previewImg" alt="Uploaded space">
-            <button type="button" class="text-btn" id="changePhoto">Change photo</button>
-          </div>
-        </div>
-
-        <div class="fields">
-          <div class="field">
-            <label for="customerName">Customer name <span class="opt">optional</span></label>
-            <input id="customerName" type="text" placeholder="John Smith">
-          </div>
-          <div class="field">
-            <label for="projectName">Project label <span class="opt">optional</span></label>
-            <input id="projectName" type="text" placeholder="Smith garage — flake gray">
-          </div>
-          <div class="field">
-            <label for="finish">Finish system</label>
-            <select id="finish">
-              <option value="solid">Solid color</option>
-              <option value="flake" selected>Full flake / chip</option>
-              <option value="metallic">Metallic</option>
-            </select>
-          </div>
-
-          <div class="design-block">
-            <div class="field">
-              <label>Base color</label>
-              <div class="swatches" id="baseColorSwatches" role="radiogroup" aria-label="Base color"></div>
-              <input id="customColorNote" type="text" class="custom-color" placeholder="Custom color name (e.g. battleship gray)" hidden>
-            </div>
-
-            <div class="field" id="flakeColorField">
-              <label>Flake blend</label>
-              <div class="swatches" id="flakeColorSwatches" role="radiogroup" aria-label="Flake color"></div>
-            </div>
-
-            <div class="field">
-              <label>Pattern</label>
-              <div class="pattern-grid" id="patternGrid" role="radiogroup" aria-label="Floor pattern"></div>
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="lengthFt">Length (ft) <span class="opt">optional</span></label>
-              <input id="lengthFt" type="number" min="1" step="0.5" placeholder="22">
-            </div>
-            <div class="field">
-              <label for="widthFt">Width (ft) <span class="opt">optional</span></label>
-              <input id="widthFt" type="number" min="1" step="0.5" placeholder="20">
-            </div>
-          </div>
-          <div class="field">
-            <label for="sqFtOverride">Or total sq ft <span class="opt">optional</span></label>
-            <input id="sqFtOverride" type="number" min="50" step="1" placeholder="440 — overrides AI estimate">
-          </div>
-        </div>
-
-        <button class="btn btn-p btn-full" type="button" id="runCalc" disabled>Generate estimate →</button>
-        <p class="fine muted" id="demoNote">Connect <code>OPENAI_API_KEY</code> on Vercel for live AI analysis and previews.</p>
-      </section>
-
-      <!-- PROGRESS -->
-      <section class="panel progress-panel" id="progressPanel" hidden>
-        <h2>Building your estimate</h2>
-        <ul class="steps" id="progressSteps">
-          <li data-step="analyze"><span class="dot"></span>Analyzing your photo…</li>
-          <li data-step="price"><span class="dot"></span>Calculating pricing…</li>
-          <li data-step="previews"><span class="dot"></span>Generating 4 concept views…</li>
+<main>
+  <!-- HERO = full calculator -->
+  <section class="hero" id="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">AI job calculator</span>
+        <h1>Quote the floor in one screen.</h1>
+        <p class="lede">Photo, colors, price, and four concept views — ready to text the homeowner.</p>
+        <ul class="hero-points">
+          <li>AI square footage from your photo</li>
+          <li>Custom color picker + finish patterns</li>
+          <li>Shareable estimate link</li>
         </ul>
-        <div class="preview-progress" id="previewProgress" hidden>
+      </div>
+
+      <div class="calc-card" id="inputPanel">
+        <div class="card-loading" id="progressPanel" hidden>
+          <p class="load-title" id="loadTitle">Building estimate…</p>
           <div class="bar"><div class="fill" id="previewBar"></div></div>
-          <p class="muted" id="previewStatus">0 of 4 complete</p>
-        </div>
-      </section>
-
-      <!-- RESULTS -->
-      <section class="panel result-panel" id="resultPanel" hidden>
-        <div class="result-actions no-print">
-          <button type="button" class="btn btn-o" id="newEstimate">New estimate</button>
-          <button type="button" class="btn btn-o" id="printEstimate">Print / PDF</button>
-          <button type="button" class="btn btn-o" id="downloadEstimate">Download HTML</button>
-          <button type="button" class="btn btn-p" id="shareEstimate">Copy share link</button>
+          <p class="load-sub muted" id="previewStatus">Analyzing photo</p>
         </div>
 
-        <article class="estimate-doc" id="estimateDoc">
-          <header class="est-head">
-            <div>
-              <p class="eyebrow">Epoxy floor estimate</p>
-              <h2 id="estTitle">Garage epoxy coating</h2>
-              <p class="muted" id="estMeta"></p>
+        <form class="calc-form" id="calcForm" onsubmit="return false">
+          <div class="upload" id="uploadZone">
+            <input type="file" id="photoInput" accept="image/*" hidden>
+            <div class="upload-empty" id="uploadEmpty">
+              <span class="upload-ico">+</span>
+              <span>Add garage photo</span>
             </div>
-            <img src="/logo.png" alt="EpoxyGrind" class="est-logo" width="48" height="48">
-          </header>
-
-          <div class="est-grid">
-            <div class="est-photo">
-              <p class="label">Your space</p>
-              <img id="estOriginal" alt="Original uploaded photo">
-            </div>
-            <div class="est-summary">
-              <p class="label">Investment range</p>
-              <div class="price-range" id="estPrice">$0 – $0</div>
-              <p class="price-note" id="estSqFt"></p>
-              <div class="design-summary" id="estDesign" hidden></div>
-              <p class="analysis" id="estSummary"></p>
-              <ul class="issues" id="estIssues"></ul>
+            <div class="upload-preview" id="uploadPreview" hidden>
+              <img id="previewImg" alt="Uploaded space">
+              <button type="button" class="text-btn" id="changePhoto">Change</button>
             </div>
           </div>
 
-          <div class="line-items" id="estLineItems"></div>
-
-          <div class="previews-block">
-            <p class="label">AI concept previews — four angles</p>
-            <p class="muted fine">Concept renders for homeowner approval. Final color and flake blend confirmed on site.</p>
-            <div class="preview-grid" id="estPreviews"></div>
+          <div class="row-2">
+            <label class="field compact">
+              <span>Finish</span>
+              <select id="finish">
+                <option value="solid">Solid</option>
+                <option value="flake" selected>Flake</option>
+                <option value="metallic">Metallic</option>
+              </select>
+            </label>
+            <label class="field compact">
+              <span>Pattern</span>
+              <select id="pattern"></select>
+            </label>
           </div>
 
-          <footer class="est-foot">
-            <p><strong>Important:</strong> This is a preliminary estimate based on photo analysis and typical market rates. Final price confirmed after on-site inspection, moisture testing, and prep scope.</p>
-            <p class="muted" id="estGenerated"></p>
-          </footer>
-        </article>
-      </section>
+          <div class="row-2 color-pickers">
+            <label class="field compact color-field">
+              <span>Base color</span>
+              <div class="picker-wrap">
+                <input type="color" id="baseColorPicker" value="#4A4F54" aria-label="Base color">
+                <code id="baseHex">#4A4F54</code>
+              </div>
+            </label>
+            <label class="field compact color-field" id="flakeColorField">
+              <span>Flake color</span>
+              <div class="picker-wrap">
+                <input type="color" id="flakeColorPicker" value="#6B7078" aria-label="Flake color">
+                <code id="flakeHex">#6B7078</code>
+              </div>
+            </label>
+          </div>
+
+          <details class="more">
+            <summary>Size &amp; customer (optional)</summary>
+            <div class="more-body">
+              <div class="row-2">
+                <label class="field compact"><span>Length ft</span><input id="lengthFt" type="number" min="1" step="0.5" placeholder="22"></label>
+                <label class="field compact"><span>Width ft</span><input id="widthFt" type="number" min="1" step="0.5" placeholder="20"></label>
+              </div>
+              <label class="field compact"><span>Sq ft override</span><input id="sqFtOverride" type="number" min="50" placeholder="440"></label>
+              <div class="row-2">
+                <label class="field compact"><span>Customer</span><input id="customerName" type="text" placeholder="Name"></label>
+                <label class="field compact"><span>Project</span><input id="projectName" type="text" placeholder="Smith garage"></label>
+              </div>
+            </div>
+          </details>
+
+          <button class="btn btn-p btn-full" type="button" id="runCalc" disabled>Get estimate →</button>
+        </form>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- RESULTS — compact strip below hero -->
+  <section class="results" id="resultPanel" hidden>
+    <div class="wrap">
+      <div class="result-bar no-print">
+        <button type="button" class="btn btn-o btn-sm" id="newEstimate">New</button>
+        <button type="button" class="btn btn-o btn-sm" id="printEstimate">Print</button>
+        <button type="button" class="btn btn-o btn-sm" id="downloadEstimate">Download</button>
+        <button type="button" class="btn btn-p btn-sm" id="shareEstimate">Share link</button>
+      </div>
+
+      <article class="estimate-doc" id="estimateDoc">
+        <header class="est-head">
+          <div>
+            <p class="eyebrow dark">Epoxy floor estimate</p>
+            <h2 id="estTitle">Garage epoxy coating</h2>
+            <p class="muted" id="estMeta"></p>
+          </div>
+          <div class="est-price-block">
+            <div class="price-range" id="estPrice">$0 – $0</div>
+            <p class="price-note" id="estSqFt"></p>
+          </div>
+        </header>
+
+        <div class="design-summary" id="estDesign" hidden></div>
+
+        <div class="est-compact">
+          <img id="estOriginal" alt="Original photo" class="est-thumb">
+          <p class="analysis" id="estSummary"></p>
+        </div>
+
+        <div class="line-items compact-lines" id="estLineItems"></div>
+
+        <div class="previews-block">
+          <p class="label">Concept previews · 4 angles</p>
+          <div class="preview-grid" id="estPreviews"></div>
+        </div>
+
+        <p class="fine muted est-foot" id="estGenerated"></p>
+      </article>
+    </div>
+  </section>
 </main>
 
-<footer class="site-footer">
-  <div class="wrap legal muted">© 2026 EpoxyGrind · Job calculator for epoxy contractors</div>
-</footer>
-
+<footer class="site-footer"><div class="wrap muted">© 2026 EpoxyGrind</div></footer>
 <div class="toast" id="toast" hidden></div>
-
 <script src="/calculator/calculator.js" type="module"></script>
 </body>
 </html>

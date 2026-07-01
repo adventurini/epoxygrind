@@ -22,6 +22,8 @@ export default async function handler(req, res) {
       finish = 'flake',
       baseColor = 'charcoal',
       flakeColor = 'gray-black',
+      baseColorHex = '',
+      flakeColorHex = '',
       pattern = '',
       customColorNote = '',
       sqFtOverride = null,
@@ -40,6 +42,8 @@ export default async function handler(req, res) {
       finish: finishKey,
       baseColor,
       flakeColor,
+      baseColorHex,
+      flakeColorHex,
       pattern,
       customColorNote,
     });
@@ -72,7 +76,7 @@ export default async function handler(req, res) {
         projectName,
         finish: finishKey,
         generatedAt: new Date().toISOString(),
-        demoMode: !process.env.OPENAI_API_KEY,
+        demoMode: !process.env.OPENAI_API_KEY && !process.env.OPENART_API_KEY,
       },
       previewContext: {
         spaceDescription: `${analysis.spaceType || 'Garage'}. ${analysis.analysisSummary || ''}`.trim(),
