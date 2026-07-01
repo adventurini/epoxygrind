@@ -37,12 +37,6 @@
       </div>
 
       <div class="calc-card" id="calcCard">
-        <div class="card-loading" id="progressPanel" hidden>
-          <p class="load-title">Building your estimate…</p>
-          <div class="bar"><div class="fill" id="previewBar"></div></div>
-          <p class="load-sub muted" id="previewStatus">Analyzing photo</p>
-        </div>
-
         <h2 class="card-title">Project details</h2>
 
         <div class="upload" id="uploadZone">
@@ -104,6 +98,7 @@
         </div>
 
         <button class="btn btn-p btn-full" type="button" id="runCalc" disabled>Generate estimate →</button>
+        <p class="status-line muted" id="statusLine" hidden></p>
         <p class="fine muted" id="apiNote">Add <code>OPENAI_API_KEY</code> on Vercel for live AI analysis &amp; previews.</p>
       </div>
     </div>

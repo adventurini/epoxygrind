@@ -105,10 +105,10 @@ async function setPhoto(file) {
   runBtn.disabled = false;
 }
 
-function setLoading(on, status, pct) {
-  $('progressPanel').hidden = !on;
-  if (status) $('previewStatus').textContent = status;
-  if (pct != null) $('previewBar').style.width = `${pct}%`;
+function setStatus(msg, show = true) {
+  const el = $('statusLine');
+  el.hidden = !show || !msg;
+  el.textContent = msg || '';
 }
 
 function showResults(on) {
@@ -117,10 +117,47 @@ function showResults(on) {
   if (on) $('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+async function fetchJson(url, body, timeoutMs = 90000) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal: ctrl.signal,
+    });
+    const data = await res.json();
+    return { res, data };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function previewGridHtml(previews) {
+  const byId = Object.fromEntries(previews.map((p) => [p.id, p]));
+  return ANGLES.map((angleId) => {
+    const p = byId[angleId];
+    if (p) {
+      return `
+        <div class="preview-card">
+          <img src="${p.image}" alt="${escapeHtml(p.label)}">
+          <div class="cap">${escapeHtml(p.label)}</div>
+        </div>`;
+    }
+    return `
+      <div class="preview-card">
+        <div class="preview-skeleton" aria-hidden="true"></div>
+        <div class="cap">Rendering…</div>
+      </div>`;
+  }).join('');
+}
+
 async function runEstimate() {
   if (!imageDataUrl) return;
 
-  setLoading(true, 'Analyzing your photo…', 10);
+  runBtn.disabled = true;
+  setStatus('Analyzing your photo…');
 
   const payload = {
     image: imageDataUrl,
@@ -135,69 +172,67 @@ async function runEstimate() {
     widthFt: $('widthFt').value ? Number($('widthFt').value) : null,
   };
 
-  let analyzeRes;
   try {
-    analyzeRes = await fetch('/api/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-  } catch {
-    toast('Network error — try again.');
-    setLoading(false);
-    return;
-  }
-
-  const analyzeData = await analyzeRes.json();
-  if (!analyzeRes.ok) {
-    toast(analyzeData.error || 'Analysis failed.');
-    setLoading(false);
-    return;
-  }
-
-  if (analyzeData.meta?.demoMode) {
-    $('apiNote').textContent = 'Demo mode — add OPENAI_API_KEY on Vercel for live AI analysis & previews.';
-  } else {
-    $('apiNote').textContent = 'Live AI connected.';
-  }
-
-  setLoading(true, 'Generating 4 concept views…', 30);
-
-  const previews = [];
-  let completed = 0;
-  await Promise.all(ANGLES.map(async (angleId) => {
+    let analyzeRes;
+    let analyzeData;
     try {
-      const res = await fetch('/api/generate-preview', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      ({ res: analyzeRes, data: analyzeData } = await fetchJson('/api/analyze', payload, 90000));
+    } catch (err) {
+      toast(err.name === 'AbortError' ? 'Analysis timed out — try a smaller photo.' : 'Network error — try again.');
+      return;
+    }
+
+    if (!analyzeRes.ok) {
+      toast(analyzeData.error || 'Analysis failed.');
+      return;
+    }
+
+    $('apiNote').textContent = analyzeData.meta?.demoMode
+      ? 'Demo mode — add OPENAI_API_KEY on Vercel for live AI analysis & previews.'
+      : 'Live AI connected.';
+
+    currentEstimate = {
+      ...analyzeData,
+      originalImage: imageDataUrl,
+      previews: [],
+      customerName: payload.customerName,
+      projectName: payload.projectName,
+    };
+
+    renderEstimate(currentEstimate);
+    $('estPreviews').innerHTML = previewGridHtml([]);
+    saveEstimateToStorage(currentEstimate);
+    showResults(true);
+    setStatus('Pricing ready — generating 4 concept views…');
+
+    const previews = [];
+    for (let i = 0; i < ANGLES.length; i += 1) {
+      const angleId = ANGLES[i];
+      setStatus(`Generating preview ${i + 1} of 4…`);
+      try {
+        const { res, data } = await fetchJson('/api/generate-preview', {
           angleId,
           spaceDescription: analyzeData.previewContext.spaceDescription,
           finishLabel: analyzeData.previewContext.finishLabel,
           finish: analyzeData.previewContext.finish,
           designPrompt: analyzeData.previewContext.designPrompt,
           baseColorHex: analyzeData.previewContext.baseColorHex,
-        }),
-      });
-      const data = await res.json();
-      if (res.ok) previews.push(data);
-    } catch { /* skip */ }
-    completed += 1;
-    setLoading(true, `${completed} of 4 previews ready`, 30 + (completed / 4) * 65);
-  }));
+        }, 55000);
+        if (res.ok) previews.push(data);
+      } catch { /* continue */ }
+      currentEstimate.previews = [...previews];
+      $('estPreviews').innerHTML = previewGridHtml(previews);
+    }
 
-  currentEstimate = {
-    ...analyzeData,
-    originalImage: imageDataUrl,
-    previews: previews.sort((a, b) => ANGLES.indexOf(a.id) - ANGLES.indexOf(b.id)),
-    customerName: payload.customerName,
-    projectName: payload.projectName,
-  };
-
-  renderEstimate(currentEstimate);
-  saveEstimateToStorage(currentEstimate);
-  setLoading(false);
-  showResults(true);
+    currentEstimate.previews = previews.sort((a, b) => ANGLES.indexOf(a.id) - ANGLES.indexOf(b.id));
+    renderEstimate(currentEstimate);
+    $('estPreviews').innerHTML = previewGridHtml(currentEstimate.previews);
+    saveEstimateToStorage(currentEstimate);
+    setStatus(previews.length ? 'Estimate complete.' : 'Estimate ready — previews unavailable (add OPENAI_API_KEY).', true);
+    setTimeout(() => setStatus(''), 4000);
+  } finally {
+    runBtn.disabled = !imageDataUrl;
+  }
 }
 
 function renderEstimate(data) {
@@ -335,6 +370,7 @@ function init() {
   runBtn.addEventListener('click', runEstimate);
   $('newEstimate').addEventListener('click', () => {
     showResults(false);
+    setStatus('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
   $('printEstimate').addEventListener('click', () => window.print());
