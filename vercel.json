@@ -12,5 +12,19 @@
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/analyze.js": {
+      "maxDuration": 30,
+      "memory": 1024
+    },
+    "api/estimates.js": {
+      "maxDuration": 30,
+      "memory": 1024
+    },
+    "api/generate-preview.js": {
+      "maxDuration": 60,
+      "memory": 1024
+    }
+  }
 }

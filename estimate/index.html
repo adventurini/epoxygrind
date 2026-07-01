@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shared Estimate | Epoxy Grind</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800&family=Inter:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/calculator/calculator.css">
+</head>
+<body>
+
+<header class="site-header no-print">
+  <div class="wrap nav">
+    <a class="brand" href="/"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
+    <a class="btn btn-o" href="/calculator/">Create estimate</a>
+  </div>
+</header>
+
+<main class="calc-page">
+  <div class="wrap">
+    <div id="loadingState" class="panel" style="max-width:640px;margin:40px auto;text-align:center">
+      <h2>Loading estimate…</h2>
+      <p class="muted" id="loadMsg">Reading shared estimate data.</p>
+    </div>
+
+    <div id="errorState" class="panel" hidden style="max-width:640px;margin:40px auto;text-align:center">
+      <h2>Estimate not found</h2>
+      <p class="muted">Share links load from the cloud when Supabase is connected. Otherwise use <strong>Download HTML</strong> on the calculator.</p>
+      <a class="btn btn-p" href="/calculator/" style="margin-top:20px">Open calculator</a>
+    </div>
+
+    <section class="result-panel" id="resultPanel" hidden>
+      <div class="result-actions no-print">
+        <button type="button" class="btn btn-o" onclick="window.print()">Print / PDF</button>
+        <a class="btn btn-p" href="/calculator/">New estimate</a>
+      </div>
+      <article class="estimate-doc" id="estimateDoc"></article>
+    </section>
+  </div>
+</main>
+
+<script type="module">
+function formatMoney(n) {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+}
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function render(data, target) {
+  const { analysis, pricing, design, meta, previews, originalImage, customerName, projectName } = data;
+  const d = design || pricing?.design;
+  const title = projectName || `${analysis.spaceType || 'Garage'} — ${d?.summary || pricing.finishLabel}`;
+
+  const designHtml = d ? `
+    <div class="design-summary">
+      <div class="design-chip"><span class="dot" style="background:${d.baseColorHex}"></span>${escapeHtml(d.colorLabel)}</div>
+      <div class="design-chip">${escapeHtml(d.patternLabel)}</div>
+    </div>` : '';
+
+  target.innerHTML = `
+    <header class="est-head">
+      <div>
+        <p class="eyebrow">Epoxy floor estimate</p>
+        <h2>${escapeHtml(title)}</h2>
+        <p class="muted">${customerName ? `Prepared for ${escapeHtml(customerName)}` : ''}</p>
+      </div>
+      <img src="/logo.png" alt="EpoxyGrind" class="est-logo" width="48" height="48">
+    </header>
+    <div class="est-grid">
+      <div class="est-photo"><p class="label">Your space</p><img src="${originalImage}" alt="Original photo"></div>
+      <div class="est-summary">
+        <p class="label">Investment range</p>
+        <div class="price-range">${formatMoney(pricing.totalLow)} – ${formatMoney(pricing.totalHigh)}</div>
+        <p class="price-note">${Math.round(analysis.estimatedSqFt)} sq ft · ${escapeHtml(pricing.finishLabel)}</p>
+        ${designHtml}
+        <p class="analysis">${escapeHtml(analysis.analysisSummary || '')}</p>
+        <ul class="issues">${(analysis.surfaceIssues || []).map((x) => `<li>${escapeHtml(x)}</li>`).join('')}</ul>
+      </div>
+    </div>
+    <div class="line-items">
+      ${pricing.lineItems.map((row) => `
+        <div class="line-row">
+          <div><div class="name">${escapeHtml(row.label)}</div><div class="note">${escapeHtml(row.note)}</div></div>
+          <div class="amt">${formatMoney(row.low)} – ${formatMoney(row.high)}</div>
+        </div>`).join('')}
+      <div class="line-total"><span>Estimated total</span><span>${formatMoney(pricing.totalLow)} – ${formatMoney(pricing.totalHigh)}</span></div>
+    </div>
+    <div class="previews-block">
+      <p class="label">AI concept previews — four angles</p>
+      <div class="preview-grid">${previews.map((p) => `
+        <div class="preview-card"><img src="${p.image}" alt="${escapeHtml(p.label)}"><div class="cap">${escapeHtml(p.label)}</div></div>`).join('')}</div>
+    </div>
+    <footer class="est-foot">
+      <p><strong>Important:</strong> Preliminary estimate — final price after on-site inspection.</p>
+      <p class="muted">Generated ${new Date(meta.generatedAt).toLocaleString()}</p>
+    </footer>`;
+}
+
+const id = new URLSearchParams(location.search).get('id');
+const loading = document.getElementById('loadingState');
+const error = document.getElementById('errorState');
+const result = document.getElementById('resultPanel');
+const doc = document.getElementById('estimateDoc');
+
+async function loadEstimate() {
+  if (id) {
+    try {
+      const res = await fetch(`/api/estimates?id=${encodeURIComponent(id)}`);
+      if (res.ok) {
+        const data = await res.json();
+        render(data, doc);
+        loading.hidden = true;
+        result.hidden = false;
+        document.title = `Estimate — ${data.projectName || 'Epoxy Grind'}`;
+        return;
+      }
+    } catch { /* fall through */ }
+  }
+
+  let raw = id && sessionStorage.getItem(`epoxygrind-estimate-${id}`);
+
+  if (!raw) {
+    const dataParam = new URLSearchParams(location.search).get('data');
+    if (dataParam) {
+      try {
+        raw = decodeURIComponent(escape(atob(dataParam)));
+      } catch { /* ignore */ }
+    }
+  }
+
+  if (!raw) {
+    loading.hidden = true;
+    error.hidden = false;
+    return;
+  }
+
+  try {
+    const data = JSON.parse(raw);
+    render(data, doc);
+    loading.hidden = true;
+    result.hidden = false;
+    document.title = `Estimate — ${data.projectName || 'Epoxy Grind'}`;
+  } catch {
+    loading.hidden = true;
+    error.hidden = false;
+  }
+}
+
+loadEstimate();
+</script>
+</body>
+</html>
