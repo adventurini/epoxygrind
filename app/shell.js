@@ -163,18 +163,28 @@ function updateSettingsPanel(user) {
   void loadCredits(user);
 }
 
+/**
+ * Called right after an instant sign-in completes, when the session may
+ * still be a beat behind on the shared auth client. A single failed/empty
+ * check used to leave the settings panel stuck on "Sign in to manage your
+ * account" — hiding the verify-email button — forever, since nothing ever
+ * re-checked it. Retries briefly instead of giving up on the first try.
+ */
 export async function refreshDashboardProfile() {
-  let user = null;
-  try {
-    const supabase = await getAuthClient();
-    const { data: { user: current } } = await supabase.auth.getUser();
-    user = current;
-  } catch {
-    return null;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    try {
+      const supabase = await getAuthClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        updateSettingsPanel(user);
+        return user;
+      }
+    } catch {
+      /* retry below */
+    }
+    if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, 800));
   }
-
-  updateSettingsPanel(user);
-  return user;
+  return null;
 }
 
 export async function initDashboard(options = {}) {
