@@ -52,6 +52,7 @@ body.dashboard-page{margin:0;background:var(--dash-bg);color:var(--dash-ink);fon
 .estimate-card-meta{margin:0;color:var(--dash-muted);font-size:13px}
 .estimate-card-date{margin:4px 0 0;color:var(--dash-muted);font-size:12px}
 .estimate-card-price{font-family:var(--ff-d,"Archivo",system-ui,sans-serif);font-weight:800;font-size:15px;white-space:nowrap;color:var(--dash-blue);text-align:right}
+.new-estimate-wrap{max-width:520px;margin:0 auto}
 .dashboard-empty{text-align:center;padding:40px 24px;color:var(--dash-muted)}
 .dashboard-empty h2{color:var(--dash-ink);margin:0 0 8px}
 .dashboard-gate{text-align:center;padding:48px 24px;max-width:480px;margin:80px auto}

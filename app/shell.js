@@ -28,7 +28,7 @@ function navLinksHtml(activeNav) {
   return `
     <a href="/app/" class="${activeNav === 'overview' ? 'active' : ''}">Overview</a>
     <a href="/app/#estimates" class="${activeNav === 'estimates' ? 'active' : ''}">My estimates</a>
-    <a href="/">New estimate</a>
+    <a href="/app/new/" class="${activeNav === 'new' ? 'active' : ''}">New estimate</a>
     <a href="/services/">Contractor services</a>`;
 }
 
