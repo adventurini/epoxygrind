@@ -7,8 +7,22 @@ export async function getAuthClient() {
   if (client) return client;
   if (!initPromise) {
     initPromise = (async () => {
-      const res = await fetch('/api/config');
-      if (!res.ok) throw new Error('Auth is not configured yet.');
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 10_000);
+      let res;
+      try {
+        res = await fetch('/api/config', { signal: ctrl.signal });
+      } catch (err) {
+        initPromise = null;
+        if (err.name === 'AbortError') throw new Error('Auth setup timed out.');
+        throw err;
+      } finally {
+        clearTimeout(timer);
+      }
+      if (!res.ok) {
+        initPromise = null;
+        throw new Error('Auth is not configured yet.');
+      }
       const { supabaseUrl, supabaseAnonKey } = await res.json();
       client = createClient(supabaseUrl, supabaseAnonKey, {
         auth: {
@@ -100,19 +114,26 @@ export async function getAccessToken() {
 
 /** Wait until Supabase session is ready (e.g. after instant sign-in from build). */
 export async function waitForAccessToken({ timeoutMs = 12_000, tokens } = {}) {
+  const deadline = Date.now() + timeoutMs;
+
   if (tokens?.access_token && tokens?.refresh_token) {
     try {
-      const supabase = await getAuthClient();
-      await supabase.auth.setSession({
-        access_token: tokens.access_token,
-        refresh_token: tokens.refresh_token,
-      });
+      const remaining = Math.max(0, deadline - Date.now());
+      await Promise.race([
+        (async () => {
+          const supabase = await getAuthClient();
+          await supabase.auth.setSession({
+            access_token: tokens.access_token,
+            refresh_token: tokens.refresh_token,
+          });
+        })(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('setSession timed out')), remaining)),
+      ]);
     } catch {
-      /* fall through to polling */
+      /* fall through to polling — still bounded by the same deadline below */
     }
   }
 
-  const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     const token = await getAccessToken();
     if (token) return token;
