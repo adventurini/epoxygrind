@@ -106,12 +106,13 @@
 .line-row .amt{font-family:var(--calc-ff-d);font-weight:800;white-space:nowrap;font-size:13px}
 .line-total{display:flex;justify-content:space-between;padding-top:8px;font-family:var(--calc-ff-d);font-weight:900;font-size:16px}
 .label{font-family:var(--calc-ff-m);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--calc-muted);margin:6px 0 4px}
-.previews-block{margin-top:20px}
-.preview-grid{display:flex;justify-content:center}
-.preview-card{width:100%;max-width:420px}
-.preview-card img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;border:1px solid var(--calc-line)}
-.preview-grid .cap,.preview-card .cap{font-family:var(--calc-ff-m);font-size:9px;color:var(--calc-muted);text-align:center;margin-top:4px}
+.est-photo .ba-slider{margin:0;max-width:none}
+.est-photo-generating{position:relative}
+.est-photo-generating img{aspect-ratio:3/2;object-fit:cover;display:block}
+.est-photo-generating .preview-loading{position:absolute;inset:0;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:10px;border:none;background:rgba(11,20,40,.6)}
+.est-photo-generating .preview-loading .cap{color:#fff}
 .preview-card.preview-loading{aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:8px;border:1px solid var(--calc-line);background:var(--calc-bg-2)}
+.preview-card .cap{font-family:var(--calc-ff-m);font-size:9px;color:var(--calc-muted);text-align:center;margin-top:4px}
 .preview-progress-ring{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center}
 .preview-progress-track{stroke:var(--calc-line)}
 .preview-progress-fill{stroke:var(--calc-blue);transition:stroke-dashoffset .2s linear}
@@ -161,7 +162,7 @@
 .preview-progress-label{font-weight:700;color:var(--calc-ink-soft)}
 .preview-progress-remaining{color:var(--calc-muted)}
 .preview-progress-track{height:8px}
-@media (max-width:860px){.est-grid{grid-template-columns:1fr}}
+@media (max-width:860px){.est-grid{grid-template-columns:1fr}.est-photo .ba-slider-frame,.est-photo-generating img{aspect-ratio:4/3}}
 @media (max-width:520px){.row-2,.more-grid{grid-template-columns:1fr}}
 
 .dashboard-page .estimate-doc{border:0;padding:0;background:transparent}

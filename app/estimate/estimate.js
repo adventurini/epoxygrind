@@ -2,8 +2,7 @@ import {
   renderEstimate,
   loadEstimateSession,
   previewsNeedGeneration,
-  updatePreviewsInDom,
-  previewLoadingHtml,
+  renderBeforeAfterPreview,
 } from '/calculator/estimate-view.js';
 import {
   clearPendingEstimate,
@@ -69,9 +68,10 @@ function showEstimate(data) {
 
 /**
  * Generates the single floor preview image after the estimate is already
- * showing. Never blocks display. Uses the same public GET endpoint the
- * shared-link view uses (it generates server-side if missing) rather than
- * an authenticated PATCH — that path depended on the browser's auth client
+ * showing, then swaps the uploaded-photo card into a before/after slider.
+ * Never blocks display. Uses the same public GET endpoint the shared-link
+ * view uses (it generates server-side if missing) rather than an
+ * authenticated PATCH — that path depended on the browser's auth client
  * being ready, and any failure there (e.g. a slow/failed session setup)
  * left this stuck forever with no network activity and no visible error,
  * since it was fired with `void` and nothing ever caught the rejection.
@@ -80,22 +80,19 @@ async function generatePreviewInBackground(data) {
   if (!data?.id || data.id.startsWith('local-')) return;
   if (!previewsNeedGeneration(data)) return;
 
-  const grid = document.getElementById('estimatePreviews');
-  let progress = { finish() {}, destroy() {} };
-  if (grid) {
-    grid.innerHTML = previewLoadingHtml('Generating your floor preview…');
-    progress = createPreviewProgress(grid);
-  }
+  const photoBlock = document.getElementById('estimatePhotoBlock');
+  const progress = photoBlock ? createPreviewProgress(photoBlock) : { finish() {}, destroy() {} };
 
   try {
     const apiData = await loadFromApi(data.id);
-    if (!apiData?.previews?.length) {
+    const previewImage = apiData?.previews?.find((item) => item.id === 'original' && item.image)?.image;
+    if (!previewImage) {
       toast('Could not generate floor preview.');
       return;
     }
     progress.finish();
     currentEstimate = { ...currentEstimate, previews: apiData.previews, previewPaths: apiData.previewPaths || [] };
-    updatePreviewsInDom(currentEstimate.previews);
+    renderBeforeAfterPreview(photoBlock, currentEstimate.originalImage, previewImage);
   } catch (err) {
     toast(err.message || 'Could not generate floor preview.');
   } finally {
@@ -143,7 +140,7 @@ async function shareEstimate() {
 
 function downloadEstimate() {
   if (!doc) return;
-  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Epoxy floor estimate</title><link rel="stylesheet" href="${location.origin}/calculator/calculator.css"></head><body><main class="calc-page"><div class="wrap"><article class="estimate-doc">${doc.innerHTML}</article></div></main></body></html>`;
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Epoxy floor estimate</title><link rel="stylesheet" href="${location.origin}/home.css"><link rel="stylesheet" href="${location.origin}/calculator/calculator.css"></head><body><main class="calc-page"><div class="wrap"><article class="estimate-doc">${doc.innerHTML}</article></div></main></body></html>`;
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
   a.download = `estimate-${Date.now()}.html`;

@@ -1,3 +1,5 @@
+import { initBeforeAfterSlider } from './before-after-slider.js';
+
 export function formatMoney(n) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
 }
@@ -23,8 +25,6 @@ export function previewLoadingHtml(caption) {
   </div>`;
 }
 
-const PREVIEW_PLACEHOLDER_HTML = previewLoadingHtml('Your garage (new floor)');
-
 export function previewsNeedGeneration(data = {}) {
   if (data.previewPaths?.some((item) => item.id === 'original' && item.path)) return false;
   return !(data.previews || []).some((item) => item.id === 'original' && item.image);
@@ -45,11 +45,59 @@ export function estimatePayload(data) {
   };
 }
 
-export function previewHtml(list = []) {
-  return (list || [])
-    .filter((item) => item?.image)
-    .map((preview) => `<div class="preview-card"><img src="${preview.image}" alt="${escapeHtml(preview.label || '')}"><div class="cap">${escapeHtml(preview.label || '')}</div></div>`)
-    .join('');
+/**
+ * Class names here mirror the hero slider's markup (calculator/before-after-slider.js
+ * + home.css): the unclipped base layer is always "ba-before" and the clipped
+ * overlay revealed from the left is always "ba-after", regardless of which
+ * photo is semantically before/after — swap the src, not the classes.
+ */
+export function beforeAfterHtml(beforeImage, afterImage, opts = {}) {
+  const id = opts.id || 'estimateBaSlider';
+  return `
+    <div class="ba-slider est-ba-slider" id="${id}" role="slider" tabindex="0" aria-label="Drag to compare your photo and the new floor" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+      <div class="ba-slider-frame">
+        <img class="ba-img ba-before" src="${afterImage}" alt="New floor preview" draggable="false">
+        <div class="ba-after-wrap">
+          <img class="ba-img ba-after" src="${beforeImage}" alt="Uploaded photo" draggable="false">
+        </div>
+        <span class="ba-chip ba-chip-before">Before</span>
+        <span class="ba-chip ba-chip-after">After</span>
+        <div class="ba-divider">
+          <div class="ba-handle">
+            <span class="ba-handle-visible">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function photoBlockHtml(data) {
+  const { originalImage, previews = [] } = data;
+  const previewImage = previews.find((item) => item.id === 'original' && item.image)?.image;
+
+  if (previewImage) {
+    return `<p class="label">Before &amp; after — drag to compare</p>${beforeAfterHtml(originalImage, previewImage)}`;
+  }
+
+  if (previewsNeedGeneration(data)) {
+    return `<p class="label">Uploaded photo</p>
+      <div class="est-photo-generating">
+        <img src="${originalImage}" alt="Uploaded space">
+        ${previewLoadingHtml('Generating your floor preview…')}
+      </div>`;
+  }
+
+  return `<p class="label">Uploaded photo</p><img src="${originalImage}" alt="Uploaded space">`;
+}
+
+/** Swaps a photo block into the before/after slider once the preview image is ready. */
+export function renderBeforeAfterPreview(container, beforeImage, afterImage) {
+  if (!container) return;
+  container.innerHTML = `<p class="label">Before &amp; after — drag to compare</p>${beforeAfterHtml(beforeImage, afterImage)}`;
+  initBeforeAfterSlider(container.querySelector('.ba-slider'));
 }
 
 function resolveDesign(data, pricing) {
@@ -153,13 +201,6 @@ export function renderEstimate(target, data) {
   ].filter(Boolean).join('');
 
   const lineAmount = (row) => formatMoney(row.exact ?? roundMoney((row.low + row.high) / 2));
-  const previewCards = previewHtml(previews);
-  const previewBlock = previewCards || previewsNeedGeneration(data)
-    ? `<div class="previews-block">
-      <p class="label">Floor preview — your garage with selected coating</p>
-      <div class="preview-grid" id="estimatePreviews">${previewCards || PREVIEW_PLACEHOLDER_HTML}</div>
-    </div>`
-    : '';
 
   target.innerHTML = `
     <header class="est-head">
@@ -172,7 +213,7 @@ export function renderEstimate(target, data) {
     </header>
     ${selectionsBlock(d, pricing, meta?.finish, locationLabel)}
     <div class="est-grid">
-      <div class="est-photo"><p class="label">Uploaded photo</p><img src="${originalImage}" alt="Uploaded space"></div>
+      <div class="est-photo" id="estimatePhotoBlock">${photoBlockHtml(data)}</div>
       <div class="est-summary">
         ${priceBlock(pricing)}
         ${sqFtLine}
@@ -191,11 +232,12 @@ export function renderEstimate(target, data) {
       <div class="line-total"><span>Total</span><span>${formatMoney(priceRange(pricing).rangeLow)} – ${formatMoney(priceRange(pricing).rangeHigh)}</span></div>
       ${pricing.minJobApplied ? '<p class="muted tiny">Local minimum job charge applied.</p>' : ''}
     </div>
-    ${previewBlock}
     <footer class="est-foot">
       <p><strong>Important:</strong> Preliminary estimate only — pricing uses photo analysis and regional market research, not a live contractor bid. Final price confirmed after on-site review.</p>
       <p class="muted">Generated ${new Date(meta.generatedAt).toLocaleString()}${meta.demoMode ? ' · Demo mode' : ''}</p>
     </footer>`;
+
+  initBeforeAfterSlider(target.querySelector('.ba-slider'));
 }
 
 export function storageKey(id) {
@@ -223,7 +265,3 @@ export function loadPreviewContext(id) {
   return raw ? JSON.parse(raw) : null;
 }
 
-export function updatePreviewsInDom(previews) {
-  const grid = document.getElementById('estimatePreviews');
-  if (grid) grid.innerHTML = previewHtml(previews);
-}
