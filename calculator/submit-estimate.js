@@ -60,26 +60,19 @@ async function storeSessionTokens(tokens, timeoutMs = 10_000) {
   }
 }
 
-/** One server call: analyze, price, create account, save, generate previews. */
+/** One server call: analyze, price, create account, save. Preview image generation happens after, separately. */
 export async function generateAndSaveEstimate(form, progress = {}) {
-  const { onPhaseStart = () => {}, onPhaseComplete = () => {} } = progress;
+  const { onPhaseStart = () => {} } = progress;
 
   onPhaseStart('build', 'Analyzing your photo & pricing…');
-  const previewTimer = setTimeout(() => {
-    onPhaseStart('previews', 'Generating floor previews (4 angles)…');
-  }, 25_000);
 
   const result = await fetchJson('/api/estimate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: { phase: 'build', ...form },
-    timeoutMs: 290_000,
+    timeoutMs: 110_000,
   });
 
-  clearTimeout(previewTimer);
-  onPhaseComplete('build');
-  onPhaseStart('previews', 'Finishing floor previews…');
-  onPhaseComplete('previews');
   await storeSessionTokens(result);
   await waitForAccessToken({
     timeoutMs: 15_000,

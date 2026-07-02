@@ -4,7 +4,6 @@ import {
   buildPreviewImages,
   buildSinglePreview,
 } from '../lib/build-estimate.js';
-import { generateAllEstimatePreviews } from '../lib/generate-estimate-preview.js';
 import { createInstantSession } from '../lib/instant-auth.js';
 import { saveEstimateForUser } from '../lib/save-estimate.js';
 import { getSupabase, isSupabaseConfigured } from '../lib/supabase.js';
@@ -15,7 +14,7 @@ export const config = {
       sizeLimit: '15mb',
     },
   },
-  maxDuration: 300,
+  maxDuration: 120,
 };
 
 function slimPreviewContext(previewContext) {
@@ -111,31 +110,9 @@ export default async function handler(req, res) {
         };
       }
 
-      if (saved && estimate?.id) {
-        try {
-          const { data: row, error: rowError } = await supabase
-            .from('estimates')
-            .select('payload')
-            .eq('id', estimate.id)
-            .eq('user_id', session.user.id)
-            .maybeSingle();
-
-          if (rowError) throw rowError;
-          if (row?.payload) {
-            const generated = await generateAllEstimatePreviews(
-              supabase,
-              session.user.id,
-              estimate.id,
-              row,
-            );
-            estimate.previews = generated.previews;
-            estimate.previewPaths = generated.previewPaths;
-          }
-        } catch (previewErr) {
-          console.error('Server preview generation failed:', previewErr.message);
-          estimate.previewError = previewErr.message || 'Preview generation failed.';
-        }
-      }
+      // Preview image generation happens separately (client kicks off a PATCH
+      // to /api/estimates right after this returns) so the estimate itself
+      // shows up as fast as photo analysis + pricing allow.
 
       return res.status(201).json({
         phase: 'build',

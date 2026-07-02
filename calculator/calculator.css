@@ -90,11 +90,13 @@
 .line-total{display:flex;justify-content:space-between;padding-top:8px;font-family:var(--calc-ff-d);font-weight:900;font-size:16px}
 .label{font-family:var(--calc-ff-m);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--calc-muted);margin:6px 0 4px}
 .previews-block{margin-top:20px}
-.preview-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.preview-grid{display:flex;justify-content:center}
+.preview-card{width:100%;max-width:420px}
 .preview-card img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;border:1px solid var(--calc-line)}
 .preview-grid .cap,.preview-card .cap{font-family:var(--calc-ff-m);font-size:9px;color:var(--calc-muted);text-align:center;margin-top:4px}
-.preview-skeleton{aspect-ratio:4/3;border-radius:8px;background:linear-gradient(90deg,var(--calc-bg-2),#fff,var(--calc-bg-2));background-size:200% 100%;animation:shimmer 1.2s infinite}
-@keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.preview-card.preview-loading{aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:8px;border:1px solid var(--calc-line);background:var(--calc-bg-2)}
+.preview-spinner{width:32px;height:32px;border-radius:50%;border:3px solid var(--calc-line);border-top-color:var(--calc-blue);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .est-foot{margin-top:24px;padding-top:16px;border-top:1px solid var(--calc-line);font-size:13px}
 .location-pill{display:inline-block;margin-top:8px;font-size:12px;font-weight:600;color:var(--calc-blue);background:var(--calc-blue-soft);border:1px solid rgba(26,92,214,.25);padding:5px 10px;border-radius:999px}
 .sqft-line{font-size:13px;color:var(--calc-ink-soft);margin:6px 0 0}
@@ -143,7 +145,7 @@
 .preview-progress-remaining{color:var(--calc-muted)}
 .preview-progress-track{height:8px}
 @media (max-width:860px){.est-grid{grid-template-columns:1fr}}
-@media (max-width:520px){.row-2,.more-grid,.preview-grid{grid-template-columns:1fr}}
+@media (max-width:520px){.row-2,.more-grid{grid-template-columns:1fr}}
 
 .dashboard-page .estimate-doc{border:0;padding:0;background:transparent}
 .dashboard-page .result-panel{padding:0}

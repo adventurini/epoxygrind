@@ -6,42 +6,11 @@ export function escapeHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-const PREVIEW_SLOTS = [
-  { id: 'original', label: 'Your garage (new floor)' },
-  { id: 'door', label: 'From garage door' },
-  { id: 'left', label: 'Left corner' },
-  { id: 'right', label: 'Right corner' },
-];
+const PREVIEW_PLACEHOLDER_HTML = `<div class="preview-card preview-loading"><div class="preview-spinner" aria-hidden="true"></div><div class="cap">Your garage (new floor)</div></div>`;
 
-const PREVIEW_PLACEHOLDER_HTML = PREVIEW_SLOTS.map(
-  (slot) => `<div class="preview-card preview-loading"><div class="preview-skeleton"></div><div class="cap">${escapeHtml(slot.label)}</div></div>`,
-).join('');
-
-export const PREVIEW_ANGLE_IDS = PREVIEW_SLOTS.map((slot) => slot.id);
-
-/** Detect missing previews or broken state where every angle reuses the same file. */
 export function previewsNeedGeneration(data = {}) {
-  const paths = data.previewPaths || [];
-  if (paths.length >= PREVIEW_ANGLE_IDS.length) {
-    const byId = new Map(paths.map((item) => [item.id, item.path]));
-    if (PREVIEW_ANGLE_IDS.every((id) => byId.has(id))) {
-      const uniquePaths = new Set(PREVIEW_ANGLE_IDS.map((id) => byId.get(id)).filter(Boolean));
-      return uniquePaths.size < PREVIEW_ANGLE_IDS.length;
-    }
-  }
-
-  return (data.previews || []).length < PREVIEW_ANGLE_IDS.length;
-}
-
-export function angleNeedsGeneration(data = {}, angleId) {
-  if (!previewsNeedGeneration(data)) return false;
-
-  const paths = data.previewPaths || [];
-  const entry = paths.find((item) => item.id === angleId);
-  if (!entry?.path) return true;
-
-  const allPaths = paths.map((item) => item.path).filter(Boolean);
-  return allPaths.length >= 2 && new Set(allPaths).size === 1;
+  if (data.previewPaths?.some((item) => item.id === 'original' && item.path)) return false;
+  return !(data.previews || []).some((item) => item.id === 'original' && item.image);
 }
 
 export function estimatePayload(data) {
@@ -179,7 +148,7 @@ export function renderEstimate(target, data) {
   const previewCards = previewHtml(previews);
   const previewBlock = previewCards || previewsNeedGeneration(data)
     ? `<div class="previews-block">
-      <p class="label">Floor previews — your garage with selected coating</p>
+      <p class="label">Floor preview — your garage with selected coating</p>
       <div class="preview-grid" id="estimatePreviews">${previewCards || PREVIEW_PLACEHOLDER_HTML}</div>
     </div>`
     : '';
@@ -222,49 +191,6 @@ export function renderEstimate(target, data) {
     </footer>`;
 }
 
-export async function fetchSinglePreview(angleId, previewContext) {
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 100000);
-  try {
-    const res = await fetch('/api/estimate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phase: 'preview', angleId, previewContext }),
-      signal: ctrl.signal,
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Preview generation failed');
-    return data.preview;
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-export async function fetchPreviews(previewContext) {
-  const angleIds = ['original', 'door', 'left', 'right'];
-  const previews = [];
-  let heroImage = previewContext.heroImage || previewContext.originalImage;
-  const ctx = { ...previewContext, heroImage };
-
-  for (const angleId of angleIds) {
-    try {
-      const preview = await fetchSinglePreview(angleId, ctx);
-      if (preview?.image) {
-        previews.push({ id: preview.id, label: preview.label, image: preview.image });
-        if (preview.heroImage) {
-          heroImage = preview.heroImage;
-          ctx.heroImage = heroImage;
-        }
-      }
-    } catch (err) {
-      console.error(`Preview ${angleId} failed:`, err.message);
-    }
-  }
-
-  if (!previews.length) throw new Error('Preview generation failed');
-  return previews;
-}
-
 export function storageKey(id) {
   return `epoxygrind-estimate-${id}`;
 }
@@ -293,13 +219,4 @@ export function loadPreviewContext(id) {
 export function updatePreviewsInDom(previews) {
   const grid = document.getElementById('estimatePreviews');
   if (grid) grid.innerHTML = previewHtml(previews);
-}
-
-export function upsertPreviewInDom(preview, previewsSoFar = []) {
-  const merged = [...previewsSoFar];
-  const idx = merged.findIndex((item) => item.id === preview.id);
-  if (idx >= 0) merged[idx] = preview;
-  else merged.push(preview);
-  updatePreviewsInDom(merged);
-  return merged;
 }

@@ -62,13 +62,17 @@ function showEstimate(data) {
   const title = data.analysis?.spaceType || 'Your estimate';
   document.title = `${title} | EpoxyGrind`;
   if (data.previewError) {
-    toast(`Floor previews: ${data.previewError}`);
+    toast(`Floor preview: ${data.previewError}`);
   }
 }
 
-async function maybeRegeneratePreviews(data) {
-  if (!data?.id || data.id.startsWith('local-')) return data;
-  if (!previewsNeedGeneration(data)) return data;
+const PREVIEW_LOADING_HTML = `
+  <div class="preview-card preview-loading"><div class="preview-spinner" aria-hidden="true"></div><div class="cap">Generating your floor preview…</div></div>`;
+
+/** Generates the single floor preview image after the estimate is already showing. Never blocks display. */
+async function generatePreviewInBackground(data) {
+  if (!data?.id || data.id.startsWith('local-')) return;
+  if (!previewsNeedGeneration(data)) return;
 
   const grid = document.getElementById('estimatePreviews');
   if (grid) {
@@ -78,7 +82,7 @@ async function maybeRegeneratePreviews(data) {
   await waitForAccessToken({ timeoutMs: 12_000 });
 
   const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 290_000);
+  const timer = setTimeout(() => ctrl.abort(), 150_000);
   let res;
   try {
     res = await authFetch(`/api/estimates?id=${encodeURIComponent(data.id)}`, {
@@ -88,30 +92,20 @@ async function maybeRegeneratePreviews(data) {
       signal: ctrl.signal,
     });
   } catch (err) {
-    if (err.name === 'AbortError') {
-      toast('Preview generation timed out. Refresh to check again.');
-      return data;
-    }
-    throw err;
+    toast(err.name === 'AbortError' ? 'Preview generation timed out. Refresh to check again.' : 'Could not generate floor preview.');
+    return;
   } finally {
     clearTimeout(timer);
   }
   const payload = await res.json().catch(() => ({}));
   if (!res.ok) {
-    toast(payload.error || 'Could not generate floor previews.');
-    return data;
+    toast(payload.error || 'Could not generate floor preview.');
+    return;
   }
 
-  const next = { ...data, previews: payload.previews || [], previewPaths: payload.previewPaths || [] };
-  updatePreviewsInDom(next.previews);
-  return next;
+  currentEstimate = { ...currentEstimate, previews: payload.previews || [], previewPaths: payload.previewPaths || [] };
+  updatePreviewsInDom(currentEstimate.previews);
 }
-
-const PREVIEW_LOADING_HTML = `
-  <div class="preview-card preview-loading"><div class="preview-skeleton"></div><div class="cap">Generating previews…</div></div>
-  <div class="preview-card preview-loading"><div class="preview-skeleton"></div><div class="cap">Generating previews…</div></div>
-  <div class="preview-card preview-loading"><div class="preview-skeleton"></div><div class="cap">Generating previews…</div></div>
-  <div class="preview-card preview-loading"><div class="preview-skeleton"></div><div class="cap">Generating previews…</div></div>`;
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = 60_000) {
   const ctrl = new AbortController();
@@ -186,12 +180,11 @@ async function runPendingEstimate() {
       '/',
       'Try again',
     );
-  }, 300000);
+  }, 150_000);
 
   try {
     const { estimate } = await generateAndSaveEstimate(form, {
       onPhaseStart: (id, label) => progress.setPhase(id, label),
-      onPhaseComplete: (id) => progress.completePhase(id),
     });
     if (buildTimedOut || !estimate?.id) return;
     clearTimeout(buildDeadline);
@@ -201,16 +194,10 @@ async function runPendingEstimate() {
       : `/app/estimate/?id=${encodeURIComponent(estimate.id)}`);
     estimateId = estimate.id.startsWith('local-') ? null : estimate.id;
 
-    progress.setPhase('load', 'Opening your results…');
-    showEstimate(estimate);
-    if (previewsNeedGeneration(estimate)) {
-      progress.setPhase('previews', 'Generating floor previews…');
-      currentEstimate = await maybeRegeneratePreviews(estimate);
-      progress.completePhase('previews');
-    }
-    progress.completePhase('load');
     progress.finish();
+    showEstimate(estimate);
     void refreshDashboardProfile();
+    void generatePreviewInBackground(estimate);
   } catch (err) {
     clearTimeout(buildDeadline);
     progress.destroy();
@@ -228,9 +215,7 @@ async function loadEstimateById(id) {
   const apiData = await loadFromApi(id);
   if (apiData) {
     showEstimate(apiData);
-    if (previewsNeedGeneration(apiData)) {
-      currentEstimate = await maybeRegeneratePreviews(apiData);
-    }
+    void generatePreviewInBackground(apiData);
     return true;
   }
 
