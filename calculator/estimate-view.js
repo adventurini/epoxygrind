@@ -1,4 +1,5 @@
 import { initBeforeAfterSlider } from './before-after-slider.js';
+import { renderDesignEditor } from './design-editor.js';
 
 export function formatMoney(n) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
@@ -6,6 +7,22 @@ export function formatMoney(n) {
 
 export function escapeHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/**
+ * The vision model occasionally returns spaceType as a raw enum-style
+ * string (e.g. "commercial_or_industrial_space") instead of a natural
+ * phrase. Only reformat strings that actually look like that — snake_case
+ * or all-caps — so a well-formed phrase from the model passes through
+ * untouched.
+ */
+export function humanizeLabel(value) {
+  const str = String(value || '').trim();
+  if (!str) return '';
+  const looksLikeEnum = /_/.test(str) || str === str.toUpperCase();
+  if (!looksLikeEnum) return str;
+  const spaced = str.replace(/_/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+  return spaced.charAt(0).toUpperCase() + spaced.slice(1);
 }
 
 const PROGRESS_RING_CIRCUMFERENCE = 2 * Math.PI * 28;
@@ -74,12 +91,43 @@ export function beforeAfterHtml(beforeImage, afterImage, opts = {}) {
     </div>`;
 }
 
-function photoBlockHtml(data) {
+function designEditorControlsHtml(opts = {}) {
+  if (!opts.allowEdit) return '';
+  return `<div class="design-editor-toggle-row">
+      <button type="button" class="btn btn-o btn-sm" data-role="toggle-design-editor">Change color, finish, or pattern</button>
+    </div>
+    <div data-role="design-editor-mount" hidden></div>`;
+}
+
+function beforeAfterBlockHtml(originalImage, previewImage, opts = {}) {
+  return `<p class="label">Before &amp; after — drag to compare</p>${beforeAfterHtml(originalImage, previewImage)}${designEditorControlsHtml(opts)}`;
+}
+
+/** Wires the "Change color, finish, or pattern" toggle inside a rendered before/after block. */
+function wireDesignEditor(container, opts = {}) {
+  if (!opts.allowEdit || !container) return;
+  const toggleBtn = container.querySelector('[data-role="toggle-design-editor"]');
+  const mount = container.querySelector('[data-role="design-editor-mount"]');
+  if (!toggleBtn || !mount) return;
+
+  let initialized = false;
+  toggleBtn.addEventListener('click', () => {
+    const willShow = mount.hidden;
+    mount.hidden = !willShow;
+    toggleBtn.textContent = willShow ? 'Hide design options' : 'Change color, finish, or pattern';
+    if (willShow && !initialized) {
+      initialized = true;
+      renderDesignEditor(mount, opts.currentDesign || {}, opts.onRegenerateDesign || (() => {}));
+    }
+  });
+}
+
+function photoBlockHtml(data, opts) {
   const { originalImage, previews = [] } = data;
   const previewImage = previews.find((item) => item.id === 'original' && item.image)?.image;
 
   if (previewImage) {
-    return `<p class="label">Before &amp; after — drag to compare</p>${beforeAfterHtml(originalImage, previewImage)}`;
+    return beforeAfterBlockHtml(originalImage, previewImage, opts);
   }
 
   if (previewsNeedGeneration(data)) {
@@ -94,10 +142,11 @@ function photoBlockHtml(data) {
 }
 
 /** Swaps a photo block into the before/after slider once the preview image is ready. */
-export function renderBeforeAfterPreview(container, beforeImage, afterImage) {
+export function renderBeforeAfterPreview(container, beforeImage, afterImage, opts = {}) {
   if (!container) return;
-  container.innerHTML = `<p class="label">Before &amp; after — drag to compare</p>${beforeAfterHtml(beforeImage, afterImage)}`;
+  container.innerHTML = beforeAfterBlockHtml(beforeImage, afterImage, opts);
   initBeforeAfterSlider(container.querySelector('.ba-slider'));
+  wireDesignEditor(container, opts);
 }
 
 function resolveDesign(data, pricing) {
@@ -206,7 +255,7 @@ function detailBlock(label, bodyHtml) {
   return `<section class="est-detail"><p class="label">${escapeHtml(label)}</p>${bodyHtml}</section>`;
 }
 
-export function renderEstimate(target, data) {
+export function renderEstimate(target, data, opts = {}) {
   const { analysis, pricing, meta, previews = [], originalImage, customerName, email, location } = data;
   const d = resolveDesign(data, pricing);
   const projectLocation = location || meta?.location || '';
@@ -232,7 +281,7 @@ export function renderEstimate(target, data) {
   target.innerHTML = `
     <header class="est-head">
       <div>
-        <p class="eyebrow">${escapeHtml(analysis?.spaceType || 'Epoxy floor estimate')}</p>
+        <p class="eyebrow">${escapeHtml(humanizeLabel(analysis?.spaceType) || 'Epoxy floor estimate')}</p>
         <h2>${escapeHtml(title)}</h2>
         ${email ? `<p class="est-contact">${escapeHtml(email)}</p>` : ''}
         ${locationLabel ? `<p class="location-pill">${escapeHtml(locationLabel)}</p>` : ''}
@@ -240,7 +289,7 @@ export function renderEstimate(target, data) {
     </header>
     ${selectionsBlock(d, pricing, meta?.finish, locationLabel)}
     <div class="est-grid">
-      <div class="est-photo" id="estimatePhotoBlock">${photoBlockHtml(data)}</div>
+      <div class="est-photo" id="estimatePhotoBlock">${photoBlockHtml(data, opts)}</div>
       <div class="est-summary">
         ${priceBlock(pricing)}
         ${sqFtLine}
@@ -265,6 +314,7 @@ export function renderEstimate(target, data) {
     </footer>`;
 
   initBeforeAfterSlider(target.querySelector('.ba-slider'));
+  wireDesignEditor(target.querySelector('#estimatePhotoBlock'), opts);
 }
 
 export function storageKey(id) {

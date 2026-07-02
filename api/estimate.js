@@ -8,6 +8,8 @@ import { createInstantSession } from '../lib/instant-auth.js';
 import { saveEstimateForUser } from '../lib/save-estimate.js';
 import { getSupabase, isSupabaseConfigured } from '../lib/supabase.js';
 import { spendCredit } from '../lib/credits.js';
+import { resolveDesign, buildDesignPrompt } from '../lib/finish-design.js';
+import { calculateEstimate } from '../lib/pricing.js';
 
 export const config = {
   api: {
@@ -43,7 +45,60 @@ export default async function handler(req, res) {
             ? 'previews'
             : body.phase === 'preview'
               ? 'preview'
-              : 'pricing';
+              : body.phase === 'redesign'
+                ? 'redesign'
+                : 'pricing';
+
+    if (phase === 'redesign') {
+      // Recompute pricing + regenerate the one preview image for an
+      // *existing* estimate with new finish/pattern/color choices — reuses
+      // the already-known photo, space description, and market rates
+      // instead of re-running photo analysis or re-fetching regional
+      // pricing (those don't depend on the design choice).
+      if (!body.originalImage || typeof body.originalImage !== 'string') {
+        return res.status(400).json({ error: 'Missing original photo.' });
+      }
+      const sqFt = Number(body.sqFt);
+      if (!sqFt || sqFt <= 0) {
+        return res.status(400).json({ error: 'Missing square footage.' });
+      }
+
+      const finishKey = ['solid', 'flake', 'metallic'].includes(body.finish) ? body.finish : 'flake';
+      const coatingType = body.coatingType === 'polyaspartic' ? 'polyaspartic' : 'epoxy';
+      const design = resolveDesign({
+        finish: finishKey,
+        baseColorHex: body.baseColorHex,
+        flakeColorHex: body.flakeColorHex,
+        pattern: body.pattern,
+      });
+
+      const pricing = calculateEstimate(sqFt, finishKey, {
+        design,
+        regionalRates: body.regionalRates && typeof body.regionalRates === 'object' ? body.regionalRates : null,
+        coatingType,
+      });
+
+      const previewContext = {
+        originalImage: body.originalImage,
+        spaceDescription: String(body.spaceDescription || ''),
+        finishLabel: pricing.finishLabel,
+        finish: finishKey,
+        design,
+        designPrompt: buildDesignPrompt(design),
+        baseColorHex: design.baseColorHex,
+        flakeColorHex: design.flakeColorHex,
+      };
+
+      const preview = await buildSinglePreview('original', previewContext);
+
+      return res.status(200).json({
+        phase: 'redesign',
+        pricing,
+        design,
+        preview,
+        previewContext: slimPreviewContext(previewContext),
+      });
+    }
 
     if (phase === 'preview') {
       const angleId = body.angleId;

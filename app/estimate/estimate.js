@@ -3,6 +3,8 @@ import {
   loadEstimateSession,
   previewsNeedGeneration,
   renderBeforeAfterPreview,
+  previewLoadingHtml,
+  humanizeLabel,
 } from '/calculator/estimate-view.js';
 import {
   clearPendingEstimate,
@@ -12,6 +14,7 @@ import {
 import { createEstimateProgress } from '/calculator/estimate-progress.js?v=fix3';
 import { createPreviewProgress } from '/calculator/preview-progress.js?v=fix3';
 import { initDashboard, refreshDashboardProfile } from '/app/shell.js';
+import { authFetch } from '/auth/client.js';
 
 const params = new URLSearchParams(location.search);
 let estimateId = params.get('id');
@@ -28,6 +31,7 @@ const errorMsg = document.getElementById('errorMsg');
 const errorAction = document.getElementById('errorAction');
 
 let currentEstimate = null;
+let allowDesignEdit = false;
 
 function toast(msg) {
   toastEl.textContent = msg;
@@ -53,16 +57,103 @@ function showError(title, message, actionHref = '/app/', actionLabel = 'Go to da
   }
 }
 
+function designSnapshot(data) {
+  return {
+    finish: data.meta?.finish || data.design?.finish || 'flake',
+    coatingType: data.meta?.coatingType || 'epoxy',
+    pattern: data.design?.pattern,
+    baseColorHex: data.design?.baseColorHex,
+    flakeColorHex: data.design?.flakeColorHex,
+  };
+}
+
 function showEstimate(data) {
   currentEstimate = data;
-  renderEstimate(doc, data);
+  renderEstimate(doc, data, {
+    allowEdit: allowDesignEdit,
+    currentDesign: designSnapshot(data),
+    onRegenerateDesign: regenerateDesign,
+  });
   loading.hidden = true;
   error.hidden = true;
   result.hidden = false;
-  const title = data.analysis?.spaceType || 'Your estimate';
+  const title = humanizeLabel(data.analysis?.spaceType) || 'Your estimate';
   document.title = `${title} | EpoxyGrind`;
   if (data.previewError) {
     toast(`Floor preview: ${data.previewError}`);
+  }
+}
+
+/**
+ * Recomputes pricing and regenerates the single preview image for the
+ * current estimate with new finish/pattern/color choices, then persists
+ * it via PATCH if this is a saved estimate. The compute step doesn't
+ * require auth (matches phase:'preview'/'generate'); the toggle that
+ * exposes this is only rendered for the estimate's owner (see
+ * allowDesignEdit in loadEstimate/loadEstimateById).
+ */
+async function regenerateDesign(fields) {
+  if (!currentEstimate) return;
+
+  const photoBlock = document.getElementById('estimatePhotoBlock');
+  if (photoBlock) photoBlock.innerHTML = previewLoadingHtml('Regenerating your floor preview…');
+  const progress = photoBlock ? createPreviewProgress(photoBlock) : { finish() {}, destroy() {} };
+
+  try {
+    const res = await fetchWithTimeout('/api/estimate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        phase: 'redesign',
+        finish: fields.finish,
+        coatingType: fields.coatingType,
+        pattern: fields.pattern,
+        baseColorHex: fields.baseColorHex,
+        flakeColorHex: fields.flakeColorHex,
+        sqFt: currentEstimate.analysis?.estimatedSqFt || currentEstimate.pricing?.sqFt,
+        originalImage: currentEstimate.originalImage,
+        spaceDescription: currentEstimate.previewContext?.spaceDescription || '',
+        regionalRates: currentEstimate.pricing?.market || null,
+      }),
+    }, 130_000);
+
+    const resData = await res.json();
+    if (!res.ok) throw new Error(resData.error || 'Could not regenerate preview.');
+
+    currentEstimate = {
+      ...currentEstimate,
+      pricing: resData.pricing,
+      design: resData.design,
+      previewContext: resData.previewContext,
+      previews: [{ id: resData.preview.id, label: resData.preview.label, image: resData.preview.image }],
+      meta: { ...currentEstimate.meta, finish: fields.finish, coatingType: fields.coatingType },
+    };
+
+    if (estimateId) {
+      // Best-effort persistence — the view above already reflects the
+      // change either way, so a failed/slow save shouldn't block the UI.
+      authFetch(`/api/estimates?id=${encodeURIComponent(estimateId)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          payload: {
+            pricing: currentEstimate.pricing,
+            design: currentEstimate.design,
+            previewContext: currentEstimate.previewContext,
+            meta: currentEstimate.meta,
+          },
+          previews: currentEstimate.previews,
+        }),
+      }).catch(() => {});
+    }
+
+    showEstimate(currentEstimate);
+    toast('Preview updated.');
+  } catch (err) {
+    showEstimate(currentEstimate);
+    toast(err.message || 'Could not regenerate preview.');
+  } finally {
+    progress.destroy();
   }
 }
 
@@ -92,7 +183,11 @@ async function generatePreviewInBackground(data) {
     }
     progress.finish();
     currentEstimate = { ...currentEstimate, previews: apiData.previews, previewPaths: apiData.previewPaths || [] };
-    renderBeforeAfterPreview(photoBlock, currentEstimate.originalImage, previewImage);
+    renderBeforeAfterPreview(photoBlock, currentEstimate.originalImage, previewImage, {
+      allowEdit: allowDesignEdit,
+      currentDesign: designSnapshot(currentEstimate),
+      onRegenerateDesign: regenerateDesign,
+    });
   } catch (err) {
     toast(err.message || 'Could not generate floor preview.');
   } finally {
@@ -189,6 +284,10 @@ async function runPendingEstimate() {
       : `/app/estimate/?id=${encodeURIComponent(estimate.id)}`);
     estimateId = estimate.id.startsWith('local-') ? null : estimate.id;
 
+    // Whoever just built this estimate owns it — no ambiguity here, unlike
+    // loading an existing one where the viewer might be a shared-link guest.
+    allowDesignEdit = true;
+
     progress.finish();
     showEstimate(estimate);
     void refreshDashboardProfile();
@@ -215,18 +314,24 @@ async function runPendingEstimate() {
   }
 }
 
-async function loadEstimateById(id) {
+async function loadEstimateById(id, user) {
   // The GET already generates the preview server-side if it's missing (see
   // api/estimates.js) so this works for anyone with the link, not just an
   // authenticated owner — no separate client-triggered generation needed.
+  // Editing the design is only offered to the actual owner, though — a
+  // shared-link viewer shouldn't see (or be able to trigger) regeneration
+  // controls on someone else's estimate.
   const apiData = await loadFromApi(id);
   if (apiData) {
+    allowDesignEdit = Boolean(user && apiData.userId && user.id === apiData.userId);
     showEstimate(apiData);
     return true;
   }
 
   const sessionData = loadEstimateSession(id);
   if (sessionData) {
+    // Cached client-side from this same browser session — always the owner.
+    allowDesignEdit = true;
     showEstimate(sessionData);
     return true;
   }
@@ -236,7 +341,7 @@ async function loadEstimateById(id) {
 
 async function loadEstimate() {
   // Never send users to the login page from the estimate flow — demo sign-in runs in the background.
-  await initDashboard({ activeNav: 'estimates', requireAuth: false });
+  const user = await initDashboard({ activeNav: 'estimates', requireAuth: false });
 
   if (isPending) {
     await runPendingEstimate();
@@ -245,7 +350,7 @@ async function loadEstimate() {
 
   if (estimateId) {
     try {
-      const loaded = await loadEstimateById(estimateId);
+      const loaded = await loadEstimateById(estimateId, user);
       if (loaded) return;
     } catch (err) {
       showError(
