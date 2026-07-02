@@ -1,6 +1,6 @@
-import { BASE_COLORS, FLAKE_COLORS, getPatternsForFinish } from './design-options.js';
+import { BASE_COLORS, FLAKE_COLORS, COATING_TYPES, getPatternsForFinish } from './design-options.js';
 import { initBeforeAfterSlider } from './before-after-slider.js';
-import { initFormFlow, runGenerate } from './form-flow.js';
+import { savePendingEstimate } from './submit-estimate.js';
 import { track } from './analytics.js';
 
 const $ = (id) => document.getElementById(id);
@@ -33,19 +33,20 @@ function zipValid(v) {
 }
 
 function resolveSqFt() {
-  if ($('exactSqftToggle').checked || selectedSize === 'commercial') {
-    const v = Number($('exactSqft').value);
-    return v > 0 ? v : null;
-  }
+  const exact = Number($('exactSqft').value);
+  if (exact > 0) return exact;
   return SQFT_PRESETS[selectedSize] ?? null;
 }
 
 function payload() {
   return {
     finish: $('finish').value,
+    coatingType: $('coatingType').value,
     baseColorHex: $('baseColorPicker').value,
     flakeColorHex: $('finish').value === 'flake' ? $('flakeColorPicker').value : '',
     pattern: $('pattern').value,
+    customerName: $('customerName').value.trim(),
+    email: $('customerEmail').value.trim(),
     location: $('projectLocation').value.trim(),
     sqFtOverride: resolveSqFt(),
     image: imageDataUrl,
@@ -53,11 +54,35 @@ function payload() {
 }
 
 function canSubmit() {
-  return Boolean(imageDataUrl && resolveSqFt() && zipValid($('projectLocation').value.trim()));
+  return Boolean(
+    imageDataUrl &&
+    resolveSqFt() &&
+    $('customerName').value.trim() &&
+    $('customerEmail').value.trim() &&
+    zipValid($('projectLocation').value.trim()),
+  );
 }
 
 function syncSubmitState() {
   $('runCalc').disabled = !canSubmit();
+  updateSubmitHint();
+}
+
+function updateSubmitHint() {
+  const hint = $('submitHint');
+  if (!hint) return;
+  if (canSubmit()) {
+    hint.hidden = true;
+    return;
+  }
+  const missing = [];
+  if (!imageDataUrl) missing.push('a photo');
+  if (!resolveSqFt()) missing.push('space size');
+  if (!$('customerName').value.trim()) missing.push('your name');
+  if (!$('customerEmail').value.trim()) missing.push('your email');
+  if (!zipValid($('projectLocation').value.trim())) missing.push('ZIP code');
+  hint.hidden = missing.length === 0;
+  hint.textContent = missing.length ? `Add ${missing.join(', ')} to continue` : '';
 }
 
 function syncPatterns() {
@@ -94,34 +119,28 @@ function setColor(picker, hexEl, container, colors, hex) {
   bindSwatches(container, colors, picker, hexEl, (h) => setColor(picker, hexEl, container, colors, h));
 }
 
-function syncExactSqftVisibility() {
-  const show = $('exactSqftToggle').checked;
-  $('exactSqft').hidden = !show;
-}
-
 function selectSize(size) {
   selectedSize = size;
   document.querySelectorAll('.seg-btn').forEach((btn) => {
     btn.classList.toggle('on', btn.dataset.size === size);
   });
-
-  const forceExact = size === 'commercial';
-  $('exactSqftToggle').disabled = forceExact;
-  if (forceExact) $('exactSqftToggle').checked = true;
-
-  syncExactSqftVisibility();
+  $('exactSqft').placeholder = size === 'commercial' ? 'Required for commercial spaces' : 'e.g. 450';
   $('sizeError').hidden = true;
   syncSubmitState();
 }
 
-function submitStep1() {
+function runEstimate() {
   if (!canSubmit()) {
     if (!imageDataUrl) return toast('Add a photo to continue.');
     if (!resolveSqFt()) {
       $('sizeError').hidden = false;
-      $('sizeError').textContent = 'Enter your space size';
+      $('sizeError').textContent = selectedSize === 'commercial'
+        ? 'Enter exact square footage for commercial spaces'
+        : 'Enter your space size';
       return toast('Enter your space size.');
     }
+    if (!$('customerName').value.trim()) return toast('Enter your name.');
+    if (!$('customerEmail').value.trim()) return toast('Enter your email.');
     if (!zipValid($('projectLocation').value.trim())) {
       $('projectLocation').classList.add('invalid');
       $('zipError').hidden = false;
@@ -133,7 +152,8 @@ function submitStep1() {
 
   const form = payload();
   track('step1_submitted', { size: selectedSize, finish: form.finish, pattern: form.pattern, zip: form.location });
-  runGenerate(form);
+  savePendingEstimate(form);
+  window.location.href = '/app/estimate/?pending=1';
 }
 
 async function setPhoto(file) {
@@ -197,6 +217,10 @@ function trackEstimatorView() {
 function init() {
   if (!$('runCalc')) return;
 
+  $('coatingType').innerHTML = COATING_TYPES.map((c) =>
+    `<option value="${c.id}" title="${c.description}">${c.label}</option>`,
+  ).join('');
+
   syncPatterns();
   setColor($('baseColorPicker'), $('baseHex'), $('baseSwatches'), BASE_COLORS, '#4A4F54');
   setColor($('flakeColorPicker'), $('flakeHex'), $('flakeSwatches'), FLAKE_COLORS, '#6B7078');
@@ -226,11 +250,10 @@ function init() {
   document.querySelectorAll('.seg-btn').forEach((btn) => {
     btn.addEventListener('click', () => selectSize(btn.dataset.size));
   });
-  $('exactSqftToggle').addEventListener('change', () => {
-    syncExactSqftVisibility();
+  $('exactSqft').addEventListener('input', () => {
+    $('sizeError').hidden = true;
     syncSubmitState();
   });
-  $('exactSqft').addEventListener('input', syncSubmitState);
 
   $('projectLocation').addEventListener('input', () => {
     $('projectLocation').classList.remove('invalid');
@@ -245,10 +268,13 @@ function init() {
     $('zipError').textContent = 'Enter a 5-digit ZIP code';
   });
 
-  $('runCalc').addEventListener('click', submitStep1);
+  ['customerName', 'customerEmail'].forEach((id) => {
+    $(id).addEventListener('input', syncSubmitState);
+  });
+
+  $('runCalc').addEventListener('click', runEstimate);
 
   initBeforeAfterSlider($('baSlider'));
-  initFormFlow();
   trackEstimatorView();
 }
 

@@ -202,6 +202,15 @@ async function runPendingEstimate() {
     clearTimeout(buildDeadline);
     progress.destroy();
     clearPendingEstimate();
+    if (err.code === 'OUT_OF_CREDITS') {
+      showError(
+        "You're out of free estimates",
+        "You've used all your free estimate credits. Reach out if you'd like more.",
+        '/app/',
+        'Go to dashboard',
+      );
+      return;
+    }
     showError(
       'Could not build your estimate',
       err.message || 'Please try again.',

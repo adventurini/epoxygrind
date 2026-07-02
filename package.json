@@ -5,6 +5,10 @@
   "engines": {
     "node": ">=18"
   },
+  "scripts": {
+    "build": "node scripts/generate-sitemap.js",
+    "sitemap": "node scripts/generate-sitemap.js"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1"
   }

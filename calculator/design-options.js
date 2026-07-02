@@ -31,6 +31,7 @@ const PATTERNS = {
     { id: 'partial', label: 'Partial broadcast' },
     { id: 'granite-look', label: 'Granite look' },
     { id: 'confetti', label: 'Confetti mix' },
+    { id: 'double-broadcast', label: 'Double broadcast (premium)' },
   ],
   metallic: [
     { id: 'swirl', label: 'Classic swirl' },
@@ -43,3 +44,9 @@ const PATTERNS = {
 export function getPatternsForFinish(finish) {
   return PATTERNS[finish] || PATTERNS.flake;
 }
+
+/** Coating chemistry — a layer on top of Finish, applies to any finish/pattern. */
+export const COATING_TYPES = [
+  { id: 'epoxy', label: 'Standard epoxy', description: 'Classic 2-part epoxy coating' },
+  { id: 'polyaspartic', label: 'Polyaspartic (fast-cure)', description: 'Ready in as little as 24 hours, resists UV yellowing' },
+];

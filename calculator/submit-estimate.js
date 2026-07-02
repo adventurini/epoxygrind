@@ -30,7 +30,12 @@ async function fetchJson(url, { method = 'GET', headers = {}, body, timeoutMs = 
       signal: ctrl.signal,
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || `Something went wrong (${res.status}).`);
+    if (!res.ok) {
+      const err = new Error(data.error || `Something went wrong (${res.status}).`);
+      err.code = data.code || null;
+      err.status = res.status;
+      throw err;
+    }
     return data;
   } catch (err) {
     if (err.name === 'AbortError') {
@@ -83,60 +88,6 @@ export async function generateAndSaveEstimate(form, progress = {}) {
   });
 
   clearPendingEstimate();
-  return {
-    estimate: result.estimate,
-    sessionTokens: {
-      access_token: result.access_token,
-      refresh_token: result.refresh_token,
-    },
-  };
-}
-
-/** Anonymous: photo analysis + pricing + the one preview image. No account, no save. */
-export async function generateAnonymousEstimate(form) {
-  return fetchJson('/api/estimate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: { phase: 'generate', ...form },
-    timeoutMs: 110_000,
-  });
-}
-
-/**
- * Turns an anonymously-generated estimate into a saved one once the user
- * provides their name/email. Sends the already-computed bundle back as
- * `precomputed` so the server doesn't redo analysis/pricing/image generation.
- */
-export async function claimEstimate(step1Form, generated, { customerName, email }) {
-  const result = await fetchJson('/api/estimate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: {
-      phase: 'build',
-      ...step1Form,
-      customerName,
-      email,
-      precomputed: {
-        analysis: generated.analysis,
-        pricing: generated.pricing,
-        design: generated.design,
-        previewContext: generated.previewContext,
-        meta: generated.meta,
-        preview: generated.preview,
-      },
-    },
-    timeoutMs: 60_000,
-  });
-
-  await storeSessionTokens(result);
-  await waitForAccessToken({
-    timeoutMs: 15_000,
-    tokens: {
-      access_token: result.access_token,
-      refresh_token: result.refresh_token,
-    },
-  });
-
   return {
     estimate: result.estimate,
     sessionTokens: {

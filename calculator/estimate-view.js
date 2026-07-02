@@ -35,26 +35,6 @@ export function previewHtml(list = []) {
     .join('');
 }
 
-/** Step 2 of the funnel: a priced range + a blurred preview, no line items, no exact number. */
-export function renderTeaser(target, data) {
-  const { pricing, preview, analysis } = data;
-
-  const previewBlock = preview?.image
-    ? `<div class="teaser-img-wrap">
-        <img class="teaser-img" src="${preview.image}" alt="Concept preview of your floor">
-        <div class="teaser-blur-overlay" aria-hidden="true"></div>
-      </div>`
-    : '';
-
-  target.innerHTML = `
-    ${previewBlock}
-    <div class="teaser-price-block">
-      <p class="label">Estimated range</p>
-      <div class="price-range">${formatMoney(pricing.totalLow)} – ${formatMoney(pricing.totalHigh)}</div>
-      <p class="price-note">${escapeHtml(pricing.finishLabel || '')}${analysis?.estimatedSqFt ? ` · ${Math.round(analysis.estimatedSqFt)} sq ft` : ''}</p>
-    </div>`;
-}
-
 function resolveDesign(data, pricing) {
   const full = data.design || {};
   const slim = pricing?.design || {};
@@ -110,19 +90,17 @@ function selectionsBlock(d, pricing, finishKey, locationLabel) {
     </section>`;
 }
 
-function priceBlock(pricing, market, projectLocation) {
+function priceBlock(pricing) {
   const exact = pricing.totalExact ?? roundMoney((pricing.totalLow + pricing.totalHigh) / 2);
-  const marketPriced = pricing.pricingMode === 'ai-market' && market?.summary;
-  const locationLine = market?.marketLocation || projectLocation || '';
+  const rangeLow = roundMoney(exact * 0.9);
+  const rangeHigh = roundMoney(exact * 1.1);
 
   return `
     <div class="price-block">
-      <p class="label">${marketPriced ? 'Exact estimate' : 'Estimated total'}</p>
+      <p class="label">Estimated total</p>
       <div class="price-exact">${formatMoney(exact)}</div>
-      <p class="price-note">${marketPriced
-        ? `Priced for ${escapeHtml(locationLine)} · ${Math.round(pricing.sqFt)} sq ft`
-        : `${escapeHtml(pricing.finishLabel)} · ${Math.round(pricing.sqFt)} sq ft`}</p>
-      ${marketPriced ? `<p class="price-range-note muted tiny">Typical local range ${formatMoney(pricing.totalLow)} – ${formatMoney(pricing.totalHigh)}</p>` : ''}
+      <p class="price-note">${escapeHtml(pricing.finishLabel)} · ${Math.round(pricing.sqFt)} sq ft</p>
+      <p class="price-range-note muted tiny">Typical range ${formatMoney(rangeLow)} – ${formatMoney(rangeHigh)}</p>
     </div>`;
 }
 
@@ -149,13 +127,6 @@ export function renderEstimate(target, data) {
   const sqFtLine = analysis.estimatedSqFt
     ? `<p class="sqft-line"><strong>${Math.round(analysis.estimatedSqFt)} sq ft</strong>${analysis.confidence ? ` · ${escapeHtml(analysis.confidence)} confidence` : ''}${analysis.lengthFt && analysis.widthFt ? ` · ~${analysis.lengthFt}×${analysis.widthFt} ft` : ''}</p>`
     : '';
-
-  const marketHtml = market?.summary ? `
-    <div class="market-box">
-      <p>${escapeHtml(market.summary)}</p>
-      ${market.factors?.length ? `<ul class="market-factors">${market.factors.map((f) => `<li>${escapeHtml(f)}</li>`).join('')}</ul>` : ''}
-      ${market.confidence ? `<p class="muted tiny">Market rate confidence: ${escapeHtml(market.confidence)}</p>` : ''}
-    </div>` : '';
 
   const scopeHtml = [
     analysis.conditionNotes ? `<p>${escapeHtml(analysis.conditionNotes)}</p>` : '',
@@ -186,13 +157,12 @@ export function renderEstimate(target, data) {
     <div class="est-grid">
       <div class="est-photo"><p class="label">Uploaded photo</p><img src="${originalImage}" alt="Uploaded space"></div>
       <div class="est-summary">
-        ${priceBlock(pricing, market, projectLocation)}
+        ${priceBlock(pricing)}
         ${sqFtLine}
         <p class="analysis">${escapeHtml(analysis.analysisSummary || '')}</p>
         <ul class="issues">${(analysis.surfaceIssues || []).map((x) => `<li>${escapeHtml(x)}</li>`).join('')}</ul>
       </div>
     </div>
-    ${detailBlock('Local market pricing', marketHtml)}
     ${detailBlock('Scope & floor condition', scopeHtml)}
     <div class="line-items">
       <p class="label">Line-item breakdown</p>

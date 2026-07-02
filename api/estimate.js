@@ -7,6 +7,7 @@ import {
 import { createInstantSession } from '../lib/instant-auth.js';
 import { saveEstimateForUser } from '../lib/save-estimate.js';
 import { getSupabase, isSupabaseConfigured } from '../lib/supabase.js';
+import { spendCredit } from '../lib/credits.js';
 
 export const config = {
   api: {
@@ -91,10 +92,20 @@ export default async function handler(req, res) {
       }
 
       const supabase = getSupabase();
+      const session = await createInstantSession(supabase, input.email, input.customerName);
+
+      const spend = await spendCredit(supabase, session.user.id);
+      if (!spend.ok) {
+        return res.status(402).json({
+          error: "You've used all your free estimates.",
+          code: 'OUT_OF_CREDITS',
+          access_token: session.access_token,
+          refresh_token: session.refresh_token,
+        });
+      }
 
       const precomputed = body.precomputed && typeof body.precomputed === 'object' ? body.precomputed : null;
       const pricing = precomputed || (await buildPricingEstimate(input));
-      const session = await createInstantSession(supabase, input.email, input.customerName);
 
       const savePayload = {
         analysis: pricing.analysis,
@@ -142,6 +153,7 @@ export default async function handler(req, res) {
       return res.status(201).json({
         phase: 'build',
         estimate,
+        creditsRemaining: spend.creditsRemaining,
         access_token: session.access_token,
         refresh_token: session.refresh_token,
       });
