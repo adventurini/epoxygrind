@@ -1,4 +1,7 @@
 {
+  "rewrites": [
+    { "source": "/go/:id", "destination": "/api/go/:id" }
+  ],
   "headers": [
     {
       "source": "/images/(.*)",
