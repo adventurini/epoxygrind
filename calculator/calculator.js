@@ -1,9 +1,23 @@
 import { BASE_COLORS, FLAKE_COLORS, getPatternsForFinish } from './design-options.js';
-import { savePendingEstimate } from './submit-estimate.js';
+import { initBeforeAfterSlider } from './before-after-slider.js';
+import { initFormFlow, runGenerate } from './form-flow.js';
+import { track } from './analytics.js';
 
 const $ = (id) => document.getElementById(id);
 
+const SQFT_PRESETS = {
+  '1-car': 250,
+  '2-car': 450,
+  '3-car': 650,
+  basement: 800,
+  patio: 300,
+  commercial: null,
+};
+
+const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
+
 let imageDataUrl = '';
+let selectedSize = '2-car';
 
 function toast(msg) {
   const el = $('toast');
@@ -14,9 +28,16 @@ function toast(msg) {
   toast._t = setTimeout(() => { el.hidden = true; }, 3200);
 }
 
-function setStatus(msg) {
-  const el = $('statusLine');
-  if (el) el.textContent = msg || '';
+function zipValid(v) {
+  return /^\d{5}$/.test(v.trim());
+}
+
+function resolveSqFt() {
+  if ($('exactSqftToggle').checked || selectedSize === 'commercial') {
+    const v = Number($('exactSqft').value);
+    return v > 0 ? v : null;
+  }
+  return SQFT_PRESETS[selectedSize] ?? null;
 }
 
 function payload() {
@@ -25,20 +46,14 @@ function payload() {
     baseColorHex: $('baseColorPicker').value,
     flakeColorHex: $('finish').value === 'flake' ? $('flakeColorPicker').value : '',
     pattern: $('pattern').value,
-    customerName: $('customerName').value.trim(),
-    email: $('customerEmail').value.trim(),
     location: $('projectLocation').value.trim(),
+    sqFtOverride: resolveSqFt(),
     image: imageDataUrl,
   };
 }
 
 function canSubmit() {
-  return Boolean(
-    imageDataUrl &&
-    $('customerName').value.trim() &&
-    $('customerEmail').value.trim() &&
-    $('projectLocation').value.trim(),
-  );
+  return Boolean(imageDataUrl && resolveSqFt() && zipValid($('projectLocation').value.trim()));
 }
 
 function syncSubmitState() {
@@ -79,36 +94,104 @@ function setColor(picker, hexEl, container, colors, hex) {
   bindSwatches(container, colors, picker, hexEl, (h) => setColor(picker, hexEl, container, colors, h));
 }
 
-function runEstimate() {
+function syncExactSqftVisibility() {
+  const show = $('exactSqftToggle').checked;
+  $('exactSqft').hidden = !show;
+}
+
+function selectSize(size) {
+  selectedSize = size;
+  document.querySelectorAll('.seg-btn').forEach((btn) => {
+    btn.classList.toggle('on', btn.dataset.size === size);
+  });
+
+  const forceExact = size === 'commercial';
+  $('exactSqftToggle').disabled = forceExact;
+  if (forceExact) $('exactSqftToggle').checked = true;
+
+  syncExactSqftVisibility();
+  $('sizeError').hidden = true;
+  syncSubmitState();
+}
+
+function submitStep1() {
   if (!canSubmit()) {
     if (!imageDataUrl) return toast('Add a photo to continue.');
-    if (!$('customerName').value.trim()) return toast('Enter your name.');
-    if (!$('customerEmail').value.trim()) return toast('Enter your email.');
-    if (!$('projectLocation').value.trim()) return toast('Enter your ZIP code.');
+    if (!resolveSqFt()) {
+      $('sizeError').hidden = false;
+      $('sizeError').textContent = 'Enter your space size';
+      return toast('Enter your space size.');
+    }
+    if (!zipValid($('projectLocation').value.trim())) {
+      $('projectLocation').classList.add('invalid');
+      $('zipError').hidden = false;
+      $('zipError').textContent = 'Enter a 5-digit ZIP code';
+      return toast('Enter a valid ZIP code.');
+    }
     return;
   }
 
-  savePendingEstimate(payload());
-  window.location.href = '/app/estimate/?pending=1';
+  const form = payload();
+  track('step1_submitted', { size: selectedSize, finish: form.finish, pattern: form.pattern, zip: form.location });
+  runGenerate(form);
 }
 
 async function setPhoto(file) {
   if (!file?.type.startsWith('image/')) return toast('Upload an image file.');
+
+  const errEl = $('photoError');
+  errEl.hidden = true;
+
+  if (file.size > MAX_PHOTO_BYTES) {
+    errEl.hidden = false;
+    errEl.textContent = 'That photo is too large — please use one under 15MB.';
+    return;
+  }
+
   const reader = new FileReader();
   const raw = await new Promise((res, rej) => { reader.onload = () => res(reader.result); reader.onerror = rej; reader.readAsDataURL(file); });
   const img = new Image();
-  await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = raw; });
+  try {
+    await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = raw; });
+  } catch {
+    errEl.hidden = false;
+    errEl.textContent = "This photo format isn't supported in this browser — try JPEG/PNG, or take a new photo.";
+    return;
+  }
+
   const scale = Math.min(1, 960 / Math.max(img.width, img.height));
   const canvas = document.createElement('canvas');
   canvas.width = Math.round(img.width * scale);
   canvas.height = Math.round(img.height * scale);
   canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
   imageDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+
   $('previewImg').src = imageDataUrl;
+  $('uploadFilename').textContent = file.name || '';
   $('uploadEmpty').hidden = true;
   $('uploadPreview').hidden = false;
-  $('runCalc').disabled = false;
   syncSubmitState();
+  track('photo_uploaded', { sizeBytes: file.size });
+}
+
+function trackEstimatorView() {
+  const hero = $('calculator');
+  if (!hero) return;
+  if (!('IntersectionObserver' in window)) {
+    track('estimator_view');
+    return;
+  }
+  let fired = false;
+  const io = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting && !fired) {
+        fired = true;
+        track('estimator_view');
+        io.disconnect();
+      }
+    }
+  }, { threshold: 0.3 });
+  io.observe(hero);
 }
 
 function init() {
@@ -117,6 +200,7 @@ function init() {
   syncPatterns();
   setColor($('baseColorPicker'), $('baseHex'), $('baseSwatches'), BASE_COLORS, '#4A4F54');
   setColor($('flakeColorPicker'), $('flakeHex'), $('flakeSwatches'), FLAKE_COLORS, '#6B7078');
+  selectSize(selectedSize);
   syncSubmitState();
 
   $('finish').addEventListener('change', syncPatterns);
@@ -139,10 +223,33 @@ function init() {
   zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
   zone.addEventListener('drop', (e) => { e.preventDefault(); zone.classList.remove('drag'); setPhoto(e.dataTransfer.files[0]); });
 
-  $('runCalc').addEventListener('click', runEstimate);
-  ['customerName', 'customerEmail', 'projectLocation'].forEach((id) => {
-    $(id).addEventListener('input', syncSubmitState);
+  document.querySelectorAll('.seg-btn').forEach((btn) => {
+    btn.addEventListener('click', () => selectSize(btn.dataset.size));
   });
+  $('exactSqftToggle').addEventListener('change', () => {
+    syncExactSqftVisibility();
+    syncSubmitState();
+  });
+  $('exactSqft').addEventListener('input', syncSubmitState);
+
+  $('projectLocation').addEventListener('input', () => {
+    $('projectLocation').classList.remove('invalid');
+    $('zipError').hidden = true;
+    syncSubmitState();
+  });
+  $('projectLocation').addEventListener('blur', () => {
+    const v = $('projectLocation').value.trim();
+    if (!v || zipValid(v)) return;
+    $('projectLocation').classList.add('invalid');
+    $('zipError').hidden = false;
+    $('zipError').textContent = 'Enter a 5-digit ZIP code';
+  });
+
+  $('runCalc').addEventListener('click', submitStep1);
+
+  initBeforeAfterSlider($('baSlider'));
+  initFormFlow();
+  trackEstimatorView();
 }
 
 init();

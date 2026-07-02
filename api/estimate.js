@@ -36,11 +36,13 @@ export default async function handler(req, res) {
     const phase =
       body.phase === 'build'
         ? 'build'
-        : body.phase === 'previews'
-          ? 'previews'
-          : body.phase === 'preview'
-            ? 'preview'
-            : 'pricing';
+        : body.phase === 'generate'
+          ? 'generate'
+          : body.phase === 'previews'
+            ? 'previews'
+            : body.phase === 'preview'
+              ? 'preview'
+              : 'pricing';
 
     if (phase === 'preview') {
       const angleId = body.angleId;
@@ -61,6 +63,25 @@ export default async function handler(req, res) {
 
     const input = parseEstimateInput(body);
 
+    if (phase === 'generate') {
+      // Anonymous: photo analysis + pricing + the one preview image, no
+      // Supabase writes at all. The client holds this until (if) the user
+      // unlocks the full result with their email, at which point it's sent
+      // back as `precomputed` to phase:'build' rather than recomputed.
+      const pricing = await buildPricingEstimate(input);
+      const preview = await buildSinglePreview('original', pricing.previewContext);
+
+      return res.status(200).json({
+        phase: 'generate',
+        analysis: pricing.analysis,
+        pricing: pricing.pricing,
+        design: pricing.design,
+        previewContext: slimPreviewContext(pricing.previewContext),
+        meta: pricing.meta,
+        preview,
+      });
+    }
+
     if (phase === 'build') {
       if (!isSupabaseConfigured()) {
         return res.status(503).json({ error: 'Saving is not configured yet.' });
@@ -70,16 +91,20 @@ export default async function handler(req, res) {
       }
 
       const supabase = getSupabase();
-      const pricing = await buildPricingEstimate(input);
+
+      const precomputed = body.precomputed && typeof body.precomputed === 'object' ? body.precomputed : null;
+      const pricing = precomputed || (await buildPricingEstimate(input));
       const session = await createInstantSession(supabase, input.email, input.customerName);
 
       const savePayload = {
         analysis: pricing.analysis,
         pricing: pricing.pricing,
         design: pricing.design,
-        meta: pricing.meta,
+        meta: { ...pricing.meta, customerName: input.customerName, email: input.email, location: input.location },
         previewContext: slimPreviewContext(pricing.previewContext),
-        previews: [],
+        previews: precomputed?.preview
+          ? [{ id: precomputed.preview.id, label: precomputed.preview.label, image: precomputed.preview.image }]
+          : [],
         originalImage: input.image,
         customerName: input.customerName,
         email: input.email,
@@ -110,9 +135,9 @@ export default async function handler(req, res) {
         };
       }
 
-      // Preview image generation happens separately (client kicks off a PATCH
-      // to /api/estimates right after this returns) so the estimate itself
-      // shows up as fast as photo analysis + pricing allow.
+      // If `precomputed` wasn't supplied (e.g. a direct/legacy call), the
+      // preview image hasn't been generated yet — the client kicks off a
+      // PATCH to /api/estimates right after this returns to fill it in.
 
       return res.status(201).json({
         phase: 'build',

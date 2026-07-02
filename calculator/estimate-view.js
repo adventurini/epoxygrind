@@ -35,6 +35,26 @@ export function previewHtml(list = []) {
     .join('');
 }
 
+/** Step 2 of the funnel: a priced range + a blurred preview, no line items, no exact number. */
+export function renderTeaser(target, data) {
+  const { pricing, preview, analysis } = data;
+
+  const previewBlock = preview?.image
+    ? `<div class="teaser-img-wrap">
+        <img class="teaser-img" src="${preview.image}" alt="Concept preview of your floor">
+        <div class="teaser-blur-overlay" aria-hidden="true"></div>
+      </div>`
+    : '';
+
+  target.innerHTML = `
+    ${previewBlock}
+    <div class="teaser-price-block">
+      <p class="label">Estimated range</p>
+      <div class="price-range">${formatMoney(pricing.totalLow)} – ${formatMoney(pricing.totalHigh)}</div>
+      <p class="price-note">${escapeHtml(pricing.finishLabel || '')}${analysis?.estimatedSqFt ? ` · ${Math.round(analysis.estimatedSqFt)} sq ft` : ''}</p>
+    </div>`;
+}
+
 function resolveDesign(data, pricing) {
   const full = data.design || {};
   const slim = pricing?.design || {};
