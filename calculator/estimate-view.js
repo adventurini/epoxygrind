@@ -90,17 +90,19 @@ function selectionsBlock(d, pricing, finishKey, locationLabel) {
     </section>`;
 }
 
-function priceBlock(pricing) {
+function priceRange(pricing) {
   const exact = pricing.totalExact ?? roundMoney((pricing.totalLow + pricing.totalHigh) / 2);
-  const rangeLow = roundMoney(exact * 0.9);
-  const rangeHigh = roundMoney(exact * 1.1);
+  return { rangeLow: roundMoney(exact * 0.9), rangeHigh: roundMoney(exact * 1.1) };
+}
+
+function priceBlock(pricing) {
+  const { rangeLow, rangeHigh } = priceRange(pricing);
 
   return `
     <div class="price-block">
       <p class="label">Estimated total</p>
-      <div class="price-exact">${formatMoney(exact)}</div>
+      <div class="price-exact">${formatMoney(rangeLow)} – ${formatMoney(rangeHigh)}</div>
       <p class="price-note">${escapeHtml(pricing.finishLabel)} · ${Math.round(pricing.sqFt)} sq ft</p>
-      <p class="price-range-note muted tiny">Typical range ${formatMoney(rangeLow)} – ${formatMoney(rangeHigh)}</p>
     </div>`;
 }
 
@@ -119,10 +121,8 @@ export function renderEstimate(target, data) {
   const projectLocation = location || meta?.location || '';
   const market = pricing?.market;
   const locationLabel = market?.marketLocation || projectLocation;
-  const contactBits = [email].filter(Boolean);
-  if (customerName && !contactBits.some((part) => part.includes('@'))) {
-    contactBits.unshift(customerName);
-  }
+  const firstName = (customerName || '').trim().split(/\s+/)[0];
+  const title = firstName ? `${firstName}'s Epoxy Estimate` : 'Your Epoxy Estimate';
 
   const sqFtLine = analysis.estimatedSqFt
     ? `<p class="sqft-line"><strong>${Math.round(analysis.estimatedSqFt)} sq ft</strong>${analysis.confidence ? ` · ${escapeHtml(analysis.confidence)} confidence` : ''}${analysis.lengthFt && analysis.widthFt ? ` · ~${analysis.lengthFt}×${analysis.widthFt} ft` : ''}</p>`
@@ -147,9 +147,9 @@ export function renderEstimate(target, data) {
   target.innerHTML = `
     <header class="est-head">
       <div>
-        <p class="eyebrow">Epoxy floor estimate</p>
-        <h2>${escapeHtml(analysis?.spaceType || 'Garage floor project')}</h2>
-        ${contactBits.length ? `<p class="est-contact">${escapeHtml(contactBits.join(' · '))}</p>` : ''}
+        <p class="eyebrow">${escapeHtml(analysis?.spaceType || 'Epoxy floor estimate')}</p>
+        <h2>${escapeHtml(title)}</h2>
+        ${email ? `<p class="est-contact">${escapeHtml(email)}</p>` : ''}
         ${locationLabel ? `<p class="location-pill">${escapeHtml(locationLabel)}</p>` : ''}
       </div>
     </header>
@@ -171,7 +171,7 @@ export function renderEstimate(target, data) {
           <div><div class="name">${escapeHtml(row.label)}</div><div class="note">${escapeHtml(row.note)}</div></div>
           <div class="amt">${lineAmount(row)}</div>
         </div>`).join('')}
-      <div class="line-total"><span>Total</span><span>${formatMoney(pricing.totalExact ?? roundMoney((pricing.totalLow + pricing.totalHigh) / 2))}</span></div>
+      <div class="line-total"><span>Total</span><span>${formatMoney(priceRange(pricing).rangeLow)} – ${formatMoney(priceRange(pricing).rangeHigh)}</span></div>
       ${pricing.minJobApplied ? '<p class="muted tiny">Local minimum job charge applied.</p>' : ''}
     </div>
     ${previewBlock}

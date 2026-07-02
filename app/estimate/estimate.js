@@ -11,7 +11,6 @@ import {
 } from '/calculator/submit-estimate.js?v=fix3';
 import { createEstimateProgress } from '/calculator/estimate-progress.js?v=fix3';
 import { initDashboard, refreshDashboardProfile } from '/app/shell.js';
-import { authFetch, waitForAccessToken } from '/auth/client.js';
 
 const params = new URLSearchParams(location.search);
 let estimateId = params.get('id');
@@ -69,7 +68,15 @@ function showEstimate(data) {
 const PREVIEW_LOADING_HTML = `
   <div class="preview-card preview-loading"><div class="preview-spinner" aria-hidden="true"></div><div class="cap">Generating your floor preview…</div></div>`;
 
-/** Generates the single floor preview image after the estimate is already showing. Never blocks display. */
+/**
+ * Generates the single floor preview image after the estimate is already
+ * showing. Never blocks display. Uses the same public GET endpoint the
+ * shared-link view uses (it generates server-side if missing) rather than
+ * an authenticated PATCH — that path depended on the browser's auth client
+ * being ready, and any failure there (e.g. a slow/failed session setup)
+ * left this stuck forever with no network activity and no visible error,
+ * since it was fired with `void` and nothing ever caught the rejection.
+ */
 async function generatePreviewInBackground(data) {
   if (!data?.id || data.id.startsWith('local-')) return;
   if (!previewsNeedGeneration(data)) return;
@@ -79,32 +86,17 @@ async function generatePreviewInBackground(data) {
     grid.innerHTML = PREVIEW_LOADING_HTML;
   }
 
-  await waitForAccessToken({ timeoutMs: 12_000 });
-
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 150_000);
-  let res;
   try {
-    res = await authFetch(`/api/estimates?id=${encodeURIComponent(data.id)}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ generateAllPreviews: true }),
-      signal: ctrl.signal,
-    });
+    const apiData = await loadFromApi(data.id);
+    if (!apiData?.previews?.length) {
+      toast('Could not generate floor preview.');
+      return;
+    }
+    currentEstimate = { ...currentEstimate, previews: apiData.previews, previewPaths: apiData.previewPaths || [] };
+    updatePreviewsInDom(currentEstimate.previews);
   } catch (err) {
-    toast(err.name === 'AbortError' ? 'Preview generation timed out. Refresh to check again.' : 'Could not generate floor preview.');
-    return;
-  } finally {
-    clearTimeout(timer);
+    toast(err.message || 'Could not generate floor preview.');
   }
-  const payload = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    toast(payload.error || 'Could not generate floor preview.');
-    return;
-  }
-
-  currentEstimate = { ...currentEstimate, previews: payload.previews || [], previewPaths: payload.previewPaths || [] };
-  updatePreviewsInDom(currentEstimate.previews);
 }
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = 60_000) {

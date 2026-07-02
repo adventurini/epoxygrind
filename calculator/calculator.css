@@ -76,9 +76,10 @@
 .result-panel{padding:32px 0 48px}
 .result-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
 .estimate-doc{background:#fff;border:1px solid var(--calc-line);border-radius:14px;padding:28px 24px}
-.est-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px;padding-bottom:0;border-bottom:0}
-.est-head h2{font-size:24px;margin:0;font-family:var(--calc-ff-d);font-weight:800}
-.est-contact{margin:6px 0 0;font-size:14px;color:var(--calc-muted)}
+.est-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--calc-line)}
+.est-head .eyebrow{margin:0 0 6px}
+.est-head h2{font-size:26px;margin:0;font-family:var(--calc-ff-d);font-weight:800;letter-spacing:-.01em}
+.est-contact{margin:8px 0 0;font-size:14px;color:var(--calc-muted)}
 .price-exact{font-family:var(--calc-ff-d);font-weight:900;font-size:32px;letter-spacing:-.03em;color:var(--calc-ink)}
 .price-range-note{margin:6px 0 0}
 .price-block{margin-bottom:8px}
