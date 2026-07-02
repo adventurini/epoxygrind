@@ -3,5 +3,6 @@ Allow: /
 Disallow: /app/
 Disallow: /api/
 Disallow: /auth/callback/
+Disallow: /go/
 
 Sitemap: https://epoxygrind.vercel.app/sitemap.xml

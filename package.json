@@ -6,7 +6,8 @@
     "node": ">=18"
   },
   "scripts": {
-    "sitemap": "node scripts/generate-sitemap.js"
+    "sitemap": "node scripts/generate-sitemap.js",
+    "check-product-links": "node scripts/check-product-links.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1"
