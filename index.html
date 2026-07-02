@@ -95,10 +95,11 @@
               <p class="upload-hint">JPG or PNG, up to 15MB</p>
             </div>
             <div class="upload-preview" id="uploadPreview" hidden>
-              <img id="previewImg" alt="Uploaded space">
-              <div class="upload-meta">
-                <span class="upload-filename" id="uploadFilename"></span>
-                <button type="button" class="text-btn" id="changePhoto">Replace photo</button>
+              <div class="upload-preview-frame">
+                <img id="previewImg" alt="Uploaded space">
+                <button type="button" class="upload-replace-btn" id="changePhoto" aria-label="Replace photo" title="Replace photo">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><polyline points="21 3 21 9 15 9"></polyline></svg>
+                </button>
               </div>
             </div>
           </div>

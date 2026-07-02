@@ -160,6 +160,32 @@ function priceRange(pricing) {
   return { rangeLow: roundMoney(exact * 0.9), rangeHigh: roundMoney(exact * 1.1) };
 }
 
+/**
+ * Splits the displayed total range across line items in proportion to each
+ * item's exact amount, so the rows always sum to exactly the Total shown
+ * below them — the pricing engine's own row.low/row.high can't be used
+ * directly here since regional AI-researched pricing can override
+ * totalExact independently of the deterministic per-row rate math. The
+ * last row absorbs any rounding remainder so the sums are always exact.
+ */
+function lineItemRanges(pricing) {
+  const { rangeLow, rangeHigh } = priceRange(pricing);
+  const items = pricing.lineItems || [];
+  const sumExact = items.reduce((sum, row) => sum + (row.exact ?? 0), 0) || 1;
+
+  let allocatedLow = 0;
+  let allocatedHigh = 0;
+  return items.map((row, i) => {
+    const isLast = i === items.length - 1;
+    const share = (row.exact ?? 0) / sumExact;
+    const low = isLast ? rangeLow - allocatedLow : roundMoney(rangeLow * share);
+    const high = isLast ? rangeHigh - allocatedHigh : roundMoney(rangeHigh * share);
+    allocatedLow += low;
+    allocatedHigh += high;
+    return { low, high };
+  });
+}
+
 function priceBlock(pricing) {
   const { rangeLow, rangeHigh } = priceRange(pricing);
 
@@ -200,7 +226,8 @@ export function renderEstimate(target, data) {
     analysis.dimensionsNote ? `<p class="muted tiny">${escapeHtml(analysis.dimensionsNote)}</p>` : '',
   ].filter(Boolean).join('');
 
-  const lineAmount = (row) => formatMoney(row.exact ?? roundMoney((row.low + row.high) / 2));
+  const lineRanges = lineItemRanges(pricing);
+  const lineAmount = (i) => `${formatMoney(lineRanges[i].low)} – ${formatMoney(lineRanges[i].high)}`;
 
   target.innerHTML = `
     <header class="est-head">
@@ -224,10 +251,10 @@ export function renderEstimate(target, data) {
     ${detailBlock('Scope & floor condition', scopeHtml)}
     <div class="line-items">
       <p class="label">Line-item breakdown</p>
-      ${pricing.lineItems.map((row) => `
+      ${pricing.lineItems.map((row, i) => `
         <div class="line-row">
           <div><div class="name">${escapeHtml(row.label)}</div><div class="note">${escapeHtml(row.note)}</div></div>
-          <div class="amt">${lineAmount(row)}</div>
+          <div class="amt">${lineAmount(i)}</div>
         </div>`).join('')}
       <div class="line-total"><span>Total</span><span>${formatMoney(priceRange(pricing).rangeLow)} – ${formatMoney(priceRange(pricing).rangeHigh)}</span></div>
       ${pricing.minJobApplied ? '<p class="muted tiny">Local minimum job charge applied.</p>' : ''}

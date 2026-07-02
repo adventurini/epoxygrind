@@ -187,7 +187,6 @@ async function setPhoto(file) {
   imageDataUrl = canvas.toDataURL('image/jpeg', 0.75);
 
   $('previewImg').src = imageDataUrl;
-  $('uploadFilename').textContent = file.name || '';
   $('uploadEmpty').hidden = true;
   $('uploadPreview').hidden = false;
   syncSubmitState();
