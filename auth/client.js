@@ -3,6 +3,18 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.1';
 let client;
 let initPromise;
 
+/**
+ * supabase-js auth calls (getUser() especially) can occasionally hang on
+ * their underlying network round-trip with no way to escape — bound any of
+ * them with this rather than awaiting directly.
+ */
+export function withAuthTimeout(promise, timeoutMs = 6000, label = 'Auth request') {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error(`${label} timed out`)), timeoutMs)),
+  ]);
+}
+
 export async function getAuthClient() {
   if (client) return client;
   if (!initPromise) {
@@ -108,8 +120,12 @@ export async function signInWithMagicLink(email, metadata = {}, nextPath) {
 
 export async function getAccessToken() {
   const supabase = await getAuthClient();
-  const { data: { session } } = await supabase.auth.getSession();
-  return session?.access_token || null;
+  try {
+    const { data: { session } } = await withAuthTimeout(supabase.auth.getSession(), 5000, 'getSession');
+    return session?.access_token || null;
+  } catch {
+    return null;
+  }
 }
 
 /** Wait until Supabase session is ready (e.g. after instant sign-in from build). */
@@ -157,7 +173,7 @@ export async function signOut() {
 
 export async function requestEmailVerification(nextPath) {
   const supabase = await getAuthClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await withAuthTimeout(supabase.auth.getUser(), 6000, 'getUser');
   if (!user?.email) throw new Error('Sign in to verify your email.');
   if (isEmailVerified(user)) return { alreadyVerified: true, email: user.email };
 
@@ -192,7 +208,7 @@ export async function markEmailVerifiedFromCallback() {
   if (!token) return;
 
   const supabase = await getAuthClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await withAuthTimeout(supabase.auth.getUser(), 6000, 'getUser');
   if (!user?.email_confirmed_at || isEmailVerified(user)) return;
 
   await fetch('/api/auth/mark-email-verified', {

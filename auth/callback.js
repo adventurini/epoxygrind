@@ -1,4 +1,4 @@
-import { getAuthClient, markEmailVerifiedFromCallback } from './client.js';
+import { getAuthClient, markEmailVerifiedFromCallback, withAuthTimeout } from './client.js';
 
 const params = new URLSearchParams(window.location.search);
 const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
@@ -25,8 +25,13 @@ if (errorDesc) {
       window.location.replace(next);
     };
 
-    const { data: { session }, error } = await supabase.auth.getSession();
-    if (error) throw error;
+    let session = null;
+    try {
+      ({ data: { session } } = await withAuthTimeout(supabase.auth.getSession(), 6000, 'getSession'));
+    } catch {
+      /* fall through to the auth-state-change listener + hard timeout below */
+    }
+
     if (session) {
       await finish();
     } else {

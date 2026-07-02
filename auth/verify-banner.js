@@ -1,4 +1,4 @@
-import { getAuthClient, requestEmailVerification, isEmailVerified } from './client.js';
+import { getAuthClient, requestEmailVerification, isEmailVerified, withAuthTimeout } from './client.js';
 
 async function mountVerifyBanner() {
   const banner = document.getElementById('verifyBanner');
@@ -15,7 +15,12 @@ async function mountVerifyBanner() {
   }
 
   async function refresh() {
-    const { data: { user } } = await supabase.auth.getUser();
+    let user = null;
+    try {
+      ({ data: { user } } = await withAuthTimeout(supabase.auth.getUser(), 5000, 'getUser'));
+    } catch {
+      /* leave banner hidden if we can't confirm the user in time */
+    }
     banner.hidden = !user || isEmailVerified(user);
     if (msg && banner.hidden) {
       msg.hidden = true;

@@ -1,4 +1,4 @@
-import { getAuthClient, requestEmailVerification, signOut, isEmailVerified } from '/auth/client.js';
+import { getAuthClient, requestEmailVerification, signOut, isEmailVerified, withAuthTimeout } from '/auth/client.js';
 
 const COG_ICON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>`;
 
@@ -174,15 +174,13 @@ export async function refreshDashboardProfile() {
   for (let attempt = 0; attempt < 4; attempt++) {
     try {
       const supabase = await getAuthClient();
-      const { data: { user }, error } = await supabase.auth.getUser();
-      console.log('[refreshDashboardProfile] attempt', attempt, 'user:', user?.email, 'error:', error?.message);
+      const { data: { user } } = await withAuthTimeout(supabase.auth.getUser(), 4000, 'getUser');
       if (user) {
         updateSettingsPanel(user);
         return user;
       }
-    } catch (err) {
-      console.log('[refreshDashboardProfile] attempt', attempt, 'threw:', err.message);
-      /* retry below */
+    } catch {
+      /* retry below — bounded so one hung getUser() call can't stall this forever */
     }
     if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, 800));
   }
@@ -198,7 +196,7 @@ export async function initDashboard(options = {}) {
   let user = null;
   try {
     const supabase = await getAuthClient();
-    const { data: { user: current } } = await supabase.auth.getUser();
+    const { data: { user: current } } = await withAuthTimeout(supabase.auth.getUser(), 5000, 'getUser');
     user = current;
     if (!user && requireAuth) {
       window.location.href = `/login/?next=${encodeURIComponent(window.location.pathname + window.location.search)}`;
