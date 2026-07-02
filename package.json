@@ -6,7 +6,6 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "node scripts/generate-sitemap.js",
     "sitemap": "node scripts/generate-sitemap.js"
   },
   "dependencies": {
