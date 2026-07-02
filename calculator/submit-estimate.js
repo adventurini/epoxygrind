@@ -42,14 +42,19 @@ async function fetchJson(url, { method = 'GET', headers = {}, body, timeoutMs = 
   }
 }
 
-async function storeSessionTokens(tokens) {
+async function storeSessionTokens(tokens, timeoutMs = 10_000) {
   if (!tokens?.access_token || !tokens?.refresh_token) return;
   try {
-    const supabase = await getAuthClient();
-    await supabase.auth.setSession({
-      access_token: tokens.access_token,
-      refresh_token: tokens.refresh_token,
-    });
+    await Promise.race([
+      (async () => {
+        const supabase = await getAuthClient();
+        await supabase.auth.setSession({
+          access_token: tokens.access_token,
+          refresh_token: tokens.refresh_token,
+        });
+      })(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('setSession timed out')), timeoutMs)),
+    ]);
   } catch {
     /* optional — estimate is already saved */
   }
