@@ -174,12 +174,14 @@ export async function refreshDashboardProfile() {
   for (let attempt = 0; attempt < 4; attempt++) {
     try {
       const supabase = await getAuthClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user }, error } = await supabase.auth.getUser();
+      console.debug('[refreshDashboardProfile] attempt', attempt, 'user:', user?.email, 'error:', error?.message);
       if (user) {
         updateSettingsPanel(user);
         return user;
       }
-    } catch {
+    } catch (err) {
+      console.debug('[refreshDashboardProfile] attempt', attempt, 'threw:', err.message);
       /* retry below */
     }
     if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, 800));
