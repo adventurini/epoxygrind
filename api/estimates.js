@@ -1,6 +1,7 @@
 import { getUserFromRequest } from '../lib/auth-request.js';
 import { createInstantSession } from '../lib/instant-auth.js';
 import { generateAllEstimatePreviews, generateEstimatePreview } from '../lib/generate-estimate-preview.js';
+import { previewsNeedGeneration } from '../calculator/estimate-view.js';
 import {
   estimateSummary,
   hydrateEstimateImages,
@@ -63,6 +64,19 @@ export default async function handler(req, res) {
       try {
         const row = await loadEstimateById(supabase, id);
         if (!row) return res.status(404).json({ error: 'Estimate not found.' });
+
+        // Generate here (not just via the owner's authenticated PATCH) so a
+        // shared link works for anyone viewing it — a spouse or contractor
+        // opening the link has no session, and would otherwise be stuck on
+        // a spinner that can never complete (the PATCH path 401s for them).
+        if (previewsNeedGeneration(row.payload)) {
+          try {
+            const generated = await generateAllEstimatePreviews(supabase, row.user_id, id, row);
+            row.payload = { ...row.payload, previews: generated.previews, previewPaths: generated.previewPaths };
+          } catch (previewErr) {
+            console.error('On-demand preview generation failed:', previewErr.message);
+          }
+        }
 
         const previewPaths =
           row.payload?.previewPaths?.length > 0

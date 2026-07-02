@@ -124,7 +124,7 @@ function selectSize(size) {
   document.querySelectorAll('.seg-btn').forEach((btn) => {
     btn.classList.toggle('on', btn.dataset.size === size);
   });
-  $('exactSqft').placeholder = size === 'commercial' ? 'Required for commercial spaces' : 'e.g. 450';
+  $('exactSqft').placeholder = size === 'commercial' ? 'Required for commercial spaces' : 'e.g. 450 (optional)';
   $('sizeError').hidden = true;
   syncSubmitState();
 }

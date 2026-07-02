@@ -124,10 +124,12 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 60_000) {
 }
 
 async function loadFromApi(estimateId) {
+  // Long timeout: this GET generates the preview inline server-side when
+  // it's missing (up to ~115s worst case), not just fetches a saved row.
   const res = await fetchWithTimeout(
     `/api/estimates?id=${encodeURIComponent(estimateId)}`,
     {},
-    45_000,
+    130_000,
   );
   if (!res.ok) return null;
   return res.json();
@@ -221,10 +223,12 @@ async function runPendingEstimate() {
 }
 
 async function loadEstimateById(id) {
+  // The GET already generates the preview server-side if it's missing (see
+  // api/estimates.js) so this works for anyone with the link, not just an
+  // authenticated owner — no separate client-triggered generation needed.
   const apiData = await loadFromApi(id);
   if (apiData) {
     showEstimate(apiData);
-    void generatePreviewInBackground(apiData);
     return true;
   }
 
@@ -247,8 +251,16 @@ async function loadEstimate() {
   }
 
   if (estimateId) {
-    const loaded = await loadEstimateById(estimateId);
-    if (loaded) return;
+    try {
+      const loaded = await loadEstimateById(estimateId);
+      if (loaded) return;
+    } catch (err) {
+      showError(
+        'Could not load this estimate',
+        err.message || 'Please try again.',
+      );
+      return;
+    }
   }
 
   showError(
