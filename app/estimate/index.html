@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estimate | EpoxyGrind</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800&family=Inter:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/calculator/calculator.css">
+<link rel="stylesheet" href="/auth/auth.css">
+<link rel="stylesheet" href="/app/dashboard.css">
+</head>
+<body class="dashboard-page calc-page estimate-detail-page">
+
+<div id="dashboardRoot"></div>
+
+<div id="dashboardContent" hidden>
+  <div id="loadingState" class="dashboard-panel generating-panel">
+    <h2 id="loadTitle">Building your estimate…</h2>
+    <div class="estimate-progress" id="estimateProgress">
+      <div class="estimate-progress-meta">
+        <span class="estimate-progress-pct" id="progressPercent">0%</span>
+        <span class="estimate-progress-remaining" id="progressRemaining">Step 1 of 2 · 0s</span>
+      </div>
+      <div class="estimate-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Estimate build progress">
+        <div class="estimate-progress-fill" id="progressFill"></div>
+      </div>
+      <p class="estimate-progress-step" id="loadMsg">Building your estimate…</p>
+    </div>
+  </div>
+
+  <div id="errorState" class="dashboard-panel generating-panel" hidden>
+    <h2 id="errorTitle">Estimate not found</h2>
+    <p class="muted" id="errorMsg">This estimate may have been deleted or you may not have access.</p>
+    <a class="btn btn-p" id="errorAction" href="/app/" style="margin-top:16px">Go to dashboard</a>
+  </div>
+
+  <section id="resultPanel" hidden>
+    <div class="result-actions no-print" style="margin-bottom:16px">
+      <button type="button" class="btn btn-o btn-sm" id="printEstimate">Print / PDF</button>
+      <button type="button" class="btn btn-o btn-sm" id="downloadEstimate">Download HTML</button>
+      <button type="button" class="btn btn-p btn-sm" id="shareEstimate">Copy share link</button>
+      <a class="btn btn-o btn-sm" href="/">New estimate</a>
+    </div>
+    <div class="verify-banner no-print" id="verifyBanner" hidden>
+      <p>You're using a demo account — verify your email to secure access and recover your estimates on any device.</p>
+      <button type="button" class="btn btn-p btn-sm" id="verifyEmailBtn">Verify email</button>
+      <p class="verify-banner-msg" id="verifyEmailMsg" hidden></p>
+    </div>
+    <article class="estimate-doc dashboard-panel" id="estimateDoc"></article>
+  </section>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+<script src="/app/shell.js?v=fix3" type="module"></script>
+<script src="/app/estimate/estimate.js?v=fix3" type="module"></script>
+<script src="/auth/verify-banner.js?v=fix3" type="module"></script>
+</body>
+</html>

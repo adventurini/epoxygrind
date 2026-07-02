@@ -1,0 +1,182 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.1';
+
+let client;
+let initPromise;
+
+export async function getAuthClient() {
+  if (client) return client;
+  if (!initPromise) {
+    initPromise = (async () => {
+      const res = await fetch('/api/config');
+      if (!res.ok) throw new Error('Auth is not configured yet.');
+      const { supabaseUrl, supabaseAnonKey } = await res.json();
+      client = createClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+          flowType: 'pkce',
+          detectSessionInUrl: true,
+          persistSession: true,
+          autoRefreshToken: true,
+        },
+      });
+      return client;
+    })();
+  }
+  return initPromise;
+}
+
+export function getAuthRedirectUrl(nextPath) {
+  const next =
+    nextPath ||
+    new URLSearchParams(window.location.search).get('next');
+  const url = new URL('/auth/callback/', window.location.origin);
+  if (next && next.startsWith('/')) url.searchParams.set('next', next);
+  return url.toString();
+}
+
+export async function signInWithGoogle(nextPath) {
+  const supabase = await getAuthClient();
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: getAuthRedirectUrl(nextPath) },
+  });
+  if (error) throw error;
+}
+
+export async function signInInstantly(email, name = '') {
+  const normalizedEmail = String(email || '').trim().toLowerCase();
+  if (!normalizedEmail) throw new Error('Email is required.');
+
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 30_000);
+
+  let res;
+  try {
+    res = await fetch('/api/auth/instant', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: normalizedEmail, name }),
+      signal: ctrl.signal,
+    });
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error('Sign-in timed out. Please try again.');
+    }
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Sign-in failed');
+
+  const supabase = await getAuthClient();
+  const { error } = await supabase.auth.setSession({
+    access_token: data.access_token,
+    refresh_token: data.refresh_token,
+  });
+  if (error) throw error;
+}
+
+export function isEmailVerified(user) {
+  if (!user) return false;
+  if (user.user_metadata?.email_verified === true) return true;
+  if (user.user_metadata?.instant_demo === true) return false;
+  return Boolean(user.email_confirmed_at);
+}
+
+export async function signInWithMagicLink(email, metadata = {}, nextPath) {
+  const supabase = await getAuthClient();
+  const options = { emailRedirectTo: getAuthRedirectUrl(nextPath) };
+  if (Object.keys(metadata).length) options.data = metadata;
+  const { error } = await supabase.auth.signInWithOtp({ email, options });
+  if (error) throw error;
+}
+
+export async function getAccessToken() {
+  const supabase = await getAuthClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.access_token || null;
+}
+
+/** Wait until Supabase session is ready (e.g. after instant sign-in from build). */
+export async function waitForAccessToken({ timeoutMs = 12_000, tokens } = {}) {
+  if (tokens?.access_token && tokens?.refresh_token) {
+    try {
+      const supabase = await getAuthClient();
+      await supabase.auth.setSession({
+        access_token: tokens.access_token,
+        refresh_token: tokens.refresh_token,
+      });
+    } catch {
+      /* fall through to polling */
+    }
+  }
+
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const token = await getAccessToken();
+    if (token) return token;
+    await new Promise((resolve) => setTimeout(resolve, 150));
+  }
+  return null;
+}
+
+export async function authFetch(url, options = {}) {
+  const token = await getAccessToken();
+  const headers = { ...(options.headers || {}) };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  return fetch(url, { ...options, headers });
+}
+
+export async function signOut() {
+  const supabase = await getAuthClient();
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
+}
+
+export async function requestEmailVerification(nextPath) {
+  const supabase = await getAuthClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user?.email) throw new Error('Sign in to verify your email.');
+  if (isEmailVerified(user)) return { alreadyVerified: true, email: user.email };
+
+  const redirectTo = getAuthRedirectUrl(
+    nextPath || `${window.location.pathname}${window.location.search}`,
+  );
+
+  const { error: resendError } = await supabase.auth.resend({
+    type: 'signup',
+    email: user.email,
+    options: { emailRedirectTo: redirectTo },
+  });
+
+  if (!resendError) {
+    return { sent: true, email: user.email };
+  }
+
+  const { error: otpError } = await supabase.auth.signInWithOtp({
+    email: user.email,
+    options: {
+      shouldCreateUser: false,
+      emailRedirectTo: redirectTo,
+    },
+  });
+
+  if (otpError) throw otpError;
+  return { sent: true, email: user.email };
+}
+
+export async function markEmailVerifiedFromCallback() {
+  const token = await getAccessToken();
+  if (!token) return;
+
+  const supabase = await getAuthClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user?.email_confirmed_at || isEmailVerified(user)) return;
+
+  await fetch('/api/auth/mark-email-verified', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  await supabase.auth.refreshSession();
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | EpoxyGrind</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800&family=Inter:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/calculator/calculator.css">
+<link rel="stylesheet" href="/auth/auth.css">
+<link rel="stylesheet" href="/app/dashboard.css">
+</head>
+<body class="dashboard-page">
+
+<div id="dashboardRoot"></div>
+
+<div id="dashboardContent" hidden>
+  <div class="dashboard-top">
+    <div>
+      <p class="eyebrow" style="font-family:var(--ff-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dash-blue)">Dashboard</p>
+      <h1>Welcome back</h1>
+      <p class="lede">Your saved estimates, photos, and floor previews live here — not on the marketing homepage.</p>
+    </div>
+    <a class="btn btn-p btn-sm" href="/">New estimate</a>
+  </div>
+
+  <div class="dashboard-stats" id="dashStats" hidden>
+    <div class="stat-card"><div class="n" id="statCount">0</div><div class="l">Saved estimates</div></div>
+    <div class="stat-card"><div class="n" id="statRecent">—</div><div class="l">Latest project</div></div>
+    <div class="stat-card"><div class="n" id="statStorage">Yes</div><div class="l">Photos in cloud storage</div></div>
+  </div>
+
+  <section class="dashboard-panel" id="estimates">
+    <h2>My estimates</h2>
+    <div id="appLoading" class="muted">Loading estimates…</div>
+    <div id="appEmpty" class="dashboard-empty" hidden>
+      <h2>No estimates yet</h2>
+      <p>Run the estimator on the homepage — we save everything to your account automatically.</p>
+      <a class="btn btn-p" href="/" style="margin-top:16px">Create estimate</a>
+    </div>
+    <div id="appList" class="estimate-list" hidden></div>
+  </section>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+<script src="/app/shell.js" type="module"></script>
+<script src="/app/app.js" type="module"></script>
+</body>
+</html>

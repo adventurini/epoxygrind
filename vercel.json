@@ -14,12 +14,16 @@
     }
   ],
   "functions": {
+    "api/estimate.js": {
+      "maxDuration": 300,
+      "memory": 1024
+    },
     "api/analyze.js": {
       "maxDuration": 30,
       "memory": 1024
     },
     "api/estimates.js": {
-      "maxDuration": 30,
+      "maxDuration": 300,
       "memory": 1024
     },
     "api/generate-preview.js": {
