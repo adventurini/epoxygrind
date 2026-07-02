@@ -8,7 +8,8 @@
   "scripts": {
     "sitemap": "node scripts/generate-sitemap.js",
     "check-product-links": "node scripts/check-product-links.js",
-    "build-content": "node scripts/build-content.js"
+    "build-content": "node scripts/build-content.js",
+    "build-local": "node scripts/build-local-pages.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1"

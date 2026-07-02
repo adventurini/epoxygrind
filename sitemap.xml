@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-static.xml</loc></sitemap>
+  <sitemap><loc>https://epoxygrind.vercel.app/sitemap-states.xml</loc></sitemap>
+  <sitemap><loc>https://epoxygrind.vercel.app/sitemap-cities.xml</loc></sitemap>
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-best.xml</loc></sitemap>
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-diy.xml</loc></sitemap>
 </sitemapindex>
