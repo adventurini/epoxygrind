@@ -6,7 +6,24 @@ export function escapeHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-const PREVIEW_PLACEHOLDER_HTML = `<div class="preview-card preview-loading"><div class="preview-spinner" aria-hidden="true"></div><div class="cap">Your garage (new floor)</div></div>`;
+const PROGRESS_RING_CIRCUMFERENCE = 2 * Math.PI * 28;
+
+export function previewLoadingHtml(caption) {
+  return `<div class="preview-card preview-loading">
+    <div class="preview-progress-ring" data-preview-progress-ring>
+      <svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true">
+        <circle cx="32" cy="32" r="28" fill="none" stroke-width="6" class="preview-progress-track"></circle>
+        <circle cx="32" cy="32" r="28" fill="none" stroke-width="6" stroke-linecap="round"
+          stroke-dasharray="${PROGRESS_RING_CIRCUMFERENCE}" stroke-dashoffset="${PROGRESS_RING_CIRCUMFERENCE}"
+          transform="rotate(-90 32 32)" class="preview-progress-fill" data-preview-progress-fill></circle>
+      </svg>
+      <span class="preview-progress-pct" data-preview-progress-pct>0%</span>
+    </div>
+    <div class="cap">${escapeHtml(caption)}</div>
+  </div>`;
+}
+
+const PREVIEW_PLACEHOLDER_HTML = previewLoadingHtml('Your garage (new floor)');
 
 export function previewsNeedGeneration(data = {}) {
   if (data.previewPaths?.some((item) => item.id === 'original' && item.path)) return false;

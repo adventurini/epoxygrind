@@ -3,6 +3,7 @@ import {
   loadEstimateSession,
   previewsNeedGeneration,
   updatePreviewsInDom,
+  previewLoadingHtml,
 } from '/calculator/estimate-view.js';
 import {
   clearPendingEstimate,
@@ -10,6 +11,7 @@ import {
   loadPendingEstimate,
 } from '/calculator/submit-estimate.js?v=fix3';
 import { createEstimateProgress } from '/calculator/estimate-progress.js?v=fix3';
+import { createPreviewProgress } from '/calculator/preview-progress.js?v=fix3';
 import { initDashboard, refreshDashboardProfile } from '/app/shell.js';
 
 const params = new URLSearchParams(location.search);
@@ -65,9 +67,6 @@ function showEstimate(data) {
   }
 }
 
-const PREVIEW_LOADING_HTML = `
-  <div class="preview-card preview-loading"><div class="preview-spinner" aria-hidden="true"></div><div class="cap">Generating your floor preview…</div></div>`;
-
 /**
  * Generates the single floor preview image after the estimate is already
  * showing. Never blocks display. Uses the same public GET endpoint the
@@ -82,8 +81,10 @@ async function generatePreviewInBackground(data) {
   if (!previewsNeedGeneration(data)) return;
 
   const grid = document.getElementById('estimatePreviews');
+  let progress = { finish() {}, destroy() {} };
   if (grid) {
-    grid.innerHTML = PREVIEW_LOADING_HTML;
+    grid.innerHTML = previewLoadingHtml('Generating your floor preview…');
+    progress = createPreviewProgress(grid);
   }
 
   try {
@@ -92,10 +93,13 @@ async function generatePreviewInBackground(data) {
       toast('Could not generate floor preview.');
       return;
     }
+    progress.finish();
     currentEstimate = { ...currentEstimate, previews: apiData.previews, previewPaths: apiData.previewPaths || [] };
     updatePreviewsInDom(currentEstimate.previews);
   } catch (err) {
     toast(err.message || 'Could not generate floor preview.');
+  } finally {
+    progress.destroy();
   }
 }
 
