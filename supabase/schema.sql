@@ -162,6 +162,7 @@ on conflict (estimate_id, angle_id) do update set
 create table if not exists public.profiles (
   user_id uuid primary key references auth.users (id) on delete cascade,
   credits_remaining integer not null default 5,
+  is_admin boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );

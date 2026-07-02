@@ -54,13 +54,25 @@ async function loadCredits(user) {
     const supabase = await getAuthClient();
     const { data, error } = await supabase
       .from('profiles')
-      .select('credits_remaining')
+      .select('credits_remaining, is_admin')
       .eq('user_id', user.id)
       .maybeSingle();
     if (error) throw error;
     const remaining = data?.credits_remaining ?? 5;
     el.textContent = `${remaining} free estimate${remaining === 1 ? '' : 's'} remaining`;
     el.hidden = false;
+
+    if (data?.is_admin) {
+      const actions = document.querySelector('.dashboard-profile-actions');
+      if (actions && !document.getElementById('dashAdminLink')) {
+        const link = document.createElement('a');
+        link.id = 'dashAdminLink';
+        link.className = 'btn btn-o btn-sm';
+        link.href = '/app/admin/';
+        link.textContent = 'Admin';
+        actions.prepend(link);
+      }
+    }
   } catch {
     /* optional — not worth surfacing a fetch error for this */
   }

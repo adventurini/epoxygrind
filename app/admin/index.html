@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin | EpoxyGrind</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/calculator/calculator.css">
+<link rel="stylesheet" href="/auth/auth.css">
+<link rel="stylesheet" href="/app/dashboard.css">
+<link rel="stylesheet" href="/app/admin/admin.css">
+</head>
+<body class="dashboard-page">
+
+<div id="dashboardRoot"></div>
+
+<div id="dashboardContent" hidden>
+  <div class="dashboard-top">
+    <div>
+      <p class="eyebrow" style="font-family:var(--ff-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dash-blue)">Admin</p>
+      <h1>Admin</h1>
+      <p class="lede">All estimates and users across the platform.</p>
+    </div>
+  </div>
+
+  <div id="adminDenied" class="dashboard-panel" hidden>
+    <h2>Not authorized</h2>
+    <p class="muted">This account doesn't have admin access.</p>
+  </div>
+
+  <div id="adminBody" hidden>
+    <div class="dashboard-stats" id="adminStats">
+      <div class="stat-card"><div class="n" id="statUsers">—</div><div class="l">Total users</div></div>
+      <div class="stat-card"><div class="n" id="statEstimates">—</div><div class="l">Total estimates</div></div>
+      <div class="stat-card"><div class="n" id="statVerified">—</div><div class="l">Verified users</div></div>
+    </div>
+
+    <section class="dashboard-panel" style="margin-bottom:20px">
+      <h2>Users</h2>
+      <div id="usersLoading" class="muted">Loading users…</div>
+      <div class="admin-table-wrap" hidden id="usersTableWrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Name</th>
+              <th>Joined</th>
+              <th>Last sign-in</th>
+              <th>Verified</th>
+              <th>Demo</th>
+              <th>Credits</th>
+              <th>Estimates</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="dashboard-panel">
+      <h2>Estimates</h2>
+      <div id="estimatesLoading" class="muted">Loading estimates…</div>
+      <div class="admin-table-wrap" hidden id="estimatesTableWrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Created</th>
+              <th>Customer</th>
+              <th>Email</th>
+              <th>Location</th>
+              <th>Finish</th>
+              <th>Sq Ft</th>
+              <th>Price range</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="estimatesTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+<script src="/app/admin/admin.js" type="module"></script>
+</body>
+</html>

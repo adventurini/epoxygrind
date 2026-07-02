@@ -1,0 +1,122 @@
+import { initDashboard } from '/app/shell.js';
+import { authFetch, getAuthClient } from '/auth/client.js';
+
+const deniedEl = document.getElementById('adminDenied');
+const bodyEl = document.getElementById('adminBody');
+const toastEl = document.getElementById('toast');
+
+function toast(msg) {
+  toastEl.textContent = msg;
+  toastEl.hidden = false;
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => { toastEl.hidden = true; }, 3200);
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function formatDate(value) {
+  if (!value) return '—';
+  return new Date(value).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function formatMoney(n) {
+  if (n == null) return '—';
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+}
+
+function chip(text, variant) {
+  return `<span class="admin-chip ${variant}">${escapeHtml(text)}</span>`;
+}
+
+async function loadUsers() {
+  const loading = document.getElementById('usersLoading');
+  const wrap = document.getElementById('usersTableWrap');
+  const tbody = document.getElementById('usersTableBody');
+
+  try {
+    const res = await authFetch('/api/admin/users');
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not load users.');
+
+    document.getElementById('statUsers').textContent = String(data.users.length);
+    document.getElementById('statVerified').textContent = String(data.users.filter((u) => u.emailVerified).length);
+
+    tbody.innerHTML = data.users.map((u) => `
+      <tr>
+        <td>${escapeHtml(u.email)}${u.isAdmin ? ' ' + chip('admin', 'info') : ''}</td>
+        <td>${escapeHtml(u.name || '—')}</td>
+        <td>${formatDate(u.createdAt)}</td>
+        <td>${formatDate(u.lastSignInAt)}</td>
+        <td>${u.emailVerified ? chip('verified', 'ok') : chip('unverified', 'warn')}</td>
+        <td>${u.isInstantDemo ? chip('demo', 'warn') : '—'}</td>
+        <td>${u.creditsRemaining ?? '—'}</td>
+        <td>${u.estimateCount}</td>
+      </tr>`).join('');
+
+    loading.hidden = true;
+    wrap.hidden = false;
+  } catch (err) {
+    loading.textContent = err.message || 'Could not load users.';
+  }
+}
+
+async function loadEstimates() {
+  const loading = document.getElementById('estimatesLoading');
+  const wrap = document.getElementById('estimatesTableWrap');
+  const tbody = document.getElementById('estimatesTableBody');
+
+  try {
+    const res = await authFetch('/api/admin/estimates');
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not load estimates.');
+
+    document.getElementById('statEstimates').textContent = String(data.estimates.length);
+
+    tbody.innerHTML = data.estimates.map((e) => `
+      <tr>
+        <td>${formatDate(e.createdAt)}</td>
+        <td>${escapeHtml(e.customerName || '—')}</td>
+        <td>${escapeHtml(e.email || '—')}</td>
+        <td>${escapeHtml(e.location || '—')}</td>
+        <td>${escapeHtml(e.finishLabel || '—')}</td>
+        <td>${e.sqFt ? Math.round(e.sqFt) : '—'}</td>
+        <td>${e.totalLow != null ? `${formatMoney(e.totalLow)}–${formatMoney(e.totalHigh)}` : '—'}</td>
+        <td><a class="admin-link" href="/app/estimate/?id=${encodeURIComponent(e.id)}" target="_blank">View →</a></td>
+      </tr>`).join('');
+
+    loading.hidden = true;
+    wrap.hidden = false;
+  } catch (err) {
+    loading.textContent = err.message || 'Could not load estimates.';
+  }
+}
+
+async function boot() {
+  const user = await initDashboard({ activeNav: 'admin' });
+  if (!user) return;
+
+  let isAdmin = false;
+  try {
+    const supabase = await getAuthClient();
+    const { data } = await supabase.from('profiles').select('is_admin').eq('user_id', user.id).maybeSingle();
+    isAdmin = data?.is_admin === true;
+  } catch {
+    isAdmin = false;
+  }
+
+  if (!isAdmin) {
+    deniedEl.hidden = false;
+    return;
+  }
+
+  bodyEl.hidden = false;
+  await Promise.all([loadUsers(), loadEstimates()]);
+}
+
+boot().catch((err) => toast(err.message || 'Failed to load admin page.'));
