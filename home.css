@@ -32,7 +32,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop
 .mobile.open{display:flex}.mobile a{padding:12px 0;border-bottom:1px solid var(--line);font-weight:600;color:var(--ink)}
 
 main{flex:1;display:flex;flex-direction:column;min-height:0}
-.hero{position:relative;flex:1;display:flex;align-items:center;padding:40px 0 48px;overflow:hidden;color:#fff;min-height:calc(100vh - 66px);overflow-x:hidden}
+.hero{position:relative;flex:1;display:flex;align-items:center;padding:40px 0 48px;color:#fff;min-height:calc(100vh - 66px)}
 .hero-grid .calc-shell{width:100%}
 .hero-bg{position:absolute;inset:0;background:url('/images/hero-bg.jpg') center/cover no-repeat}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(105deg,rgba(15,44,92,.93),rgba(15,44,92,.84) 45%,rgba(15,44,92,.68))}
