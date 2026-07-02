@@ -11,7 +11,7 @@
  * (matching spec §2: "per-template sitemaps exist so GSC indexing can be
  * monitored per template").
  */
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -21,12 +21,31 @@ import { dirname, join } from 'node:path';
 const SITE_URL = 'https://epoxygrind.vercel.app';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const CONTENT_DATA_DIR = join(ROOT, 'content', 'data');
+
+/** Slugs come from data-file names (content/data/{subdir}/{slug}.js) — the
+ * build-content.js convention this repo follows keeps filename === data.slug. */
+function listSlugs(subdir) {
+  const dir = join(CONTENT_DATA_DIR, subdir);
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .filter((f) => f.endsWith('.js'))
+    .map((f) => f.replace(/\.js$/, ''));
+}
 
 // ── Pages that exist today ───────────────────────────────────────────────
 const STATIC_PAGES = [
   { path: '/', changefreq: 'weekly', priority: 1.0 },
   { path: '/services/', changefreq: 'weekly', priority: 0.9 },
 ];
+
+// ── DIY & Product Content spec (spec_2) — auto-discovered from content/data/ ─
+const RANKING_PAGES = listSlugs('rankings');
+const REVIEW_PAGES = listSlugs('reviews');
+const COMPARE_PAGES = listSlugs('compare');
+const DIY_GUIDE_PAGES = listSlugs('diy');
+const SHOPPING_LIST_PAGES = listSlugs('shopping-lists');
+const HAS_DIY_HUB = existsSync(join(CONTENT_DATA_DIR, 'diy-hub.js'));
 
 // ── Spec §1 sections, not built yet — populate as each ships ────────────
 /** @type {{ state: string }[]} */
@@ -95,6 +114,29 @@ const sections = [
     })),
   },
   { name: 'pros', entries: PROS_PAGES },
+  {
+    name: 'best',
+    entries: RANKING_PAGES.map((slug) => ({ path: `/best/${slug}/`, changefreq: 'monthly', priority: 0.6 })),
+  },
+  {
+    name: 'reviews',
+    entries: REVIEW_PAGES.map((slug) => ({ path: `/reviews/${slug}/`, changefreq: 'monthly', priority: 0.6 })),
+  },
+  {
+    name: 'compare',
+    entries: COMPARE_PAGES.map((slug) => ({ path: `/compare/${slug}/`, changefreq: 'monthly', priority: 0.6 })),
+  },
+  {
+    name: 'diy',
+    entries: [
+      ...(HAS_DIY_HUB ? [{ path: '/diy/', changefreq: 'weekly', priority: 0.7 }] : []),
+      ...DIY_GUIDE_PAGES.map((slug) => ({ path: `/diy/${slug}/`, changefreq: 'monthly', priority: 0.6 })),
+      ...SHOPPING_LIST_PAGES.map((slug) => ({ path: `/diy/${slug}/`, changefreq: 'monthly', priority: 0.6 })),
+    ],
+  },
+  // Reserved for /tools/epoxy-coverage-calculator once the interactive
+  // calculator ships (spec_2 §4 Type 5) — empty until then.
+  { name: 'tools', entries: [] },
 ];
 
 function urlEntry({ path, changefreq = 'monthly', priority = 0.5 }) {

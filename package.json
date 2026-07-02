@@ -7,7 +7,8 @@
   },
   "scripts": {
     "sitemap": "node scripts/generate-sitemap.js",
-    "check-product-links": "node scripts/check-product-links.js"
+    "check-product-links": "node scripts/check-product-links.js",
+    "build-content": "node scripts/build-content.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1"
