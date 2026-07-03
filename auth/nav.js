@@ -4,22 +4,22 @@ import { getAuthClient, withAuthTimeout, signOut } from './client.js';
  * One consistent nav across every marketing/content page (previously
  * differed per page — home/services/content variants each had their own
  * link set and ordering, which read as inconsistent/messy across the
- * site). "Find a contractor" points at /contractors/, the directory
- * being built alongside this — until that ships this is a placeholder
- * destination, not a dead link by accident.
+ * site). Every link renders the same plain style; "Get an estimate" is
+ * the only visually distinct element (the one CTA), so the row reads as
+ * one hierarchy instead of a row of competing badges/buttons.
  */
 const LOGGED_OUT_LINKS = [
   { href: '/diy/', label: 'DIY guides' },
-  { href: '/services/', label: 'Contractor services', className: 'nav-svc' },
   { href: '/contractors/', label: 'Find a contractor' },
+  { href: '/services/', label: 'Contractor services' },
   { href: '/login/', label: 'Log in' },
   { href: '/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
 ];
 
 const LOGGED_IN_LINKS = [
   { href: '/diy/', label: 'DIY guides' },
-  { href: '/services/', label: 'Contractor services', className: 'nav-svc' },
   { href: '/contractors/', label: 'Find a contractor' },
+  { href: '/services/', label: 'Contractor services' },
   { action: 'logout', label: 'Log out' },
   { href: '/app/new/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
 ];

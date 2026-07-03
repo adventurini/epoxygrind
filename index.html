@@ -2,6 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, viewport-fit=cover">
 <title>Epoxy Grind</title>
 <meta name="description" content="Upload a photo of your garage or floor and get an instant, line-item epoxy coating estimate with a realistic before/after preview of your new floor — free and shareable.">
@@ -34,14 +41,14 @@
   <div class="wrap nav">
     <a class="brand" href="/"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
     <div class="nav-auth" data-auth-nav>
-      <a class="nav-svc" href="/services/">Contractor services</a>
+      <a href="/services/">Contractor services</a>
       <a href="/login/">Log in</a>
       <a class="btn btn-p btn-sm" href="/signup/">Sign up</a>
     </div>
     <button class="burger" id="burger" aria-label="Menu">☰</button>
   </div>
   <div class="mobile" id="mobile" data-auth-mobile>
-    <a class="nav-svc" href="/services/">Contractor services</a>
+    <a href="/services/">Contractor services</a>
     <a href="/login/">Log in</a>
     <a href="/signup/">Sign up</a>
   </div>
@@ -129,20 +136,20 @@
             <label class="fld"><span>Base color</span>
               <div class="color-line">
                 <div class="color-picker-wrap">
-                  <span class="color-picker-swatch" style="background:#4A4F54"></span>
-                  <input type="color" id="baseColorPicker" value="#4A4F54" aria-label="Pick base color">
+                  <span class="color-picker-swatch" id="baseSwatch" style="background:#4A4F54"></span>
+                  <input type="hidden" id="baseColorPicker" value="charcoal">
                 </div>
-                <code id="baseHex">#4A4F54</code>
+                <code id="baseHex">Charcoal gray</code>
                 <div class="swatches" id="baseSwatches"></div>
               </div>
             </label>
             <label class="fld" id="flakeWrap"><span>Flake color</span>
               <div class="color-line">
                 <div class="color-picker-wrap">
-                  <span class="color-picker-swatch" style="background:#6B7078"></span>
-                  <input type="color" id="flakeColorPicker" value="#6B7078" aria-label="Pick flake color">
+                  <span class="color-picker-swatch" id="flakeSwatch" style="background:#A9A9A7"></span>
+                  <input type="hidden" id="flakeColorPicker" value="gravel">
                 </div>
-                <code id="flakeHex">#6B7078</code>
+                <code id="flakeHex">Gravel</code>
                 <div class="swatches" id="flakeSwatches"></div>
               </div>
             </label>

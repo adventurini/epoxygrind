@@ -29,8 +29,6 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop
 .nav-auth button[data-nav-logout]:hover{color:var(--blue)}
 .nav-auth button[data-nav-logout]:disabled{opacity:.6;cursor:default}
 .mobile button[data-nav-logout]{font:inherit;text-align:left;width:100%;padding:12px 0;border-bottom:1px solid var(--line);border-top:0;border-left:0;border-right:0;font-weight:600;color:var(--ink);background:none;cursor:pointer}
-.nav-svc{font-family:var(--ff-m)!important;font-size:11px!important;letter-spacing:.06em;text-transform:uppercase;color:var(--blue)!important;border:1px solid rgba(26,92,214,.35);padding:8px 12px;border-radius:999px;background:var(--blue-soft)}
-.nav-svc:hover{background:var(--blue);color:#fff!important;border-color:var(--blue)}
 .burger{display:none;margin-left:auto;background:none;border:1px solid var(--line-2);border-radius:8px;width:42px;height:42px;font-size:18px;cursor:pointer}
 .mobile{display:none;flex-direction:column;padding:8px 24px 18px;border-bottom:1px solid var(--line);background:var(--bg)}
 .mobile.open{display:flex}.mobile a{padding:12px 0;border-bottom:1px solid var(--line);font-weight:600;color:var(--ink)}
