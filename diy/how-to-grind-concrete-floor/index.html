@@ -10,21 +10,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to Grind a Concrete Floor Before Epoxy","description":"Step-by-step concrete grinding for epoxy prep — the right grit, dust control, and how to know when the profile is ready to coat."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I really need to grind, or can I just clean and coat?","acceptedAnswer":{"@type":"Answer","text":"Bare, unground concrete is usually too smooth (or has a weak cured surface layer called laitance) for epoxy to bond well. Grinding removes that layer and creates a texture the coating can mechanically key into."}},{"@type":"Question","name":"How do I know if my moisture test failed?","acceptedAnswer":{"@type":"Answer","text":"For the plastic-sheet test, any visible condensation or darkening under the sheet after 16–24 hours indicates elevated moisture — consult a moisture-mitigating primer or have the slab professionally tested before coating."}},{"@type":"Question","name":"Can I rent a grinder instead of buying one?","acceptedAnswer":{"@type":"Answer","text":"Yes, for a one-time job renting is reasonable. See our concrete grinder guide for the buy-vs-rent breakdown and specific picks if you decide to buy."}},{"@type":"Question","name":"What if I hit a spot that's much rougher or smoother than the rest after grinding?","acceptedAnswer":{"@type":"Answer","text":"Go back over uneven spots with the same grit until the texture is consistent — an uneven profile leads to uneven coating absorption and visible patchiness once it cures."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"DIY guides","item":"https://epoxygrind.vercel.app/diy/"},{"@type":"ListItem","position":3,"name":"How to Grind a Concrete Floor Before Epoxy","item":"https://epoxygrind.vercel.app/diy/how-to-grind-concrete-floor/"}]}</script>
 </head>
-<body class="home-page content-page">
+<body class="home-page content-page" data-nav-variant="content">
 <header>
   <div class="wrap nav">
     <a class="brand" href="/"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
-    <div class="nav-auth">
-      <a href="/diy/">DIY guides</a>
-      <a href="/services/" class="nav-svc">Contractor services</a>
-      <a class="btn btn-p btn-sm" href="/">Get my estimate →</a>
-    </div>
+    <div class="nav-auth" data-auth-nav></div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
   </div>
+  <div class="mobile" id="mobile" data-auth-mobile></div>
 </header>
 <main>
   <div class="content-main">
@@ -59,5 +58,10 @@
   </div>
 </main>
 <footer class="site-foot"><div class="wrap">© 2026 EpoxyGrind · <a href="/diy/">DIY guides</a> · <a href="/services/">Contractor services</a></div></footer>
+<script src="/auth/nav.js" type="module"></script>
+<script>
+  var b=document.getElementById('burger'),m=document.getElementById('mobile');
+  if(b&&m){b.addEventListener('click',function(){m.classList.toggle('open')});m.querySelectorAll('a,button').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});}
+</script>
 </body>
 </html>

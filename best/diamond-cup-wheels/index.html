@@ -10,21 +10,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"name":"EDiamondTools 7in Diamond Grinding Cup Wheel, 24 Turbo Segments, 5/8-11 Arbor","url":"https://epoxygrind.vercel.app/go/ediamondtools-7in-cup-wheel"},{"@type":"ListItem","position":2,"name":"EDiamondTools 7in Aggressive Coating Removal Wheel, 18/20 Grit, 5/8-11 Arbor","url":"https://epoxygrind.vercel.app/go/ediamondtools-7in-coating-removal-wheel"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I use one cup wheel for both stripping old coating and final prep?","acceptedAnswer":{"@type":"Answer","text":"Not well. The aggressive 18/20-grit wheel removes coating fast but leaves a rougher, more open profile than most coatings want as a final surface — follow it with a 30/40-grit pass on bare concrete before coating."}},{"@type":"Question","name":"What arbor size do I need?","acceptedAnswer":{"@type":"Answer","text":"Both wheels here use a 5/8\"-11 threaded arbor, the common size for 7in grinders and many angle-grinder adapters — confirm your grinder's arbor before ordering."}},{"@type":"Question","name":"Will a cheaper, unbranded cup wheel work just as well?","acceptedAnswer":{"@type":"Answer","text":"Segment count, bond hardness, and grit consistency vary a lot between brands even at the same stated grit number. If a listing doesn't clearly state the grit and bond, that's a sign to look elsewhere — grinding is not a place where guessing pays off."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Best","item":"https://epoxygrind.vercel.app/best/"},{"@type":"ListItem","position":3,"name":"Best Diamond Cup Wheels for Concrete Prep (2026)","item":"https://epoxygrind.vercel.app/best/diamond-cup-wheels/"}]}</script>
 </head>
-<body class="home-page content-page">
+<body class="home-page content-page" data-nav-variant="content">
 <header>
   <div class="wrap nav">
     <a class="brand" href="/"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
-    <div class="nav-auth">
-      <a href="/diy/">DIY guides</a>
-      <a href="/services/" class="nav-svc">Contractor services</a>
-      <a class="btn btn-p btn-sm" href="/">Get my estimate →</a>
-    </div>
+    <div class="nav-auth" data-auth-nav></div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
   </div>
+  <div class="mobile" id="mobile" data-auth-mobile></div>
 </header>
 <main>
   <div class="content-main">
@@ -70,5 +69,10 @@
   </div>
 </main>
 <footer class="site-foot"><div class="wrap">© 2026 EpoxyGrind · <a href="/diy/">DIY guides</a> · <a href="/services/">Contractor services</a></div></footer>
+<script src="/auth/nav.js" type="module"></script>
+<script>
+  var b=document.getElementById('burger'),m=document.getElementById('mobile');
+  if(b&&m){b.addEventListener('click',function(){m.classList.toggle('open')});m.querySelectorAll('a,button').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});}
+</script>
 </body>
 </html>

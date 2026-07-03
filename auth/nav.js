@@ -25,6 +25,20 @@ const NAV_LINKS = {
       { href: '/app/', label: 'Dashboard', className: 'btn btn-p btn-sm' },
     ],
   },
+  content: {
+    loggedOut: [
+      { href: '/', label: 'Estimator', className: 'nav-svc' },
+      { href: '/diy/', label: 'DIY guides' },
+      { href: '/login/', label: 'Log in' },
+      { href: '/signup/', label: 'Sign up', className: 'btn btn-p btn-sm' },
+    ],
+    loggedIn: [
+      { href: '/', label: 'Estimator', className: 'nav-svc' },
+      { href: '/diy/', label: 'DIY guides' },
+      { action: 'logout', label: 'Log out' },
+      { href: '/app/', label: 'Dashboard', className: 'btn btn-p btn-sm' },
+    ],
+  },
 };
 
 function linkHtml(link) {

@@ -10,21 +10,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Epoxy Flooring in Milwaukee, WI","areaServed":[{"@type":"City","name":"Milwaukee"},{"@type":"City","name":"Racine"},{"@type":"City","name":"Waukesha"},{"@type":"City","name":"West Allis"},{"@type":"City","name":"Wauwatosa"},{"@type":"City","name":"New Berlin"},{"@type":"City","name":"Brookfield"},{"@type":"City","name":"Greenfield"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much does epoxy flooring cost in Milwaukee, WI?","acceptedAnswer":{"@type":"Answer","text":"Costs in Milwaukee vary by system and space size — see the price table above for current ranges by system and garage/basement size. Get an exact number for your space with a free instant photo estimate."}},{"@type":"Question","name":"Can I epoxy my garage floor in the winter?","acceptedAnswer":{"@type":"Answer","text":"Only if you can keep the slab and air above the coating's minimum cure temperature throughout application and cure — that usually means temporary heat in an unheated garage. Late spring through early fall is the more reliable window without it."}},{"@type":"Question","name":"How do I know if a quote is fair in Milwaukee?","acceptedAnswer":{"@type":"Answer","text":"Compare against the price ranges above for your system and space size, and make sure the quote itemizes prep method, system, and warranty — not just a flat total. See our hiring guide above for the specific questions to ask."}},{"@type":"Question","name":"Is epoxy flooring worth it in Milwaukee?","acceptedAnswer":{"@type":"Answer","text":"For most garages and basements, yes — a properly installed epoxy or polyaspartic system holds up for years and meaningfully outperforms bare or painted concrete on durability and ease of cleaning."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Epoxy Flooring","item":"https://epoxygrind.vercel.app/epoxy-flooring/"},{"@type":"ListItem","position":3,"name":"WI","item":"https://epoxygrind.vercel.app/epoxy-flooring/wisconsin/"},{"@type":"ListItem","position":4,"name":"Milwaukee","item":"https://epoxygrind.vercel.app/epoxy-flooring/wisconsin/milwaukee/"}]}</script>
 </head>
-<body class="home-page content-page">
+<body class="home-page content-page" data-nav-variant="content">
 <header>
   <div class="wrap nav">
     <a class="brand" href="/"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
-    <div class="nav-auth">
-      <a href="/diy/">DIY guides</a>
-      <a href="/services/" class="nav-svc">Contractor services</a>
-      <a class="btn btn-p btn-sm" href="/">Get my estimate →</a>
-    </div>
+    <div class="nav-auth" data-auth-nav></div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
   </div>
+  <div class="mobile" id="mobile" data-auth-mobile></div>
 </header>
 <main>
   <div class="content-main">
@@ -72,5 +71,10 @@
   </div>
 </main>
 <footer class="site-foot"><div class="wrap">© 2026 EpoxyGrind · <a href="/diy/">DIY guides</a> · <a href="/services/">Contractor services</a></div></footer>
+<script src="/auth/nav.js" type="module"></script>
+<script>
+  var b=document.getElementById('burger'),m=document.getElementById('mobile');
+  if(b&&m){b.addEventListener('click',function(){m.classList.toggle('open')});m.querySelectorAll('a,button').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});}
+</script>
 </body>
 </html>
