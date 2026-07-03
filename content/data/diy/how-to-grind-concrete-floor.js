@@ -6,7 +6,14 @@ export default {
   dek: 'Grinding gives epoxy a mechanical surface profile that acid etching can\'t match — here\'s how to do it on a garage-sized slab.',
   timeEstimate: '3–6 hours for a 2-car garage',
   difficulty: 'Moderate — physical, but no specialized skill required',
-  introHtml: `<p>Grinding is the prep method most epoxy manufacturers recommend over acid etching, because it creates a consistent mechanical concrete surface profile (CSP) instead of relying on a chemical reaction that varies with slab composition and can leave a slippery film if not fully rinsed. If your kit's instructions default to an acid etch step, you can substitute grinding — check your kit first, since etch is often included and you may not need to buy it separately either way.</p>`,
+  introHtml: `<p>Grinding is the prep method most epoxy manufacturers recommend over acid etching, because it creates a consistent mechanical concrete surface profile (CSP) instead of relying on a chemical reaction that varies with slab composition and can leave a slippery film if not fully rinsed. If your kit's instructions default to an acid etch step, you can substitute grinding — check your kit first, since etch is often included and you may not need to buy it separately either way. For the full prep decision tree including moisture testing and crack repair, see our <a href="/diy/how-to-prep-concrete-for-epoxy/">concrete prep guide</a>.</p>`,
+  materials: [
+    { productId: 'dewalt-dwe46153-grinder-shroud-kit', label: '5in angle grinder + dust shroud' },
+    { productId: 'ediamondtools-7in-cup-wheel', label: '30/40-grit diamond cup wheel' },
+    { productId: 'ediamondtools-7in-coating-removal-wheel', label: '18/20-grit aggressive wheel', note: 'only if removing old coating first' },
+    { productId: 'dewalt-dwv010-dust-extractor', label: 'HEPA dust extractor' },
+    { productId: '3m-6502ql-respirator', label: 'Half-face respirator with P100/OV cartridges' },
+  ],
   steps: [
     {
       title: 'Clear and sweep the slab',

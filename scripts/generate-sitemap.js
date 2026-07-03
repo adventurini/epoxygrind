@@ -15,6 +15,7 @@ import { writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { METROS, allStateSlugs } from '../lib/metros.js';
+import { CONTRACTORS } from '../lib/contractors.js';
 
 // TODO: switch to https://epoxygrind.com once the custom domain is
 // connected in Vercel (Supabase auth is already configured for it, but no
@@ -39,6 +40,7 @@ const STATIC_PAGES = [
   { path: '/', changefreq: 'weekly', priority: 1.0 },
   { path: '/services/', changefreq: 'weekly', priority: 0.9 },
   { path: '/epoxy-flooring/', changefreq: 'weekly', priority: 0.8 },
+  { path: '/contractors/', changefreq: 'weekly', priority: 0.8 },
 ];
 
 // ── DIY & Product Content spec (spec_2) — auto-discovered from content/data/ ─
@@ -48,6 +50,7 @@ const COMPARE_PAGES = listSlugs('compare');
 const DIY_GUIDE_PAGES = listSlugs('diy');
 const SHOPPING_LIST_PAGES = listSlugs('shopping-lists');
 const HAS_DIY_HUB = existsSync(join(CONTENT_DATA_DIR, 'diy-hub.js'));
+const HAS_COMPARE_HUB = existsSync(join(CONTENT_DATA_DIR, 'compare-hub.js'));
 
 // ── Master SEO spec (spec_4) local pages — from content/data/metros.json ─
 // State rollups: all 51. City hubs: every metro (331) — an explicit owner
@@ -128,7 +131,10 @@ const sections = [
   },
   {
     name: 'compare',
-    entries: COMPARE_PAGES.map((slug) => ({ path: `/compare/${slug}/`, changefreq: 'monthly', priority: 0.6 })),
+    entries: [
+      ...(HAS_COMPARE_HUB ? [{ path: '/compare/', changefreq: 'weekly', priority: 0.7 }] : []),
+      ...COMPARE_PAGES.map((slug) => ({ path: `/compare/${slug}/`, changefreq: 'monthly', priority: 0.6 })),
+    ],
   },
   {
     name: 'diy',
@@ -141,6 +147,13 @@ const sections = [
   // Reserved for /tools/epoxy-coverage-calculator once the interactive
   // calculator ships (spec_2 §4 Type 5) — empty until then.
   { name: 'tools', entries: [] },
+  {
+    name: 'contractors',
+    entries: [
+      ...allStateSlugs().map((state) => ({ path: `/contractors/${state}/`, changefreq: 'weekly', priority: 0.6 })),
+      ...CONTRACTORS.map((c) => ({ path: `/contractors/${c.state_slug}/${c.slug}/`, changefreq: 'monthly', priority: 0.6 })),
+    ],
+  },
 ];
 
 function urlEntry({ path, changefreq = 'monthly', priority = 0.5 }) {

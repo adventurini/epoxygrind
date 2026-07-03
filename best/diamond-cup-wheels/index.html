@@ -84,5 +84,18 @@
   var b=document.getElementById('burger'),m=document.getElementById('mobile');
   if(b&&m){b.addEventListener('click',function(){m.classList.toggle('open')});m.querySelectorAll('a,button').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});}
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.video-embed-facade');
+    if(!btn) return;
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + btn.dataset.videoId + '?autoplay=1';
+    iframe.title = btn.dataset.videoTitle || 'YouTube video';
+    iframe.loading = 'lazy';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    btn.replaceWith(iframe);
+  });
+</script>
 </body>
 </html>

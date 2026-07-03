@@ -1,0 +1,28 @@
+export default {
+  slug: 'epoxy-vs-garage-floor-paint',
+  title: 'Epoxy vs. Garage Floor Paint: What\'s the Real Difference?',
+  metaTitle: 'Epoxy Coating vs. Garage Floor Paint | EpoxyGrind',
+  metaDescription: 'Garage floor "paint" and epoxy get sold on the same shelf but perform very differently — here is why one lasts years longer than the other.',
+  dek: '"Floor paint" and "epoxy" often sit next to each other at the hardware store — but they are not the same product, and the difference shows up fast under a parked car.',
+  sideALabel: 'Epoxy',
+  sideBLabel: 'Garage Floor Paint',
+  introHtml: `<p>True 100%-solids or high-solids epoxy and single-component acrylic "garage floor paint" are frequently displayed near each other and sometimes even both labeled loosely as "epoxy" in marketing, but they're genuinely different products. Floor paint is closer to a thicker, more durable version of regular paint — a single-component, air-dry acrylic or latex formula. Real epoxy is a two-part system that chemically cures into a much thicker, harder film.</p>`,
+  rows: [
+    { label: 'Chemistry', a: 'Two-part, chemically cured', b: 'Usually single-component, air-dry' },
+    { label: 'Film thickness/durability', a: 'Much thicker, harder cured film', b: 'Thin, closer to a heavy-duty paint' },
+    { label: 'Hot tire pickup resistance', a: 'Good, especially high-solids formulas', b: 'Poor — a common failure point' },
+    { label: 'Typical lifespan under vehicle traffic', a: 'Years, with proper prep', b: 'Often a season or two before wear/peeling' },
+    { label: 'Price', a: 'Higher', b: 'Lower' },
+    { label: 'Prep requirements', a: 'Grinding or etching strongly recommended', b: 'Often just cleaning, sometimes light etch' },
+  ],
+  verdictAHtml: `<p>Choose real epoxy for a garage floor that sees regular vehicle traffic — the extra prep and cost buys meaningfully more durability, especially hot tire resistance, which is where floor paint most commonly and visibly fails. See our <a href="/diy/how-to-epoxy-garage-floor/">complete epoxy guide</a>.</p>`,
+  verdictBHtml: `<p>Floor paint can make sense for a low-traffic space (a shed, a storage area, a space that doesn't see a parked car) where the lower cost and simpler application outweigh the shorter service life — but set expectations accordingly, since it's not built for the same job as real epoxy.</p>`,
+  ctaA: { label: 'Epoxy kit rankings →', href: '/best/best-garage-floor-epoxy-kits/' },
+  faq: [
+    { q: 'How can I tell if a product is real epoxy or just floor paint marketed as epoxy?', a: 'Check whether it\'s a two-part system requiring you to mix a base and a hardener/activator right before application — that\'s the defining characteristic of true epoxy. A single-can, ready-to-use product is paint, regardless of what the label implies.' },
+    { q: 'Is floor paint a reasonable choice if I\'m on a tight budget?', a: 'For a low-traffic area, yes. For a daily-use garage with a parked vehicle, the shorter lifespan of floor paint often means redoing the job within a couple of years — factor that into the real cost comparison, not just the sticker price.' },
+    { q: 'Does floor paint need the same prep as epoxy?', a: 'Less intensive, but skipping prep entirely still causes early failure with floor paint too — at minimum, clean and lightly etch or degrease the surface per the product\'s instructions.' },
+    { q: 'Can I apply real epoxy over old garage floor paint?', a: 'Not directly — remove or thoroughly grind off the old paint first, since epoxy needs a properly profiled surface and old paint won\'t provide the same mechanical bond a ground concrete surface does.' },
+  ],
+  proCtaMidPage: false,
+};

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Epoxy Flooring Comparisons | EpoxyGrind</title>
+<meta name="description" content="Head-to-head comparisons for garage floor coating decisions — epoxy vs. polyaspartic, DIY vs. professional, grinding vs. etching, and more.">
+<link rel="canonical" href="https://epoxygrind.vercel.app/compare/">
+<link rel="icon" href="/logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/auth/auth.css">
+<link rel="stylesheet" href="/content/content.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Compare","item":"https://epoxygrind.vercel.app/compare/"}]}</script>
+</head>
+<body class="home-page content-page" data-nav-variant="content">
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
+    <div class="nav-auth" data-auth-nav></div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+  <div class="mobile" id="mobile" data-auth-mobile></div>
+</header>
+<main>
+  <div class="content-main">
+    <div class="content-wrap-wide">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span class="sep">/</span><span aria-current="page">Compare</span></nav>
+    <p class="content-eyebrow">Compare</p>
+  <h1 class="content-h1">Epoxy Flooring Comparisons</h1>
+  <p class="content-dek">Straight, scenario-based verdicts for the decisions that actually come up before you start a floor project.</p>
+    <div class="category-grid">
+      <a class="category-card" href="/compare/epoxy-vs-polyaspartic/"><h3>Epoxy vs. polyaspartic</h3><p>Cure time, UV stability, hot tire resistance, and price.</p></a><a class="category-card" href="/compare/polyurea-vs-polyaspartic/"><h3>Polyurea vs. polyaspartic</h3><p>These get marketed almost interchangeably — here is the real difference.</p></a><a class="category-card" href="/compare/epoxy-vs-garage-floor-tiles/"><h3>Epoxy vs. garage floor tiles</h3><p>Permanent coating vs. reversible flooring.</p></a><a class="category-card" href="/compare/epoxy-vs-concrete-stain/"><h3>Epoxy vs. concrete stain</h3><p>A new surface on top vs. coloring the concrete itself.</p></a><a class="category-card" href="/compare/epoxy-vs-garage-floor-paint/"><h3>Epoxy vs. garage floor paint</h3><p>Why &quot;epoxy&quot; and &quot;floor paint&quot; are not the same product.</p></a><a class="category-card" href="/compare/diy-kit-vs-professional/"><h3>DIY kit vs. professional install</h3><p>The real cost, time, and risk tradeoff.</p></a><a class="category-card" href="/compare/grind-vs-acid-etch/"><h3>Grinding vs. acid etching</h3><p>The prep decision most responsible for whether a coating lasts.</p></a><a class="category-card" href="/compare/water-based-vs-100-solids-epoxy/"><h3>Water-based vs. 100% solids epoxy</h3><p>What solids content actually means for film thickness and durability.</p></a>
+    </div>
+    <div class="pro-cta">
+    <div class="pro-cta-text">
+      <h3>Rather have a pro do it?</h3>
+      <p>Upload a photo and get a priced estimate in seconds — no obligation.</p>
+    </div>
+    <a class="btn btn-p" href="/">Get my instant estimate →</a>
+  </div>
+      
+    </div>
+  </div>
+</main>
+<footer class="site-foot"><div class="wrap">© 2026 EpoxyGrind · <a href="/diy/">DIY guides</a> · <a href="/services/">Contractor services</a></div></footer>
+<script src="/auth/nav.js" type="module"></script>
+<script>
+  var b=document.getElementById('burger'),m=document.getElementById('mobile');
+  if(b&&m){b.addEventListener('click',function(){m.classList.toggle('open')});m.querySelectorAll('a,button').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});}
+</script>
+<script>
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.video-embed-facade');
+    if(!btn) return;
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + btn.dataset.videoId + '?autoplay=1';
+    iframe.title = btn.dataset.videoTitle || 'YouTube video';
+    iframe.loading = 'lazy';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    btn.replaceWith(iframe);
+  });
+</script>
+</body>
+</html>

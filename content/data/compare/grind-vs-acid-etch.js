@@ -1,0 +1,28 @@
+export default {
+  slug: 'grind-vs-acid-etch',
+  title: 'Grinding vs. Acid Etching: Which Concrete Prep Method Should You Use?',
+  metaTitle: 'Grinding vs. Acid Etching for Epoxy Prep | EpoxyGrind',
+  metaDescription: 'Grinding and acid etching both profile concrete for epoxy — but they are not equally reliable. Here is the real tradeoff.',
+  dek: 'This is the single decision most responsible for whether a DIY epoxy job lasts years or fails within a season.',
+  sideALabel: 'Grinding',
+  sideBLabel: 'Acid Etching',
+  introHtml: `<p>Both grinding and acid etching aim to give epoxy a surface it can actually bond to — but they get there differently, and they're not equally reliable. See our full <a href="/diy/how-to-prep-concrete-for-epoxy/">concrete prep guide</a> for the complete process either way.</p>`,
+  rows: [
+    { label: 'Method', a: 'Mechanical abrasion (diamond cup wheel)', b: 'Chemical reaction (diluted acid)' },
+    { label: 'Consistency', a: 'Consistent profile across the whole slab', b: 'Varies with slab composition, dilution, rinse thoroughness' },
+    { label: 'Tools/equipment needed', a: 'Grinder, dust shroud, extractor', b: 'Acid solution, neutralizer, PPE, hose' },
+    { label: 'Physical labor', a: 'Higher — running a grinder for hours', b: 'Lower — apply, scrub, rinse, neutralize' },
+    { label: 'Risk of a failed result', a: 'Low, if done with correct grit', b: 'Higher — under-dilution, poor rinse, or slab variation can leave a weak or slick film' },
+    { label: 'Professional standard', a: 'Recommended by most manufacturers, used by warrantied pros', b: 'Acceptable but less commonly used professionally' },
+  ],
+  verdictAHtml: `<p>Choose grinding if you have access to a grinder (or are willing to rent/buy one) — it's the more reliable method regardless of your slab's specific composition, and it's what most epoxy manufacturers recommend for a durable bond. See our <a href="/best/concrete-grinders-diy/">concrete grinder rankings</a>.</p>`,
+  verdictBHtml: `<p>Etching can work if you genuinely don't have grinder access and are following the dilution and rinse instructions carefully — many retail kits include an etch solution as their default instructions, which is worth checking before buying anything separately.</p>`,
+  ctaA: { label: 'Concrete grinder rankings →', href: '/best/concrete-grinders-diy/' },
+  faq: [
+    { q: 'Is acid etching actually unsafe to do at home?', a: 'It\'s manageable with proper PPE (gloves, eye protection) and ventilation, and following the product\'s dilution and neutralization instructions exactly — the risk isn\'t primarily to you, it\'s to the coating\'s bond quality if the etch isn\'t done thoroughly and rinsed completely.' },
+    { q: 'Why do so many DIY epoxy failures trace back to etching specifically?', a: 'Etching results vary more than grinding does — dilution errors, incomplete rinsing, or slab composition variance can all leave a weaker bond than intended, and unlike grinding, you can\'t easily "check the profile" by touch the way you can after grinding.' },
+    { q: 'Can I etch a floor that has old paint or coating on it?', a: 'Not effectively — etching is for bare, clean concrete. Old coating needs to be mechanically removed (grinding or a coating-removal wheel) regardless of which method you use for the final profile pass.' },
+    { q: 'Does etching cost less than grinding overall?', a: 'Often yes if you don\'t already own or need to rent a grinder, since etch solution is relatively inexpensive and sometimes bundled in retail kits — but weigh that against the higher risk of an inconsistent result that could cost you a full redo.' },
+  ],
+  proCtaMidPage: false,
+};

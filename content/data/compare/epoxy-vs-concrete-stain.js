@@ -1,0 +1,27 @@
+export default {
+  slug: 'epoxy-vs-concrete-stain',
+  title: 'Epoxy vs. Concrete Stain: Which Finish Fits Your Floor?',
+  metaTitle: 'Epoxy Coating vs. Concrete Stain for a Garage Floor | EpoxyGrind',
+  metaDescription: 'Concrete stain keeps the natural texture and colors the slab itself; epoxy coats over it with a thick, durable film. Here is which one fits your goal.',
+  dek: 'Stain changes the color of the concrete itself; epoxy adds an entirely new surface on top of it. Different goals, different results.',
+  sideALabel: 'Epoxy Coating',
+  sideBLabel: 'Concrete Stain',
+  introHtml: `<p>Stain and epoxy are often confused because both "color" a concrete floor, but they work completely differently. Stain is a translucent color that penetrates and reacts with (acid stain) or sits within (water-based stain) the surface of the concrete — the slab's natural texture and any imperfections remain visible through it. Epoxy is an opaque or semi-opaque film applied on top, which hides the concrete's texture entirely and adds real thickness and abrasion resistance.</p>`,
+  rows: [
+    { label: 'Surface texture after finishing', a: 'Hidden — smooth new film', b: 'Preserved — natural concrete texture visible' },
+    { label: 'Color result', a: 'Opaque, wide color range including flake/metallic effects', b: 'Translucent, variegated, more natural/mottled look' },
+    { label: 'Abrasion/chemical resistance', a: 'High, especially with a topcoat', b: 'Lower — usually needs a sealer on top for real protection' },
+    { label: 'Hides slab imperfections', a: 'Yes — a thick coat can mask minor flaws', b: 'No — stain highlights, doesn\'t hide, existing texture/flaws' },
+    { label: 'Typical install labor', a: 'Higher — grinding, priming, multi-coat process', b: 'Lower — clean, apply stain, seal' },
+  ],
+  verdictAHtml: `<p>Choose epoxy if you want a durable, easy-to-clean surface that can hide minor slab imperfections and offers real abrasion/chemical resistance for a working garage. See our <a href="/diy/how-to-epoxy-garage-floor/">complete epoxy guide</a>.</p>`,
+  verdictBHtml: `<p>Choose stain if you like the natural concrete look and texture and mainly want to add color rather than change the surface entirely — this is a more common choice for patios, basements used as living space, or anyone who specifically wants a bare-concrete aesthetic. Pair it with a quality <a href="/best/best-concrete-sealers/">concrete sealer</a> for protection, since stain alone offers limited durability against oil, chemicals, and abrasion.</p>`,
+  ctaA: { label: 'Epoxy kit rankings →', href: '/best/best-garage-floor-epoxy-kits/' },
+  faq: [
+    { q: 'Can I stain concrete and then epoxy coat over it later?', a: 'Generally not recommended without significant additional prep — epoxy needs a properly profiled, contamination-free surface, and stain (especially acid stain) can interfere with adhesion unless it\'s fully removed or the surface is aggressively ground first.' },
+    { q: 'Does stain hide cracks and imperfections in the slab?', a: 'No — stain actually tends to highlight existing texture and imperfections rather than hide them, since it\'s translucent and follows the concrete\'s natural surface variation. Address cracks and significant flaws before staining, same as before coating.' },
+    { q: 'Is stain a good choice for a garage that sees regular vehicle traffic and oil?', a: 'Less ideal than epoxy — stain alone (even sealed) doesn\'t offer the same chemical and abrasion resistance as a cured epoxy or polyaspartic system, and oil stains can be more visible and harder to fully remove from an unsealed or lightly sealed stained surface.' },
+    { q: 'Which is cheaper, staining or epoxy coating?', a: 'Staining is generally less expensive in materials and labor, since it skips the grinding, priming, and multi-coat process epoxy requires — but factor in a quality sealer\'s cost and reapplication cycle for a fair comparison.' },
+  ],
+  proCtaMidPage: false,
+};

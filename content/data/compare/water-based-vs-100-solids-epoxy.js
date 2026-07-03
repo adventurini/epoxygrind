@@ -1,0 +1,28 @@
+export default {
+  slug: 'water-based-vs-100-solids-epoxy',
+  title: 'Water-Based vs. 100% Solids Epoxy: What Solids Content Actually Means',
+  metaTitle: 'Water-Based vs. 100% Solids Epoxy Coating | EpoxyGrind',
+  metaDescription: 'Solids content determines how thick your cured epoxy film actually is — here is what changes between a water-based and a 100%-solids system.',
+  dek: '"Solids content" isn\'t marketing fluff — it\'s a direct measure of how much of what you roll on actually stays on the floor once it cures.',
+  sideALabel: '100% Solids Epoxy',
+  sideBLabel: 'Water-Based Epoxy',
+  introHtml: `<p>Solids content is the percentage of a coating's wet volume that remains as cured film — the rest evaporates during cure. A 100%-solids epoxy contains no water or evaporating solvent, so nearly everything you apply becomes the final film. Water-based epoxy is diluted with water, which evaporates out during cure, leaving a thinner final film even at the same wet application thickness.</p>`,
+  rows: [
+    { label: 'Cured film thickness (same application rate)', a: 'Thicker — full volume remains', b: 'Thinner — water evaporates out' },
+    { label: 'Durability under vehicle traffic', a: 'Higher', b: 'Lower, more prone to wear over time' },
+    { label: 'Odor/VOC during application', a: 'Can have stronger odor, some VOC', b: 'Lower odor, often lower VOC' },
+    { label: 'Working time (pot life)', a: 'Shorter, especially in warm conditions', b: 'Generally longer, more forgiving' },
+    { label: 'Typical price', a: 'Higher', b: 'Lower' },
+    { label: 'Ease of DIY application', a: 'Less forgiving of slow technique', b: 'More forgiving for a first-timer' },
+  ],
+  verdictAHtml: `<p>Choose 100% solids for a garage that sees real vehicle traffic and where long-term durability matters most — it's the standard for a floor you want to last years without recoating. See our <a href="/best/best-garage-floor-epoxy-kits/">garage floor epoxy kit rankings</a>, most of which are 100%-solids systems.</p>`,
+  verdictBHtml: `<p>Water-based can make sense for a lower-traffic space, a first DIY attempt where forgiving working time matters more than maximum durability, or where odor/VOC during application is a real concern (an attached garage near living space, poor ventilation options).</p>`,
+  ctaB: { label: 'Epoxy kit rankings →', href: '/best/best-garage-floor-epoxy-kits/' },
+  faq: [
+    { q: 'How do I check a product\'s solids content before buying?', a: 'Check the manufacturer\'s spec sheet or product page — reputable brands state solids content explicitly. If a listing doesn\'t mention it at all, that\'s worth treating as a caution flag rather than assuming it\'s 100% solids by default.' },
+    { q: 'Is water-based epoxy not "real" epoxy?', a: 'It\'s genuinely epoxy chemistry, just formulated with water as a carrier that evaporates out — it\'s a legitimate product category, just with a thinner resulting film and generally lower durability than a 100%-solids formulation.' },
+    { q: 'Can I apply a 100%-solids topcoat over a water-based base coat?', a: 'Compatibility depends on the specific products — check with the manufacturer or stay within one system\'s recommended base/topcoat pairing rather than assuming cross-compatibility.' },
+    { q: 'Does higher solids content always mean a better product?', a: 'For durability specifically, generally yes — but it\'s one factor among several (proper prep, correct mixing, adequate coats) that determine how a floor actually performs. A 100%-solids product applied over bad prep still fails.' },
+  ],
+  proCtaMidPage: false,
+};

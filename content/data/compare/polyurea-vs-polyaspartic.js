@@ -1,0 +1,26 @@
+export default {
+  slug: 'polyurea-vs-polyaspartic',
+  title: 'Polyurea vs. Polyaspartic: What\'s the Actual Difference?',
+  metaTitle: 'Polyurea vs. Polyaspartic Floor Coating | EpoxyGrind',
+  metaDescription: 'Polyurea and polyaspartic are often marketed together but chemically different — here is what actually separates them for a garage floor.',
+  dek: 'These two get lumped together in marketing more than any other pair of coating terms — here is the real chemical and practical difference.',
+  sideALabel: 'Polyurea',
+  sideBLabel: 'Polyaspartic',
+  introHtml: `<p>Polyaspartic is technically a subclass of polyurea chemistry — which is exactly why the two terms get used almost interchangeably in flooring marketing, and why the distinction confuses more DIYers than almost any other coating terminology question. In practice, when a flooring product is labeled specifically "polyaspartic," it's referring to a formulation tuned for a longer, more controllable working time than a "pure" fast-set polyurea, which is why polyaspartic became the more common DIY-marketed option.</p>`,
+  rows: [
+    { label: 'Cure speed', a: 'Extremely fast — can be minutes for pure spray polyurea', b: 'Fast, but tunable — minutes to an hour+ working time' },
+    { label: 'Common application method', a: 'Often professional spray-applied', b: 'Roll or spray, more DIY-accessible formulations' },
+    { label: 'DIY availability', a: 'Less common as a retail DIY kit', b: 'More common as a retail DIY kit' },
+    { label: 'Typical use case', a: 'Fast commercial turnaround, often professional-only', b: 'DIY and pro garage/residential coatings' },
+    { label: 'UV stability', a: 'Generally good', b: 'Generally good' },
+  ],
+  verdictAHtml: `<p>"Pure" polyurea is usually the choice for fast commercial or industrial turnaround jobs — think a warehouse floor that needs to be back in service the same day — and it's typically spray-applied by a professional crew with specialized equipment, not something most DIYers will encounter as a retail kit.</p>`,
+  verdictBHtml: `<p>Polyaspartic is the practical DIY answer when you want fast cure and good UV/hot-tire resistance without needing commercial spray equipment — see our <a href="/best/best-polyaspartic-kits/">polyaspartic kit rankings</a> for retail options sized for a garage.</p>`,
+  faq: [
+    { q: 'If polyaspartic is a type of polyurea, why do brands market them as separate products?', a: 'Because the formulation differences matter practically even though the underlying chemistry is related — a polyaspartic formulation is specifically tuned for a workable application window, which is the property DIYers and most residential applications actually need.' },
+    { q: 'Is one more expensive than the other?', a: 'Pure polyurea systems, especially spray-applied commercial-grade ones, tend to be more expensive and less accessible to DIYers. Polyaspartic retail kits are priced comparably to premium epoxy kits.' },
+    { q: 'Can I DIY a true polyurea floor?', a: 'It\'s uncommon — the fast cure that makes pure polyurea attractive for commercial spray jobs also makes it very difficult to hand-apply with a roller or squeegee without specialized equipment. Polyaspartic is the realistic DIY equivalent.' },
+    { q: 'Does it matter which one I pick for a residential garage?', a: 'For most DIYers, this decision is really "epoxy vs. polyaspartic" rather than "polyurea vs. polyaspartic," since pure polyurea DIY kits are rare — see our epoxy vs. polyaspartic comparison for the decision that actually applies to a typical garage project.' },
+  ],
+  proCtaMidPage: false,
+};

@@ -18,10 +18,11 @@ import { dirname, join } from 'node:path';
 import {
   renderRankingPage,
   renderReviewPage,
-  renderComparePage,
+  renderConceptComparePage,
   renderDiyGuidePage,
   renderShoppingListPage,
   renderDiyHubPage,
+  renderCompareHubPage,
 } from '../lib/content-templates.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -71,11 +72,25 @@ async function buildDiyHub() {
   }
 }
 
+async function buildHub(dataFile, outPath, renderFn) {
+  const hubPath = join(DATA_DIR, dataFile);
+  if (!existsSync(hubPath)) return;
+  const mod = await import(`file://${hubPath}?t=${Date.now()}`);
+  try {
+    const html = renderFn(mod.default);
+    writePage(join(ROOT, ...outPath), html);
+  } catch (err) {
+    failures += 1;
+    console.error(`  FAILED ${dataFile}: ${err.message}`);
+  }
+}
+
 async function run() {
   await buildDiyHub();
+  await buildHub('compare-hub.js', ['compare', 'index.html'], renderCompareHubPage);
   await buildSection('rankings', 'best', renderRankingPage);
   await buildSection('reviews', 'reviews', renderReviewPage);
-  await buildSection('compare', 'compare', renderComparePage);
+  await buildSection('compare', 'compare', renderConceptComparePage);
   await buildSection('diy', 'diy', renderDiyGuidePage);
   await buildSection('shopping-lists', 'diy', renderShoppingListPage);
 
