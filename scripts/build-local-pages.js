@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 /**
  * Builds the local SEO pages (Master SEO spec_4 §5) from
- * content/data/metros.json — the national hub, all state rollups, and the
- * 10 Tier 1 city hubs. Tier 2 (40) and Tier 3 (281) are data-only per the
- * spec's own launch sequence ("10 Tier 1 hubs → verify indexing in GSC →
- * then expand") — not a shortcut, the spec's actual plan.
+ * content/data/metros.json — the national hub, all state rollups, and a
+ * city hub for every metro in the dataset. The spec's own launch sequence
+ * gates Tier 2/3 behind a GSC indexing checkpoint on Tier 1 ("10 Tier 1
+ * hubs → verify indexing → then expand") — generating all 331 up front is
+ * an explicit owner decision to skip that phased gate, not an oversight.
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { METROS, metroIsPublishable, allStateSlugs, metrosByTier } from '../lib/metros.js';
+import { METROS, metroIsPublishable, allStateSlugs } from '../lib/metros.js';
 import { renderCityHub, renderStateRollup, renderNationalHub } from '../lib/local-templates.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -40,9 +41,8 @@ function run() {
     }
   }
 
-  const tier1 = metrosByTier(1);
-  console.log(`\nTier 1 city hubs (${tier1.length}):`);
-  for (const metro of tier1) {
+  console.log(`\nCity hubs (${METROS.length}):`);
+  for (const metro of METROS) {
     if (!metroIsPublishable(metro)) {
       skipped += 1;
       console.error(`  SKIPPED ${metro.slug}: missing cost_index/climate_region`);

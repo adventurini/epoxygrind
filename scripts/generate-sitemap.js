@@ -14,7 +14,7 @@
 import { writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { METROS, allStateSlugs, metrosByTier } from '../lib/metros.js';
+import { METROS, allStateSlugs } from '../lib/metros.js';
 
 // TODO: switch to https://epoxygrind.com once the custom domain is
 // connected in Vercel (Supabase auth is already configured for it, but no
@@ -50,10 +50,10 @@ const SHOPPING_LIST_PAGES = listSlugs('shopping-lists');
 const HAS_DIY_HUB = existsSync(join(CONTENT_DATA_DIR, 'diy-hub.js'));
 
 // ── Master SEO spec (spec_4) local pages — from content/data/metros.json ─
-// State rollups: all 51. City hubs: Tier 1 only (10) per the spec's launch
-// sequence — Tier 2 ships after the Tier 1 GSC indexing checkpoint clears.
+// State rollups: all 51. City hubs: every metro (331) — an explicit owner
+// decision to skip the spec's phased Tier 1 → GSC-checkpoint → Tier 2 gate.
 const STATE_PAGES = allStateSlugs().map((state) => ({ state }));
-const CITY_PAGES = metrosByTier(1).map((m) => ({ state: m.state_slug, city: m.slug }));
+const CITY_PAGES = METROS.map((m) => ({ state: m.state_slug, city: m.slug }));
 
 // ── Spec §1 sections, not built yet — populate as each ships ────────────
 /** @type {{ state: string, city: string }[]} */
