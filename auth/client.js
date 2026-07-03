@@ -51,11 +51,16 @@ export async function getAuthClient() {
 }
 
 export function getAuthRedirectUrl(nextPath) {
+  // Falls back to the dashboard when nothing more specific is given (e.g.
+  // clicking "Log in" straight from the marketing nav, with no ?next= and
+  // no gated page to return to) — without this, sign-in landed back on the
+  // homepage with no visible sign that it worked.
   const next =
     nextPath ||
-    new URLSearchParams(window.location.search).get('next');
+    new URLSearchParams(window.location.search).get('next') ||
+    '/app/';
   const url = new URL('/auth/callback/', window.location.origin);
-  if (next && next.startsWith('/')) url.searchParams.set('next', next);
+  if (next.startsWith('/')) url.searchParams.set('next', next);
   return url.toString();
 }
 

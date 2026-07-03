@@ -228,6 +228,10 @@ html:not(.no-js) .reveal.in{opacity:1;transform:none}
 .nav-auth a.btn,.nav-auth a.btn-p{color:#fff!important}
 .nav-auth a.btn:hover,.nav-auth a.btn-p:hover{color:#fff!important}
 .nav-auth .btn-sm{padding:10px 16px;font-size:12px;text-transform:uppercase}
+.nav-auth button[data-nav-logout]{font:inherit;font-size:14px;font-weight:600;color:var(--ink-soft);background:none;border:0;padding:0;cursor:pointer}
+.nav-auth button[data-nav-logout]:hover{color:var(--blue)}
+.nav-auth button[data-nav-logout]:disabled{opacity:.6;cursor:default}
+.mobile button[data-nav-logout]{font:inherit;text-align:left;width:100%;padding:12px 0;border-bottom:1px solid var(--line);border-top:0;border-left:0;border-right:0;font-weight:600;color:var(--ink);background:none;cursor:pointer}
 .nav-svc{font-family:var(--ff-m)!important;font-size:11px!important;letter-spacing:.06em;text-transform:uppercase;color:var(--blue)!important;border:1px solid rgba(26,92,214,.35);padding:8px 12px;border-radius:999px;background:var(--blue-soft)}
 .nav-svc:hover{background:var(--blue);color:#fff!important;border-color:var(--blue)}
 

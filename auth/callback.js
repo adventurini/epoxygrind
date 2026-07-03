@@ -2,7 +2,7 @@ import { getAuthClient, markEmailVerifiedFromCallback, withAuthTimeout } from '.
 
 const params = new URLSearchParams(window.location.search);
 const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
-const next = params.get('next') || '/';
+const next = params.get('next') || '/app/';
 const errorDesc = params.get('error_description') || hashParams.get('error_description');
 const statusEl = document.getElementById('status');
 const errorEl = document.getElementById('error');
