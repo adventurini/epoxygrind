@@ -99,8 +99,30 @@ function designEditorControlsHtml(opts = {}) {
     <div data-role="design-editor-mount" hidden></div>`;
 }
 
+/** Thumbnail strip of past generated versions so a user who doesn't like
+ * the current render can compare against earlier attempts instead of only
+ * ever seeing the latest one. In-memory for the current viewing session. */
+function historyThumbnailsHtml(opts = {}) {
+  const history = opts.previewHistory || [];
+  if (history.length < 2) return '';
+  return `<div class="preview-history">
+    <p class="label">Your generated versions — click to compare</p>
+    <div class="preview-history-strip">
+      ${history.map((item, i) => `<button type="button" class="preview-history-thumb${i === (opts.activeHistoryIndex ?? 0) ? ' on' : ''}" data-index="${i}" style="background-image:url('${item.image}')" title="Version ${history.length - i}" aria-label="Show version ${history.length - i}"></button>`).join('')}
+    </div>
+  </div>`;
+}
+
 function beforeAfterBlockHtml(originalImage, previewImage, opts = {}) {
-  return `<p class="label">Before &amp; after — drag to compare</p>${beforeAfterHtml(originalImage, previewImage)}${designEditorControlsHtml(opts)}`;
+  return `<p class="label">Before &amp; after — drag to compare</p>${beforeAfterHtml(originalImage, previewImage)}${historyThumbnailsHtml(opts)}${designEditorControlsHtml(opts)}`;
+}
+
+/** Wires clicks on the version-history thumbnail strip. */
+function wireHistoryThumbnails(container, opts = {}) {
+  if (!container || typeof opts.onSelectPreview !== 'function') return;
+  container.querySelectorAll('.preview-history-thumb').forEach((btn) => {
+    btn.addEventListener('click', () => opts.onSelectPreview(Number(btn.dataset.index)));
+  });
 }
 
 /** Wires the "Change color, finish, or pattern" toggle inside a rendered before/after block. */
@@ -147,6 +169,7 @@ export function renderBeforeAfterPreview(container, beforeImage, afterImage, opt
   container.innerHTML = beforeAfterBlockHtml(beforeImage, afterImage, opts);
   initBeforeAfterSlider(container.querySelector('.ba-slider'));
   wireDesignEditor(container, opts);
+  wireHistoryThumbnails(container, opts);
 }
 
 function resolveDesign(data, pricing) {
@@ -315,6 +338,7 @@ export function renderEstimate(target, data, opts = {}) {
 
   initBeforeAfterSlider(target.querySelector('.ba-slider'));
   wireDesignEditor(target.querySelector('#estimatePhotoBlock'), opts);
+  wireHistoryThumbnails(target.querySelector('#estimatePhotoBlock'), opts);
 }
 
 export function storageKey(id) {

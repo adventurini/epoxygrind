@@ -67,8 +67,8 @@ export default async function handler(req, res) {
       const coatingType = body.coatingType === 'polyaspartic' ? 'polyaspartic' : 'epoxy';
       const design = resolveDesign({
         finish: finishKey,
-        baseColorHex: body.baseColorHex,
-        flakeColorHex: body.flakeColorHex,
+        baseColor: body.baseColor,
+        flakeColor: body.flakeColor,
         pattern: body.pattern,
       });
 

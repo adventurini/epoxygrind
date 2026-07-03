@@ -42,8 +42,8 @@ function payload() {
   return {
     finish: $('finish').value,
     coatingType: $('coatingType').value,
-    baseColorHex: $('baseColorPicker').value,
-    flakeColorHex: $('finish').value === 'flake' ? $('flakeColorPicker').value : '',
+    baseColor: $('baseColorPicker').value,
+    flakeColor: $('finish').value === 'flake' ? $('flakeColorPicker').value : '',
     pattern: $('pattern').value,
     customerName: $('customerName').value.trim(),
     email: $('customerEmail').value.trim(),
@@ -94,29 +94,23 @@ function syncPatterns() {
   $('flakeWrap').hidden = $('finish').value !== 'flake';
 }
 
-function bindSwatches(container, colors, picker, hexEl, onPick) {
+/** Swatch-only color picker — no free hex, every option is a real,
+ * orderable manufacturer color/blend (see calculator/design-options.js). */
+function bindSwatches(container, colors, picker, labelEl, onPick) {
   container.innerHTML = colors.map((c) =>
-    `<button type="button" class="swatch${picker.value.toUpperCase() === c.hex.toUpperCase() ? ' on' : ''}" style="background:${c.hex}" data-hex="${c.hex}" title="${c.label}"></button>`,
+    `<button type="button" class="swatch${picker.value === c.id ? ' on' : ''}" style="background:${c.hex}" data-id="${c.id}" title="${c.label}"></button>`,
   ).join('');
   container.querySelectorAll('.swatch').forEach((btn) => {
-    btn.addEventListener('click', () => onPick(btn.dataset.hex));
+    btn.addEventListener('click', () => onPick(btn.dataset.id));
   });
 }
 
-const PICKER_ICON = '<svg class="picker-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20l4-4"/><path d="M14.5 4.5l5 5L9 20H4v-5L14.5 4.5z"/></svg>';
-
-function syncPickerWrap(picker) {
-  const wrap = picker.closest('.color-picker-wrap');
-  if (!wrap) return;
-  const swatch = wrap.querySelector('.color-picker-swatch');
-  if (swatch) swatch.style.background = picker.value;
-}
-
-function setColor(picker, hexEl, container, colors, hex) {
-  picker.value = hex;
-  hexEl.textContent = hex.toUpperCase();
-  syncPickerWrap(picker);
-  bindSwatches(container, colors, picker, hexEl, (h) => setColor(picker, hexEl, container, colors, h));
+function setColor(picker, labelEl, swatchEl, container, colors, id) {
+  const color = colors.find((c) => c.id === id) || colors[0];
+  picker.value = color.id;
+  labelEl.textContent = color.label;
+  if (swatchEl) swatchEl.style.background = color.hex;
+  bindSwatches(container, colors, picker, labelEl, (nextId) => setColor(picker, labelEl, swatchEl, container, colors, nextId));
 }
 
 function selectSize(size) {
@@ -221,22 +215,12 @@ function init() {
   ).join('');
 
   syncPatterns();
-  setColor($('baseColorPicker'), $('baseHex'), $('baseSwatches'), BASE_COLORS, '#4A4F54');
-  setColor($('flakeColorPicker'), $('flakeHex'), $('flakeSwatches'), FLAKE_COLORS, '#6B7078');
+  setColor($('baseColorPicker'), $('baseHex'), $('baseSwatch'), $('baseSwatches'), BASE_COLORS, 'charcoal');
+  setColor($('flakeColorPicker'), $('flakeHex'), $('flakeSwatch'), $('flakeSwatches'), FLAKE_COLORS, 'gravel');
   selectSize(selectedSize);
   syncSubmitState();
 
   $('finish').addEventListener('change', syncPatterns);
-  $('baseColorPicker').addEventListener('input', (e) => setColor($('baseColorPicker'), $('baseHex'), $('baseSwatches'), BASE_COLORS, e.target.value));
-  $('flakeColorPicker').addEventListener('input', (e) => setColor($('flakeColorPicker'), $('flakeHex'), $('flakeSwatches'), FLAKE_COLORS, e.target.value));
-
-  document.querySelectorAll('.color-picker-wrap').forEach((wrap) => {
-    if (!wrap.querySelector('.picker-glyph')) {
-      wrap.insertAdjacentHTML('beforeend', PICKER_ICON);
-    }
-    const input = wrap.querySelector('input[type=color]');
-    if (input) syncPickerWrap(input);
-  });
 
   const zone = $('uploadZone');
   zone.addEventListener('click', () => $('photoInput').click());

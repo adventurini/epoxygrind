@@ -15,6 +15,7 @@ import { createEstimateProgress } from '/calculator/estimate-progress.js?v=fix3'
 import { createPreviewProgress } from '/calculator/preview-progress.js?v=fix3';
 import { initDashboard, refreshDashboardProfile } from '/app/shell.js';
 import { authFetch } from '/auth/client.js';
+import { track } from '/calculator/analytics.js';
 
 const params = new URLSearchParams(location.search);
 let estimateId = params.get('id');
@@ -32,6 +33,36 @@ const errorAction = document.getElementById('errorAction');
 
 let currentEstimate = null;
 let allowDesignEdit = false;
+// In-memory only (not persisted): lets a user flip back to a version they
+// generated earlier in this viewing session instead of only ever seeing
+// the latest regenerate. Most recent first; capped so it can't grow unbounded.
+const MAX_PREVIEW_HISTORY = 6;
+let previewHistory = [];
+let activeHistoryIndex = 0;
+
+function pushPreviewHistory(entry) {
+  previewHistory = [entry, ...previewHistory].slice(0, MAX_PREVIEW_HISTORY);
+  activeHistoryIndex = 0;
+}
+
+function seedPreviewHistoryFromEstimate(data) {
+  const image = (data.previews || []).find((item) => item.id === 'original' && item.image)?.image;
+  previewHistory = image ? [{ image, design: data.design, pricing: data.pricing }] : [];
+  activeHistoryIndex = 0;
+}
+
+function selectPreviewFromHistory(index) {
+  const entry = previewHistory[index];
+  if (!entry || !currentEstimate) return;
+  activeHistoryIndex = index;
+  currentEstimate = {
+    ...currentEstimate,
+    design: entry.design,
+    pricing: entry.pricing,
+    previews: [{ id: 'original', label: 'Your garage (new floor)', image: entry.image }],
+  };
+  showEstimate(currentEstimate);
+}
 
 function toast(msg) {
   toastEl.textContent = msg;
@@ -62,8 +93,8 @@ function designSnapshot(data) {
     finish: data.meta?.finish || data.design?.finish || 'flake',
     coatingType: data.meta?.coatingType || 'epoxy',
     pattern: data.design?.pattern,
-    baseColorHex: data.design?.baseColorHex,
-    flakeColorHex: data.design?.flakeColorHex,
+    baseColor: data.design?.baseColor,
+    flakeColor: data.design?.flakeColor,
   };
 }
 
@@ -73,6 +104,9 @@ function showEstimate(data) {
     allowEdit: allowDesignEdit,
     currentDesign: designSnapshot(data),
     onRegenerateDesign: regenerateDesign,
+    previewHistory,
+    activeHistoryIndex,
+    onSelectPreview: selectPreviewFromHistory,
   });
   loading.hidden = true;
   error.hidden = true;
@@ -108,8 +142,8 @@ async function regenerateDesign(fields) {
         finish: fields.finish,
         coatingType: fields.coatingType,
         pattern: fields.pattern,
-        baseColorHex: fields.baseColorHex,
-        flakeColorHex: fields.flakeColorHex,
+        baseColor: fields.baseColor,
+        flakeColor: fields.flakeColor,
         sqFt: currentEstimate.analysis?.estimatedSqFt || currentEstimate.pricing?.sqFt,
         originalImage: currentEstimate.originalImage,
         spaceDescription: currentEstimate.previewContext?.spaceDescription || '',
@@ -128,6 +162,7 @@ async function regenerateDesign(fields) {
       previews: [{ id: resData.preview.id, label: resData.preview.label, image: resData.preview.image }],
       meta: { ...currentEstimate.meta, finish: fields.finish, coatingType: fields.coatingType },
     };
+    pushPreviewHistory({ image: resData.preview.image, design: resData.design, pricing: resData.pricing });
 
     if (estimateId) {
       // Best-effort persistence — the view above already reflects the
@@ -183,10 +218,14 @@ async function generatePreviewInBackground(data) {
     }
     progress.finish();
     currentEstimate = { ...currentEstimate, previews: apiData.previews, previewPaths: apiData.previewPaths || [] };
+    pushPreviewHistory({ image: previewImage, design: currentEstimate.design, pricing: currentEstimate.pricing });
     renderBeforeAfterPreview(photoBlock, currentEstimate.originalImage, previewImage, {
       allowEdit: allowDesignEdit,
       currentDesign: designSnapshot(currentEstimate),
       onRegenerateDesign: regenerateDesign,
+      previewHistory,
+      activeHistoryIndex,
+      onSelectPreview: selectPreviewFromHistory,
     });
   } catch (err) {
     toast(err.message || 'Could not generate floor preview.');
@@ -228,6 +267,7 @@ async function shareEstimate() {
   try {
     await navigator.clipboard.writeText(window.location.href);
     toast('Share link copied.');
+    track('share_link_copied');
   } catch {
     toast('Could not copy link.');
   }
@@ -290,6 +330,7 @@ async function runPendingEstimate() {
 
     progress.finish();
     showEstimate(estimate);
+    track('estimate_generated');
     void refreshDashboardProfile();
     void generatePreviewInBackground(estimate);
   } catch (err) {
@@ -324,6 +365,7 @@ async function loadEstimateById(id, user) {
   const apiData = await loadFromApi(id);
   if (apiData) {
     allowDesignEdit = Boolean(user && apiData.userId && user.id === apiData.userId);
+    seedPreviewHistoryFromEstimate(apiData);
     showEstimate(apiData);
     return true;
   }
@@ -332,6 +374,7 @@ async function loadEstimateById(id, user) {
   if (sessionData) {
     // Cached client-side from this same browser session — always the owner.
     allowDesignEdit = true;
+    seedPreviewHistoryFromEstimate(sessionData);
     showEstimate(sessionData);
     return true;
   }

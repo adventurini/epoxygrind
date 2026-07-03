@@ -6,16 +6,15 @@ const FINISH_OPTIONS = [
   { id: 'metallic', label: 'Metallic' },
 ];
 
-const PICKER_ICON = '<svg class="picker-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20l4-4"/><path d="M14.5 4.5l5 5L9 20H4v-5L14.5 4.5z"/></svg>';
-
 function optionsHtml(list, current) {
   return list.map((item) => `<option value="${item.id}"${item.id === current ? ' selected' : ''}>${item.label}</option>`).join('');
 }
 
-function swatchesHtml(colors, currentHex) {
-  const hex = (currentHex || '').toUpperCase();
+/** Swatch-only picker — no free hex, every option is a real, orderable
+ * manufacturer color/blend (see calculator/design-options.js). */
+function swatchesHtml(colors, currentId) {
   return colors.map((c) =>
-    `<button type="button" class="swatch${hex === c.hex.toUpperCase() ? ' on' : ''}" style="background:${c.hex}" data-hex="${c.hex}" title="${c.label}"></button>`,
+    `<button type="button" class="swatch${currentId === c.id ? ' on' : ''}" style="background:${c.hex}" data-id="${c.id}" title="${c.label}"></button>`,
   ).join('');
 }
 
@@ -25,15 +24,15 @@ function swatchesHtml(colors, currentHex) {
  * from calculator.js's homepage form — only the fields that affect the
  * generated image and pricing apply here (no photo/name/email/zip).
  * @param {HTMLElement} root
- * @param {{finish?:string, coatingType?:string, pattern?:string, baseColorHex?:string, flakeColorHex?:string}} current
- * @param {(fields: {finish:string, coatingType:string, pattern:string, baseColorHex:string, flakeColorHex:string}) => void} onRegenerate
+ * @param {{finish?:string, coatingType?:string, pattern?:string, baseColor?:string, flakeColor?:string}} current
+ * @param {(fields: {finish:string, coatingType:string, pattern:string, baseColor:string, flakeColor:string}) => void} onRegenerate
  */
 export function renderDesignEditor(root, current, onRegenerate) {
   const finish = ['solid', 'flake', 'metallic'].includes(current.finish) ? current.finish : 'flake';
   const coatingType = current.coatingType === 'polyaspartic' ? 'polyaspartic' : 'epoxy';
   const patterns = getPatternsForFinish(finish);
-  const baseHex = current.baseColorHex || '#4A4F54';
-  const flakeHex = current.flakeColorHex || '#6B7078';
+  const baseColor = BASE_COLORS.find((c) => c.id === current.baseColor) || BASE_COLORS.find((c) => c.id === 'charcoal');
+  const flakeColor = FLAKE_COLORS.find((c) => c.id === current.flakeColor) || FLAKE_COLORS.find((c) => c.id === 'gravel');
 
   root.innerHTML = `
     <div class="design-editor">
@@ -46,27 +45,25 @@ export function renderDesignEditor(root, current, onRegenerate) {
         <label class="fld"><span>Base color</span>
           <div class="color-line">
             <div class="color-picker-wrap">
-              <span class="color-picker-swatch" style="background:${baseHex}"></span>
-              <input type="color" data-field="baseColorPicker" value="${baseHex}" aria-label="Pick base color">
-              ${PICKER_ICON}
+              <span class="color-picker-swatch" data-field="baseSwatch" style="background:${baseColor.hex}"></span>
+              <input type="hidden" data-field="baseColorPicker" value="${baseColor.id}">
             </div>
-            <code data-field="baseHex">${baseHex.toUpperCase()}</code>
-            <div class="swatches" data-field="baseSwatches">${swatchesHtml(BASE_COLORS, baseHex)}</div>
+            <code data-field="baseHex">${baseColor.label}</code>
+            <div class="swatches" data-field="baseSwatches">${swatchesHtml(BASE_COLORS, baseColor.id)}</div>
           </div>
         </label>
         <label class="fld" data-field="flakeWrap"${finish !== 'flake' ? ' hidden' : ''}><span>Flake color</span>
           <div class="color-line">
             <div class="color-picker-wrap">
-              <span class="color-picker-swatch" style="background:${flakeHex}"></span>
-              <input type="color" data-field="flakeColorPicker" value="${flakeHex}" aria-label="Pick flake color">
-              ${PICKER_ICON}
+              <span class="color-picker-swatch" data-field="flakeSwatch" style="background:${flakeColor.hex}"></span>
+              <input type="hidden" data-field="flakeColorPicker" value="${flakeColor.id}">
             </div>
-            <code data-field="flakeHex">${flakeHex.toUpperCase()}</code>
-            <div class="swatches" data-field="flakeSwatches">${swatchesHtml(FLAKE_COLORS, flakeHex)}</div>
+            <code data-field="flakeHex">${flakeColor.label}</code>
+            <div class="swatches" data-field="flakeSwatches">${swatchesHtml(FLAKE_COLORS, flakeColor.id)}</div>
           </div>
         </label>
       </div>
-      <button type="button" class="btn btn-p btn-sm" data-field="regenerateBtn" style="width:100%;justify-content:center;margin-top:4px">Regenerate preview →</button>
+      <button type="button" class="btn btn-p btn-sm" data-field="regenerateBtn" style="width:100%;justify-content:center;margin-top:4px">Generate another version →</button>
     </div>`;
 
   const q = (sel) => root.querySelector(sel);
@@ -78,31 +75,29 @@ export function renderDesignEditor(root, current, onRegenerate) {
     q('[data-field="flakeWrap"]').hidden = f !== 'flake';
   }
 
-  function setBaseColor(hex) {
-    q('[data-field="baseColorPicker"]').value = hex;
-    q('[data-field="baseHex"]').textContent = hex.toUpperCase();
-    const swatch = q('[data-field="baseColorPicker"]').closest('.color-picker-wrap')?.querySelector('.color-picker-swatch');
-    if (swatch) swatch.style.background = hex;
+  function setBaseColor(id) {
+    const c = BASE_COLORS.find((item) => item.id === id) || BASE_COLORS[0];
+    q('[data-field="baseColorPicker"]').value = c.id;
+    q('[data-field="baseHex"]').textContent = c.label;
+    q('[data-field="baseSwatch"]').style.background = c.hex;
     const container = q('[data-field="baseSwatches"]');
-    container.innerHTML = swatchesHtml(BASE_COLORS, hex);
-    container.querySelectorAll('.swatch').forEach((btn) => btn.addEventListener('click', () => setBaseColor(btn.dataset.hex)));
+    container.innerHTML = swatchesHtml(BASE_COLORS, c.id);
+    container.querySelectorAll('.swatch').forEach((btn) => btn.addEventListener('click', () => setBaseColor(btn.dataset.id)));
   }
 
-  function setFlakeColor(hex) {
-    q('[data-field="flakeColorPicker"]').value = hex;
-    q('[data-field="flakeHex"]').textContent = hex.toUpperCase();
-    const swatch = q('[data-field="flakeColorPicker"]').closest('.color-picker-wrap')?.querySelector('.color-picker-swatch');
-    if (swatch) swatch.style.background = hex;
+  function setFlakeColor(id) {
+    const c = FLAKE_COLORS.find((item) => item.id === id) || FLAKE_COLORS[0];
+    q('[data-field="flakeColorPicker"]').value = c.id;
+    q('[data-field="flakeHex"]').textContent = c.label;
+    q('[data-field="flakeSwatch"]').style.background = c.hex;
     const container = q('[data-field="flakeSwatches"]');
-    container.innerHTML = swatchesHtml(FLAKE_COLORS, hex);
-    container.querySelectorAll('.swatch').forEach((btn) => btn.addEventListener('click', () => setFlakeColor(btn.dataset.hex)));
+    container.innerHTML = swatchesHtml(FLAKE_COLORS, c.id);
+    container.querySelectorAll('.swatch').forEach((btn) => btn.addEventListener('click', () => setFlakeColor(btn.dataset.id)));
   }
 
   q('[data-field="finish"]').addEventListener('change', syncPatternOptions);
-  q('[data-field="baseColorPicker"]').addEventListener('input', (e) => setBaseColor(e.target.value));
-  q('[data-field="flakeColorPicker"]').addEventListener('input', (e) => setFlakeColor(e.target.value));
-  q('[data-field="baseSwatches"]').querySelectorAll('.swatch').forEach((btn) => btn.addEventListener('click', () => setBaseColor(btn.dataset.hex)));
-  q('[data-field="flakeSwatches"]').querySelectorAll('.swatch').forEach((btn) => btn.addEventListener('click', () => setFlakeColor(btn.dataset.hex)));
+  q('[data-field="baseSwatches"]').querySelectorAll('.swatch').forEach((btn) => btn.addEventListener('click', () => setBaseColor(btn.dataset.id)));
+  q('[data-field="flakeSwatches"]').querySelectorAll('.swatch').forEach((btn) => btn.addEventListener('click', () => setFlakeColor(btn.dataset.id)));
 
   q('[data-field="regenerateBtn"]').addEventListener('click', () => {
     const finishVal = q('[data-field="finish"]').value;
@@ -110,8 +105,8 @@ export function renderDesignEditor(root, current, onRegenerate) {
       finish: finishVal,
       pattern: q('[data-field="pattern"]').value,
       coatingType: q('[data-field="coatingType"]').value,
-      baseColorHex: q('[data-field="baseColorPicker"]').value,
-      flakeColorHex: finishVal === 'flake' ? q('[data-field="flakeColorPicker"]').value : '',
+      baseColor: q('[data-field="baseColorPicker"]').value,
+      flakeColor: finishVal === 'flake' ? q('[data-field="flakeColorPicker"]').value : '',
     });
   });
 }

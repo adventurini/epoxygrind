@@ -1,23 +1,28 @@
-/** Client-safe color/pattern options (mirrors lib/finish-design.js). */
+/**
+ * Client-safe color/pattern options (mirrors lib/finish-design.js).
+ * Every color is a real, orderable manufacturer color/blend — no free hex,
+ * so every rendered floor maps to something a contractor can actually quote.
+ */
 
 export const BASE_COLORS = [
-  { id: 'charcoal', label: 'Charcoal gray', hex: '#4A4F54' },
   { id: 'light-gray', label: 'Light gray', hex: '#B8BEC6' },
-  { id: 'tan', label: 'Tan / beige', hex: '#C4A882' },
-  { id: 'off-white', label: 'Off white', hex: '#E8E6E1' },
-  { id: 'slate', label: 'Slate blue', hex: '#5C6B7A' },
-  { id: 'terracotta', label: 'Terracotta', hex: '#A65D45' },
+  { id: 'medium-gray', label: 'Medium gray', hex: '#8A8F98' },
+  { id: 'charcoal', label: 'Charcoal gray', hex: '#4A4F54' },
   { id: 'black', label: 'Jet black', hex: '#1C1E22' },
-  { id: 'custom', label: 'Custom', hex: '#888888' },
+  { id: 'tan', label: 'Tan', hex: '#C4A882' },
+  { id: 'off-white', label: 'Off white', hex: '#E8E6E1' },
+  { id: 'tile-red', label: 'Tile red', hex: '#8C3B32' },
+  { id: 'dark-blue', label: 'Dark blue', hex: '#26385C' },
 ];
 
+/** Real, named Torginol vinyl flake blends — see lib/finish-design.js. */
 export const FLAKE_COLORS = [
-  { id: 'gray-black', label: 'Gray / black blend', hex: '#6B7078' },
-  { id: 'tan-brown', label: 'Tan / brown', hex: '#9A7B5A' },
-  { id: 'blue-white', label: 'Blue / white', hex: '#6E8FAF' },
-  { id: 'red-black', label: 'Red / black', hex: '#8B3A3A' },
-  { id: 'granite', label: 'Granite mix', hex: '#7A7570' },
-  { id: 'custom-flake', label: 'Custom blend', hex: '#888888' },
+  { id: 'domino', label: 'Domino', hex: '#8C8C8A' },
+  { id: 'gravel', label: 'Gravel', hex: '#A9A9A7' },
+  { id: 'tidal-wave', label: 'Tidal Wave', hex: '#BEBEBC' },
+  { id: 'cabin-fever', label: 'Cabin Fever', hex: '#BAB6AA' },
+  { id: 'wombat', label: 'Wombat', hex: '#676765' },
+  { id: 'coyote', label: 'Coyote', hex: '#CFC8BB' },
 ];
 
 const PATTERNS = {

@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Epoxy Flooring Cost in Des Moines, IA (2026) — Instant Photo Estimate</title>
 <meta name="description" content="See 2026 epoxy flooring costs in Des Moines, IA by system and space size, plus what to ask before hiring an installer. Get an instant photo estimate — free, no obligation.">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
+<link rel="stylesheet" href="/calculator/calculator.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Epoxy Flooring in Des Moines, IA","areaServed":[{"@type":"City","name":"Des Moines"},{"@type":"City","name":"West Des Moines"},{"@type":"City","name":"Ankeny"},{"@type":"City","name":"Urbandale"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much does epoxy flooring cost in Des Moines, IA?","acceptedAnswer":{"@type":"Answer","text":"Costs in Des Moines vary by system and space size — see the price table above for current ranges by system and garage/basement size. Get an exact number for your space with a free instant photo estimate."}},{"@type":"Question","name":"Can I epoxy my garage floor in the winter?","acceptedAnswer":{"@type":"Answer","text":"Only if you can keep the slab and air above the coating's minimum cure temperature throughout application and cure — that usually means temporary heat in an unheated garage. Late spring through early fall is the more reliable window without it."}},{"@type":"Question","name":"How do I know if a quote is fair in Des Moines?","acceptedAnswer":{"@type":"Answer","text":"Compare against the price ranges above for your system and space size, and make sure the quote itemizes prep method, system, and warranty — not just a flat total. See our hiring guide above for the specific questions to ask."}},{"@type":"Question","name":"Is epoxy flooring worth it in Des Moines?","acceptedAnswer":{"@type":"Answer","text":"For most garages and basements, yes — a properly installed epoxy or polyaspartic system holds up for years and meaningfully outperforms bare or painted concrete on durability and ease of cleaning."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Epoxy Flooring","item":"https://epoxygrind.vercel.app/epoxy-flooring/"},{"@type":"ListItem","position":3,"name":"IA","item":"https://epoxygrind.vercel.app/epoxy-flooring/iowa/"},{"@type":"ListItem","position":4,"name":"Des Moines","item":"https://epoxygrind.vercel.app/epoxy-flooring/iowa/des-moines/"}]}</script>
@@ -62,6 +71,7 @@
       <p>In Des Moines's freeze-thaw climate, pay particular attention to how the installer answers the moisture-testing question below — it's the detail regional conditions affect most.</p>
     </div>
     <p><a class="btn btn-p" href="/">Get a baseline price before you take quotes →</a></p>
+    
     <h2>Areas served</h2>
     <div class="content-prose"><p>Serving the Des Moines metro, including West Des Moines, Ankeny, Urbandale.</p>
     </div>
@@ -72,6 +82,94 @@
     <h2>More resources</h2>
     <div class="content-prose"><p><a href="/epoxy-flooring-cost">Read the full epoxy flooring cost guide</a> for a national breakdown of what drives price, or browse our <a href="/diy/">DIY guides</a> if you're considering doing it yourself.</p></div>
     <h2>Nearby metros</h2><div class="category-grid"><a class="category-card" href="/epoxy-flooring/iowa/ames/"><h3>Ames, IA</h3><p>Epoxy flooring cost & instant estimate</p></a><a class="category-card" href="/epoxy-flooring/iowa/waterloo/"><h3>Waterloo, IA</h3><p>Epoxy flooring cost & instant estimate</p></a><a class="category-card" href="/epoxy-flooring/iowa/cedar-rapids/"><h3>Cedar Rapids, IA</h3><p>Epoxy flooring cost & instant estimate</p></a></div>
+    <section class="calc-compact" id="calculator">
+    <div class="calc-compact-head">
+      <span class="eyebrow">Free instant estimate</span>
+      <h2>See your price for this floor</h2>
+      <p class="content-dek">Upload a photo — no obligation, no phone call required.</p>
+    </div>
+    <div class="calc-shell">
+      <div class="calc-panel">
+        <div class="upload" id="uploadZone">
+          <input type="file" id="photoInput" accept="image/*" hidden>
+          <div class="upload-empty" id="uploadEmpty">
+            <span class="upload-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"></path><path d="M7 9l5-5 5 5"></path><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"></path></svg>
+            </span>
+            <p class="upload-title">Drop a photo or tap to upload</p>
+            <p class="upload-hint">JPG or PNG, up to 15MB</p>
+          </div>
+          <div class="upload-preview" id="uploadPreview" hidden>
+            <div class="upload-preview-frame">
+              <img id="previewImg" alt="Uploaded space">
+              <button type="button" class="upload-replace-btn" id="changePhoto" aria-label="Replace photo" title="Replace photo">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><polyline points="21 3 21 9 15 9"></polyline></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <p class="fld-error" id="photoError" hidden></p>
+
+        <div class="fld">
+          <span>Space size</span>
+          <div class="segmented" id="spaceSizeGroup" role="group" aria-label="Space size">
+            <button type="button" class="seg-btn" data-size="1-car">1-car garage</button>
+            <button type="button" class="seg-btn on" data-size="2-car">2-car garage</button>
+            <button type="button" class="seg-btn" data-size="3-car">3-car garage</button>
+            <button type="button" class="seg-btn" data-size="basement">Basement</button>
+            <button type="button" class="seg-btn" data-size="patio">Patio</button>
+            <button type="button" class="seg-btn" data-size="commercial">Commercial</button>
+          </div>
+          <p class="fld-error" id="sizeError" hidden></p>
+        </div>
+
+        <div class="row-2">
+          <label class="fld"><span>Finish</span><select id="finish"><option value="solid">Solid</option><option value="flake" selected>Flake</option><option value="metallic">Metallic</option></select></label>
+          <label class="fld"><span>Pattern</span><select id="pattern"></select></label>
+        </div>
+
+        <label class="fld full"><span>Coating type</span><select id="coatingType"></select></label>
+
+        <div class="color-block">
+          <label class="fld"><span>Base color</span>
+            <div class="color-line">
+              <div class="color-picker-wrap">
+                <span class="color-picker-swatch" id="baseSwatch" style="background:#4A4F54"></span>
+                <input type="hidden" id="baseColorPicker" value="charcoal">
+              </div>
+              <code id="baseHex">Charcoal gray</code>
+              <div class="swatches" id="baseSwatches"></div>
+            </div>
+          </label>
+          <label class="fld" id="flakeWrap"><span>Flake color</span>
+            <div class="color-line">
+              <div class="color-picker-wrap">
+                <span class="color-picker-swatch" id="flakeSwatch" style="background:#A9A9A7"></span>
+                <input type="hidden" id="flakeColorPicker" value="gravel">
+              </div>
+              <code id="flakeHex">Gravel</code>
+              <div class="swatches" id="flakeSwatches"></div>
+            </div>
+          </label>
+        </div>
+
+        <label class="fld full"><span>Square footage</span><input id="exactSqft" type="number" inputmode="numeric" min="1" placeholder="e.g. 450 (optional)"></label>
+
+        <div class="row-2">
+          <label class="fld"><span>Name</span><input id="customerName" type="text" placeholder="Your name" autocomplete="name"></label>
+          <label class="fld"><span>Email</span><input id="customerEmail" type="email" placeholder="you@email.com" autocomplete="email"></label>
+        </div>
+
+        <label class="fld full"><span>ZIP code</span><input id="projectLocation" type="text" inputmode="numeric" pattern="[0-9]{5}" placeholder="Enter ZIP" autocomplete="postal-code" maxlength="10" value="">
+          <p class="fld-error" id="zipError" hidden></p>
+        </label>
+
+        <button class="btn btn-p btn-full" id="runCalc" disabled>Generate estimate →</button>
+        <p class="submit-hint" id="submitHint" hidden></p>
+      </div>
+    </div>
+  </section>
+  <div class="toast" id="toast" hidden></div>
       
     </div>
   </div>
@@ -82,5 +180,27 @@
   var b=document.getElementById('burger'),m=document.getElementById('mobile');
   if(b&&m){b.addEventListener('click',function(){m.classList.toggle('open')});m.querySelectorAll('a,button').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});}
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.video-embed-facade');
+    if(!btn) return;
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + btn.dataset.videoId + '?autoplay=1';
+    iframe.title = btn.dataset.videoTitle || 'YouTube video';
+    iframe.loading = 'lazy';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    btn.replaceWith(iframe);
+  });
+</script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+<script src="/calculator/calculator.js" type="module"></script>
 </body>
 </html>
