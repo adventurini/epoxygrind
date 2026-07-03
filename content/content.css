@@ -19,6 +19,19 @@
 .content-dek{font-size:17px;color:var(--ink-soft);margin:14px 0 0;line-height:1.6}
 .content-meta{font-size:12px;color:var(--muted);margin-top:14px;display:flex;gap:14px;flex-wrap:wrap}
 
+/* Local-page hero (city hubs) — photo banner when a real city image was
+   found (scripts/fetch-city-images.py), gradient-only fallback otherwise
+   so every page still gets a designed hero, not a missing-image gap. */
+.local-hero{position:relative;border-radius:18px;overflow:hidden;padding:44px 32px;margin:0 0 24px;background:linear-gradient(135deg,#0F2C5C,#1A5CD6);color:#fff;background-size:cover;background-position:center}
+.local-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,22,48,.35) 0%,rgba(10,22,48,.75) 100%)}
+.local-hero-inner{position:relative;z-index:1;max-width:640px}
+.local-hero .content-eyebrow{color:#8FB6FF}
+.local-hero .content-h1{color:#fff}
+.local-hero .content-dek{color:#DCE6F7}
+.local-hero-credit{position:absolute;right:12px;bottom:8px;z-index:1;font-family:var(--ff-m);font-size:10px;color:rgba(255,255,255,.65)}
+.local-hero-credit a{color:rgba(255,255,255,.8)}
+@media (max-width:600px){.local-hero{padding:32px 20px}}
+
 .content-prose{font-size:16px;line-height:1.75;color:var(--ink-soft)}
 .content-prose p{margin:0 0 16px}
 .content-prose h2{font-family:var(--ff-d);font-size:24px;font-weight:800;color:var(--ink);margin:36px 0 14px}

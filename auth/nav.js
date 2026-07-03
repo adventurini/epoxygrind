@@ -1,45 +1,28 @@
 import { getAuthClient, withAuthTimeout, signOut } from './client.js';
 
-const NAV_LINKS = {
-  home: {
-    loggedOut: [
-      { href: '/services/', label: 'Contractor services', className: 'nav-svc' },
-      { href: '/login/', label: 'Log in' },
-      { href: '/signup/', label: 'Sign up', className: 'btn btn-p btn-sm' },
-    ],
-    loggedIn: [
-      { href: '/services/', label: 'Contractor services', className: 'nav-svc' },
-      { action: 'logout', label: 'Log out' },
-      { href: '/app/', label: 'Dashboard', className: 'btn btn-p btn-sm' },
-    ],
-  },
-  services: {
-    loggedOut: [
-      { href: '/', label: 'Estimator', className: 'nav-svc' },
-      { href: '/login/', label: 'Log in' },
-      { href: '/signup/', label: 'Sign up', className: 'btn btn-p btn-sm' },
-    ],
-    loggedIn: [
-      { href: '/', label: 'Estimator', className: 'nav-svc' },
-      { action: 'logout', label: 'Log out' },
-      { href: '/app/', label: 'Dashboard', className: 'btn btn-p btn-sm' },
-    ],
-  },
-  content: {
-    loggedOut: [
-      { href: '/', label: 'Estimator', className: 'nav-svc' },
-      { href: '/diy/', label: 'DIY guides' },
-      { href: '/login/', label: 'Log in' },
-      { href: '/signup/', label: 'Sign up', className: 'btn btn-p btn-sm' },
-    ],
-    loggedIn: [
-      { href: '/', label: 'Estimator', className: 'nav-svc' },
-      { href: '/diy/', label: 'DIY guides' },
-      { action: 'logout', label: 'Log out' },
-      { href: '/app/', label: 'Dashboard', className: 'btn btn-p btn-sm' },
-    ],
-  },
-};
+/**
+ * One consistent nav across every marketing/content page (previously
+ * differed per page — home/services/content variants each had their own
+ * link set and ordering, which read as inconsistent/messy across the
+ * site). "Find a contractor" points at /contractors/, the directory
+ * being built alongside this — until that ships this is a placeholder
+ * destination, not a dead link by accident.
+ */
+const LOGGED_OUT_LINKS = [
+  { href: '/diy/', label: 'DIY guides' },
+  { href: '/services/', label: 'Contractor services', className: 'nav-svc' },
+  { href: '/contractors/', label: 'Find a contractor' },
+  { href: '/login/', label: 'Log in' },
+  { href: '/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
+];
+
+const LOGGED_IN_LINKS = [
+  { href: '/diy/', label: 'DIY guides' },
+  { href: '/services/', label: 'Contractor services', className: 'nav-svc' },
+  { href: '/contractors/', label: 'Find a contractor' },
+  { action: 'logout', label: 'Log out' },
+  { href: '/app/new/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
+];
 
 function linkHtml(link) {
   const cls = link.className ? ` class="${link.className}"` : '';
@@ -62,9 +45,8 @@ function bindLogout(container) {
   });
 }
 
-function renderNav(container, variant, mobile, isLoggedIn) {
-  const set = NAV_LINKS[variant] || NAV_LINKS.home;
-  const links = isLoggedIn ? set.loggedIn : set.loggedOut;
+function renderNav(container, mobile, isLoggedIn) {
+  const links = isLoggedIn ? LOGGED_IN_LINKS : LOGGED_OUT_LINKS;
   container.innerHTML = links.map(linkHtml).join('');
   bindLogout(container);
   if (mobile) {
@@ -87,17 +69,16 @@ export async function initAuthNav() {
   const nav = document.querySelector('[data-auth-nav]');
   if (!nav) return;
 
-  const variant = document.body.dataset.navVariant || 'home';
   const mobile = document.querySelector('[data-auth-mobile]');
 
   // Render the logged-out nav immediately (no flash of empty nav / layout
   // shift), then upgrade to the logged-in state once the session check
   // resolves — bounded by withAuthTimeout so a hung getUser() call can't
   // leave the nav stuck showing "Log in" for an already-signed-in visitor.
-  renderNav(nav, variant, mobile, false);
+  renderNav(nav, mobile, false);
 
   const isLoggedIn = await checkAuthState();
-  if (isLoggedIn) renderNav(nav, variant, mobile, true);
+  if (isLoggedIn) renderNav(nav, mobile, true);
 }
 
 initAuthNav();
