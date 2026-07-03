@@ -90,7 +90,23 @@ async function main() {
   }
 
   if (withoutPlaceId.length) {
-    console.log(`\n${withoutPlaceId.length} rows have no place_id — checking for existing name+city+state matches before inserting...`);
+    // No place_id means no natural upsert key — delete any existing row
+    // with the same name+city+state first so re-running this script never
+    // duplicates these rows (place_id rows don't need this: on_conflict
+    // already dedupes them).
+    console.log(`\n${withoutPlaceId.length} rows have no place_id — clearing old matches by name+city+state before inserting...`);
+    for (const row of withoutPlaceId) {
+      const params = new URLSearchParams({
+        name: `eq.${row.name}`,
+        city: `eq.${row.city || ''}`,
+        state: `eq.${row.state || ''}`,
+        place_id: 'is.null',
+      });
+      await fetch(`${SUPABASE_URL}/rest/v1/contractors?${params}`, {
+        method: 'DELETE',
+        headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}` },
+      });
+    }
     for (let i = 0; i < withoutPlaceId.length; i += BATCH_SIZE) {
       const batch = withoutPlaceId.slice(i, i + BATCH_SIZE);
       await upsertBatch(batch, false);
