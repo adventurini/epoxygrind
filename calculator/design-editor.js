@@ -42,7 +42,7 @@ export function renderDesignEditor(root, current, onRegenerate) {
       </div>
       <label class="fld full"><span>Coating type</span><select data-field="coatingType">${optionsHtml(COATING_TYPES, coatingType)}</select></label>
       <div class="color-block">
-        <label class="fld"><span>Base color</span>
+        <div class="fld"><span>Base color</span>
           <div class="color-line">
             <div class="color-picker-wrap">
               <span class="color-picker-swatch" data-field="baseSwatch" style="background:${baseColor.hex}"></span>
@@ -51,8 +51,8 @@ export function renderDesignEditor(root, current, onRegenerate) {
             <code data-field="baseHex">${baseColor.label}</code>
             <div class="swatches" data-field="baseSwatches">${swatchesHtml(BASE_COLORS, baseColor.id)}</div>
           </div>
-        </label>
-        <label class="fld" data-field="flakeWrap"${finish !== 'flake' ? ' hidden' : ''}><span>Flake color</span>
+        </div>
+        <div class="fld" data-field="flakeWrap"${finish !== 'flake' ? ' hidden' : ''}><span>Flake color</span>
           <div class="color-line">
             <div class="color-picker-wrap">
               <span class="color-picker-swatch" data-field="flakeSwatch" style="background:${flakeColor.hex}"></span>
@@ -61,7 +61,7 @@ export function renderDesignEditor(root, current, onRegenerate) {
             <code data-field="flakeHex">${flakeColor.label}</code>
             <div class="swatches" data-field="flakeSwatches">${swatchesHtml(FLAKE_COLORS, flakeColor.id)}</div>
           </div>
-        </label>
+        </div>
       </div>
       <button type="button" class="btn btn-p btn-sm" data-field="regenerateBtn" style="width:100%;justify-content:center;margin-top:4px">Generate another version →</button>
     </div>`;

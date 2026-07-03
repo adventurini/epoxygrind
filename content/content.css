@@ -140,10 +140,19 @@
 
 /* Category grid (hub page) */
 .category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:24px 0}
-.category-card{border:1px solid var(--line);border-radius:12px;padding:20px;background:#fff;transition:border-color .15s,box-shadow .15s}
+.category-card{display:block;border:1px solid var(--line);border-radius:12px;padding:20px;background:#fff;transition:border-color .15s,box-shadow .15s;overflow:hidden}
 .category-card:hover{border-color:var(--blue);box-shadow:0 8px 24px rgba(26,92,214,.08)}
 .category-card h3{font-family:var(--ff-d);font-size:16px;margin:0 0 6px}
 .category-card p{font-size:13px;color:var(--muted);margin:0}
+.category-card.has-thumb{padding:0}
+.category-card-thumb{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--line)}
+.category-card.has-thumb h3{margin:14px 20px 6px}
+.category-card.has-thumb p{margin:0 20px 20px}
+
+/* DIY guide hero image (lib/guide-videos.js — real YouTube thumbnails, not stock photos) */
+.guide-hero{margin:20px 0 0}
+.guide-hero img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;display:block}
+.guide-hero figcaption{font-size:11px;color:var(--muted);margin-top:6px}
 
 .affiliate-disclosure{font-size:11px;color:var(--muted);margin:20px 0;padding:10px 14px;background:var(--blue-soft);border-radius:8px}
 
