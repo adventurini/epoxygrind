@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Epoxy Flooring Comparisons | EpoxyGrind</title>
 <meta name="description" content="Head-to-head comparisons for garage floor coating decisions — epoxy vs. polyaspartic, DIY vs. professional, grinding vs. etching, and more.">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Compare","item":"https://epoxygrind.vercel.app/compare/"}]}</script>
 </head>
 <body class="home-page content-page" data-nav-variant="content">
@@ -63,5 +72,14 @@
     btn.replaceWith(iframe);
   });
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
 </body>
 </html>

@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Best Concrete Sealers for Garage Floors (2026) | EpoxyGrind</title>
 <meta name="description" content="Penetrating sealer vs. a glossy topical &quot;wet look&quot; sealer for a garage floor — what each actually does and which one fits a bare-concrete finish.">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"name":"GhostShield Siloxa-Tek 8500 Penetrating Concrete Sealer","url":"https://epoxygrind.vercel.app/go/ghostshield-siloxatek-8500"},{"@type":"ListItem","position":2,"name":"Black Diamond Stoneworks Wet Look Natural Stone & Concrete Sealer","url":"https://epoxygrind.vercel.app/go/blackdiamond-wetlook-sealer"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should I seal my garage floor instead of epoxy coating it?","acceptedAnswer":{"@type":"Answer","text":"If you like the look of bare concrete and mainly want water and stain resistance, a sealer is the simpler, cheaper choice. If you want a durable, decorative, easy-to-clean colored floor, epoxy is the better fit — see our epoxy vs. concrete stain comparison for a related tradeoff."}},{"@type":"Question","name":"Can I apply a topical sealer over an existing epoxy coating?","acceptedAnswer":{"@type":"Answer","text":"Generally not necessary or recommended — epoxy topcoats already provide their own protective, glossy finish. Sealers are for bare or stained concrete, not for use over an existing coating system."}},{"@type":"Question","name":"How often does a topical sealer need to be reapplied?","acceptedAnswer":{"@type":"Answer","text":"This varies by traffic and product, but plan on reapplication being part of the maintenance cycle — unlike a properly applied epoxy system, which is largely a one-time application for years."}},{"@type":"Question","name":"Does a penetrating sealer protect against oil and chemical stains the way epoxy does?","acceptedAnswer":{"@type":"Answer","text":"Less effectively — penetrating sealers primarily repel water and reduce staining susceptibility, but they don't provide the same chemical and abrasion resistance as a cured epoxy or polyaspartic coating system."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Best","item":"https://epoxygrind.vercel.app/best/"},{"@type":"ListItem","position":3,"name":"Best Concrete Sealers for a Garage Floor (2026)","item":"https://epoxygrind.vercel.app/best/best-concrete-sealers/"}]}</script>
@@ -36,7 +45,7 @@
     <div class="content-prose"><p>If you want to keep the look of bare concrete rather than a coated, colored floor, a sealer — not epoxy — is the right product. Penetrating sealers soak into the concrete and repel water without changing the surface appearance; topical sealers sit on top and add a glossy "wet look" sheen. Neither is a substitute for epoxy if you actually want a coated, decorative floor — see our <a class="product-link" href="/diy/how-to-epoxy-garage-floor/">full epoxy guide</a> for that instead.</p></div>
     <div class="comparison-table-wrap"><table class="comparison-table">
     <thead><tr><th>Product</th><th>Type</th><th>Coverage</th><th>Finish</th><th>Price</th></tr></thead>
-    <tbody><tr><td class="name-cell"><a class="product-link" href="/go/ghostshield-siloxatek-8500" rel="nofollow sponsored" target="_blank">GhostShield Siloxa-Tek 8500 Penetrating Concrete Sealer</a></td><td>Penetrating (silane/siloxane)</td><td>150-400 sq ft/gal (1 coat)</td><td>Invisible, no sheen change</td><td>See site</td></tr><tr><td class="name-cell"><a class="product-link" href="/go/blackdiamond-wetlook-sealer" rel="nofollow sponsored" target="_blank">Black Diamond Stoneworks Wet Look Natural Stone &amp; Concrete Sealer</a></td><td>Topical, acrylic-based</td><td>100-200 sq ft/gal per coat</td><td>Glossy &quot;wet look&quot; sheen</td><td>$48.95–$65.00/gal</td></tr></tbody>
+    <tbody><tr><td class="name-cell"><a class="product-link" href="/go/ghostshield-siloxatek-8500" rel="nofollow sponsored" target="_blank" data-merchant="ghostshield.com">GhostShield Siloxa-Tek 8500 Penetrating Concrete Sealer</a></td><td>Penetrating (silane/siloxane)</td><td>150-400 sq ft/gal (1 coat)</td><td>Invisible, no sheen change</td><td>See site</td></tr><tr><td class="name-cell"><a class="product-link" href="/go/blackdiamond-wetlook-sealer" rel="nofollow sponsored" target="_blank" data-merchant="bdstoneworks.com (also Amazon, Walmart)">Black Diamond Stoneworks Wet Look Natural Stone &amp; Concrete Sealer</a></td><td>Topical, acrylic-based</td><td>100-200 sq ft/gal per coat</td><td>Glossy &quot;wet look&quot; sheen</td><td>$48.95–$65.00/gal</td></tr></tbody>
   </table></div>
     <div class="product-card"><div class="product-card-head">
       <div>
@@ -97,5 +106,14 @@
     btn.replaceWith(iframe);
   });
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
 </body>
 </html>

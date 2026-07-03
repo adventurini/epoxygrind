@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Polyurea vs. Polyaspartic Floor Coating | EpoxyGrind</title>
 <meta name="description" content="Polyurea and polyaspartic are often marketed together but chemically different — here is what actually separates them for a garage floor.">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Polyurea vs. Polyaspartic: What's the Actual Difference?","description":"Polyurea and polyaspartic are often marketed together but chemically different — here is what actually separates them for a garage floor."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"If polyaspartic is a type of polyurea, why do brands market them as separate products?","acceptedAnswer":{"@type":"Answer","text":"Because the formulation differences matter practically even though the underlying chemistry is related — a polyaspartic formulation is specifically tuned for a workable application window, which is the property DIYers and most residential applications actually need."}},{"@type":"Question","name":"Is one more expensive than the other?","acceptedAnswer":{"@type":"Answer","text":"Pure polyurea systems, especially spray-applied commercial-grade ones, tend to be more expensive and less accessible to DIYers. Polyaspartic retail kits are priced comparably to premium epoxy kits."}},{"@type":"Question","name":"Can I DIY a true polyurea floor?","acceptedAnswer":{"@type":"Answer","text":"It's uncommon — the fast cure that makes pure polyurea attractive for commercial spray jobs also makes it very difficult to hand-apply with a roller or squeegee without specialized equipment. Polyaspartic is the realistic DIY equivalent."}},{"@type":"Question","name":"Does it matter which one I pick for a residential garage?","acceptedAnswer":{"@type":"Answer","text":"For most DIYers, this decision is really \"epoxy vs. polyaspartic\" rather than \"polyurea vs. polyaspartic,\" since pure polyurea DIY kits are rare — see our epoxy vs. polyaspartic comparison for the decision that actually applies to a typical garage project."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Compare","item":"https://epoxygrind.vercel.app/compare/"},{"@type":"ListItem","position":3,"name":"Polyurea vs. Polyaspartic: What's the Actual Difference?","item":"https://epoxygrind.vercel.app/compare/polyurea-vs-polyaspartic/"}]}</script>
@@ -70,5 +79,14 @@
     btn.replaceWith(iframe);
   });
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
 </body>
 </html>

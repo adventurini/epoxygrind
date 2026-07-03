@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How to Fix Hot Tire Pickup on Epoxy Floors | EpoxyGrind</title>
 <meta name="description" content="Why hot tires lift epoxy coatings in the exact tread pattern, how to repair it, and which topcoats actually prevent it from happening again.">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to Fix Hot Tire Pickup on an Epoxy Floor","description":"Why hot tires lift epoxy coatings in the exact tread pattern, how to repair it, and which topcoats actually prevent it from happening again."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is hot tire pickup more common in hot climates?","acceptedAnswer":{"@type":"Answer","text":"Yes — tires reach higher temperatures from both ambient heat and highway driving in hot climates, and hot garage air makes the floor itself softer to begin with. It's not exclusive to hot climates, but it's more frequent there."}},{"@type":"Question","name":"Does a thicker epoxy coat automatically prevent hot tire pickup?","acceptedAnswer":{"@type":"Answer","text":"Thickness alone doesn't guarantee it — the topcoat chemistry matters more than mils. A thick standard epoxy topcoat can still be vulnerable; a properly applied polyaspartic or polyurea topcoat resists it even at a comparable thickness."}},{"@type":"Question","name":"Can I prevent hot tire pickup without redoing the topcoat?","acceptedAnswer":{"@type":"Answer","text":"Parking habits (letting tires cool before turning the wheel, avoiding sharp pivots right after driving) reduce risk but don't eliminate it on a floor with a genuinely vulnerable topcoat. The topcoat is the real fix."}},{"@type":"Question","name":"How do I know if my existing floor's topcoat is hot-tire-resistant?","acceptedAnswer":{"@type":"Answer","text":"Check the manufacturer's spec sheet or product page for your specific kit — hot tire resistance is usually explicitly stated for topcoats designed for it, and conspicuously absent from ones that aren't."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"DIY guides","item":"https://epoxygrind.vercel.app/diy/"},{"@type":"ListItem","position":3,"name":"How to Fix Hot Tire Pickup on an Epoxy Floor","item":"https://epoxygrind.vercel.app/diy/how-to-fix-hot-tire-pickup/"}]}</script>
@@ -85,5 +94,14 @@
     btn.replaceWith(iframe);
   });
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
 </body>
 </html>

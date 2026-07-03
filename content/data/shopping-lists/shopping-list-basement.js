@@ -1,0 +1,22 @@
+export default {
+  slug: 'shopping-list-basement',
+  title: 'Basement Epoxy Shopping List (~800 sq ft)',
+  metaTitle: 'Basement Epoxy Floor Shopping List (2026) | EpoxyGrind',
+  metaDescription: 'Every product for a DIY basement epoxy floor — kit, prep tools, PPE, and the moisture testing that matters more here than anywhere else.',
+  dek: 'Same list as a garage, with one item that matters more: the moisture meter.',
+  sqft: 800,
+  budgetRange: 'Kit priced for large-format coverage (see current price) + tools/PPE at current retailer pricing — check each link',
+  items: [
+    { productId: 'dewalt-dwe46153-grinder-shroud-kit', qty: '1', qtyNote: 'fixed', phase: 'prep' },
+    { productId: 'ediamondtools-7in-cup-wheel', qty: '1', qtyNote: 'fixed', phase: 'prep' },
+    { productId: 'dewalt-dwv010-dust-extractor', qty: '1', qtyNote: 'fixed', phase: 'prep' },
+    { productId: 'klein-et140-moisture-meter', qty: '1', qtyNote: 'fixed — test more thoroughly than a garage, see our basement guide', phase: 'prep' },
+    { productId: 'armorpoxy-armorclad', qty: '1 kit', qtyNote: 'largest size (900–1200 sq ft) for full basement coverage', phase: 'apply' },
+    { productId: 'wooster-18in-epoxy-roller-cover', qty: '1–2', qtyNote: 'a second cover as backup is reasonable at this size', phase: 'apply' },
+    { productId: 'dupol-notched-squeegee-16', qty: '1', qtyNote: 'fixed', phase: 'apply' },
+    { productId: 'collomix-lx120s-mixing-paddle', qty: '1', qtyNote: 'fixed — pair with a drill you likely already own', phase: 'apply' },
+    { productId: 'osaava-spike-shoes', qty: '1 pair', qtyNote: 'fixed — for flake broadcast', phase: 'apply' },
+    { productId: '3m-6502ql-respirator', qty: '1', qtyNote: 'fixed', phase: 'ppe' },
+    { productId: '3m-60923-cartridges', qty: '1 pair', qtyNote: 'fixed — pairs with the respirator above', phase: 'ppe' },
+  ],
+};

@@ -13,7 +13,8 @@ export default {
     { productId: 'ediamondtools-7in-coating-removal-wheel', label: '18/20-grit aggressive wheel', note: 'only if removing old coating/paint first' },
     { productId: 'dewalt-dwv010-dust-extractor', label: 'HEPA dust extractor' },
     { productId: 'klein-et140-moisture-meter', label: 'Pinless moisture meter' },
-    { productId: '3m-6502ql-respirator', label: 'Half-face respirator with P100/OV cartridges' },
+    { productId: '3m-6502ql-respirator', label: 'Half-face respirator', note: 'cartridges sold separately' },
+    { productId: '3m-60923-cartridges', label: 'P100/organic-vapor cartridges' },
   ],
   steps: [
     {

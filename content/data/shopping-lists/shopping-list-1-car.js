@@ -1,0 +1,22 @@
+export default {
+  slug: 'shopping-list-1-car',
+  title: '1-Car Garage Epoxy Shopping List (~250 sq ft)',
+  metaTitle: '1-Car Garage Epoxy Floor Shopping List (2026) | EpoxyGrind',
+  metaDescription: 'Every product for a DIY 1-car garage epoxy floor — kit, prep tools, and PPE — sized to a ~250 sq ft space with links.',
+  dek: 'Everything for a single-bay garage, one list, nothing to guess at.',
+  sqft: 250,
+  budgetRange: 'Kit from $419 (smallest ArmorClad size) + tools/PPE at current retailer pricing — check each link for today\'s price',
+  items: [
+    { productId: 'dewalt-dwe46153-grinder-shroud-kit', qty: '1', qtyNote: 'fixed — doesn\'t scale with sq ft', phase: 'prep' },
+    { productId: 'ediamondtools-7in-cup-wheel', qty: '1', qtyNote: 'fixed', phase: 'prep' },
+    { productId: 'dewalt-dwv010-dust-extractor', qty: '1', qtyNote: 'fixed', phase: 'prep' },
+    { productId: 'klein-et140-moisture-meter', qty: '1', qtyNote: 'fixed', phase: 'prep' },
+    { productId: 'armorpoxy-armorclad', qty: '1 kit', qtyNote: 'smallest size, 300 sq ft covers a 1-car bay', phase: 'apply' },
+    { productId: 'wooster-18in-epoxy-roller-cover', qty: '1', qtyNote: 'fixed', phase: 'apply' },
+    { productId: 'dupol-notched-squeegee-16', qty: '1', qtyNote: 'fixed', phase: 'apply' },
+    { productId: 'collomix-lx120s-mixing-paddle', qty: '1', qtyNote: 'fixed — pair with a drill you likely already own', phase: 'apply' },
+    { productId: 'osaava-spike-shoes', qty: '1 pair', qtyNote: 'fixed — for flake broadcast', phase: 'apply' },
+    { productId: '3m-6502ql-respirator', qty: '1', qtyNote: 'fixed', phase: 'ppe' },
+    { productId: '3m-60923-cartridges', qty: '1 pair', qtyNote: 'fixed — pairs with the respirator above', phase: 'ppe' },
+  ],
+};

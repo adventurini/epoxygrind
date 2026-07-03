@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How to Apply Metallic Epoxy Flooring (DIY Technique) | EpoxyGrind</title>
 <meta name="description" content="How metallic epoxy gets its marbled, 3D look — mixing pigment powders, application technique, and why this system is harder to apply evenly than a standard flake floor.">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to Apply Metallic Epoxy Flooring","description":"How metallic epoxy gets its marbled, 3D look — mixing pigment powders, application technique, and why this system is harder to apply evenly than a standard flake floor."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is metallic epoxy harder to DIY than a flake floor?","acceptedAnswer":{"@type":"Answer","text":"Yes, significantly. A flake system is largely forgiving of application inconsistencies because the flake itself hides them; metallic's entire visual effect comes from application technique, so mistakes are much more visible in the final result."}},{"@type":"Question","name":"Can I mix my own metallic colors, or do I need to buy a pre-set color?","acceptedAnswer":{"@type":"Answer","text":"Most metallic pigment powders can be blended, but color-mixing on the fly adds another variable to an already technique-sensitive process. First-timers generally get more predictable results starting with a single pigment or a manufacturer-recommended blend."}},{"@type":"Question","name":"Why does my metallic epoxy look different once it cures than it did wet?","acceptedAnswer":{"@type":"Answer","text":"This is normal — metallic pigments often shift somewhat in appearance and depth as the epoxy fully cures and clears. This is exactly why a test pour matters: it lets you see the cured result before committing to the whole floor."}},{"@type":"Question","name":"Do I still need a topcoat if the metallic finish already looks glossy?","acceptedAnswer":{"@type":"Answer","text":"Yes — the wet-look gloss of a fresh metallic pour is not the same as the abrasion and hot-tire resistance a proper clear topcoat provides. Skipping it leaves the decorative layer exposed to wear it wasn't designed to take on its own."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"DIY guides","item":"https://epoxygrind.vercel.app/diy/"},{"@type":"ListItem","position":3,"name":"How to Apply Metallic Epoxy Flooring","item":"https://epoxygrind.vercel.app/diy/how-to-apply-metallic-epoxy/"}]}</script>
@@ -34,7 +43,7 @@
   <p class="content-dek">Metallic epoxy gets its marbled, almost-3D look from how the pigment moves while it cures — which makes it the most technique-dependent DIY finish on this list.</p>
     <div class="content-prose"><p>Metallic epoxy isn't a different chemistry from a standard epoxy floor — it's a 100%-solids epoxy with metallic pigment powders mixed in, applied with techniques (specific tools, working the wet surface, sometimes a heat gun or torch) that encourage the pigment to move, swirl, and settle unevenly on purpose. That controlled unevenness is what creates the marbled, almost-3D look. It's also exactly why metallic is the hardest DIY finish to get consistent: the same variables that create the look (mix ratio, application speed, ambient temperature, how you move the squeegee) are variables you're actively manipulating in real time, not just controlling for consistency.</p>
   <p>If this is your first epoxy project, consider building basic technique on a <a href="/diy/how-to-epoxy-garage-floor/">standard flake or solid-color floor</a> first, or practice your metallic technique on a scrap sheet of plywood or a small closet floor before committing to the whole garage.</p></div>
-    <h2>What you'll need</h2><ul class="materials-list"><li><a class="product-link" href="/go/leggari-metallic-epoxy" rel="nofollow sponsored" target="_blank">Metallic epoxy (clear base + pigment powders)</a></li><li><a class="product-link" href="/go/dupol-notched-squeegee-16" rel="nofollow sponsored" target="_blank">16in notched squeegee</a> — for spreading and working the wet surface</li></ul>
+    <h2>What you'll need</h2><ul class="materials-list"><li><a class="product-link" href="/go/leggari-metallic-epoxy" rel="nofollow sponsored" target="_blank" data-merchant="leggari.com">Metallic epoxy (clear base + pigment powders)</a></li><li><a class="product-link" href="/go/dupol-notched-squeegee-16" rel="nofollow sponsored" target="_blank" data-merchant="amazon.com">16in notched squeegee</a> — for spreading and working the wet surface</li></ul>
     <div class="video-embed">
     <div class="video-embed-frame">
       <button type="button" class="video-embed-facade" data-video-id="F3bf1wntG_8" data-video-title="How to Install Metallic Epoxy Flooring Like a Pro | DIY Tutorial" aria-label="Play video: How to Install Metallic Epoxy Flooring Like a Pro | DIY Tutorial" style="background-image:url('https://i.ytimg.com/vi/F3bf1wntG_8/hqdefault.jpg')">
@@ -86,5 +95,14 @@
     btn.replaceWith(iframe);
   });
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
 </body>
 </html>

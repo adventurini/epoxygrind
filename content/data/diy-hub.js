@@ -105,6 +105,65 @@ export default {
       ],
     },
     {
+      title: 'Comparisons',
+      items: [
+        { href: '/compare/epoxy-vs-polyaspartic/', title: 'Epoxy vs. polyaspartic', description: 'Cure time, UV stability, hot tire resistance, and price.' },
+        { href: '/compare/polyurea-vs-polyaspartic/', title: 'Polyurea vs. polyaspartic', description: 'Marketed almost interchangeably — here is the real difference.' },
+        { href: '/compare/epoxy-vs-garage-floor-tiles/', title: 'Epoxy vs. garage floor tiles', description: 'Permanent coating vs. reversible flooring.' },
+        { href: '/compare/epoxy-vs-concrete-stain/', title: 'Epoxy vs. concrete stain', description: 'A new surface on top vs. coloring the concrete itself.' },
+        { href: '/compare/epoxy-vs-garage-floor-paint/', title: 'Epoxy vs. garage floor paint', description: 'Why "epoxy" and "floor paint" are not the same product.' },
+        { href: '/compare/diy-kit-vs-professional/', title: 'DIY kit vs. professional install', description: 'The real cost, time, and risk tradeoff.' },
+        { href: '/compare/grind-vs-acid-etch/', title: 'Grinding vs. acid etching', description: 'The prep decision most responsible for whether a coating lasts.' },
+        { href: '/compare/water-based-vs-100-solids-epoxy/', title: 'Water-based vs. 100% solids epoxy', description: 'What solids content actually means.' },
+      ],
+    },
+    {
+      title: 'Reviews',
+      items: [
+        { href: '/reviews/spartan-hd-pro-kit/', title: 'Spartan Epoxies HD Pro review', description: 'A straightforward high-solids system sold by car count, with a published cure schedule.' },
+        { href: '/reviews/armorgarage-armor-chip/', title: 'ArmorGarage Armor Chip review', description: 'A complete flake kit with tools and a 7-day support window bundled in.' },
+        { href: '/reviews/leggari-custom-epoxy-floor-kit/', title: 'Leggari Custom Epoxy Floor Kit review', description: 'A configurator-driven kit for a specific metallic or marbled look.' },
+        { href: '/reviews/stonecoat-flooring-midcoat/', title: 'Stone Coat Flooring Epoxy Midcoat review', description: 'A bundled 15-gallon metallic-capable system, zero-VOC, 2:1 mix.' },
+        { href: '/reviews/rustoleum-rocksolid-2-5-car-kit/', title: 'Rust-Oleum RockSolid review', description: 'The big-box retail benchmark — what "polycuramine" actually means.' },
+        { href: '/reviews/awf-polyurea-coating/', title: 'All Weather Floors Polyurea review', description: 'Single-component, unlimited pot life — no mixing ratio to get wrong.' },
+      ],
+    },
+    {
+      title: 'Tools',
+      items: [
+        {
+          href: '/tools/epoxy-coverage-calculator/',
+          title: 'Epoxy coverage calculator',
+          description: 'Sq ft, system, and coats in — gallons needed out, sized against the matching kit rankings.',
+        },
+      ],
+    },
+    {
+      title: 'Shopping lists',
+      items: [
+        {
+          href: '/diy/shopping-list-1-car/',
+          title: '1-car garage shopping list',
+          description: 'Everything to buy for a ~250 sq ft floor — kit, prep, tools, and PPE with quantities.',
+        },
+        {
+          href: '/diy/shopping-list-2-car/',
+          title: '2-car garage shopping list',
+          description: 'Everything to buy for a ~450 sq ft floor — kit, prep, tools, and PPE with quantities.',
+        },
+        {
+          href: '/diy/shopping-list-3-car/',
+          title: '3-car garage shopping list',
+          description: 'Everything to buy for a ~650 sq ft floor — kit, prep, tools, and PPE with quantities.',
+        },
+        {
+          href: '/diy/shopping-list-basement/',
+          title: 'Basement floor shopping list',
+          description: 'Everything to buy for an ~800 sq ft basement floor, with the extra moisture-prep step.',
+        },
+      ],
+    },
+    {
       title: 'Fix a failed DIY job',
       items: [
         {

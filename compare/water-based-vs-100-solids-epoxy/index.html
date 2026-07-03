@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Water-Based vs. 100% Solids Epoxy Coating | EpoxyGrind</title>
 <meta name="description" content="Solids content determines how thick your cured epoxy film actually is — here is what changes between a water-based and a 100%-solids system.">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Water-Based vs. 100% Solids Epoxy: What Solids Content Actually Means","description":"Solids content determines how thick your cured epoxy film actually is — here is what changes between a water-based and a 100%-solids system."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I check a product's solids content before buying?","acceptedAnswer":{"@type":"Answer","text":"Check the manufacturer's spec sheet or product page — reputable brands state solids content explicitly. If a listing doesn't mention it at all, that's worth treating as a caution flag rather than assuming it's 100% solids by default."}},{"@type":"Question","name":"Is water-based epoxy not \"real\" epoxy?","acceptedAnswer":{"@type":"Answer","text":"It's genuinely epoxy chemistry, just formulated with water as a carrier that evaporates out — it's a legitimate product category, just with a thinner resulting film and generally lower durability than a 100%-solids formulation."}},{"@type":"Question","name":"Can I apply a 100%-solids topcoat over a water-based base coat?","acceptedAnswer":{"@type":"Answer","text":"Compatibility depends on the specific products — check with the manufacturer or stay within one system's recommended base/topcoat pairing rather than assuming cross-compatibility."}},{"@type":"Question","name":"Does higher solids content always mean a better product?","acceptedAnswer":{"@type":"Answer","text":"For durability specifically, generally yes — but it's one factor among several (proper prep, correct mixing, adequate coats) that determine how a floor actually performs. A 100%-solids product applied over bad prep still fails."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Compare","item":"https://epoxygrind.vercel.app/compare/"},{"@type":"ListItem","position":3,"name":"Water-Based vs. 100% Solids Epoxy: What Solids Content Actually Means","item":"https://epoxygrind.vercel.app/compare/water-based-vs-100-solids-epoxy/"}]}</script>
@@ -70,5 +79,14 @@
     btn.replaceWith(iframe);
   });
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
 </body>
 </html>

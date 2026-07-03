@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Best Diamond Cup Wheels for Concrete Prep &amp; Coating Removal (2026) | EpoxyGrind</title>
 <meta name="description" content="Diamond cup wheels are not interchangeable — 30/40 grit for surface prep, 18/20 grit for stripping old coating. Here is which one your job needs.">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"name":"EDiamondTools 7in Diamond Grinding Cup Wheel, 24 Turbo Segments, 5/8-11 Arbor","url":"https://epoxygrind.vercel.app/go/ediamondtools-7in-cup-wheel"},{"@type":"ListItem","position":2,"name":"EDiamondTools 7in Aggressive Coating Removal Wheel, 18/20 Grit, 5/8-11 Arbor","url":"https://epoxygrind.vercel.app/go/ediamondtools-7in-coating-removal-wheel"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I use one cup wheel for both stripping old coating and final prep?","acceptedAnswer":{"@type":"Answer","text":"Not well. The aggressive 18/20-grit wheel removes coating fast but leaves a rougher, more open profile than most coatings want as a final surface — follow it with a 30/40-grit pass on bare concrete before coating."}},{"@type":"Question","name":"What arbor size do I need?","acceptedAnswer":{"@type":"Answer","text":"Both wheels here use a 5/8\"-11 threaded arbor, the common size for 7in grinders and many angle-grinder adapters — confirm your grinder's arbor before ordering."}},{"@type":"Question","name":"Will a cheaper, unbranded cup wheel work just as well?","acceptedAnswer":{"@type":"Answer","text":"Segment count, bond hardness, and grit consistency vary a lot between brands even at the same stated grit number. If a listing doesn't clearly state the grit and bond, that's a sign to look elsewhere — grinding is not a place where guessing pays off."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Best","item":"https://epoxygrind.vercel.app/best/"},{"@type":"ListItem","position":3,"name":"Best Diamond Cup Wheels for Concrete Prep (2026)","item":"https://epoxygrind.vercel.app/best/diamond-cup-wheels/"}]}</script>
@@ -36,7 +45,7 @@
     <div class="content-prose"><p>Cup wheels are not interchangeable between jobs. A medium-bond 30/40-grit wheel is for profiling a bare or already-stripped concrete slab ahead of coating. An aggressive 18/20-grit wheel is for stripping old epoxy, paint, or mastic off first. Using the prep wheel to strip coating will load up and glaze almost immediately; using the aggressive wheel on clean concrete removes more material than you need and leaves a rougher profile than most coatings call for.</p></div>
     <div class="comparison-table-wrap"><table class="comparison-table">
     <thead><tr><th>Product</th><th>Grit</th><th>Segments</th><th>Arbor</th><th>Best for</th></tr></thead>
-    <tbody><tr><td class="name-cell"><a class="product-link" href="/go/ediamondtools-7in-cup-wheel" rel="nofollow sponsored" target="_blank">EDiamondTools 7in Diamond Grinding Cup Wheel, 24 Turbo Segments, 5/8-11 Arbor</a></td><td>30/40, medium bond</td><td>24 turbo</td><td>5/8&quot;-11 threaded</td><td>Prep / how-to-grind guides</td></tr><tr><td class="name-cell"><a class="product-link" href="/go/ediamondtools-7in-coating-removal-wheel" rel="nofollow sponsored" target="_blank">EDiamondTools 7in Aggressive Coating Removal Wheel, 18/20 Grit, 5/8-11 Arbor</a></td><td>18/20, aggressive</td><td>14</td><td>5/8&quot;-11 threaded</td><td>Stripping old coating</td></tr></tbody>
+    <tbody><tr><td class="name-cell"><a class="product-link" href="/go/ediamondtools-7in-cup-wheel" rel="nofollow sponsored" target="_blank" data-merchant="amazon.com">EDiamondTools 7in Diamond Grinding Cup Wheel, 24 Turbo Segments, 5/8-11 Arbor</a></td><td>30/40, medium bond</td><td>24 turbo</td><td>5/8&quot;-11 threaded</td><td>Prep / how-to-grind guides</td></tr><tr><td class="name-cell"><a class="product-link" href="/go/ediamondtools-7in-coating-removal-wheel" rel="nofollow sponsored" target="_blank" data-merchant="amazon.com">EDiamondTools 7in Aggressive Coating Removal Wheel, 18/20 Grit, 5/8-11 Arbor</a></td><td>18/20, aggressive</td><td>14</td><td>5/8&quot;-11 threaded</td><td>Stripping old coating</td></tr></tbody>
   </table></div>
     <div class="product-card"><div class="product-card-head">
       <div>
@@ -97,5 +106,14 @@
     btn.replaceWith(iframe);
   });
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
 </body>
 </html>

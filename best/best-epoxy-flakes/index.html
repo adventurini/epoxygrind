@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Best Epoxy Floor Flakes (Vinyl Chips) for DIY Broadcast (2026) | EpoxyGrind</title>
 <meta name="description" content="Vinyl flake options for a DIY epoxy floor broadcast — a customizable multi-color blend and a straightforward pre-set 1/4in flake, with real coverage math for each.">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"name":"ArmorGarage Premium Epoxy Colored Chips","url":"https://epoxygrind.vercel.app/go/armorgarage-premium-chips"},{"@type":"ListItem","position":2,"name":"GlobMarble 1/4in Epoxy Floor Flake (25 lb bag)","url":"https://epoxygrind.vercel.app/go/globmarble-quarter-inch-flake"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much flake do I actually need for my garage?","acceptedAnswer":{"@type":"Answer","text":"Measure your square footage, decide your desired look (light terrazzo vs. full granite broadcast), and use the manufacturer's stated coverage rate for that look — then buy a bit more than the calculated minimum. Running short mid-broadcast is a common, avoidable mistake."}},{"@type":"Question","name":"Does flake size (1/8in vs 1/4in vs larger) matter for the final look?","acceptedAnswer":{"@type":"Answer","text":"Yes — smaller chips give a more subtle, uniform texture; larger chips create a bolder, more visually broken-up pattern. This is purely aesthetic and doesn't affect durability."}},{"@type":"Question","name":"Can I mix flake from two different brands or bags?","acceptedAnswer":{"@type":"Answer","text":"Yes, this is common for custom color blending, as long as the chip size is reasonably consistent between sources — mismatched sizes can look uneven once broadcast."}},{"@type":"Question","name":"Do I need a specific topcoat to go with a specific flake brand?","acceptedAnswer":{"@type":"Answer","text":"No — flake itself is largely topcoat-agnostic. Compatibility matters more between your base coat and topcoat chemistry (staying within one manufacturer's system) than between flake brand and coating brand."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Best","item":"https://epoxygrind.vercel.app/best/"},{"@type":"ListItem","position":3,"name":"Best Epoxy Floor Flakes for a Broadcast Floor (2026)","item":"https://epoxygrind.vercel.app/best/best-epoxy-flakes/"}]}</script>
@@ -36,7 +45,7 @@
     <div class="content-prose"><p>Most flake comes as vinyl chips broadcast into a wet base coat — see our <a class="product-link" href="/diy/how-to-apply-flake-broadcast/">flake broadcast technique guide</a> for application. Buying enough is the biggest planning mistake: coverage is usually stated per 500 sq ft or per 25 lb bag, and running short mid-broadcast is a common, avoidable problem.</p></div>
     <div class="comparison-table-wrap"><table class="comparison-table">
     <thead><tr><th>Product</th><th>Blend</th><th>Coverage</th><th>Chip size</th><th>Price</th></tr></thead>
-    <tbody><tr><td class="name-cell"><a class="product-link" href="/go/armorgarage-premium-chips" rel="nofollow sponsored" target="_blank">ArmorGarage Premium Epoxy Colored Chips</a></td><td>Custom, up to 5 colors</td><td>6-20 lb per 500 sq ft (look-dependent)</td><td>See listing</td><td>$7.99/lb (15lb min)</td></tr><tr><td class="name-cell"><a class="product-link" href="/go/globmarble-quarter-inch-flake" rel="nofollow sponsored" target="_blank">GlobMarble 1/4in Epoxy Floor Flake (25 lb bag)</a></td><td>Pre-set colorways</td><td>~125-175 sq ft per 25lb bag</td><td>1/4in</td><td>See site</td></tr></tbody>
+    <tbody><tr><td class="name-cell"><a class="product-link" href="/go/armorgarage-premium-chips" rel="nofollow sponsored" target="_blank" data-merchant="armorgarage.com">ArmorGarage Premium Epoxy Colored Chips</a></td><td>Custom, up to 5 colors</td><td>6-20 lb per 500 sq ft (look-dependent)</td><td>See listing</td><td>$7.99/lb (15lb min)</td></tr><tr><td class="name-cell"><a class="product-link" href="/go/globmarble-quarter-inch-flake" rel="nofollow sponsored" target="_blank" data-merchant="globmarble.com (also Amazon)">GlobMarble 1/4in Epoxy Floor Flake (25 lb bag)</a></td><td>Pre-set colorways</td><td>~125-175 sq ft per 25lb bag</td><td>1/4in</td><td>See site</td></tr></tbody>
   </table></div>
     <div class="product-card"><div class="product-card-head">
       <div>
@@ -97,5 +106,14 @@
     btn.replaceWith(iframe);
   });
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
 </body>
 </html>

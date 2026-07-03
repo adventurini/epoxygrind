@@ -4,7 +4,9 @@
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-states.xml</loc></sitemap>
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-cities.xml</loc></sitemap>
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-best.xml</loc></sitemap>
+  <sitemap><loc>https://epoxygrind.vercel.app/sitemap-reviews.xml</loc></sitemap>
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-compare.xml</loc></sitemap>
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-diy.xml</loc></sitemap>
+  <sitemap><loc>https://epoxygrind.vercel.app/sitemap-tools.xml</loc></sitemap>
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-contractors.xml</loc></sitemap>
 </sitemapindex>

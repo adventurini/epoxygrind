@@ -1,0 +1,22 @@
+export default {
+  slug: 'shopping-list-3-car',
+  title: '3-Car Garage Epoxy Shopping List (~650 sq ft)',
+  metaTitle: '3-Car Garage Epoxy Floor Shopping List (2026) | EpoxyGrind',
+  metaDescription: 'Every product for a DIY 3-car garage epoxy floor — kit, prep tools, and PPE — sized to a ~650 sq ft space with links.',
+  dek: 'A bigger slab means more grinding time, not more tools — here is what actually changes at this size.',
+  sqft: 650,
+  budgetRange: 'Kit priced for 3-car coverage (see current price) + tools/PPE at current retailer pricing — check each link',
+  items: [
+    { productId: 'dewalt-dwe46153-grinder-shroud-kit', qty: '1', qtyNote: 'fixed — budget more grinding time, not a second grinder', phase: 'prep' },
+    { productId: 'ediamondtools-7in-cup-wheel', qty: '1', qtyNote: 'fixed', phase: 'prep' },
+    { productId: 'dewalt-dwv010-dust-extractor', qty: '1', qtyNote: 'fixed', phase: 'prep' },
+    { productId: 'klein-et140-moisture-meter', qty: '1', qtyNote: 'fixed — test multiple spots on a larger slab', phase: 'prep' },
+    { productId: 'spartan-hd-pro-kit', qty: '1 kit', qtyNote: 'sized for 3-car/600 sq ft — check coverage against your exact measurement', phase: 'apply' },
+    { productId: 'wooster-18in-epoxy-roller-cover', qty: '1–2', qtyNote: 'a second cover as backup is reasonable at this size', phase: 'apply' },
+    { productId: 'dupol-notched-squeegee-16', qty: '1', qtyNote: 'fixed', phase: 'apply' },
+    { productId: 'collomix-lx120s-mixing-paddle', qty: '1', qtyNote: 'fixed — pair with a drill you likely already own', phase: 'apply' },
+    { productId: 'osaava-spike-shoes', qty: '1–2 pair', qtyNote: 'a second pair helps if you have a helper broadcasting flake', phase: 'apply' },
+    { productId: '3m-6502ql-respirator', qty: '1', qtyNote: 'fixed', phase: 'ppe' },
+    { productId: '3m-60923-cartridges', qty: '1 pair', qtyNote: 'fixed — pairs with the respirator above', phase: 'ppe' },
+  ],
+};

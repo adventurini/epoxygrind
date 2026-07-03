@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Epoxy Coating vs. Interlocking Garage Floor Tiles | EpoxyGrind</title>
 <meta name="description" content="Epoxy and interlocking tiles solve the same problem differently — permanent coating vs. reversible flooring. Here is the real tradeoff.">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Epoxy vs. Garage Floor Tiles: Which Should You Install?","description":"Epoxy and interlocking tiles solve the same problem differently — permanent coating vs. reversible flooring. Here is the real tradeoff."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I install tiles over an existing epoxy coating?","acceptedAnswer":{"@type":"Answer","text":"Yes, as long as the existing coating is sound and not peeling — tiles don't require the coating to be removed first, unlike a fresh epoxy job which needs bare, prepped concrete."}},{"@type":"Question","name":"Do garage floor tiles affect door clearance?","acceptedAnswer":{"@type":"Answer","text":"Possibly — tiles add roughly 0.5–0.75in of height depending on the product, which can matter with a tight garage door track or low vehicle clearance. Measure before buying."}},{"@type":"Question","name":"Which option holds up better to a heavy vehicle or shop equipment?","acceptedAnswer":{"@type":"Answer","text":"Both handle normal vehicle weight well; a high-quality, thick interlocking tile is rated for tens of thousands of pounds of rollover weight, comparable to a properly cured high-solids epoxy system. Extremely heavy stationary equipment (a lift, a large tool chest on casters) is worth checking against the specific product's point-load rating either way."}},{"@type":"Question","name":"Is one option better for resale value?","acceptedAnswer":{"@type":"Answer","text":"This varies by buyer preference and local market — a well-installed epoxy floor is often perceived as a more \"finished\" permanent upgrade, while tiles read as a flexible, removable feature. Neither has a clearly documented, consistent resale premium."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Compare","item":"https://epoxygrind.vercel.app/compare/"},{"@type":"ListItem","position":3,"name":"Epoxy vs. Garage Floor Tiles: Which Should You Install?","item":"https://epoxygrind.vercel.app/compare/epoxy-vs-garage-floor-tiles/"}]}</script>
@@ -70,5 +79,14 @@
     btn.replaceWith(iframe);
   });
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
 </body>
 </html>

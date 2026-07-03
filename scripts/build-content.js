@@ -23,6 +23,7 @@ import {
   renderShoppingListPage,
   renderDiyHubPage,
   renderCompareHubPage,
+  renderCoverageCalculatorPage,
 } from '../lib/content-templates.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -88,6 +89,7 @@ async function buildHub(dataFile, outPath, renderFn) {
 async function run() {
   await buildDiyHub();
   await buildHub('compare-hub.js', ['compare', 'index.html'], renderCompareHubPage);
+  await buildHub('tools/epoxy-coverage-calculator.js', ['tools', 'epoxy-coverage-calculator', 'index.html'], renderCoverageCalculatorPage);
   await buildSection('rankings', 'best', renderRankingPage);
   await buildSection('reviews', 'reviews', renderReviewPage);
   await buildSection('compare', 'compare', renderConceptComparePage);

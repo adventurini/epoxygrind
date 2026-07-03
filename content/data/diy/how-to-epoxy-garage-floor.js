@@ -14,7 +14,8 @@ export default {
     { productId: 'ediamondtools-7in-cup-wheel', label: '30/40-grit diamond cup wheel', note: 'general prep grit' },
     { productId: 'dewalt-dwv010-dust-extractor', label: 'HEPA dust extractor or shop vac', note: 'connects to the grinder shroud' },
     { productId: 'klein-et140-moisture-meter', label: 'Pinless moisture meter', note: 'or the free plastic-sheet test, see our moisture guide' },
-    { productId: '3m-6502ql-respirator', label: 'Half-face respirator', note: 'with P100/organic-vapor cartridges — cartridges sold separately' },
+    { productId: '3m-6502ql-respirator', label: 'Half-face respirator', note: 'cartridges sold separately' },
+    { productId: '3m-60923-cartridges', label: 'P100/organic-vapor cartridges' },
   ],
   steps: [
     {

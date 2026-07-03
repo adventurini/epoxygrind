@@ -144,9 +144,12 @@ const sections = [
       ...SHOPPING_LIST_PAGES.map((slug) => ({ path: `/diy/${slug}/`, changefreq: 'monthly', priority: 0.6 })),
     ],
   },
-  // Reserved for /tools/epoxy-coverage-calculator once the interactive
-  // calculator ships (spec_2 §4 Type 5) — empty until then.
-  { name: 'tools', entries: [] },
+  {
+    name: 'tools',
+    entries: existsSync(join(CONTENT_DATA_DIR, 'tools', 'epoxy-coverage-calculator.js'))
+      ? [{ path: '/tools/epoxy-coverage-calculator/', changefreq: 'monthly', priority: 0.6 }]
+      : [],
+  },
   {
     name: 'contractors',
     entries: [

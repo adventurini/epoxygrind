@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Epoxy Coverage Calculator — Gallons &amp; Kits Needed | EpoxyGrind</title>
+<meta name="description" content="Calculate how many gallons of epoxy, polyaspartic, or metallic epoxy you need for your garage floor, based on square footage, coats, and solids content.">
+<link rel="canonical" href="https://epoxygrind.vercel.app/tools/epoxy-coverage-calculator/">
+<link rel="icon" href="/logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/auth/auth.css">
+<link rel="stylesheet" href="/content/content.css">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Epoxy Coverage Calculator: How Much Epoxy Do You Need?","description":"Calculate how many gallons of epoxy, polyaspartic, or metallic epoxy you need for your garage floor, based on square footage, coats, and solids content."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does the calculator ask for volume solids instead of just letting me pick a product?","acceptedAnswer":{"@type":"Answer","text":"Volume solids and recommended mil thickness are specific to each manufacturer's formulation. Using system-level defaults gets you in the right ballpark for planning, but the number on your actual kit's technical data sheet will always be more accurate than a general industry figure."}},{"@type":"Question","name":"What is DFT and why does it matter more than how much I roll on?","acceptedAnswer":{"@type":"Answer","text":"DFT (dry film thickness) is how thick the cured coating ends up, in mils — not how much wet material you spread. A thin film wears through fast regardless of how carefully you rolled it on; hitting the target DFT is what actually determines durability."}},{"@type":"Question","name":"Why is the default solids % lower for polyaspartic than epoxy?","acceptedAnswer":{"@type":"Answer","text":"Many polyaspartic formulations run slightly below 100% volume solids, commonly in the 80-95% range depending on the product, versus most garage-grade epoxy kits which are formulated at or near 100% solids. Check your specific product's TDS — some polyaspartic systems are also sold at 100% solids."}},{"@type":"Question","name":"Should I buy exactly what the calculator says?","acceptedAnswer":{"@type":"Answer","text":"No — round up to the next full unit the kit is sold in, and buy a little extra rather than stretching a kit thin. Running short mid-coat on a two-part product you've already mixed is a much bigger problem than having a partial container left over."}},{"@type":"Question","name":"Does this calculator account for flake broadcast or a clear topcoat separately?","acceptedAnswer":{"@type":"Answer","text":"No — run the calculator once per coat type (e.g., once for your pigmented base coat, once for a clear topcoat) since they often have different target mil thicknesses, and add the results together for your total shopping list."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://epoxygrind.vercel.app/diy/"},{"@type":"ListItem","position":3,"name":"Epoxy Coverage Calculator: How Much Epoxy Do You Need?","item":"https://epoxygrind.vercel.app/tools/epoxy-coverage-calculator/"}]}</script>
+</head>
+<body class="home-page content-page" data-nav-variant="content">
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
+    <div class="nav-auth" data-auth-nav></div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+  <div class="mobile" id="mobile" data-auth-mobile></div>
+</header>
+<main>
+  <div class="content-main">
+    <div class="content-wrap">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span class="sep">/</span><a href="/diy/">Tools</a><span class="sep">/</span><span aria-current="page">Epoxy Coverage Calculator: How Much Epoxy Do You Need?</span></nav>
+    <p class="content-eyebrow">Tool</p>
+  <h1 class="content-h1">Epoxy Coverage Calculator: How Much Epoxy Do You Need?</h1>
+  <p class="content-dek">Enter your floor size and coating system below to estimate gallons needed, then jump straight to kits sized for that coverage.</p>
+    <div class="content-prose"><p>Every epoxy, polyaspartic, and metallic system spreads differently depending on its <strong>volume solids</strong> (how much of the wet material stays behind as cured film) and how thick you apply it (<strong>target mil thickness</strong>, or DFT — dry film thickness). This calculator uses the standard coatings-industry spreading-rate constant to turn those two numbers, plus your square footage and coat count, into a gallons estimate.</p>
+  <p>The defaults below are typical figures for each system — not a spec for any specific product. Always check the technical data sheet (TDS) on the actual kit you're buying and adjust the solids % and mil thickness fields to match; coverage claims vary by brand, and the manufacturer's number for their own product is always the more accurate one.</p></div>
+    <div class="calc-card">
+      <div class="calc-grid">
+        <label class="calc-field"><span>Floor area (sq ft)</span><input type="number" id="calc-sqft" value="500" min="1" step="1"></label>
+        <label class="calc-field"><span>Coating system</span><select id="calc-system"><option value="epoxy" data-solids="100" data-mils="8" data-href="/best/best-garage-floor-epoxy-kits/" data-label="garage floor epoxy kits" selected>100% Solids Epoxy</option><option value="polyaspartic" data-solids="85" data-mils="6" data-href="/best/best-polyaspartic-kits/" data-label="polyaspartic kits">Polyaspartic</option><option value="metallic" data-solids="100" data-mils="10" data-href="/best/best-metallic-epoxy-kits/" data-label="metallic epoxy kits">Metallic Epoxy</option></select></label>
+        <label class="calc-field"><span>Number of coats</span><input type="number" id="calc-coats" value="2" min="1" max="4" step="1"></label>
+        <label class="calc-field"><span>Volume solids (%)</span><input type="number" id="calc-solids" min="1" max="100" step="1"></label>
+        <label class="calc-field"><span>Target thickness per coat (mils DFT)</span><input type="number" id="calc-mils" min="0.5" max="30" step="0.5"></label>
+      </div>
+      <p class="calc-note">Includes a standard 10% loss factor for roller/tray waste and surface absorption. Solids % and mil thickness default to typical figures per system — always confirm against your specific product's technical data sheet before buying.</p>
+      <div class="calc-result" id="calc-result" aria-live="polite"></div>
+    </div>
+    <h2>How the math works</h2>
+    <div class="content-prose"><p>The formula: <strong>coverage (sq ft per gallon) = 1604 &times; volume solids &divide; target mils</strong>. The constant 1604 comes from the physical relationship between a gallon's volume and a 1-mil-thick film — spread one gallon of a 100%-solids material at exactly 1 mil thick and it covers 1,604 sq ft. Lower the solids content or raise the target thickness and that number drops.</p>
+  <p>From there: gallons per coat = floor area &divide; coverage-per-gallon, then multiplied by a 10% loss factor to account for what stays in the roller nap, the mixing bucket, and porous concrete that drinks more than a smooth sealed floor. Multiply by your number of coats for the total.</p>
+  <p>This is a planning estimate for buying the right amount of material, not a substitute for the coverage rate printed on your actual kit — see our <a href="/diy/how-to-epoxy-garage-floor/">complete garage floor epoxy guide</a> for how coats fit into the full job.</p></div>
+    <div class="pro-cta">
+    <div class="pro-cta-text">
+      <h3>Rather have a pro do it?</h3>
+      <p>Upload a photo and get a priced estimate in seconds — no obligation.</p>
+    </div>
+    <a class="btn btn-p" href="/">Get my instant estimate →</a>
+  </div>
+    <h2>FAQ</h2>
+    <div class="faq-list">
+    <div class="faq-item"><p class="faq-q">Why does the calculator ask for volume solids instead of just letting me pick a product?</p><p class="faq-a">Volume solids and recommended mil thickness are specific to each manufacturer's formulation. Using system-level defaults gets you in the right ballpark for planning, but the number on your actual kit's technical data sheet will always be more accurate than a general industry figure.</p></div><div class="faq-item"><p class="faq-q">What is DFT and why does it matter more than how much I roll on?</p><p class="faq-a">DFT (dry film thickness) is how thick the cured coating ends up, in mils — not how much wet material you spread. A thin film wears through fast regardless of how carefully you rolled it on; hitting the target DFT is what actually determines durability.</p></div><div class="faq-item"><p class="faq-q">Why is the default solids % lower for polyaspartic than epoxy?</p><p class="faq-a">Many polyaspartic formulations run slightly below 100% volume solids, commonly in the 80-95% range depending on the product, versus most garage-grade epoxy kits which are formulated at or near 100% solids. Check your specific product's TDS — some polyaspartic systems are also sold at 100% solids.</p></div><div class="faq-item"><p class="faq-q">Should I buy exactly what the calculator says?</p><p class="faq-a">No — round up to the next full unit the kit is sold in, and buy a little extra rather than stretching a kit thin. Running short mid-coat on a two-part product you've already mixed is a much bigger problem than having a partial container left over.</p></div><div class="faq-item"><p class="faq-q">Does this calculator account for flake broadcast or a clear topcoat separately?</p><p class="faq-a">No — run the calculator once per coat type (e.g., once for your pigmented base coat, once for a clear topcoat) since they often have different target mil thicknesses, and add the results together for your total shopping list.</p></div>
+  </div>
+    <script>
+    (function(){
+      var sqftEl=document.getElementById('calc-sqft'),
+          systemEl=document.getElementById('calc-system'),
+          coatsEl=document.getElementById('calc-coats'),
+          solidsEl=document.getElementById('calc-solids'),
+          milsEl=document.getElementById('calc-mils'),
+          resultEl=document.getElementById('calc-result'),
+          lossFactor=1+10/100;
+
+      function applySystemDefaults(){
+        var opt=systemEl.options[systemEl.selectedIndex];
+        solidsEl.value=opt.dataset.solids;
+        milsEl.value=opt.dataset.mils;
+        calc();
+      }
+
+      function calc(){
+        var sqft=parseFloat(sqftEl.value)||0,
+            coats=parseFloat(coatsEl.value)||1,
+            solidsPct=parseFloat(solidsEl.value)||0,
+            mils=parseFloat(milsEl.value)||0;
+
+        if(sqft<=0||mils<=0||solidsPct<=0){ resultEl.innerHTML=''; return; }
+
+        var coveragePerGallon=1604*(solidsPct/100)/mils,
+            gallonsPerCoat=(sqft/coveragePerGallon)*lossFactor,
+            totalGallons=gallonsPerCoat*coats,
+            opt=systemEl.options[systemEl.selectedIndex],
+            href=opt.dataset.href,
+            label=opt.dataset.label,
+            coatWord=coats==1?'coat':'coats';
+
+        resultEl.innerHTML =
+          '<p class="calc-result-figure">'+totalGallons.toFixed(1)+' gallons total</p>'+
+          '<p class="calc-result-sub">&asymp; '+gallonsPerCoat.toFixed(1)+' gal/coat &times; '+coats+' '+coatWord+' &mdash; '+coveragePerGallon.toFixed(0)+' sq ft/gal at '+mils+' mils</p>'+
+          '<p class="calc-result-cta"><a class="btn btn-p btn-sm" href="'+href+'">See '+label+' sized for ~'+Math.round(sqft)+' sq ft &rarr;</a></p>';
+      }
+
+      systemEl.addEventListener('change', applySystemDefaults);
+      [sqftEl, coatsEl, solidsEl, milsEl].forEach(function(el){ el.addEventListener('input', calc); });
+      applySystemDefaults();
+    })();
+    </script>
+      
+    </div>
+  </div>
+</main>
+<footer class="site-foot"><div class="wrap">© 2026 EpoxyGrind · <a href="/diy/">DIY guides</a> · <a href="/services/">Contractor services</a></div></footer>
+<script src="/auth/nav.js" type="module"></script>
+<script>
+  var b=document.getElementById('burger'),m=document.getElementById('mobile');
+  if(b&&m){b.addEventListener('click',function(){m.classList.toggle('open')});m.querySelectorAll('a,button').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});}
+</script>
+<script>
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.video-embed-facade');
+    if(!btn) return;
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + btn.dataset.videoId + '?autoplay=1';
+    iframe.title = btn.dataset.videoTitle || 'YouTube video';
+    iframe.loading = 'lazy';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    btn.replaceWith(iframe);
+  });
+</script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
+</body>
+</html>

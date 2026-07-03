@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How to Repair Concrete Cracks Before Epoxy Coating | EpoxyGrind</title>
 <meta name="description" content="How to fill and repair concrete cracks and spalls before an epoxy coat — the right filler for structural vs. cosmetic cracks, and how to level the repair with the slab.">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to Repair Concrete Cracks Before Epoxy Coating","description":"How to fill and repair concrete cracks and spalls before an epoxy coat — the right filler for structural vs. cosmetic cracks, and how to level the repair with the slab."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I know if a crack is structural vs. cosmetic?","acceptedAnswer":{"@type":"Answer","text":"Width, vertical offset between the two sides, and whether it's actively growing are the main signals. A stable, hairline crack with both sides level is almost always cosmetic. Anything wider, offset, or near a wall/corner that seems to be moving is worth a professional look before you coat over it."}},{"@type":"Question","name":"Can I use the same filler for cracks and for spalled/pitted areas?","acceptedAnswer":{"@type":"Answer","text":"A thin crack filler generally isn't the right product for a broader spalled area — you want something with more body, like a filled epoxy mortar or concrete patching compound, to fill the irregular depth properly."}},{"@type":"Question","name":"Will a filled crack be completely invisible under the epoxy?","acceptedAnswer":{"@type":"Answer","text":"On a solid-color coat, a well-filled and leveled crack is usually very hard to see. Under a flake or metallic finish, the pattern itself helps hide it further, but a very close inspection can sometimes still reveal a faint line."}},{"@type":"Question","name":"Do control joints (the intentional grooves in a garage floor) need to be filled too?","acceptedAnswer":{"@type":"Answer","text":"Control joints are usually left as-is or filled with a flexible joint filler rather than a rigid one — they're designed to allow controlled movement, and a rigid filler defeats that purpose and can crack again at the joint."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"DIY guides","item":"https://epoxygrind.vercel.app/diy/"},{"@type":"ListItem","position":3,"name":"How to Repair Concrete Cracks Before Epoxy Coating","item":"https://epoxygrind.vercel.app/diy/how-to-repair-concrete-cracks-before-coating/"}]}</script>
@@ -85,5 +94,14 @@
     btn.replaceWith(iframe);
   });
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
 </body>
 </html>

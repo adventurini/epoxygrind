@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Best Concrete Grinders for DIY Epoxy Floor Prep (2026) | EpoxyGrind</title>
 <meta name="description" content="The single-buy grinder answer for DIY epoxy prep, the shroud-only pick if you already own a grinder, and when to rent a walk-behind instead.">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"name":"DEWALT DWE46153 5in Surface Grinding Dust Shroud Kit (grinder + shroud)","url":"https://epoxygrind.vercel.app/go/dewalt-dwe46153-grinder-shroud-kit"},{"@type":"ListItem","position":2,"name":"DEWALT DWE46152 5in Surface Grinding Dust Shroud (shroud only)","url":"https://epoxygrind.vercel.app/go/dewalt-dwe46152-shroud-only"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I need a dust shroud, or can I grind without one?","acceptedAnswer":{"@type":"Answer","text":"Use a shroud connected to a vacuum or dust extractor. Dry concrete grinding produces respirable crystalline silica dust — an unshrouded grinder in an enclosed garage is a real health hazard, not just a mess."}},{"@type":"Question","name":"What grit cup wheel should I use for epoxy prep?","acceptedAnswer":{"@type":"Answer","text":"A 30/40-grit medium-bond wheel is the general-purpose profile-prep spec for a clean slab. If you are removing old coating, paint, or mastic first, use an 18/20-grit aggressive wheel — see our diamond cup wheel guide for the distinction."}},{"@type":"Question","name":"Does grinding replace acid etching?","acceptedAnswer":{"@type":"Answer","text":"Yes — grinding gives a mechanical concrete surface profile that etching cannot match, and it is the prep method most epoxy manufacturers recommend over acid etch for adhesion. Check your kit first, though: some retail kits include an etch step as their default instructions."}},{"@type":"Question","name":"Can I rent a grinder instead of buying one?","acceptedAnswer":{"@type":"Answer","text":"For a single garage job, renting a hand grinder is reasonable if you don’t plan to reuse it. A walk-behind planetary grinder rental only pays off on larger slabs (roughly 800+ sq ft) where hand-grinding time becomes impractical."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Best","item":"https://epoxygrind.vercel.app/best/"},{"@type":"ListItem","position":3,"name":"Best Concrete Grinders for DIY Epoxy Prep (2026)","item":"https://epoxygrind.vercel.app/best/concrete-grinders-diy/"}]}</script>
@@ -37,7 +46,7 @@
     <p>Whichever grinder you use, pair it with a shrouded dust collection setup and the correct cup wheel grit for the job (see our <a class="product-link" href="/best/diamond-cup-wheels/">diamond cup wheel picks</a>) — an unshrouded grinder turns garage prep into a silica-dust hazard.</p></div>
     <div class="comparison-table-wrap"><table class="comparison-table">
     <thead><tr><th>Product</th><th>Amperage</th><th>No-load RPM</th><th>Weight</th><th>Includes</th></tr></thead>
-    <tbody><tr><td class="name-cell"><a class="product-link" href="/go/dewalt-dwe46153-grinder-shroud-kit" rel="nofollow sponsored" target="_blank">DEWALT DWE46153 5in Surface Grinding Dust Shroud Kit (grinder + shroud)</a></td><td>11 A</td><td>11,000 rpm</td><td>9.65 lb</td><td>Grinder + shroud + bail handle</td></tr><tr><td class="name-cell"><a class="product-link" href="/go/dewalt-dwe46152-shroud-only" rel="nofollow sponsored" target="_blank">DEWALT DWE46152 5in Surface Grinding Dust Shroud (shroud only)</a></td><td>—</td><td>—</td><td>—</td><td>Shroud only</td></tr></tbody>
+    <tbody><tr><td class="name-cell"><a class="product-link" href="/go/dewalt-dwe46153-grinder-shroud-kit" rel="nofollow sponsored" target="_blank" data-merchant="amazon.com">DEWALT DWE46153 5in Surface Grinding Dust Shroud Kit (grinder + shroud)</a></td><td>11 A</td><td>11,000 rpm</td><td>9.65 lb</td><td>Grinder + shroud + bail handle</td></tr><tr><td class="name-cell"><a class="product-link" href="/go/dewalt-dwe46152-shroud-only" rel="nofollow sponsored" target="_blank" data-merchant="amazon.com">DEWALT DWE46152 5in Surface Grinding Dust Shroud (shroud only)</a></td><td>—</td><td>—</td><td>—</td><td>Shroud only</td></tr></tbody>
   </table></div>
     <div class="product-card"><div class="product-card-head">
       <div>
@@ -99,5 +108,14 @@
     btn.replaceWith(iframe);
   });
 </script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
 </body>
 </html>
