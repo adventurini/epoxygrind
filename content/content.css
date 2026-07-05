@@ -187,3 +187,13 @@
 .muted{color:var(--muted)}
 .tiny{font-size:11px;margin-top:6px}
 .pr-loading{padding:8px 0}
+
+.zip-search{max-width:420px;margin:20px 0}
+.zip-search-row{display:flex;gap:8px}
+.zip-search-row input{flex:1;min-width:0;min-height:44px;padding:12px 14px;border:1px solid var(--line-2);border-radius:8px;font:inherit;font-size:15px}
+.zip-search-row .btn{flex:none}
+
+.social-icons{display:flex;gap:10px;margin:14px 0}
+.social-icons a{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--blue-soft);color:var(--blue);transition:background .15s,color .15s}
+.social-icons a:hover{background:var(--blue);color:#fff}
+.social-icons svg{width:17px;height:17px;fill:currentColor}

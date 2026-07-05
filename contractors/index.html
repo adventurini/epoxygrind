@@ -41,7 +41,35 @@
       <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span class="sep">/</span><span aria-current="page">Find a contractor</span></nav>
     <p class="content-eyebrow">Contractor directory</p>
     <h1 class="content-h1">Find an Epoxy Flooring Contractor</h1>
-    <p class="content-dek">Local epoxy and concrete coating contractors by state — real phone numbers, real services, no lead-buying middleman. Pick your state to browse, or get an instant priced estimate first so you know what to expect from a quote.</p>
+    <p class="content-dek">Local epoxy and concrete coating contractors by state — real phone numbers, real services, no lead-buying middleman. Search your ZIP or pick your state to browse, or get an instant priced estimate first so you know what to expect from a quote.</p>
+    <div class="zip-search">
+    <label class="fld" for="contractorZip"><span>Search by ZIP code</span>
+      <div class="zip-search-row">
+        <input id="contractorZip" type="text" inputmode="numeric" pattern="[0-9]{5}" placeholder="Enter your ZIP" maxlength="5">
+        <button type="button" class="btn btn-p" id="contractorZipGo">Find contractors →</button>
+      </div>
+      <p class="fld-error" id="contractorZipError" hidden></p>
+    </label>
+  </div>
+  <script>
+    (function(){
+      var input = document.getElementById('contractorZip');
+      var btn = document.getElementById('contractorZipGo');
+      var err = document.getElementById('contractorZipError');
+      function go(){
+        var zip = (input.value || '').trim();
+        err.hidden = true;
+        if (!/^\d{5}$/.test(zip)) { err.hidden = false; err.textContent = 'Enter a 5-digit ZIP code'; return; }
+        btn.disabled = true; btn.textContent = 'Searching…';
+        fetch('/api/nearest-metro?zip=' + encodeURIComponent(zip)).then(function(r){ return r.json().then(function(d){ return {ok:r.ok, d:d}; }); }).then(function(res){
+          if (!res.ok) { err.hidden = false; err.textContent = res.d.error || 'Could not find a nearby coverage area.'; btn.disabled=false; btn.textContent='Find contractors →'; return; }
+          window.location.href = '/contractors/' + res.d.state_slug + '/' + res.d.slug + '/';
+        }).catch(function(){ err.hidden = false; err.textContent = 'Something went wrong — try browsing by state below.'; btn.disabled=false; btn.textContent='Find contractors →'; });
+      }
+      btn.addEventListener('click', go);
+      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') go(); });
+    })();
+  </script>
     <p><a class="btn btn-p" href="/">Get my instant estimate →</a></p>
     <h2>Browse by state</h2>
     <div class="category-grid">
