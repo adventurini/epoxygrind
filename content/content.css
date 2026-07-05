@@ -224,6 +224,7 @@
 .contractor-logo{width:48px;height:48px;object-fit:contain;border-radius:8px;background:#fff;border:1px solid var(--line);padding:4px;flex:none}
 .rating-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--ff-d);font-weight:800;font-size:14px;color:var(--ink);margin:10px 0}
 .rating-google-g{width:16px;height:16px;flex:none}
+.rating-star{width:15px;height:15px;flex:none;margin-left:1px}
 .rating-count{font-family:var(--ff);font-weight:500;color:var(--muted);font-size:13px}
 
 /* Contractor listing cards: small logo + rating badge */
@@ -231,3 +232,14 @@
 .category-card-logo{width:32px;height:32px;object-fit:contain;border-radius:6px;margin-bottom:8px;background:#fff}
 .category-card .rating-badge{font-size:12.5px;margin:6px 0 0}
 .category-card .rating-google-g{width:13px;height:13px}
+.category-card .rating-star{width:12px;height:12px}
+
+.contractor-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:16px 0 6px}
+.contractor-gallery a{display:block;border-radius:8px;overflow:hidden;aspect-ratio:1/1}
+.contractor-gallery img{width:100%;height:100%;object-fit:cover;transition:transform .2s}
+.contractor-gallery a:hover img{transform:scale(1.05)}
+
+/* Contractor lead form */
+.lead-form-wrap{max-width:560px}
+.lead-form-wrap textarea{width:100%;padding:12px 14px;border:1px solid var(--line-2);border-radius:8px;font:inherit;font-size:15px;resize:vertical}
+.lead-form-honeypot{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;opacity:0}

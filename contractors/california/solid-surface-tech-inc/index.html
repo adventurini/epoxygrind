@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/auth/auth.css">
 <link rel="stylesheet" href="/content/content.css">
-
+<link rel="stylesheet" href="/calculator/calculator.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"Solid Surface Tech, Inc.","telephone":"(559) 916-3577","url":"http://solidsurfacetech.us/","address":{"@type":"PostalAddress","addressLocality":"Fresno","addressRegion":"CA"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://epoxygrind.vercel.app/"},{"@type":"ListItem","position":2,"name":"Find a contractor","item":"https://epoxygrind.vercel.app/contractors/"},{"@type":"ListItem","position":3,"name":"CA","item":"https://epoxygrind.vercel.app/contractors/california/"},{"@type":"ListItem","position":4,"name":"Solid Surface Tech, Inc.","item":"https://epoxygrind.vercel.app/contractors/california/solid-surface-tech-inc/"}]}</script>
 </head>
@@ -46,9 +46,10 @@
       
       <h1 class="content-h1">Solid Surface Tech, Inc.</h1>
     </div>
-    <span class="rating-badge"><svg viewBox="0 0 24 24" aria-hidden="true" class="rating-google-g"><path d="M22.5 12.25c0-.76-.07-1.5-.2-2.2H12v4.16h5.9a5.05 5.05 0 0 1-2.19 3.32v2.7h3.53c2.07-1.9 3.26-4.7 3.26-7.98Z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.53-2.7c-.98.66-2.24 1.04-3.75 1.04-2.88 0-5.32-1.94-6.19-4.56H2.17v2.79A11 11 0 0 0 12 23Z" fill="#34A853"/><path d="M5.81 14.12a6.6 6.6 0 0 1 0-4.24V7.09H2.17a11 11 0 0 0 0 9.82l3.64-2.79Z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.96 1 12 1A11 11 0 0 0 2.17 7.09l3.64 2.79C6.68 7.26 9.12 5.38 12 5.38Z" fill="#EA4335"/></svg>4.9 <span class="rating-count">(45)</span></span>
+    <span class="rating-badge"><svg viewBox="0 0 24 24" aria-hidden="true" class="rating-google-g"><path d="M22.5 12.25c0-.76-.07-1.5-.2-2.2H12v4.16h5.9a5.05 5.05 0 0 1-2.19 3.32v2.7h3.53c2.07-1.9 3.26-4.7 3.26-7.98Z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.53-2.7c-.98.66-2.24 1.04-3.75 1.04-2.88 0-5.32-1.94-6.19-4.56H2.17v2.79A11 11 0 0 0 12 23Z" fill="#34A853"/><path d="M5.81 14.12a6.6 6.6 0 0 1 0-4.24V7.09H2.17a11 11 0 0 0 0 9.82l3.64-2.79Z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.96 1 12 1A11 11 0 0 0 2.17 7.09l3.64 2.79C6.68 7.26 9.12 5.38 12 5.38Z" fill="#EA4335"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" class="rating-star"><path d="M12 2.5l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.8-6.2 3.8 1.6-7-5.4-4.7 7.1-.6L12 2.5Z" fill="#F5B400"/></svg>4.9 <span class="rating-count">(45 reviews)</span></span>
     <div class="product-card-specs" style="margin-top:14px"><span class="spec-chip">Licensed</span><span class="spec-chip">Insured</span><span class="spec-chip">Warranty offered</span><span class="spec-chip">Free estimates</span><span class="spec-chip">20+ years in business</span></div>
     <div class="product-card-specs"><span class="spec-chip">Countertops</span></div>
+    
 
     <h2>Contact</h2>
     <div class="shopping-list"><div class="shopping-list-row"><span>Phone</span><a class="product-link" href="tel:5599163577">(559) 916-3577</a></div><div class="shopping-list-row"><span>Website</span><a class="product-link" href="http://solidsurfacetech.us/" target="_blank" rel="noopener">solidsurfacetech.us/</a></div></div>
@@ -76,6 +77,54 @@
     <h2>Compare a DIY price first</h2>
     <div class="content-prose"><p>Not sure what a fair quote looks like? Get a free instant estimate for your space before you talk to a contractor.</p></div>
     <p><a class="btn btn-p" href="/">Get my instant estimate →</a></p>
+
+    <h2>Request a quote from Solid Surface Tech, Inc.</h2>
+    <div class="lead-form-wrap">
+      <form id="contractorLeadForm" novalidate>
+        <input type="hidden" name="contractorStateSlug" value="california">
+        <input type="hidden" name="contractorSlug" value="solid-surface-tech-inc">
+        <input type="hidden" name="contractorName" value="Solid Surface Tech, Inc.">
+        <input type="hidden" name="sourcePath" value="/contractors/california/solid-surface-tech-inc/">
+        <div class="lead-form-honeypot" aria-hidden="true">
+          <label>Company website<input type="text" name="company_website" tabindex="-1" autocomplete="off"></label>
+        </div>
+        <div class="row-2">
+          <label class="fld"><span>Name</span><input type="text" name="name" required autocomplete="name"></label>
+          <label class="fld"><span>Email</span><input type="email" name="email" required autocomplete="email"></label>
+        </div>
+        <label class="fld full"><span>Phone <em>(optional)</em></span><input type="tel" name="phone" autocomplete="tel"></label>
+        <label class="fld full"><span>Project details <em>(optional)</em></span><textarea name="message" rows="3"></textarea></label>
+        <button type="submit" class="btn btn-p" id="contractorLeadSubmit">Send request →</button>
+        <p class="fld-error" id="contractorLeadError" hidden></p>
+      </form>
+      <p class="tiny muted" id="contractorLeadSuccess" hidden>Thanks — your request has been sent.</p>
+    </div>
+    <script>
+      (function(){
+        var form = document.getElementById('contractorLeadForm');
+        var btn = document.getElementById('contractorLeadSubmit');
+        var err = document.getElementById('contractorLeadError');
+        var ok = document.getElementById('contractorLeadSuccess');
+        form.addEventListener('submit', function(e){
+          e.preventDefault();
+          err.hidden = true;
+          var data = Object.fromEntries(new FormData(form).entries());
+          if (!data.name || !data.email) { err.hidden = false; err.textContent = 'Name and email are required.'; return; }
+          btn.disabled = true; btn.textContent = 'Sending…';
+          fetch('/api/contractor-lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          }).then(function(r){ return r.json().then(function(d){ return {ok:r.ok, d:d}; }); }).then(function(res){
+            if (!res.ok) { err.hidden = false; err.textContent = res.d.error || 'Could not send — try again.'; btn.disabled = false; btn.textContent = 'Send request →'; return; }
+            form.hidden = true;
+            ok.hidden = false;
+          }).catch(function(){
+            err.hidden = false; err.textContent = 'Could not send — try again.'; btn.disabled = false; btn.textContent = 'Send request →';
+          });
+        });
+      })();
+    </script>
       
     </div>
   </div>

@@ -97,6 +97,36 @@ async function loadEstimates() {
   }
 }
 
+async function loadContractorLeads() {
+  const loading = document.getElementById('contractorLeadsLoading');
+  const wrap = document.getElementById('contractorLeadsTableWrap');
+  const tbody = document.getElementById('contractorLeadsTableBody');
+
+  try {
+    const res = await authFetch('/api/admin/contractor-leads');
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not load contractor leads.');
+
+    document.getElementById('statContractorLeads').textContent = String(data.leads.length);
+
+    tbody.innerHTML = data.leads.map((l) => `
+      <tr>
+        <td>${formatDate(l.createdAt)}</td>
+        <td>${escapeHtml(l.contractorName || '—')}</td>
+        <td><a class="admin-link" href="${escapeHtml(l.sourcePath)}" target="_blank">${escapeHtml(l.sourcePath)}</a></td>
+        <td>${escapeHtml(l.name)}</td>
+        <td><a class="admin-link" href="mailto:${escapeHtml(l.email)}">${escapeHtml(l.email)}</a></td>
+        <td>${l.phone ? `<a class="admin-link" href="tel:${escapeHtml(l.phone)}">${escapeHtml(l.phone)}</a>` : '—'}</td>
+        <td>${escapeHtml(l.message || '—')}</td>
+      </tr>`).join('');
+
+    loading.hidden = true;
+    wrap.hidden = false;
+  } catch (err) {
+    loading.textContent = err.message || 'Could not load contractor leads.';
+  }
+}
+
 async function boot() {
   const user = await initDashboard({ activeNav: 'admin' });
   if (!user) return;
@@ -116,7 +146,7 @@ async function boot() {
   }
 
   bodyEl.hidden = false;
-  await Promise.all([loadUsers(), loadEstimates()]);
+  await Promise.all([loadUsers(), loadEstimates(), loadContractorLeads()]);
 }
 
 boot().catch((err) => toast(err.message || 'Failed to load admin page.'));

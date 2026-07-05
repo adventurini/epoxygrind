@@ -44,7 +44,29 @@
       <div class="stat-card"><div class="n" id="statUsers">—</div><div class="l">Total users</div></div>
       <div class="stat-card"><div class="n" id="statEstimates">—</div><div class="l">Total estimates</div></div>
       <div class="stat-card"><div class="n" id="statVerified">—</div><div class="l">Verified users</div></div>
+      <div class="stat-card"><div class="n" id="statContractorLeads">—</div><div class="l">Contractor leads</div></div>
     </div>
+
+    <section class="dashboard-panel" style="margin-bottom:20px">
+      <h2>Contractor leads</h2>
+      <div id="contractorLeadsLoading" class="muted">Loading leads…</div>
+      <div class="admin-table-wrap" hidden id="contractorLeadsTableWrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Received</th>
+              <th>Contractor</th>
+              <th>From page</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+          <tbody id="contractorLeadsTableBody"></tbody>
+        </table>
+      </div>
+    </section>
 
     <section class="dashboard-panel" style="margin-bottom:20px">
       <h2>Users</h2>
