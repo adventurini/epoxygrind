@@ -154,6 +154,7 @@ const sections = [
     name: 'contractors',
     entries: [
       ...allStateSlugs().map((state) => ({ path: `/contractors/${state}/`, changefreq: 'weekly', priority: 0.6 })),
+      ...METROS.map((m) => ({ path: `/contractors/${m.state_slug}/${m.slug}/`, changefreq: 'weekly', priority: 0.65 })),
       ...CONTRACTORS.map((c) => ({ path: `/contractors/${c.state_slug}/${c.slug}/`, changefreq: 'monthly', priority: 0.6 })),
     ],
   },

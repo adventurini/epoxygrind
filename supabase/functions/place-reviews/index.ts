@@ -51,7 +51,10 @@ function normalize(raw: any, apiKey: string) {
   }));
 
   const photos = (raw.photos || []).slice(0, 8).map((p: any) => ({
-    media_url: `${PLACES_API}/${p.name}/media?maxWidthPx=1200&key=${apiKey}`,
+    // p.name already comes back as "places/{place_id}/photos/{ref}" — do
+    // NOT prefix with PLACES_API (which already ends in "/places") or this
+    // 404s with a duplicated "places/places/" path segment.
+    media_url: `https://places.googleapis.com/v1/${p.name}/media?maxWidthPx=1200&key=${apiKey}`,
     width: p.widthPx || null,
     height: p.heightPx || null,
     attributions: (p.authorAttributions || []).map((a: any) => ({

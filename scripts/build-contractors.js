@@ -8,9 +8,9 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { allStateSlugs } from '../lib/metros.js';
+import { allStateSlugs, METROS } from '../lib/metros.js';
 import { CONTRACTORS } from '../lib/contractors.js';
-import { renderContractorsHub, renderContractorState, renderContractorProfile } from '../lib/contractor-templates.js';
+import { renderContractorsHub, renderContractorState, renderContractorMetro, renderContractorProfile } from '../lib/contractor-templates.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 let built = 0;
@@ -37,8 +37,24 @@ function run() {
     }
   }
 
+  console.log(`\nMetro coverage-area pages (${METROS.length}):`);
+  const metroSlugs = new Set(METROS.map((m) => `${m.state_slug}/${m.slug}`));
+  for (const metro of METROS) {
+    try {
+      writePage(join(ROOT, 'contractors', metro.state_slug, metro.slug, 'index.html'), renderContractorMetro(metro));
+    } catch (err) {
+      failures += 1;
+      console.error(`  FAILED ${metro.state_slug}/${metro.slug}: ${err.message}`);
+    }
+  }
+
   console.log(`\nContractor profiles (${CONTRACTORS.length}):`);
   for (const c of CONTRACTORS) {
+    if (metroSlugs.has(`${c.state_slug}/${c.slug}`)) {
+      failures += 1;
+      console.error(`  SKIPPED ${c.state_slug}/${c.slug}: collides with a metro coverage-area page URL`);
+      continue;
+    }
     try {
       writePage(join(ROOT, 'contractors', c.state_slug, c.slug, 'index.html'), renderContractorProfile(c));
     } catch (err) {
