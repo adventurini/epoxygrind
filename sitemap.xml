@@ -3,6 +3,7 @@
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-static.xml</loc></sitemap>
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-states.xml</loc></sitemap>
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-cities.xml</loc></sitemap>
+  <sitemap><loc>https://epoxygrind.vercel.app/sitemap-guides.xml</loc></sitemap>
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-best.xml</loc></sitemap>
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-reviews.xml</loc></sitemap>
   <sitemap><loc>https://epoxygrind.vercel.app/sitemap-compare.xml</loc></sitemap>

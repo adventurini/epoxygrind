@@ -25,6 +25,7 @@ import {
   renderCompareHubPage,
   renderCoverageCalculatorPage,
 } from '../lib/content-templates.js';
+import { renderGuidePage, renderGuidePillar } from '../lib/guide-templates.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DATA_DIR = join(ROOT, 'content', 'data');
@@ -90,11 +91,13 @@ async function run() {
   await buildDiyHub();
   await buildHub('compare-hub.js', ['compare', 'index.html'], renderCompareHubPage);
   await buildHub('tools/epoxy-coverage-calculator.js', ['tools', 'epoxy-coverage-calculator', 'index.html'], renderCoverageCalculatorPage);
+  await buildHub('diy-vs-pro-pillar.js', ['compare', 'diy-kit-vs-professional-epoxy', 'index.html'], renderGuidePillar);
   await buildSection('rankings', 'best', renderRankingPage);
   await buildSection('reviews', 'reviews', renderReviewPage);
   await buildSection('compare', 'compare', renderConceptComparePage);
   await buildSection('diy', 'diy', renderDiyGuidePage);
   await buildSection('shopping-lists', 'diy', renderShoppingListPage);
+  await buildSection('guides', 'guides', renderGuidePage);
 
   console.log(`\nBuilt ${built} page(s), ${failures} failure(s).`);
   if (failures > 0) process.exitCode = 1;

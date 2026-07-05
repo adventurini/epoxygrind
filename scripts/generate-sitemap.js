@@ -50,6 +50,7 @@ const COMPARE_PAGES = listSlugs('compare');
 const DIY_GUIDE_PAGES = listSlugs('diy');
 const SHOPPING_LIST_PAGES = listSlugs('shopping-lists');
 const HAS_DIY_HUB = existsSync(join(CONTENT_DATA_DIR, 'diy-hub.js'));
+const HAS_DIY_VS_PRO_PILLAR = existsSync(join(CONTENT_DATA_DIR, 'diy-vs-pro-pillar.js'));
 const HAS_COMPARE_HUB = existsSync(join(CONTENT_DATA_DIR, 'compare-hub.js'));
 
 // ── Master SEO spec (spec_4) local pages — from content/data/metros.json ─
@@ -64,7 +65,7 @@ const DIRECTORY_PAGES = [];
 /** @type {{ state: string, city: string, service: string }[]} */
 const SERVICE_PAGES = [];
 /** @type {{ slug: string }[]} */
-const GUIDE_PAGES = [];
+const GUIDE_PAGES = listSlugs('guides').map((slug) => ({ slug }));
 /** @type {{ slug: string }[]} */
 const COLOR_PAGES = [];
 /** @type {{ path: string, changefreq?: string, priority?: number }[]} */
@@ -134,6 +135,7 @@ const sections = [
     entries: [
       ...(HAS_COMPARE_HUB ? [{ path: '/compare/', changefreq: 'weekly', priority: 0.7 }] : []),
       ...COMPARE_PAGES.map((slug) => ({ path: `/compare/${slug}/`, changefreq: 'monthly', priority: 0.6 })),
+      ...(HAS_DIY_VS_PRO_PILLAR ? [{ path: '/compare/diy-kit-vs-professional-epoxy/', changefreq: 'weekly', priority: 0.7 }] : []),
     ],
   },
   {

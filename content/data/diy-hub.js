@@ -164,6 +164,21 @@ export default {
       ],
     },
     {
+      title: 'Should you DIY?',
+      items: [
+        { href: '/compare/diy-kit-vs-professional-epoxy/', title: 'DIY kit vs. professional: the complete guide', description: 'The full cost, time, skill, and durability decision framework.' },
+        { href: '/guides/epoxy-garage-floor-cost-diy-vs-hiring/', title: 'Cost: DIY vs. hiring, by garage size', description: 'Real numbers for kit + tools vs. a professional quote.' },
+        { href: '/guides/how-hard-is-it-to-epoxy-a-garage-floor-yourself/', title: 'How hard is it, really?', description: 'The honest skill and difficulty picture for a first-timer.' },
+        { href: '/guides/how-long-does-diy-epoxy-last-vs-professional/', title: 'How long does DIY epoxy last vs. professional?', description: 'The durability gap, and why it exists.' },
+        { href: '/guides/diy-epoxy-floor-mistakes/', title: 'DIY epoxy floor mistakes', description: 'The specific failures that turn savings into regret.' },
+        { href: '/guides/is-diy-epoxy-worth-it/', title: 'Is DIY epoxy worth it?', description: 'The honest verdict — when it is, and when it is not.' },
+        { href: '/guides/time-to-epoxy-garage-floor-yourself/', title: 'How long does it actually take?', description: 'Realistic hours and days, including cure time.' },
+        { href: '/guides/what-does-a-pro-epoxy-job-include/', title: "What a pro job actually includes", description: 'What justifies the quote, beyond just labor.' },
+        { href: '/guides/can-you-epoxy-over-old-epoxy-diy-or-pro/', title: 'Can you epoxy over old epoxy yourself?', description: 'When recoating works, and when it needs a full redo.' },
+        { href: '/guides/hiring-an-epoxy-contractor-checklist/', title: 'How to choose an epoxy contractor', description: 'Questions to ask and red flags to avoid.' },
+      ],
+    },
+    {
       title: 'Fix a failed DIY job',
       items: [
         {

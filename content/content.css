@@ -197,3 +197,21 @@
 .social-icons a{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--blue-soft);color:var(--blue);transition:background .15s,color .15s}
 .social-icons a:hover{background:var(--blue);color:#fff}
 .social-icons svg{width:17px;height:17px;fill:currentColor}
+
+/* DIY-vs-Pro cluster (lib/guide-templates.js) */
+.dual-cta{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:28px 0}
+.dual-cta-card{border:1px solid var(--line);border-radius:14px;padding:22px 24px;background:#fff}
+.dual-cta-card.dual-cta-primary{border-color:rgba(26,92,214,.3);background:linear-gradient(135deg,var(--blue-soft),#fff)}
+.dual-cta-card h3{font-family:var(--ff-d);margin:0 0 6px;font-size:17px}
+.dual-cta-card p{margin:0 0 14px;font-size:13.5px;color:var(--muted)}
+.dual-cta-compact{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+@media (max-width:600px){.dual-cta{grid-template-columns:1fr}}
+
+.quick-decision{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.quick-decision-col{padding:20px 22px}
+.quick-decision-diy{background:#fff}
+.quick-decision-hire{background:var(--blue-soft)}
+.quick-decision-col h3{font-family:var(--ff-d);margin:0 0 10px;font-size:15px}
+.quick-decision-col ul{margin:0;padding-left:18px}
+.quick-decision-col li{margin-bottom:6px;font-size:14px}
+@media (max-width:600px){.quick-decision{grid-template-columns:1fr}}
