@@ -1,1651 +1,1651 @@
 {
   "new-york/new-york": {
-    "path": "/images/cities/new-york/new-york.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-york/new-york.jpg",
     "sourceTitle": "New York City",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/New_York_City"
   },
   "california/los-angeles": {
-    "path": "/images/cities/california/los-angeles.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/los-angeles.jpg",
     "sourceTitle": "Los Angeles",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Los_Angeles"
   },
   "illinois/chicago": {
-    "path": "/images/cities/illinois/chicago.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/illinois/chicago.jpg",
     "sourceTitle": "Chicago",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Chicago"
   },
   "texas/dallas": {
-    "path": "/images/cities/texas/dallas.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/dallas.jpg",
     "sourceTitle": "Dallas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Dallas"
   },
   "arizona/phoenix": {
-    "path": "/images/cities/arizona/phoenix.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arizona/phoenix.jpg",
     "sourceTitle": "Phoenix, Arizona",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Phoenix%2C_Arizona"
   },
   "texas/houston": {
-    "path": "/images/cities/texas/houston.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/houston.jpg",
     "sourceTitle": "Houston",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Houston"
   },
   "california/san-francisco": {
-    "path": "/images/cities/california/san-francisco.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/san-francisco.jpg",
     "sourceTitle": "San Francisco",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/San_Francisco"
   },
   "california/santa-ana": {
-    "path": "/images/cities/california/santa-ana.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/santa-ana.jpg",
     "sourceTitle": "Santa Ana, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Santa_Ana%2C_California"
   },
   "california/san-jose": {
-    "path": "/images/cities/california/san-jose.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/san-jose.jpg",
     "sourceTitle": "San Jose, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/San_Jose%2C_California"
   },
   "florida/miami": {
-    "path": "/images/cities/florida/miami.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/miami.jpg",
     "sourceTitle": "Miami",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Miami"
   },
   "massachusetts/boston": {
-    "path": "/images/cities/massachusetts/boston.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/massachusetts/boston.jpg",
     "sourceTitle": "Boston",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Boston"
   },
   "california/san-diego": {
-    "path": "/images/cities/california/san-diego.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/san-diego.jpg",
     "sourceTitle": "San Diego",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/San_Diego"
   },
   "colorado/denver": {
-    "path": "/images/cities/colorado/denver.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/colorado/denver.jpg",
     "sourceTitle": "Denver",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Denver"
   },
   "michigan/detroit": {
-    "path": "/images/cities/michigan/detroit.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/michigan/detroit.jpg",
     "sourceTitle": "Detroit",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Detroit"
   },
   "washington/seattle": {
-    "path": "/images/cities/washington/seattle.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/washington/seattle.jpg",
     "sourceTitle": "Seattle",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Seattle"
   },
   "california/riverside": {
-    "path": "/images/cities/california/riverside.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/riverside.jpg",
     "sourceTitle": "Riverside, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Riverside%2C_California"
   },
   "minnesota/minneapolis": {
-    "path": "/images/cities/minnesota/minneapolis.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/minnesota/minneapolis.jpg",
     "sourceTitle": "Minneapolis",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Minneapolis"
   },
   "pennsylvania/philadelphia": {
-    "path": "/images/cities/pennsylvania/philadelphia.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/pennsylvania/philadelphia.jpg",
     "sourceTitle": "Philadelphia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Philadelphia"
   },
   "texas/san-antonio": {
-    "path": "/images/cities/texas/san-antonio.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/san-antonio.jpg",
     "sourceTitle": "San Antonio",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/San_Antonio"
   },
   "missouri/kansas-city": {
-    "path": "/images/cities/missouri/kansas-city.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/missouri/kansas-city.jpg",
     "sourceTitle": "Kansas City, Missouri",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Kansas_City%2C_Missouri"
   },
   "california/sacramento": {
-    "path": "/images/cities/california/sacramento.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/sacramento.jpg",
     "sourceTitle": "Sacramento, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Sacramento%2C_California"
   },
   "indiana/indianapolis": {
-    "path": "/images/cities/indiana/indianapolis.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/indiana/indianapolis.jpg",
     "sourceTitle": "Indianapolis",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Indianapolis"
   },
   "oregon/portland": {
-    "path": "/images/cities/oregon/portland.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/oregon/portland.jpg",
     "sourceTitle": "Portland, Oregon",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Portland%2C_Oregon"
   },
   "texas/austin": {
-    "path": "/images/cities/texas/austin.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/austin.jpg",
     "sourceTitle": "Austin, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Austin%2C_Texas"
   },
   "virginia/virginia-beach": {
-    "path": "/images/cities/virginia/virginia-beach.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/virginia/virginia-beach.jpg",
     "sourceTitle": "Virginia Beach, Virginia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Virginia_Beach%2C_Virginia"
   },
   "north-carolina/charlotte": {
-    "path": "/images/cities/north-carolina/charlotte.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-carolina/charlotte.jpg",
     "sourceTitle": "Charlotte, North Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Charlotte%2C_North_Carolina"
   },
   "nevada/las-vegas": {
-    "path": "/images/cities/nevada/las-vegas.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/nevada/las-vegas.jpg",
     "sourceTitle": "Las Vegas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Las_Vegas"
   },
   "georgia/atlanta": {
-    "path": "/images/cities/georgia/atlanta.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/georgia/atlanta.jpg",
     "sourceTitle": "Atlanta",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Atlanta"
   },
   "florida/coral-springs": {
-    "path": "/images/cities/florida/coral-springs.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/coral-springs.jpg",
     "sourceTitle": "Coral Springs, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Coral_Springs%2C_Florida"
   },
   "ohio/columbus": {
-    "path": "/images/cities/ohio/columbus.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/ohio/columbus.jpg",
     "sourceTitle": "Columbus, Ohio",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Columbus%2C_Ohio"
   },
   "wisconsin/milwaukee": {
-    "path": "/images/cities/wisconsin/milwaukee.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/wisconsin/milwaukee.jpg",
     "sourceTitle": "Milwaukee",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Milwaukee"
   },
   "utah/salt-lake-city": {
-    "path": "/images/cities/utah/salt-lake-city.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/utah/salt-lake-city.jpg",
     "sourceTitle": "Salt Lake City",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Salt_Lake_City"
   },
   "oklahoma/oklahoma-city": {
-    "path": "/images/cities/oklahoma/oklahoma-city.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/oklahoma/oklahoma-city.jpg",
     "sourceTitle": "Oklahoma City",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Oklahoma_City"
   },
   "north-carolina/raleigh": {
-    "path": "/images/cities/north-carolina/raleigh.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-carolina/raleigh.jpg",
     "sourceTitle": "Raleigh, North Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Raleigh%2C_North_Carolina"
   },
   "illinois/aurora": {
-    "path": "/images/cities/illinois/aurora.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/illinois/aurora.jpg",
     "sourceTitle": "Aurora, Illinois",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Aurora%2C_Illinois"
   },
   "ohio/cleveland": {
-    "path": "/images/cities/ohio/cleveland.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/ohio/cleveland.jpg",
     "sourceTitle": "Cleveland",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Cleveland"
   },
   "tennessee/memphis": {
-    "path": "/images/cities/tennessee/memphis.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/tennessee/memphis.jpg",
     "sourceTitle": "Memphis, Tennessee",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Memphis%2C_Tennessee"
   },
   "florida/jacksonville": {
-    "path": "/images/cities/florida/jacksonville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/jacksonville.jpg",
     "sourceTitle": "Jacksonville, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Jacksonville%2C_Florida"
   },
   "florida/tampa": {
-    "path": "/images/cities/florida/tampa.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/tampa.jpg",
     "sourceTitle": "Tampa, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Tampa%2C_Florida"
   },
   "tennessee/nashville": {
-    "path": "/images/cities/tennessee/nashville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/tennessee/nashville.jpg",
     "sourceTitle": "Nashville, Tennessee",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Nashville%2C_Tennessee"
   },
   "texas/fort-worth": {
-    "path": "/images/cities/texas/fort-worth.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/fort-worth.jpg",
     "sourceTitle": "Fort Worth, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Fort_Worth%2C_Texas"
   },
   "connecticut/bridgeport": {
-    "path": "/images/cities/connecticut/bridgeport.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/connecticut/bridgeport.jpg",
     "sourceTitle": "Bridgeport, Connecticut",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Bridgeport%2C_Connecticut"
   },
   "california/oceanside": {
-    "path": "/images/cities/california/oceanside.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/oceanside.jpg",
     "sourceTitle": "Oceanside, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Oceanside%2C_California"
   },
   "california/stockton": {
-    "path": "/images/cities/california/stockton.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/stockton.jpg",
     "sourceTitle": "Stockton, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Stockton%2C_California"
   },
   "rhode-island/providence": {
-    "path": "/images/cities/rhode-island/providence.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/rhode-island/providence.jpg",
     "sourceTitle": "Providence, Rhode Island",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Providence%2C_Rhode_Island"
   },
   "north-carolina/greensboro": {
-    "path": "/images/cities/north-carolina/greensboro.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-carolina/greensboro.jpg",
     "sourceTitle": "Greensboro, North Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Greensboro%2C_North_Carolina"
   },
   "texas/el-paso": {
-    "path": "/images/cities/texas/el-paso.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/el-paso.jpg",
     "sourceTitle": "El Paso, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/El_Paso%2C_Texas"
   },
   "california/fresno": {
-    "path": "/images/cities/california/fresno.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/fresno.jpg",
     "sourceTitle": "Fresno, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Fresno%2C_California"
   },
   "florida/orlando": {
-    "path": "/images/cities/florida/orlando.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/orlando.jpg",
     "sourceTitle": "Orlando, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Orlando%2C_Florida"
   },
   "maryland/baltimore": {
-    "path": "/images/cities/maryland/baltimore.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/maryland/baltimore.jpg",
     "sourceTitle": "Baltimore",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Baltimore"
   },
   "kentucky/louisville": {
-    "path": "/images/cities/kentucky/louisville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/kentucky/louisville.jpg",
     "sourceTitle": "Louisville, Kentucky",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Louisville%2C_Kentucky"
   },
   "new-mexico/albuquerque": {
-    "path": "/images/cities/new-mexico/albuquerque.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-mexico/albuquerque.jpg",
     "sourceTitle": "Albuquerque, New Mexico",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Albuquerque%2C_New_Mexico"
   },
   "california/oxnard": {
-    "path": "/images/cities/california/oxnard.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/oxnard.jpg",
     "sourceTitle": "Oxnard, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Oxnard%2C_California"
   },
   "arizona/tucson": {
-    "path": "/images/cities/arizona/tucson.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arizona/tucson.jpg",
     "sourceTitle": "Tucson, Arizona",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Tucson%2C_Arizona"
   },
   "missouri/st-louis": {
-    "path": "/images/cities/missouri/st-louis.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/missouri/st-louis.jpg",
     "sourceTitle": "St. Louis",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/St._Louis"
   },
   "nebraska/omaha": {
-    "path": "/images/cities/nebraska/omaha.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/nebraska/omaha.jpg",
     "sourceTitle": "Omaha, Nebraska",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Omaha%2C_Nebraska"
   },
   "oklahoma/tulsa": {
-    "path": "/images/cities/oklahoma/tulsa.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/oklahoma/tulsa.jpg",
     "sourceTitle": "Tulsa, Oklahoma",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Tulsa%2C_Oklahoma"
   },
   "louisiana/new-orleans": {
-    "path": "/images/cities/louisiana/new-orleans.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/louisiana/new-orleans.jpg",
     "sourceTitle": "New Orleans",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/New_Orleans"
   },
   "ohio/cincinnati": {
-    "path": "/images/cities/ohio/cincinnati.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/ohio/cincinnati.jpg",
     "sourceTitle": "Cincinnati",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Cincinnati"
   },
   "colorado/colorado-springs": {
-    "path": "/images/cities/colorado/colorado-springs.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/colorado/colorado-springs.jpg",
     "sourceTitle": "Colorado Springs, Colorado",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Colorado_Springs%2C_Colorado"
   },
   "idaho/boise-city": {
-    "path": "/images/cities/idaho/boise-city.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/idaho/boise-city.jpg",
     "sourceTitle": "Boise, Idaho",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Boise%2C_Idaho"
   },
   "massachusetts/springfield": {
-    "path": "/images/cities/massachusetts/springfield.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/massachusetts/springfield.jpg",
     "sourceTitle": "Springfield, Massachusetts",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Springfield%2C_Massachusetts"
   },
   "texas/mcallen": {
-    "path": "/images/cities/texas/mcallen.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/mcallen.jpg",
     "sourceTitle": "McAllen, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/McAllen%2C_Texas"
   },
   "south-carolina/charleston": {
-    "path": "/images/cities/south-carolina/charleston.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/south-carolina/charleston.jpg",
     "sourceTitle": "Charleston, South Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Charleston%2C_South_Carolina"
   },
   "ohio/dayton": {
-    "path": "/images/cities/ohio/dayton.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/ohio/dayton.jpg",
     "sourceTitle": "Dayton, Ohio",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Dayton%2C_Ohio"
   },
   "kansas/wichita": {
-    "path": "/images/cities/kansas/wichita.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/kansas/wichita.jpg",
     "sourceTitle": "Wichita, Kansas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Wichita%2C_Kansas"
   },
   "nevada/reno": {
-    "path": "/images/cities/nevada/reno.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/nevada/reno.jpg",
     "sourceTitle": "Reno, Nevada",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Reno%2C_Nevada"
   },
   "california/fairfield": {
-    "path": "/images/cities/california/fairfield.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/fairfield.jpg",
     "sourceTitle": "Fairfield, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Fairfield%2C_California"
   },
   "california/bakersfield": {
-    "path": "/images/cities/california/bakersfield.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/bakersfield.jpg",
     "sourceTitle": "Bakersfield, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Bakersfield%2C_California"
   },
   "iowa/des-moines": {
-    "path": "/images/cities/iowa/des-moines.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/iowa/des-moines.jpg",
     "sourceTitle": "Des Moines, Iowa",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Des_Moines%2C_Iowa"
   },
   "california/santa-rosa": {
-    "path": "/images/cities/california/santa-rosa.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/santa-rosa.jpg",
     "sourceTitle": "Santa Rosa, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Santa_Rosa%2C_California"
   },
   "hawaii/honolulu": {
-    "path": "/images/cities/hawaii/honolulu.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/hawaii/honolulu.jpg",
     "sourceTitle": "Honolulu",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Honolulu"
   },
   "california/santa-clarita": {
-    "path": "/images/cities/california/santa-clarita.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/santa-clarita.jpg",
     "sourceTitle": "Santa Clarita, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Santa_Clarita%2C_California"
   },
   "arkansas/little-rock": {
-    "path": "/images/cities/arkansas/little-rock.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arkansas/little-rock.jpg",
     "sourceTitle": "Little Rock, Arkansas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Little_Rock%2C_Arkansas"
   },
   "colorado/fort-collins": {
-    "path": "/images/cities/colorado/fort-collins.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/colorado/fort-collins.jpg",
     "sourceTitle": "Fort Collins, Colorado",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Fort_Collins%2C_Colorado"
   },
   "michigan/grand-rapids": {
-    "path": "/images/cities/michigan/grand-rapids.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/michigan/grand-rapids.jpg",
     "sourceTitle": "Grand Rapids, Michigan",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Grand_Rapids%2C_Michigan"
   },
   "texas/corpus-christi": {
-    "path": "/images/cities/texas/corpus-christi.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/corpus-christi.jpg",
     "sourceTitle": "Corpus Christi, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Corpus_Christi%2C_Texas"
   },
   "california/indio": {
-    "path": "/images/cities/california/indio.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/indio.jpg",
     "sourceTitle": "Indio, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Indio%2C_California"
   },
   "kentucky/lexington-fayette": {
-    "path": "/images/cities/kentucky/lexington-fayette.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/kentucky/lexington-fayette.jpg",
     "sourceTitle": "Lexington, Kentucky",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lexington%2C_Kentucky"
   },
   "new-york/buffalo": {
-    "path": "/images/cities/new-york/buffalo.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-york/buffalo.jpg",
     "sourceTitle": "Buffalo, New York",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Buffalo%2C_New_York"
   },
   "pennsylvania/pittsburgh": {
-    "path": "/images/cities/pennsylvania/pittsburgh.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/pennsylvania/pittsburgh.jpg",
     "sourceTitle": "Pittsburgh",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Pittsburgh"
   },
   "massachusetts/worcester": {
-    "path": "/images/cities/massachusetts/worcester.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/massachusetts/worcester.jpg",
     "sourceTitle": "Worcester, Massachusetts",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Worcester%2C_Massachusetts"
   },
   "new-hampshire/manchester": {
-    "path": "/images/cities/new-hampshire/manchester.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-hampshire/manchester.jpg",
     "sourceTitle": "Manchester, New Hampshire",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Manchester%2C_New_Hampshire"
   },
   "washington/spokane": {
-    "path": "/images/cities/washington/spokane.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/washington/spokane.jpg",
     "sourceTitle": "Spokane, Washington",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Spokane%2C_Washington"
   },
   "alaska/anchorage": {
-    "path": "/images/cities/alaska/anchorage.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/alaska/anchorage.jpg",
     "sourceTitle": "Anchorage, Alaska",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Anchorage%2C_Alaska"
   },
   "california/visalia": {
-    "path": "/images/cities/california/visalia.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/visalia.jpg",
     "sourceTitle": "Visalia, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Visalia%2C_California"
   },
   "alabama/birmingham": {
-    "path": "/images/cities/alabama/birmingham.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/alabama/birmingham.jpg",
     "sourceTitle": "Birmingham, Alabama",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Birmingham%2C_Alabama"
   },
   "alabama/huntsville": {
-    "path": "/images/cities/alabama/huntsville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/alabama/huntsville.jpg",
     "sourceTitle": "Huntsville, Alabama",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Huntsville%2C_Alabama"
   },
   "california/victorville": {
-    "path": "/images/cities/california/victorville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/victorville.jpg",
     "sourceTitle": "Victorville, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Victorville%2C_California"
   },
   "ohio/toledo": {
-    "path": "/images/cities/ohio/toledo.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/ohio/toledo.jpg",
     "sourceTitle": "Toledo, Ohio",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Toledo%2C_Ohio"
   },
   "florida/cape-coral": {
-    "path": "/images/cities/florida/cape-coral.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/cape-coral.jpg",
     "sourceTitle": "Cape Coral, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Cape_Coral%2C_Florida"
   },
   "ohio/akron": {
-    "path": "/images/cities/ohio/akron.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/ohio/akron.jpg",
     "sourceTitle": "Akron, Ohio",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Akron%2C_Ohio"
   },
   "nebraska/lincoln": {
-    "path": "/images/cities/nebraska/lincoln.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/nebraska/lincoln.jpg",
     "sourceTitle": "Lincoln, Nebraska",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lincoln%2C_Nebraska"
   },
   "virginia/newport-news": {
-    "path": "/images/cities/virginia/newport-news.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/virginia/newport-news.jpg",
     "sourceTitle": "Newport News, Virginia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Newport_News%2C_Virginia"
   },
   "louisiana/shreveport": {
-    "path": "/images/cities/louisiana/shreveport.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/louisiana/shreveport.jpg",
     "sourceTitle": "Shreveport, Louisiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Shreveport%2C_Louisiana"
   },
   "california/salinas": {
-    "path": "/images/cities/california/salinas.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/salinas.jpg",
     "sourceTitle": "Salinas, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Salinas%2C_California"
   },
   "indiana/fort-wayne": {
-    "path": "/images/cities/indiana/fort-wayne.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/indiana/fort-wayne.jpg",
     "sourceTitle": "Fort Wayne, Indiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Fort_Wayne%2C_Indiana"
   },
   "arkansas/fayetteville": {
-    "path": "/images/cities/arkansas/fayetteville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arkansas/fayetteville.jpg",
     "sourceTitle": "Fayetteville, Arkansas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Fayetteville%2C_Arkansas"
   },
   "oregon/salem": {
-    "path": "/images/cities/oregon/salem.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/oregon/salem.jpg",
     "sourceTitle": "Salem, Oregon",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Salem%2C_Oregon"
   },
   "texas/laredo": {
-    "path": "/images/cities/texas/laredo.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/laredo.jpg",
     "sourceTitle": "Laredo, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Laredo%2C_Texas"
   },
   "texas/brownsville": {
-    "path": "/images/cities/texas/brownsville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/brownsville.jpg",
     "sourceTitle": "Brownsville, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Brownsville%2C_Texas"
   },
   "utah/provo": {
-    "path": "/images/cities/utah/provo.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/utah/provo.jpg",
     "sourceTitle": "Provo, Utah",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Provo%2C_Utah"
   },
   "wisconsin/madison": {
-    "path": "/images/cities/wisconsin/madison.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/wisconsin/madison.jpg",
     "sourceTitle": "Madison, Wisconsin",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Madison%2C_Wisconsin"
   },
   "connecticut/new-britain": {
-    "path": "/images/cities/connecticut/new-britain.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/connecticut/new-britain.jpg",
     "sourceTitle": "New Britain, Connecticut",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/New_Britain%2C_Connecticut"
   },
   "georgia/columbus": {
-    "path": "/images/cities/georgia/columbus.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/georgia/columbus.jpg",
     "sourceTitle": "Columbus, Georgia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Columbus%2C_Georgia"
   },
   "texas/lubbock": {
-    "path": "/images/cities/texas/lubbock.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/lubbock.jpg",
     "sourceTitle": "Lubbock, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lubbock%2C_Texas"
   },
   "texas/midland": {
-    "path": "/images/cities/texas/midland.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/midland.jpg",
     "sourceTitle": "Midland, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Midland%2C_Texas"
   },
   "louisiana/baton-rouge": {
-    "path": "/images/cities/louisiana/baton-rouge.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/louisiana/baton-rouge.jpg",
     "sourceTitle": "Baton Rouge, Louisiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Baton_Rouge%2C_Louisiana"
   },
   "oregon/eugene": {
-    "path": "/images/cities/oregon/eugene.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/oregon/eugene.jpg",
     "sourceTitle": "Eugene, Oregon",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Eugene%2C_Oregon"
   },
   "kansas/topeka": {
-    "path": "/images/cities/kansas/topeka.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/kansas/topeka.jpg",
     "sourceTitle": "Topeka, Kansas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Topeka%2C_Kansas"
   },
   "tennessee/chattanooga": {
-    "path": "/images/cities/tennessee/chattanooga.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/tennessee/chattanooga.jpg",
     "sourceTitle": "Chattanooga, Tennessee",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Chattanooga%2C_Tennessee"
   },
   "new-york/albany": {
-    "path": "/images/cities/new-york/albany.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-york/albany.jpg",
     "sourceTitle": "Albany, New York",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Albany%2C_New_York"
   },
   "virginia/richmond": {
-    "path": "/images/cities/virginia/richmond.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/virginia/richmond.jpg",
     "sourceTitle": "Richmond, Virginia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Richmond%2C_Virginia"
   },
   "florida/port-st-lucie": {
-    "path": "/images/cities/florida/port-st-lucie.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/port-st-lucie.jpg",
     "sourceTitle": "Port St. Lucie, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Port_St._Lucie%2C_Florida"
   },
   "florida/west-palm-beach": {
-    "path": "/images/cities/florida/west-palm-beach.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/west-palm-beach.jpg",
     "sourceTitle": "West Palm Beach, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/West_Palm_Beach%2C_Florida"
   },
   "new-york/rochester": {
-    "path": "/images/cities/new-york/rochester.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-york/rochester.jpg",
     "sourceTitle": "Rochester, New York",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Rochester%2C_New_York"
   },
   "texas/killeen": {
-    "path": "/images/cities/texas/killeen.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/killeen.jpg",
     "sourceTitle": "Killeen, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Killeen%2C_Texas"
   },
   "north-carolina/fayetteville": {
-    "path": "/images/cities/north-carolina/fayetteville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-carolina/fayetteville.jpg",
     "sourceTitle": "Fayetteville, North Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Fayetteville%2C_North_Carolina"
   },
   "alabama/montgomery": {
-    "path": "/images/cities/alabama/montgomery.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/alabama/montgomery.jpg",
     "sourceTitle": "Montgomery, Alabama",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Montgomery%2C_Alabama"
   },
   "indiana/south-bend": {
-    "path": "/images/cities/indiana/south-bend.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/indiana/south-bend.jpg",
     "sourceTitle": "South Bend, Indiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/South_Bend%2C_Indiana"
   },
   "iowa/cedar-rapids": {
-    "path": "/images/cities/iowa/cedar-rapids.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/iowa/cedar-rapids.jpg",
     "sourceTitle": "Cedar Rapids, Iowa",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Cedar_Rapids%2C_Iowa"
   },
   "georgia/augusta-richmond-county": {
-    "path": "/images/cities/georgia/augusta-richmond-county.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/georgia/augusta-richmond-county.jpg",
     "sourceTitle": "Augusta, Georgia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Augusta%2C_Georgia"
   },
   "washington/kennewick": {
-    "path": "/images/cities/washington/kennewick.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/washington/kennewick.jpg",
     "sourceTitle": "Kennewick, Washington",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Kennewick%2C_Washington"
   },
   "texas/amarillo": {
-    "path": "/images/cities/texas/amarillo.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/amarillo.jpg",
     "sourceTitle": "Amarillo, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Amarillo%2C_Texas"
   },
   "alabama/mobile": {
-    "path": "/images/cities/alabama/mobile.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/alabama/mobile.jpg",
     "sourceTitle": "Mobile, Alabama",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Mobile%2C_Alabama"
   },
   "pennsylvania/allentown": {
-    "path": "/images/cities/pennsylvania/allentown.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/pennsylvania/allentown.jpg",
     "sourceTitle": "Allentown, Pennsylvania",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Allentown%2C_Pennsylvania"
   },
   "california/santa-maria": {
-    "path": "/images/cities/california/santa-maria.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/santa-maria.jpg",
     "sourceTitle": "Santa Maria, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Santa_Maria%2C_California"
   },
   "washington/lakewood": {
-    "path": "/images/cities/washington/lakewood.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/washington/lakewood.jpg",
     "sourceTitle": "Lakewood, Washington",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lakewood%2C_Washington"
   },
   "wisconsin/kenosha": {
-    "path": "/images/cities/wisconsin/kenosha.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/wisconsin/kenosha.jpg",
     "sourceTitle": "Kenosha, Wisconsin",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Kenosha%2C_Wisconsin"
   },
   "illinois/rockford": {
-    "path": "/images/cities/illinois/rockford.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/illinois/rockford.jpg",
     "sourceTitle": "Rockford, Illinois",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Rockford%2C_Illinois"
   },
   "florida/tallahassee": {
-    "path": "/images/cities/florida/tallahassee.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/tallahassee.jpg",
     "sourceTitle": "Tallahassee, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Tallahassee%2C_Florida"
   },
   "iowa/davenport": {
-    "path": "/images/cities/iowa/davenport.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/iowa/davenport.jpg",
     "sourceTitle": "Davenport, Iowa",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Davenport%2C_Iowa"
   },
   "tennessee/knoxville": {
-    "path": "/images/cities/tennessee/knoxville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/tennessee/knoxville.jpg",
     "sourceTitle": "Knoxville, Tennessee",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Knoxville%2C_Tennessee"
   },
   "florida/palm-bay": {
-    "path": "/images/cities/florida/palm-bay.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/palm-bay.jpg",
     "sourceTitle": "Palm Bay, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Palm_Bay%2C_Florida"
   },
   "georgia/savannah": {
-    "path": "/images/cities/georgia/savannah.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/georgia/savannah.jpg",
     "sourceTitle": "Savannah, Georgia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Savannah%2C_Georgia"
   },
   "texas/college-station": {
-    "path": "/images/cities/texas/college-station.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/college-station.jpg",
     "sourceTitle": "College Station, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/College_Station%2C_Texas"
   },
   "wisconsin/green-bay": {
-    "path": "/images/cities/wisconsin/green-bay.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/wisconsin/green-bay.jpg",
     "sourceTitle": "Green Bay, Wisconsin",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Green_Bay%2C_Wisconsin"
   },
   "michigan/kalamazoo": {
-    "path": "/images/cities/michigan/kalamazoo.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/michigan/kalamazoo.jpg",
     "sourceTitle": "Kalamazoo, Michigan",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Kalamazoo%2C_Michigan"
   },
   "mississippi/jackson": {
-    "path": "/images/cities/mississippi/jackson.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/mississippi/jackson.jpg",
     "sourceTitle": "Jackson, Mississippi",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Jackson%2C_Mississippi"
   },
   "texas/beaumont": {
-    "path": "/images/cities/texas/beaumont.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/beaumont.jpg",
     "sourceTitle": "Beaumont, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Beaumont%2C_Texas"
   },
   "south-dakota/sioux-falls": {
-    "path": "/images/cities/south-dakota/sioux-falls.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/south-dakota/sioux-falls.jpg",
     "sourceTitle": "Sioux Falls, South Dakota",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Sioux_Falls%2C_South_Dakota"
   },
   "missouri/springfield": {
-    "path": "/images/cities/missouri/springfield.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/missouri/springfield.jpg",
     "sourceTitle": "Springfield, Missouri",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Springfield%2C_Missouri"
   },
   "michigan/lansing": {
-    "path": "/images/cities/michigan/lansing.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/michigan/lansing.jpg",
     "sourceTitle": "Lansing, Michigan",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lansing%2C_Michigan"
   },
   "georgia/macon": {
-    "path": "/images/cities/georgia/macon.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/georgia/macon.jpg",
     "sourceTitle": "Macon, Georgia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Macon%2C_Georgia"
   },
   "california/lancaster": {
-    "path": "/images/cities/california/lancaster.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/lancaster.jpg",
     "sourceTitle": "Lancaster, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lancaster%2C_California"
   },
   "missouri/columbia": {
-    "path": "/images/cities/missouri/columbia.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/missouri/columbia.jpg",
     "sourceTitle": "Columbia, Missouri",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Columbia%2C_Missouri"
   },
   "maryland/frederick": {
-    "path": "/images/cities/maryland/frederick.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/maryland/frederick.jpg",
     "sourceTitle": "Frederick, Maryland",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Frederick%2C_Maryland"
   },
   "north-dakota/fargo": {
-    "path": "/images/cities/north-dakota/fargo.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-dakota/fargo.jpg",
     "sourceTitle": "Fargo, North Dakota",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Fargo%2C_North_Dakota"
   },
   "california/merced": {
-    "path": "/images/cities/california/merced.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/merced.jpg",
     "sourceTitle": "Merced, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Merced%2C_California"
   },
   "texas/mckinney": {
-    "path": "/images/cities/texas/mckinney.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/mckinney.jpg",
     "sourceTitle": "McKinney, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/McKinney%2C_Texas"
   },
   "new-york/syracuse": {
-    "path": "/images/cities/new-york/syracuse.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-york/syracuse.jpg",
     "sourceTitle": "Syracuse, New York",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Syracuse%2C_New_York"
   },
   "tennessee/clarksville": {
-    "path": "/images/cities/tennessee/clarksville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/tennessee/clarksville.jpg",
     "sourceTitle": "Clarksville, Tennessee",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Clarksville%2C_Tennessee"
   },
   "virginia/roanoke": {
-    "path": "/images/cities/virginia/roanoke.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/virginia/roanoke.jpg",
     "sourceTitle": "Roanoke, Virginia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Roanoke%2C_Virginia"
   },
   "new-jersey/trenton": {
-    "path": "/images/cities/new-jersey/trenton.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-jersey/trenton.jpg",
     "sourceTitle": "Trenton, New Jersey",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Trenton%2C_New_Jersey"
   },
   "illinois/bloomington": {
-    "path": "/images/cities/illinois/bloomington.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/illinois/bloomington.jpg",
     "sourceTitle": "Bloomington, Illinois",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Bloomington%2C_Illinois"
   },
   "south-carolina/columbia": {
-    "path": "/images/cities/south-carolina/columbia.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/south-carolina/columbia.jpg",
     "sourceTitle": "Columbia, South Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Columbia%2C_South_Carolina"
   },
   "texas/waco": {
-    "path": "/images/cities/texas/waco.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/waco.jpg",
     "sourceTitle": "Waco, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Waco%2C_Texas"
   },
   "florida/gainesville": {
-    "path": "/images/cities/florida/gainesville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/gainesville.jpg",
     "sourceTitle": "Gainesville, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Gainesville%2C_Florida"
   },
   "indiana/muncie": {
-    "path": "/images/cities/indiana/muncie.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/indiana/muncie.jpg",
     "sourceTitle": "Muncie, Indiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Muncie%2C_Indiana"
   },
   "illinois/champaign": {
-    "path": "/images/cities/illinois/champaign.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/illinois/champaign.jpg",
     "sourceTitle": "Champaign, Illinois",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Champaign%2C_Illinois"
   },
   "louisiana/lafayette": {
-    "path": "/images/cities/louisiana/lafayette.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/louisiana/lafayette.jpg",
     "sourceTitle": "Lafayette, Louisiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lafayette%2C_Louisiana"
   },
   "texas/denton": {
-    "path": "/images/cities/texas/denton.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/denton.jpg",
     "sourceTitle": "Denton, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Denton%2C_Texas"
   },
   "utah/ogden": {
-    "path": "/images/cities/utah/ogden.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/utah/ogden.jpg",
     "sourceTitle": "Ogden, Utah",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Ogden%2C_Utah"
   },
   "indiana/evansville": {
-    "path": "/images/cities/indiana/evansville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/indiana/evansville.jpg",
     "sourceTitle": "Evansville, Indiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Evansville%2C_Indiana"
   },
   "texas/abilene": {
-    "path": "/images/cities/texas/abilene.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/abilene.jpg",
     "sourceTitle": "Abilene, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Abilene%2C_Texas"
   },
   "georgia/athens-clarke-county": {
-    "path": "/images/cities/georgia/athens-clarke-county.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/georgia/athens-clarke-county.jpg",
     "sourceTitle": "Athens, Georgia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Athens%2C_Georgia"
   },
   "florida/daytona-beach": {
-    "path": "/images/cities/florida/daytona-beach.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/daytona-beach.jpg",
     "sourceTitle": "Daytona Beach, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Daytona_Beach%2C_Florida"
   },
   "tennessee/johnson-city": {
-    "path": "/images/cities/tennessee/johnson-city.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/tennessee/johnson-city.jpg",
     "sourceTitle": "Johnson City, Tennessee",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Johnson_City%2C_Tennessee"
   },
   "florida/palm-coast": {
-    "path": "/images/cities/florida/palm-coast.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/palm-coast.jpg",
     "sourceTitle": "Palm Coast, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Palm_Coast%2C_Florida"
   },
   "texas/new-braunfels": {
-    "path": "/images/cities/texas/new-braunfels.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/new-braunfels.jpg",
     "sourceTitle": "New Braunfels, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/New_Braunfels%2C_Texas"
   },
   "tennessee/murfreesboro": {
-    "path": "/images/cities/tennessee/murfreesboro.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/tennessee/murfreesboro.jpg",
     "sourceTitle": "Murfreesboro, Tennessee",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Murfreesboro%2C_Tennessee"
   },
   "michigan/ann-arbor": {
-    "path": "/images/cities/michigan/ann-arbor.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/michigan/ann-arbor.jpg",
     "sourceTitle": "Ann Arbor, Michigan",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Ann_Arbor%2C_Michigan"
   },
   "illinois/springfield": {
-    "path": "/images/cities/illinois/springfield.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/illinois/springfield.jpg",
     "sourceTitle": "Springfield, Illinois",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Springfield%2C_Illinois"
   },
   "pennsylvania/scranton": {
-    "path": "/images/cities/pennsylvania/scranton.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/pennsylvania/scranton.jpg",
     "sourceTitle": "Scranton, Pennsylvania",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Scranton%2C_Pennsylvania"
   },
   "illinois/peoria": {
-    "path": "/images/cities/illinois/peoria.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/illinois/peoria.jpg",
     "sourceTitle": "Peoria, Illinois",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Peoria%2C_Illinois"
   },
   "mississippi/gulfport": {
-    "path": "/images/cities/mississippi/gulfport.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/mississippi/gulfport.jpg",
     "sourceTitle": "Gulfport, Mississippi",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Gulfport%2C_Mississippi"
   },
   "florida/north-port": {
-    "path": "/images/cities/florida/north-port.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/north-port.jpg",
     "sourceTitle": "North Port, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/North_Port%2C_Florida"
   },
   "north-carolina/wilmington": {
-    "path": "/images/cities/north-carolina/wilmington.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-carolina/wilmington.jpg",
     "sourceTitle": "Wilmington, North Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Wilmington%2C_North_Carolina"
   },
   "minnesota/rochester": {
-    "path": "/images/cities/minnesota/rochester.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/minnesota/rochester.jpg",
     "sourceTitle": "Rochester, Minnesota",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Rochester%2C_Minnesota"
   },
   "wisconsin/oshkosh": {
-    "path": "/images/cities/wisconsin/oshkosh.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/wisconsin/oshkosh.jpg",
     "sourceTitle": "Oshkosh, Wisconsin",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Oshkosh%2C_Wisconsin"
   },
   "montana/billings": {
-    "path": "/images/cities/montana/billings.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/montana/billings.jpg",
     "sourceTitle": "Billings, Montana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Billings%2C_Montana"
   },
   "iowa/waterloo": {
-    "path": "/images/cities/iowa/waterloo.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/iowa/waterloo.jpg",
     "sourceTitle": "Waterloo, Iowa",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Waterloo%2C_Iowa"
   },
   "colorado/pueblo": {
-    "path": "/images/cities/colorado/pueblo.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/colorado/pueblo.jpg",
     "sourceTitle": "Pueblo, Colorado",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Pueblo%2C_Colorado"
   },
   "north-carolina/rocky-mount": {
-    "path": "/images/cities/north-carolina/rocky-mount.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-carolina/rocky-mount.jpg",
     "sourceTitle": "Rocky Mount, North Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Rocky_Mount%2C_North_Carolina"
   },
   "ohio/youngstown": {
-    "path": "/images/cities/ohio/youngstown.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/ohio/youngstown.jpg",
     "sourceTitle": "Youngstown, Ohio",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Youngstown%2C_Ohio"
   },
   "texas/wichita-falls": {
-    "path": "/images/cities/texas/wichita-falls.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/wichita-falls.jpg",
     "sourceTitle": "Wichita Falls, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Wichita_Falls%2C_Texas"
   },
   "pennsylvania/lancaster": {
-    "path": "/images/cities/pennsylvania/lancaster.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/pennsylvania/lancaster.jpg",
     "sourceTitle": "Lancaster, Pennsylvania",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lancaster%2C_Pennsylvania"
   },
   "new-mexico/las-cruces": {
-    "path": "/images/cities/new-mexico/las-cruces.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-mexico/las-cruces.jpg",
     "sourceTitle": "Las Cruces, New Mexico",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Las_Cruces%2C_New_Mexico"
   },
   "florida/lakeland": {
-    "path": "/images/cities/florida/lakeland.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/lakeland.jpg",
     "sourceTitle": "Lakeland, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lakeland%2C_Florida"
   },
   "pennsylvania/erie": {
-    "path": "/images/cities/pennsylvania/erie.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/pennsylvania/erie.jpg",
     "sourceTitle": "Erie, Pennsylvania",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Erie%2C_Pennsylvania"
   },
   "texas/tyler": {
-    "path": "/images/cities/texas/tyler.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/tyler.jpg",
     "sourceTitle": "Tyler, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Tyler%2C_Texas"
   },
   "michigan/flint": {
-    "path": "/images/cities/michigan/flint.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/michigan/flint.jpg",
     "sourceTitle": "Flint, Michigan",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Flint%2C_Michigan"
   },
   "south-carolina/greenville": {
-    "path": "/images/cities/south-carolina/greenville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/south-carolina/greenville.jpg",
     "sourceTitle": "Greenville, South Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Greenville%2C_South_Carolina"
   },
   "texas/san-angelo": {
-    "path": "/images/cities/texas/san-angelo.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/san-angelo.jpg",
     "sourceTitle": "San Angelo, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/San_Angelo%2C_Texas"
   },
   "oklahoma/lawton": {
-    "path": "/images/cities/oklahoma/lawton.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/oklahoma/lawton.jpg",
     "sourceTitle": "Lawton, Oklahoma",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lawton%2C_Oklahoma"
   },
   "alabama/tuscaloosa": {
-    "path": "/images/cities/alabama/tuscaloosa.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/alabama/tuscaloosa.jpg",
     "sourceTitle": "Tuscaloosa, Alabama",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Tuscaloosa%2C_Alabama"
   },
   "texas/galveston": {
-    "path": "/images/cities/texas/galveston.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/galveston.jpg",
     "sourceTitle": "Galveston, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Galveston%2C_Texas"
   },
   "washington/yakima": {
-    "path": "/images/cities/washington/yakima.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/washington/yakima.jpg",
     "sourceTitle": "Yakima, Washington",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Yakima%2C_Washington"
   },
   "michigan/saginaw": {
-    "path": "/images/cities/michigan/saginaw.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/michigan/saginaw.jpg",
     "sourceTitle": "Saginaw, Michigan",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Saginaw%2C_Michigan"
   },
   "arizona/yuma": {
-    "path": "/images/cities/arizona/yuma.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arizona/yuma.jpg",
     "sourceTitle": "Yuma, Arizona",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Yuma%2C_Arizona"
   },
   "california/redding": {
-    "path": "/images/cities/california/redding.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/redding.jpg",
     "sourceTitle": "Redding, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Redding%2C_California"
   },
   "california/santa-barbara": {
-    "path": "/images/cities/california/santa-barbara.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/santa-barbara.jpg",
     "sourceTitle": "Santa Barbara, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Santa_Barbara%2C_California"
   },
   "colorado/longmont": {
-    "path": "/images/cities/colorado/longmont.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/colorado/longmont.jpg",
     "sourceTitle": "Longmont, Colorado",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Longmont%2C_Colorado"
   },
   "north-carolina/greenville": {
-    "path": "/images/cities/north-carolina/greenville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-carolina/greenville.jpg",
     "sourceTitle": "Greenville, North Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Greenville%2C_North_Carolina"
   },
   "california/chico": {
-    "path": "/images/cities/california/chico.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/chico.jpg",
     "sourceTitle": "Chico, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Chico%2C_California"
   },
   "pennsylvania/reading": {
-    "path": "/images/cities/pennsylvania/reading.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/pennsylvania/reading.jpg",
     "sourceTitle": "Reading, Pennsylvania",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Reading%2C_Pennsylvania"
   },
   "arkansas/fort-smith": {
-    "path": "/images/cities/arkansas/fort-smith.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arkansas/fort-smith.jpg",
     "sourceTitle": "Fort Smith, Arkansas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Fort_Smith%2C_Arkansas"
   },
   "north-carolina/asheville": {
-    "path": "/images/cities/north-carolina/asheville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-carolina/asheville.jpg",
     "sourceTitle": "Asheville, North Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Asheville%2C_North_Carolina"
   },
   "minnesota/duluth": {
-    "path": "/images/cities/minnesota/duluth.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/minnesota/duluth.jpg",
     "sourceTitle": "Duluth, Minnesota",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Duluth%2C_Minnesota"
   },
   "missouri/o-fallon": {
-    "path": "/images/cities/missouri/o-fallon.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/missouri/o-fallon.jpg",
     "sourceTitle": "O'Fallon, Missouri",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/O'Fallon%2C_Missouri"
   },
   "california/el-centro": {
-    "path": "/images/cities/california/el-centro.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/el-centro.jpg",
     "sourceTitle": "El Centro, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/El_Centro%2C_California"
   },
   "washington/bellingham": {
-    "path": "/images/cities/washington/bellingham.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/washington/bellingham.jpg",
     "sourceTitle": "Bellingham, Washington",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Bellingham%2C_Washington"
   },
   "indiana/bloomington": {
-    "path": "/images/cities/indiana/bloomington.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/indiana/bloomington.jpg",
     "sourceTitle": "Bloomington, Indiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Bloomington%2C_Indiana"
   },
   "iowa/sioux-city": {
-    "path": "/images/cities/iowa/sioux-city.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/iowa/sioux-city.jpg",
     "sourceTitle": "Sioux City, Iowa",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Sioux_City%2C_Iowa"
   },
   "california/hemet": {
-    "path": "/images/cities/california/hemet.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/hemet.jpg",
     "sourceTitle": "Hemet, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Hemet%2C_California"
   },
   "texas/longview": {
-    "path": "/images/cities/texas/longview.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/longview.jpg",
     "sourceTitle": "Longview, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Longview%2C_Texas"
   },
   "oregon/bend": {
-    "path": "/images/cities/oregon/bend.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/oregon/bend.jpg",
     "sourceTitle": "Bend, Oregon",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Bend%2C_Oregon"
   },
   "arizona/prescott": {
-    "path": "/images/cities/arizona/prescott.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arizona/prescott.jpg",
     "sourceTitle": "Prescott, Arizona",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Prescott%2C_Arizona"
   },
   "virginia/lynchburg": {
-    "path": "/images/cities/virginia/lynchburg.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/virginia/lynchburg.jpg",
     "sourceTitle": "Lynchburg, Virginia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lynchburg%2C_Virginia"
   },
   "oregon/medford": {
-    "path": "/images/cities/oregon/medford.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/oregon/medford.jpg",
     "sourceTitle": "Medford, Oregon",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Medford%2C_Oregon"
   },
   "missouri/st-joseph": {
-    "path": "/images/cities/missouri/st-joseph.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/missouri/st-joseph.jpg",
     "sourceTitle": "St. Joseph, Missouri",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/St._Joseph%2C_Missouri"
   },
   "utah/st-george": {
-    "path": "/images/cities/utah/st-george.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/utah/st-george.jpg",
     "sourceTitle": "St. George, Utah",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/St._George%2C_Utah"
   },
   "georgia/albany": {
-    "path": "/images/cities/georgia/albany.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/georgia/albany.jpg",
     "sourceTitle": "Albany, Georgia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Albany%2C_Georgia"
   },
   "illinois/decatur": {
-    "path": "/images/cities/illinois/decatur.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/illinois/decatur.jpg",
     "sourceTitle": "Decatur, Illinois",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Decatur%2C_Illinois"
   },
   "louisiana/lake-charles": {
-    "path": "/images/cities/louisiana/lake-charles.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/louisiana/lake-charles.jpg",
     "sourceTitle": "Lake Charles, Louisiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lake_Charles%2C_Louisiana"
   },
   "arkansas/jonesboro": {
-    "path": "/images/cities/arkansas/jonesboro.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arkansas/jonesboro.jpg",
     "sourceTitle": "Jonesboro, Arkansas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Jonesboro%2C_Arkansas"
   },
   "south-dakota/rapid-city": {
-    "path": "/images/cities/south-dakota/rapid-city.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/south-dakota/rapid-city.jpg",
     "sourceTitle": "Rapid City, South Dakota",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Rapid_City%2C_South_Dakota"
   },
   "indiana/lafayette": {
-    "path": "/images/cities/indiana/lafayette.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/indiana/lafayette.jpg",
     "sourceTitle": "Lafayette, Indiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lafayette%2C_Indiana"
   },
   "new-mexico/santa-fe": {
-    "path": "/images/cities/new-mexico/santa-fe.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-mexico/santa-fe.jpg",
     "sourceTitle": "Santa Fe, New Mexico",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Santa_Fe%2C_New_Mexico"
   },
   "montana/missoula": {
-    "path": "/images/cities/montana/missoula.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/montana/missoula.jpg",
     "sourceTitle": "Missoula, Montana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Missoula%2C_Montana"
   },
   "north-carolina/jacksonville": {
-    "path": "/images/cities/north-carolina/jacksonville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-carolina/jacksonville.jpg",
     "sourceTitle": "Jacksonville, North Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Jacksonville%2C_North_Carolina"
   },
   "arizona/flagstaff": {
-    "path": "/images/cities/arizona/flagstaff.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arizona/flagstaff.jpg",
     "sourceTitle": "Flagstaff, Arizona",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Flagstaff%2C_Arizona"
   },
   "alabama/dothan": {
-    "path": "/images/cities/alabama/dothan.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/alabama/dothan.jpg",
     "sourceTitle": "Dothan, Alabama",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Dothan%2C_Alabama"
   },
   "tennessee/jackson": {
-    "path": "/images/cities/tennessee/jackson.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/tennessee/jackson.jpg",
     "sourceTitle": "Jackson, Tennessee",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Jackson%2C_Tennessee"
   },
   "wisconsin/eau-claire": {
-    "path": "/images/cities/wisconsin/eau-claire.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/wisconsin/eau-claire.jpg",
     "sourceTitle": "Eau Claire, Wisconsin",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Eau_Claire%2C_Wisconsin"
   },
   "north-dakota/bismarck": {
-    "path": "/images/cities/north-dakota/bismarck.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-dakota/bismarck.jpg",
     "sourceTitle": "Bismarck, North Dakota",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Bismarck%2C_North_Dakota"
   },
   "maine/portland": {
-    "path": "/images/cities/maine/portland.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/maine/portland.jpg",
     "sourceTitle": "Portland, Maine",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Portland%2C_Maine"
   },
   "minnesota/st-cloud": {
-    "path": "/images/cities/minnesota/st-cloud.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/minnesota/st-cloud.jpg",
     "sourceTitle": "St. Cloud, Minnesota",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/St._Cloud%2C_Minnesota"
   },
   "california/yuba-city": {
-    "path": "/images/cities/california/yuba-city.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/yuba-city.jpg",
     "sourceTitle": "Yuba City, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Yuba_City%2C_California"
   },
   "texas/victoria": {
-    "path": "/images/cities/texas/victoria.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/victoria.jpg",
     "sourceTitle": "Victoria, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Victoria%2C_Texas"
   },
   "wisconsin/janesville": {
-    "path": "/images/cities/wisconsin/janesville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/wisconsin/janesville.jpg",
     "sourceTitle": "Janesville, Wisconsin",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Janesville%2C_Wisconsin"
   },
   "washington/marysville": {
-    "path": "/images/cities/washington/marysville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/washington/marysville.jpg",
     "sourceTitle": "Marysville, Washington",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Marysville%2C_Washington"
   },
   "texas/conroe": {
-    "path": "/images/cities/texas/conroe.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/conroe.jpg",
     "sourceTitle": "Conroe, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Conroe%2C_Texas"
   },
   "wyoming/cheyenne": {
-    "path": "/images/cities/wyoming/cheyenne.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/wyoming/cheyenne.jpg",
     "sourceTitle": "Cheyenne, Wyoming",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Cheyenne%2C_Wyoming"
   },
   "new-york/utica": {
-    "path": "/images/cities/new-york/utica.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-york/utica.jpg",
     "sourceTitle": "Utica, New York",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Utica%2C_New_York"
   },
   "iowa/ames": {
-    "path": "/images/cities/iowa/ames.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/iowa/ames.jpg",
     "sourceTitle": "Ames, Iowa",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Ames%2C_Iowa"
   },
   "kentucky/bowling-green": {
-    "path": "/images/cities/kentucky/bowling-green.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/kentucky/bowling-green.jpg",
     "sourceTitle": "Bowling Green, Kentucky",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Bowling_Green%2C_Kentucky"
   },
   "new-jersey/vineland": {
-    "path": "/images/cities/new-jersey/vineland.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-jersey/vineland.jpg",
     "sourceTitle": "Vineland, New Jersey",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Vineland%2C_New_Jersey"
   },
   "indiana/terre-haute": {
-    "path": "/images/cities/indiana/terre-haute.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/indiana/terre-haute.jpg",
     "sourceTitle": "Terre Haute, Indiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Terre_Haute%2C_Indiana"
   },
   "colorado/grand-junction": {
-    "path": "/images/cities/colorado/grand-junction.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/colorado/grand-junction.jpg",
     "sourceTitle": "Grand Junction, Colorado",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Grand_Junction%2C_Colorado"
   },
   "wyoming/casper": {
-    "path": "/images/cities/wyoming/casper.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/wyoming/casper.jpg",
     "sourceTitle": "Casper, Wyoming",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Casper%2C_Wyoming"
   },
   "montana/great-falls": {
-    "path": "/images/cities/montana/great-falls.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/montana/great-falls.jpg",
     "sourceTitle": "Great Falls, Montana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Great_Falls%2C_Montana"
   },
   "alabama/auburn": {
-    "path": "/images/cities/alabama/auburn.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/alabama/auburn.jpg",
     "sourceTitle": "Auburn, Alabama",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Auburn%2C_Alabama"
   },
   "kentucky/owensboro": {
-    "path": "/images/cities/kentucky/owensboro.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/kentucky/owensboro.jpg",
     "sourceTitle": "Owensboro, Kentucky",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Owensboro%2C_Kentucky"
   },
   "idaho/idaho-falls": {
-    "path": "/images/cities/idaho/idaho-falls.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/idaho/idaho-falls.jpg",
     "sourceTitle": "Idaho Falls, Idaho",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Idaho_Falls%2C_Idaho"
   },
   "iowa/dubuque": {
-    "path": "/images/cities/iowa/dubuque.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/iowa/dubuque.jpg",
     "sourceTitle": "Dubuque, Iowa",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Dubuque%2C_Iowa"
   },
   "florida/ocala": {
-    "path": "/images/cities/florida/ocala.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/ocala.jpg",
     "sourceTitle": "Ocala, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Ocala%2C_Florida"
   },
   "indiana/kokomo": {
-    "path": "/images/cities/indiana/kokomo.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/indiana/kokomo.jpg",
     "sourceTitle": "Kokomo, Indiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Kokomo%2C_Indiana"
   },
   "arizona/buckeye": {
-    "path": "/images/cities/arizona/buckeye.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arizona/buckeye.jpg",
     "sourceTitle": "Buckeye, Arizona",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Buckeye%2C_Arizona"
   },
   "georgia/valdosta": {
-    "path": "/images/cities/georgia/valdosta.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/georgia/valdosta.jpg",
     "sourceTitle": "Valdosta, Georgia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Valdosta%2C_Georgia"
   },
   "kansas/manhattan": {
-    "path": "/images/cities/kansas/manhattan.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/kansas/manhattan.jpg",
     "sourceTitle": "Manhattan, Kansas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Manhattan%2C_Kansas"
   },
   "oregon/corvallis": {
-    "path": "/images/cities/oregon/corvallis.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/oregon/corvallis.jpg",
     "sourceTitle": "Corvallis, Oregon",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Corvallis%2C_Oregon"
   },
   "north-dakota/grand-forks": {
-    "path": "/images/cities/north-dakota/grand-forks.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-dakota/grand-forks.jpg",
     "sourceTitle": "Grand Forks, North Dakota",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Grand_Forks%2C_North_Dakota"
   },
   "idaho/pocatello": {
-    "path": "/images/cities/idaho/pocatello.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/idaho/pocatello.jpg",
     "sourceTitle": "Pocatello, Idaho",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Pocatello%2C_Idaho"
   },
   "arizona/lake-havasu-city": {
-    "path": "/images/cities/arizona/lake-havasu-city.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arizona/lake-havasu-city.jpg",
     "sourceTitle": "Lake Havasu City, Arizona",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lake_Havasu_City%2C_Arizona"
   },
   "florida/pensacola": {
-    "path": "/images/cities/florida/pensacola.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/pensacola.jpg",
     "sourceTitle": "Pensacola, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Pensacola%2C_Florida"
   },
   "california/delano": {
-    "path": "/images/cities/california/delano.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/delano.jpg",
     "sourceTitle": "Delano, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Delano%2C_California"
   },
   "florida/bradenton": {
-    "path": "/images/cities/florida/bradenton.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/bradenton.jpg",
     "sourceTitle": "Bradenton, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Bradenton%2C_Florida"
   },
   "wisconsin/la-crosse": {
-    "path": "/images/cities/wisconsin/la-crosse.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/wisconsin/la-crosse.jpg",
     "sourceTitle": "La Crosse, Wisconsin",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/La_Crosse%2C_Wisconsin"
   },
   "virginia/harrisonburg": {
-    "path": "/images/cities/virginia/harrisonburg.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/virginia/harrisonburg.jpg",
     "sourceTitle": "Harrisonburg, Virginia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Harrisonburg%2C_Virginia"
   },
   "west-virginia/charleston": {
-    "path": "/images/cities/west-virginia/charleston.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/west-virginia/charleston.jpg",
     "sourceTitle": "Charleston, West Virginia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Charleston%2C_West_Virginia"
   },
   "missouri/joplin": {
-    "path": "/images/cities/missouri/joplin.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/missouri/joplin.jpg",
     "sourceTitle": "Joplin, Missouri",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Joplin%2C_Missouri"
   },
   "oklahoma/enid": {
-    "path": "/images/cities/oklahoma/enid.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/oklahoma/enid.jpg",
     "sourceTitle": "Enid, Oklahoma",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Enid%2C_Oklahoma"
   },
   "nebraska/grand-island": {
-    "path": "/images/cities/nebraska/grand-island.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/nebraska/grand-island.jpg",
     "sourceTitle": "Grand Island, Nebraska",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Grand_Island%2C_Nebraska"
   },
   "arizona/casa-grande": {
-    "path": "/images/cities/arizona/casa-grande.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arizona/casa-grande.jpg",
     "sourceTitle": "Casa Grande, Arizona",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Casa_Grande%2C_Arizona"
   },
   "louisiana/monroe": {
-    "path": "/images/cities/louisiana/monroe.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/louisiana/monroe.jpg",
     "sourceTitle": "Monroe, Louisiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Monroe%2C_Louisiana"
   },
   "pennsylvania/harrisburg": {
-    "path": "/images/cities/pennsylvania/harrisburg.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/pennsylvania/harrisburg.jpg",
     "sourceTitle": "Harrisburg, Pennsylvania",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Harrisburg%2C_Pennsylvania"
   },
   "west-virginia/huntington": {
-    "path": "/images/cities/west-virginia/huntington.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/west-virginia/huntington.jpg",
     "sourceTitle": "Huntington, West Virginia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Huntington%2C_West_Virginia"
   },
   "utah/logan": {
-    "path": "/images/cities/utah/logan.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/utah/logan.jpg",
     "sourceTitle": "Logan, Utah",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Logan%2C_Utah"
   },
   "wisconsin/sheboygan": {
-    "path": "/images/cities/wisconsin/sheboygan.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/wisconsin/sheboygan.jpg",
     "sourceTitle": "Sheboygan, Wisconsin",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Sheboygan%2C_Wisconsin"
   },
   "new-mexico/roswell": {
-    "path": "/images/cities/new-mexico/roswell.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-mexico/roswell.jpg",
     "sourceTitle": "Roswell, New Mexico",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Roswell%2C_New_Mexico"
   },
   "louisiana/alexandria": {
-    "path": "/images/cities/louisiana/alexandria.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/louisiana/alexandria.jpg",
     "sourceTitle": "Alexandria, Louisiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Alexandria%2C_Louisiana"
   },
   "kansas/salina": {
-    "path": "/images/cities/kansas/salina.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/kansas/salina.jpg",
     "sourceTitle": "Salina, Kansas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Salina%2C_Kansas"
   },
   "ohio/newark": {
-    "path": "/images/cities/ohio/newark.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/ohio/newark.jpg",
     "sourceTitle": "Newark, Ohio",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Newark%2C_Ohio"
   },
   "mississippi/hattiesburg": {
-    "path": "/images/cities/mississippi/hattiesburg.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/mississippi/hattiesburg.jpg",
     "sourceTitle": "Hattiesburg, Mississippi",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Hattiesburg%2C_Mississippi"
   },
   "oklahoma/stillwater": {
-    "path": "/images/cities/oklahoma/stillwater.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/oklahoma/stillwater.jpg",
     "sourceTitle": "Stillwater, Oklahoma",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Stillwater%2C_Oklahoma"
   },
   "california/ceres": {
-    "path": "/images/cities/california/ceres.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/california/ceres.jpg",
     "sourceTitle": "Ceres, California",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Ceres%2C_California"
   },
   "ohio/mansfield": {
-    "path": "/images/cities/ohio/mansfield.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/ohio/mansfield.jpg",
     "sourceTitle": "Mansfield, Ohio",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Mansfield%2C_Ohio"
   },
   "new-york/binghamton": {
-    "path": "/images/cities/new-york/binghamton.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-york/binghamton.jpg",
     "sourceTitle": "Binghamton, New York",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Binghamton%2C_New_York"
   },
   "idaho/coeur-d-alene": {
-    "path": "/images/cities/idaho/coeur-d-alene.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/idaho/coeur-d-alene.jpg",
     "sourceTitle": "Coeur d'Alene, Idaho",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Coeur_d'Alene%2C_Idaho"
   },
   "north-dakota/minot": {
-    "path": "/images/cities/north-dakota/minot.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-dakota/minot.jpg",
     "sourceTitle": "Minot, North Dakota",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Minot%2C_North_Dakota"
   },
   "arkansas/pine-bluff": {
-    "path": "/images/cities/arkansas/pine-bluff.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arkansas/pine-bluff.jpg",
     "sourceTitle": "Pine Bluff, Arkansas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Pine_Bluff%2C_Arkansas"
   },
   "idaho/twin-falls": {
-    "path": "/images/cities/idaho/twin-falls.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/idaho/twin-falls.jpg",
     "sourceTitle": "Twin Falls, Idaho",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Twin_Falls%2C_Idaho"
   },
   "pennsylvania/altoona": {
-    "path": "/images/cities/pennsylvania/altoona.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/pennsylvania/altoona.jpg",
     "sourceTitle": "Altoona, Pennsylvania",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Altoona%2C_Pennsylvania"
   },
   "indiana/columbus": {
-    "path": "/images/cities/indiana/columbus.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/indiana/columbus.jpg",
     "sourceTitle": "Columbus, Indiana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Columbus%2C_Indiana"
   },
   "new-mexico/farmington": {
-    "path": "/images/cities/new-mexico/farmington.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-mexico/farmington.jpg",
     "sourceTitle": "Farmington, New Mexico",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Farmington%2C_New_Mexico"
   },
   "arizona/sierra-vista": {
-    "path": "/images/cities/arizona/sierra-vista.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arizona/sierra-vista.jpg",
     "sourceTitle": "Sierra Vista, Arizona",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Sierra_Vista%2C_Arizona"
   },
   "massachusetts/barnstable-town": {
-    "path": "/images/cities/massachusetts/barnstable-town.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/massachusetts/barnstable-town.jpg",
     "sourceTitle": "Barnstable, Massachusetts",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Barnstable%2C_Massachusetts"
   },
   "virginia/charlottesville": {
-    "path": "/images/cities/virginia/charlottesville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/virginia/charlottesville.jpg",
     "sourceTitle": "Charlottesville, Virginia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Charlottesville%2C_Virginia"
   },
   "florida/titusville": {
-    "path": "/images/cities/florida/titusville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/titusville.jpg",
     "sourceTitle": "Titusville, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Titusville%2C_Florida"
   },
   "massachusetts/pittsfield": {
-    "path": "/images/cities/massachusetts/pittsfield.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/massachusetts/pittsfield.jpg",
     "sourceTitle": "Pittsfield, Massachusetts",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Pittsfield%2C_Massachusetts"
   },
   "virginia/danville": {
-    "path": "/images/cities/virginia/danville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/virginia/danville.jpg",
     "sourceTitle": "Danville, Virginia",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Danville%2C_Virginia"
   },
   "vermont/burlington": {
-    "path": "/images/cities/vermont/burlington.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/vermont/burlington.jpg",
     "sourceTitle": "Burlington, Vermont",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Burlington%2C_Vermont"
   },
   "kansas/hutchinson": {
-    "path": "/images/cities/kansas/hutchinson.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/kansas/hutchinson.jpg",
     "sourceTitle": "Hutchinson, Kansas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Hutchinson%2C_Kansas"
   },
   "pennsylvania/state-college": {
-    "path": "/images/cities/pennsylvania/state-college.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/pennsylvania/state-college.jpg",
     "sourceTitle": "State College, Pennsylvania",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/State_College%2C_Pennsylvania"
   },
   "ohio/findlay": {
-    "path": "/images/cities/ohio/findlay.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/ohio/findlay.jpg",
     "sourceTitle": "Findlay, Ohio",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Findlay%2C_Ohio"
   },
   "south-carolina/sumter": {
-    "path": "/images/cities/south-carolina/sumter.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/south-carolina/sumter.jpg",
     "sourceTitle": "Sumter, South Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Sumter%2C_South_Carolina"
   },
   "mississippi/meridian": {
-    "path": "/images/cities/mississippi/meridian.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/mississippi/meridian.jpg",
     "sourceTitle": "Meridian, Mississippi",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Meridian%2C_Mississippi"
   },
   "illinois/quincy": {
-    "path": "/images/cities/illinois/quincy.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/illinois/quincy.jpg",
     "sourceTitle": "Quincy, Illinois",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Quincy%2C_Illinois"
   },
   "minnesota/mankato": {
-    "path": "/images/cities/minnesota/mankato.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/minnesota/mankato.jpg",
     "sourceTitle": "Mankato, Minnesota",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Mankato%2C_Minnesota"
   },
   "illinois/crystal-lake": {
-    "path": "/images/cities/illinois/crystal-lake.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/illinois/crystal-lake.jpg",
     "sourceTitle": "Crystal Lake, Illinois",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Crystal_Lake%2C_Illinois"
   },
   "north-carolina/hickory": {
-    "path": "/images/cities/north-carolina/hickory.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/north-carolina/hickory.jpg",
     "sourceTitle": "Hickory, North Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Hickory%2C_North_Carolina"
   },
   "connecticut/norwich": {
-    "path": "/images/cities/connecticut/norwich.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/connecticut/norwich.jpg",
     "sourceTitle": "Norwich, Connecticut",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Norwich%2C_Connecticut"
   },
   "alabama/florence": {
-    "path": "/images/cities/alabama/florence.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/alabama/florence.jpg",
     "sourceTitle": "Florence, Alabama",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Florence%2C_Alabama"
   },
   "montana/bozeman": {
-    "path": "/images/cities/montana/bozeman.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/montana/bozeman.jpg",
     "sourceTitle": "Bozeman, Montana",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Bozeman%2C_Montana"
   },
   "texas/huntsville": {
-    "path": "/images/cities/texas/huntsville.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/huntsville.jpg",
     "sourceTitle": "Huntsville, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Huntsville%2C_Texas"
   },
   "new-jersey/atlantic-city": {
-    "path": "/images/cities/new-jersey/atlantic-city.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-jersey/atlantic-city.jpg",
     "sourceTitle": "Atlantic City, New Jersey",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Atlantic_City%2C_New_Jersey"
   },
   "new-mexico/clovis": {
-    "path": "/images/cities/new-mexico/clovis.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/new-mexico/clovis.jpg",
     "sourceTitle": "Clovis, New Mexico",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Clovis%2C_New_Mexico"
   },
   "arizona/bullhead-city": {
-    "path": "/images/cities/arizona/bullhead-city.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arizona/bullhead-city.jpg",
     "sourceTitle": "Bullhead City, Arizona",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Bullhead_City%2C_Arizona"
   },
   "wisconsin/wausau": {
-    "path": "/images/cities/wisconsin/wausau.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/wisconsin/wausau.jpg",
     "sourceTitle": "Wausau, Wisconsin",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Wausau%2C_Wisconsin"
   },
   "texas/sherman": {
-    "path": "/images/cities/texas/sherman.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/sherman.jpg",
     "sourceTitle": "Sherman, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Sherman%2C_Texas"
   },
   "oklahoma/muskogee": {
-    "path": "/images/cities/oklahoma/muskogee.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/oklahoma/muskogee.jpg",
     "sourceTitle": "Muskogee, Oklahoma",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Muskogee%2C_Oklahoma"
   },
   "missouri/cape-girardeau": {
-    "path": "/images/cities/missouri/cape-girardeau.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/missouri/cape-girardeau.jpg",
     "sourceTitle": "Cape Girardeau, Missouri",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Cape_Girardeau%2C_Missouri"
   },
   "ohio/lima": {
-    "path": "/images/cities/ohio/lima.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/ohio/lima.jpg",
     "sourceTitle": "Lima, Ohio",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Lima%2C_Ohio"
   },
   "south-carolina/florence": {
-    "path": "/images/cities/south-carolina/florence.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/south-carolina/florence.jpg",
     "sourceTitle": "Florence, South Carolina",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Florence%2C_South_Carolina"
   },
   "texas/texarkana": {
-    "path": "/images/cities/texas/texarkana.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/texas/texarkana.jpg",
     "sourceTitle": "Texarkana, Texas",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Texarkana%2C_Texas"
   },
   "delaware/dover": {
-    "path": "/images/cities/delaware/dover.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/delaware/dover.jpg",
     "sourceTitle": "Dover, Delaware",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Dover%2C_Delaware"
   },
   "michigan/muskegon": {
-    "path": "/images/cities/michigan/muskegon.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/michigan/muskegon.jpg",
     "sourceTitle": "Muskegon, Michigan",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Muskegon%2C_Michigan"
   },
   "arizona/apache-junction": {
-    "path": "/images/cities/arizona/apache-junction.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/arizona/apache-junction.jpg",
     "sourceTitle": "Apache Junction, Arizona",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Apache_Junction%2C_Arizona"
   },
   "florida/panama-city": {
-    "path": "/images/cities/florida/panama-city.jpg",
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/cities/florida/panama-city.jpg",
     "sourceTitle": "Panama City, Florida",
     "sourcePageUrl": "https://en.wikipedia.org/wiki/Panama_City%2C_Florida"
   }

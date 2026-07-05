@@ -7,10 +7,10 @@
  * visit and only caches text), this:
  *   1. Writes the same normalized shape into Supabase places_cache, so a
  *      profile page's first real visit is already a cache hit.
- *   2. Downloads and self-hosts one photo per contractor under
- *      images/contractors/{state_slug}/{slug}/hero.jpg — NOT hotlinked,
- *      so displaying it costs nothing per page view (matches the city
- *      hero photo pattern in scripts/fetch-city-images.py).
+ *   2. Downloads, compresses, and uploads one photo per contractor to the
+ *      public Supabase Storage bucket `contractor-images` (not hotlinked to
+ *      Google, not written to local disk/git) — so displaying it costs
+ *      nothing per page view and the git repo never holds image binaries.
  *   3. Merges google_rating/google_review_count back into enriched.json
  *      so build-time pages (listing cards, the "no reviews" filter) have
  *      the data without a live fetch.
@@ -21,14 +21,17 @@
  *
  * Usage: node scripts/batch-fetch-places.js [--limit N]
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import sharp from 'sharp';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const ENRICHED_PATH = join(ROOT, 'content', 'data', 'enriched.json');
-const IMAGES_DIR = join(ROOT, 'images', 'contractors');
 const MANIFEST_PATH = join(ROOT, 'content', 'data', 'contractor-images.json');
+const IMAGES_BUCKET = 'contractor-images';
+const HERO_MAX_WIDTH = 900;
+const HERO_JPEG_QUALITY = 72;
 
 function loadEnv() {
   const path = join(ROOT, '.env.local');
@@ -133,23 +136,36 @@ async function upsertPlacesCache(data) {
   });
 }
 
+/** Downloads, compresses, and uploads straight to Supabase Storage — no
+ * image ever touches local disk or the git repo. */
 async function downloadHeroPhoto(contractor, photo) {
   if (!photo) return null;
   const stateSlug = STATE_ABBR_TO_SLUG[contractor.state] || contractor.state.toLowerCase();
   const slug = slugifyName(contractor.name);
-  const dir = join(IMAGES_DIR, stateSlug, slug);
-  mkdirSync(dir, { recursive: true });
-  const destPath = join(dir, 'hero.jpg');
-  const webPath = `/images/contractors/${stateSlug}/${slug}/hero.jpg`;
 
   const res = await fetch(photo.media_url);
   if (!res.ok) return null;
-  const buf = Buffer.from(await res.arrayBuffer());
-  writeFileSync(destPath, buf);
+  const rawBuf = Buffer.from(await res.arrayBuffer());
+  const compressed = await sharp(rawBuf)
+    .resize({ width: HERO_MAX_WIDTH, withoutEnlargement: true })
+    .jpeg({ quality: HERO_JPEG_QUALITY, mozjpeg: true })
+    .toBuffer();
+
+  const storagePath = `${stateSlug}/${slug}/hero.jpg`;
+  const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${IMAGES_BUCKET}/${storagePath}`, {
+    method: 'POST',
+    headers: {
+      apikey: SERVICE_KEY,
+      Authorization: `Bearer ${SERVICE_KEY}`,
+      'Content-Type': 'image/jpeg',
+      'x-upsert': 'true',
+    },
+    body: compressed,
+  });
+  if (!uploadRes.ok) return null;
+
   return {
-    path: webPath,
-    width: photo.width,
-    height: photo.height,
+    path: `${SUPABASE_URL}/storage/v1/object/public/${IMAGES_BUCKET}/${storagePath}`,
     attributions: photo.attributions,
   };
 }

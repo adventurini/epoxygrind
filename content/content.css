@@ -215,3 +215,19 @@
 .quick-decision-col ul{margin:0;padding-left:18px}
 .quick-decision-col li{margin-bottom:6px;font-size:14px}
 @media (max-width:600px){.quick-decision{grid-template-columns:1fr}}
+
+/* Contractor profile: hero photo, logo, Google rating badge */
+.contractor-hero{margin:0 0 20px}
+.contractor-hero img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;display:block}
+.contractor-hero figcaption{font-size:11px;color:var(--muted);margin-top:6px}
+.contractor-name-row{display:flex;align-items:center;gap:14px}
+.contractor-logo{width:48px;height:48px;object-fit:contain;border-radius:8px;background:#fff;border:1px solid var(--line);padding:4px;flex:none}
+.rating-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--ff-d);font-weight:800;font-size:14px;color:var(--ink);margin:10px 0}
+.rating-google-g{width:16px;height:16px;flex:none}
+.rating-count{font-family:var(--ff);font-weight:500;color:var(--muted);font-size:13px}
+
+/* Contractor listing cards: small logo + rating badge */
+.category-card.has-logo{padding-top:16px}
+.category-card-logo{width:32px;height:32px;object-fit:contain;border-radius:6px;margin-bottom:8px;background:#fff}
+.category-card .rating-badge{font-size:12.5px;margin:6px 0 0}
+.category-card .rating-google-g{width:13px;height:13px}
