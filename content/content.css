@@ -183,3 +183,7 @@
 .calc-compact-head h2{margin:8px 0 6px}
 .calc-compact-head .content-dek{margin:0}
 .calc-compact .calc-shell{width:100%}
+
+.muted{color:var(--muted)}
+.tiny{font-size:11px;margin-top:6px}
+.pr-loading{padding:8px 0}
