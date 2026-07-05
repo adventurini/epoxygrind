@@ -2,8 +2,11 @@
 """
 Contractor enrichment scraper (BUILD-contractor-scraper.md / BUILD-everything
 step 2). Reads each contractor's OWN website only — no Google Maps, no Yelp,
-no review platform, no image downloads (reviews/photos come from the paid
-Places API cache, a separate system). Free: no API key, no cost.
+no review platform (reviews/photos of the BUSINESS come from the paid Places
+API cache, a separate system). Free: no API key, no cost. The one image this
+DOES capture is logo_url — a link to the contractor's own logo, found on
+their homepage (not downloaded here; a separate small script fetches and
+self-hosts it, same pattern as the Places photo pipeline).
 
 Input: a CSV with columns name,website,place_id,city,state (place_id/city/
 state optional, passed through unchanged).
@@ -104,6 +107,50 @@ def is_real_social_link(href):
     if SOCIAL_JUNK_PATH_RE.match(path or '/'):
         return False
     return True
+
+
+LOGO_HINT_RE = re.compile(r'logo|brand', re.I)
+# Generic CMS/stock placeholder logos and tracking pixels — never a real
+# business mark, and common enough in header markup to be worth excluding
+# explicitly rather than trusting "logo" in the filename alone.
+LOGO_JUNK_RE = re.compile(r'(placeholder|sprite|pixel|tracking|wixpress|gravatar)', re.I)
+
+
+def extract_logo_url(soup, base_url):
+    """Best-effort: the contractor's own logo image from their homepage
+    header — never a stock photo, favicon-as-last-resort only. Returns an
+    absolute URL or None; a separate script downloads and self-hosts it."""
+    candidates = []
+    header = soup.find('header') or soup
+
+    for img in header.find_all('img'):
+        # Lazy-loaded images keep a tiny inline placeholder in `src` (often
+        # a data: URI) and the real image in data-src/data-lazy-src/srcset —
+        # prefer those over a data: URI, which is never real logo content.
+        src = ''
+        for attr in ('data-src', 'data-lazy-src', 'src'):
+            val = img.get(attr) or ''
+            if val and not val.startswith('data:'):
+                src = val
+                break
+        if not src or LOGO_JUNK_RE.search(src):
+            continue
+        haystack = ' '.join(filter(None, [src, img.get('alt', ''), ' '.join(img.get('class', []))]))
+        if LOGO_HINT_RE.search(haystack):
+            score = 2 if img.find_parent('header') else 1
+            candidates.append((score, urljoin(base_url, src)))
+
+    if candidates:
+        candidates.sort(key=lambda c: -c[0])
+        return candidates[0][1]
+
+    # Fallback: apple-touch-icon is usually a square brand mark, a
+    # reasonable stand-in when no header logo <img> exists.
+    touch_icon = soup.find('link', rel=lambda r: r and 'apple-touch-icon' in r)
+    if touch_icon and touch_icon.get('href'):
+        return urljoin(base_url, touch_icon['href'])
+
+    return None
 
 
 def extract_socials(soup, base_url):
@@ -211,7 +258,7 @@ async def enrich_one(client, pacer, robots_cache, contractor):
         'phones': [], 'emails': [], 'services': [], 'raw_services': [],
         'service_areas': [], 'trust_signals': {}, 'socials': {},
         'has_photo_gallery': False, 'has_contact_form': False,
-        'title': '', 'meta_description': '', 'status': 'no_website',
+        'title': '', 'meta_description': '', 'logo_url': None, 'status': 'no_website',
     }
     if not website:
         return result
@@ -252,6 +299,7 @@ async def enrich_one(client, pacer, robots_cache, contractor):
             meta = soup.find('meta', attrs={'name': 'description'})
             if meta and meta.get('content'):
                 result['meta_description'] = meta['content'].strip()[:300]
+            result['logo_url'] = extract_logo_url(soup, url)
 
         for tel in soup.select('a[href^="tel:"]'):
             digits = re.sub(r'\D', '', tel['href'])
@@ -349,7 +397,7 @@ async def run(args):
 
     fieldnames = ['name', 'website', 'place_id', 'city', 'state', 'status', 'phones', 'emails',
                   'services', 'raw_services', 'service_areas', 'trust_signals', 'socials',
-                  'has_photo_gallery', 'has_contact_form', 'title', 'meta_description']
+                  'has_photo_gallery', 'has_contact_form', 'title', 'meta_description', 'logo_url']
     with open(f'{args.out}.csv', 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
         writer.writeheader()
