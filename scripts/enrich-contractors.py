@@ -89,6 +89,23 @@ def extract_trust_signals(text_lower):
     return signals
 
 
+# Generic/junk social links: bare platform homepages (share buttons pointing
+# at "facebook.com" with no page), login/share/intent endpoints a lazy footer
+# icon links to when the owner never actually set up a business page. A real
+# profile link always has a specific path after the domain.
+SOCIAL_JUNK_PATH_RE = re.compile(
+    r'^/?(login|sharer|share|dialog|intent|home\??|#.*)?$', re.I,
+)
+
+
+def is_real_social_link(href):
+    parsed = urlparse(href)
+    path = parsed.path.rstrip('/')
+    if SOCIAL_JUNK_PATH_RE.match(path or '/'):
+        return False
+    return True
+
+
 def extract_socials(soup, base_url):
     found = {}
     for a in soup.find_all('a', href=True):
@@ -96,7 +113,7 @@ def extract_socials(soup, base_url):
         host = urlparse(href).netloc.lower()
         for platform, domains in SOCIAL_DOMAINS.items():
             domains = (domains,) if isinstance(domains, str) else domains
-            if platform not in found and any(d in host for d in domains):
+            if platform not in found and any(d in host for d in domains) and is_real_social_link(href):
                 found[platform] = href
     return found
 
