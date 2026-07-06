@@ -45,7 +45,29 @@
       <div class="stat-card"><div class="n" id="statEstimates">—</div><div class="l">Total estimates</div></div>
       <div class="stat-card"><div class="n" id="statVerified">—</div><div class="l">Verified users</div></div>
       <div class="stat-card"><div class="n" id="statContractorLeads">—</div><div class="l">Contractor leads</div></div>
+      <div class="stat-card"><div class="n" id="statProductClicks">—</div><div class="l">Product/affiliate clicks</div></div>
     </div>
+
+    <section class="dashboard-panel" style="margin-bottom:20px">
+      <h2>Product &amp; affiliate link clicks</h2>
+      <p class="muted" style="margin:-6px 0 14px">Every <code>/go/</code> outbound click, by product — sorted by volume so an unmonetized link (no affiliate program yet) that starts getting real clicks stands out immediately. <b>Amazon</b> rows are flagged since those are the most common candidate for adding an Associates tag.</p>
+      <div id="productClicksLoading" class="muted">Loading clicks…</div>
+      <div class="admin-table-wrap" hidden id="productClicksTableWrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Merchant</th>
+              <th>Monetized?</th>
+              <th>Clicks (7d)</th>
+              <th>Clicks (total)</th>
+              <th>Last click</th>
+            </tr>
+          </thead>
+          <tbody id="productClicksTableBody"></tbody>
+        </table>
+      </div>
+    </section>
 
     <section class="dashboard-panel" style="margin-bottom:20px">
       <h2>Contractor leads</h2>

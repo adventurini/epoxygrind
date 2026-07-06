@@ -127,6 +127,35 @@ async function loadContractorLeads() {
   }
 }
 
+async function loadProductClicks() {
+  const loading = document.getElementById('productClicksLoading');
+  const wrap = document.getElementById('productClicksTableWrap');
+  const tbody = document.getElementById('productClicksTableBody');
+
+  try {
+    const res = await authFetch('/api/admin/product-clicks');
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not load product clicks.');
+
+    document.getElementById('statProductClicks').textContent = String(data.totalClicks);
+
+    tbody.innerHTML = data.products.map((p) => `
+      <tr>
+        <td>${escapeHtml(p.displayName)}</td>
+        <td>${escapeHtml(p.merchant || '—')} ${p.isAmazon ? chip('Amazon', 'info') : ''}</td>
+        <td>${p.monetized ? chip('Yes', 'ok') : chip('Not yet', 'warn')}</td>
+        <td>${p.last7dClicks}</td>
+        <td>${p.totalClicks}</td>
+        <td>${formatDate(p.lastClickAt)}</td>
+      </tr>`).join('');
+
+    loading.hidden = true;
+    wrap.hidden = false;
+  } catch (err) {
+    loading.textContent = err.message || 'Could not load product clicks.';
+  }
+}
+
 async function boot() {
   const user = await initDashboard({ activeNav: 'admin' });
   if (!user) return;
@@ -146,7 +175,7 @@ async function boot() {
   }
 
   bodyEl.hidden = false;
-  await Promise.all([loadUsers(), loadEstimates(), loadContractorLeads()]);
+  await Promise.all([loadUsers(), loadEstimates(), loadContractorLeads(), loadProductClicks()]);
 }
 
 boot().catch((err) => toast(err.message || 'Failed to load admin page.'));
