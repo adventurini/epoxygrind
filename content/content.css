@@ -148,6 +148,10 @@
 .category-card-thumb{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--line)}
 .category-card.has-thumb h3{margin:14px 20px 6px}
 .category-card.has-thumb p{margin:0 20px 20px}
+.category-card-thumb-wrap{position:relative}
+.category-card-logo-badge{position:absolute;left:12px;bottom:-16px;width:36px;height:36px;object-fit:contain;border-radius:8px;background:#fff;border:1px solid var(--line);padding:3px;box-shadow:0 4px 10px rgba(17,33,59,.12)}
+.category-card.has-thumb .rating-badge{margin:0 20px 20px}
+.category-card.has-thumb p:has(+ .rating-badge){margin-bottom:6px}
 
 /* DIY guide hero image (lib/guide-videos.js — real YouTube thumbnails, not stock photos) */
 .guide-hero{margin:20px 0 0}
@@ -240,6 +244,10 @@
 .contractor-gallery a:hover img{transform:scale(1.05)}
 
 /* Contractor lead form */
+.lead-form-diy-nudge{font-size:13.5px;color:var(--muted);margin:8px 0 20px}
+.lead-form-diy-nudge a{color:var(--blue);font-weight:700}
+.claim-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:36px 0 0;padding:14px 18px;border:1px solid var(--line);border-radius:10px;background:#F7F9FC;font-size:13px;color:var(--muted)}
+.claim-banner a{color:var(--blue);font-weight:700;white-space:nowrap}
 .lead-form-wrap{max-width:560px}
 .lead-form-wrap textarea{width:100%;padding:12px 14px;border:1px solid var(--line-2);border-radius:8px;font:inherit;font-size:15px;resize:vertical}
 .lead-form-honeypot{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;opacity:0}

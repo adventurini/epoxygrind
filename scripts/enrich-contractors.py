@@ -432,7 +432,17 @@ def main():
     parser.add_argument('--out', default='enriched')
     parser.add_argument('--concurrency', type=int, default=8)
     parser.add_argument('--limit', type=int, default=None)
+    parser.add_argument('--max-pages', type=int, default=None,
+                         help='Override MAX_PAGES_PER_SITE (deeper re-crawl of already-scraped sites)')
+    parser.add_argument('--extra-keywords', default=None,
+                         help='Comma-separated extra link keywords to merge into PAGE_LINK_KEYWORDS')
     args = parser.parse_args()
+    if args.max_pages:
+        global MAX_PAGES_PER_SITE
+        MAX_PAGES_PER_SITE = args.max_pages
+    if args.extra_keywords:
+        global PAGE_LINK_KEYWORDS
+        PAGE_LINK_KEYWORDS = tuple(set(PAGE_LINK_KEYWORDS) | {k.strip() for k in args.extra_keywords.split(',') if k.strip()})
     asyncio.run(run(args))
 
 
