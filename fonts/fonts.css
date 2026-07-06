@@ -1,0 +1,26 @@
+/* perf-fix Fix 4 — self-hosted replacement for the Google Fonts CDN request
+   chain. Archivo/Inter are variable fonts; Google's own CDN already served
+   one physical file per family covering the full weight range we use
+   (confirmed: requesting 700/800/900 all resolved to the same Archivo url,
+   400/500/600 to the same Inter url) — so this is 3 files total, not 7. */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 600 900;
+  font-display: swap;
+  src: url('/fonts/archivo-var.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/inter-var.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-500.woff2') format('woff2');
+}

@@ -13,15 +13,20 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#1A5CD6">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Archivo';font-style:normal;font-weight:700 900;font-display:swap;src:url('/fonts/archivo-var.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url('/fonts/inter-var.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/ibm-plex-mono-500.woff2') format('woff2')}
+</style>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-var.woff2" crossorigin>
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/calculator/calculator.css">
 <link rel="stylesheet" href="/app/dashboard.css">
 </head>
 <body class="dashboard-page">
 <div class="wrap" style="max-width:520px;padding-top:60px">
-  <a class="brand" href="/" style="margin-bottom:28px;display:inline-flex"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
+  <a class="brand" href="/" style="margin-bottom:28px;display:inline-flex"><img src="/logo-64.webp" srcset="/logo-64.webp 1x, /logo-128.webp 2x" alt="EpoxyGrind" width="32" height="32" decoding="async"> EpoxyGrind</a>
 
   <div id="loading" class="dashboard-panel">Loading your listing…</div>
   <div id="error" class="dashboard-panel" hidden></div>

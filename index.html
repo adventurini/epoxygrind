@@ -2,12 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-M2Y4D751K8');
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8';
+      document.head.appendChild(s);
+    }, 1500);
+  });
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, viewport-fit=cover">
 <title>EpoxyGrind</title>
@@ -32,22 +39,28 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#1A5CD6">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Archivo';font-style:normal;font-weight:700 900;font-display:swap;src:url('/fonts/archivo-var.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url('/fonts/inter-var.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/ibm-plex-mono-500.woff2') format('woff2')}
+</style>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-var.woff2" crossorigin>
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/calculator/calculator.css">
 <link rel="stylesheet" href="/auth/auth.css">
-<link rel="preload" as="image" href="/images/hero-before.webp" type="image/webp">
-<link rel="preload" as="image" href="/images/hero-after.webp" type="image/webp">
+<link rel="preload" as="image" href="/images/hero-after-960.webp"
+      imagesrcset="/images/hero-after-640.webp 640w, /images/hero-after-960.webp 960w, /images/hero-after-1280.webp 1280w"
+      imagesizes="(max-width: 700px) 100vw, 640px" fetchpriority="high">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"EpoxyGrind","url":"https://www.epoxygrind.com","logo":"https://www.epoxygrind.com/logo.png"}
+{"@context":"https://schema.org","@type":"Organization","name":"EpoxyGrind","url":"https://www.epoxygrind.com","logo":"https://www.epoxygrind.com/logo-512.png"}
 </script>
 </head>
 <body class="home-page" data-nav-variant="home">
 
 <header>
   <div class="wrap nav">
-    <a class="brand" href="/"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
+    <a class="brand" href="/"><img src="/logo-64.webp" srcset="/logo-64.webp 1x, /logo-128.webp 2x" alt="EpoxyGrind" width="32" height="32" decoding="async"> EpoxyGrind</a>
     <div class="nav-auth" data-auth-nav>
       <a href="/services/">For contractors</a>
       <a href="/login/">Log in</a>
@@ -73,13 +86,17 @@
         <div class="ba-slider" id="baSlider" role="slider" tabindex="0" aria-label="Drag to compare before and after epoxy floor" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
           <div class="ba-slider-frame">
             <picture>
-              <source srcset="/images/hero-after.webp" type="image/webp">
-              <img class="ba-img ba-before" src="/images/hero-after.jpg" alt="Finished epoxy garage floor after coating" draggable="false">
+              <source type="image/webp"
+                srcset="/images/hero-after-640.webp 640w, /images/hero-after-960.webp 960w, /images/hero-after-1280.webp 1280w"
+                sizes="(max-width: 700px) 100vw, 640px">
+              <img class="ba-img ba-before" src="/images/hero-after.jpg" alt="Finished epoxy garage floor after coating" draggable="false" width="1200" height="900" fetchpriority="high" decoding="async">
             </picture>
             <div class="ba-after-wrap">
               <picture>
-                <source srcset="/images/hero-before.webp" type="image/webp">
-                <img class="ba-img ba-after" src="/images/hero-before.jpg" alt="Bare concrete garage floor before epoxy coating" draggable="false">
+                <source type="image/webp"
+                  srcset="/images/hero-before-640.webp 640w, /images/hero-before-960.webp 960w, /images/hero-before-1280.webp 1280w"
+                  sizes="(max-width: 700px) 100vw, 640px">
+                <img class="ba-img ba-after" src="/images/hero-before.jpg" alt="Bare concrete garage floor before epoxy coating" draggable="false" width="1200" height="900" decoding="async">
               </picture>
             </div>
             <span class="ba-chip ba-chip-before">Before</span>
@@ -231,10 +248,10 @@
       <span class="eyebrow eyebrow-dark">Popular right now</span>
       <h2>Start with a real decision, not a blank page</h2>
       <div class="home-grid-2">
-        <a class="home-mini-card" href="/compare/diy-kit-vs-professional/"><img class="home-mini-card-thumb" src="https://i.ytimg.com/vi/SsklODZl9vU/hqdefault.jpg" alt="" loading="lazy"><div><h4>DIY kit vs. professional install</h4><p>The real cost, time, and risk tradeoff.</p></div></a>
-        <a class="home-mini-card" href="/compare/epoxy-vs-polyaspartic/"><img class="home-mini-card-thumb" src="https://i.ytimg.com/vi/NwPg2I5T-uM/hqdefault.jpg" alt="" loading="lazy"><div><h4>Epoxy vs. polyaspartic</h4><p>Cure time, UV stability, hot tire resistance, and price.</p></div></a>
-        <a class="home-mini-card" href="/diy/how-to-epoxy-garage-floor/"><img class="home-mini-card-thumb" src="https://i.ytimg.com/vi/SMMf1kcqr7M/hqdefault.jpg" alt="" loading="lazy"><div><h4>How to epoxy a garage floor</h4><p>The complete step-by-step process, start to finish.</p></div></a>
-        <a class="home-mini-card" href="/best/best-garage-floor-epoxy-kits/"><img class="home-mini-card-thumb" src="https://www.spartanepoxies.com/image/cache/catalog/high-solids-garage-floor-epoxy--500x500.jpg" alt="" loading="lazy"><div><h4>Best garage floor epoxy kits</h4><p>Our top picks, tested against price and durability.</p></div></a>
+        <a class="home-mini-card" href="/compare/diy-kit-vs-professional/"><img class="home-mini-card-thumb" src="https://i.ytimg.com/vi/SsklODZl9vU/mqdefault.jpg" alt="" loading="lazy" width="76" height="76"><div><h4>DIY kit vs. professional install</h4><p>The real cost, time, and risk tradeoff.</p></div></a>
+        <a class="home-mini-card" href="/compare/epoxy-vs-polyaspartic/"><img class="home-mini-card-thumb" src="https://i.ytimg.com/vi/NwPg2I5T-uM/mqdefault.jpg" alt="" loading="lazy" width="76" height="76"><div><h4>Epoxy vs. polyaspartic</h4><p>Cure time, UV stability, hot tire resistance, and price.</p></div></a>
+        <a class="home-mini-card" href="/diy/how-to-epoxy-garage-floor/"><img class="home-mini-card-thumb" src="https://i.ytimg.com/vi/SMMf1kcqr7M/mqdefault.jpg" alt="" loading="lazy" width="76" height="76"><div><h4>How to epoxy a garage floor</h4><p>The complete step-by-step process, start to finish.</p></div></a>
+        <a class="home-mini-card" href="/best/best-garage-floor-epoxy-kits/"><img class="home-mini-card-thumb" src="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/products/spartan-hd-pro-kit.webp" alt="" loading="lazy"><div><h4>Best garage floor epoxy kits</h4><p>Our top picks, tested against price and durability.</p></div></a>
       </div>
     </div>
   </section>
@@ -266,8 +283,8 @@
 <footer class="site-foot"><div class="wrap">© 2026 EpoxyGrind · <a href="/diy/">DIY guides</a> · <a href="/contractors/">Find a contractor</a> · <a href="/services/">For contractors</a></div></footer>
 
 <div class="toast" id="toast" hidden></div>
-<script src="/calculator/calculator.js" type="module"></script>
-<script src="/auth/nav.js" type="module"></script>
+<script src="/js/calculator.bundle.js" defer></script>
+<script src="/js/nav.bundle.js" defer></script>
 <script>
   var b=document.getElementById('burger'),m=document.getElementById('mobile');
   if(b&&m){b.addEventListener('click',function(){m.classList.toggle('open')});m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});}

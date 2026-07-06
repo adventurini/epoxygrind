@@ -10,9 +10,9 @@ import {
   clearPendingEstimate,
   generateAndSaveEstimate,
   loadPendingEstimate,
-} from '/calculator/submit-estimate.js?v=fix3';
-import { createEstimateProgress } from '/calculator/estimate-progress.js?v=fix3';
-import { createPreviewProgress } from '/calculator/preview-progress.js?v=fix3';
+} from '/calculator/submit-estimate.js';
+import { createEstimateProgress } from '/calculator/estimate-progress.js';
+import { createPreviewProgress } from '/calculator/preview-progress.js';
 import { initDashboard, refreshDashboardProfile } from '/app/shell.js';
 import { authFetch } from '/auth/client.js';
 import { track } from '/calculator/analytics.js';

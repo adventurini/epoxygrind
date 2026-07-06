@@ -12,6 +12,12 @@
     "build-local": "node scripts/build-local-pages.js"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.1"
+    "@supabase/supabase-js": "^2.109.0",
+    "lighthouse": "^12.8.2",
+    "playwright": "^1.61.1",
+    "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1"
   }
 }
