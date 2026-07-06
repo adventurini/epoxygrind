@@ -202,7 +202,6 @@ section{padding:84px 0}
 .tier .inherit-line{font-size:12.5px;font-style:italic;color:var(--muted);margin:0 0 12px}
 .tier .zip-addon{font-size:12.5px;color:var(--muted);margin:-14px 0 20px}
 .tier .zip-addon b{color:var(--navy);font-weight:800}
-.tier .commitment{font-family:var(--ff-m);font-size:11px;color:var(--muted);margin:-16px 0 20px;text-transform:uppercase;letter-spacing:.04em}
 .pricing-trust{text-align:center;font-family:var(--ff-m);font-size:12.5px;color:var(--muted);margin-top:26px}
 .pricing-trust b{color:var(--navy)}
 
