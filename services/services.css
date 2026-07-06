@@ -126,6 +126,22 @@ section{padding:84px 0}
 .ba li .m{font-family:var(--ff-m);flex:none;font-size:13px;margin-top:1px;font-weight:600}
 .ba .before li .m{color:var(--red)}.ba .after li .m{color:var(--blue)}
 
+/* site speed / performance proof */
+.speed{background:var(--bg);border-top:1px solid var(--line)}
+.speed-proof{background:var(--bg-2);border:1px solid var(--line);border-radius:18px;padding:36px;display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center}
+.speed-scores{display:flex;flex-wrap:wrap;justify-content:center;gap:36px;padding-bottom:22px}
+.score-ring{--pct:0;width:104px;height:104px;border-radius:50%;background:conic-gradient(var(--blue) calc(var(--pct)*1%),var(--blue-soft) 0);display:grid;place-items:center;position:relative}
+.score-ring::before{content:'';position:absolute;inset:8px;border-radius:50%;background:var(--bg-2)}
+.score-ring span{position:relative;font-family:var(--ff-d);font-weight:900;font-size:26px;color:var(--ink);letter-spacing:-.02em}
+.score-ring label{position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);font-family:var(--ff-m);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.speed-metrics{display:flex;flex-wrap:wrap;justify-content:center;gap:32px;margin-top:14px;padding-top:28px;border-top:1px solid var(--line-2);width:100%}
+.speed-metrics div{display:flex;flex-direction:column;align-items:center;gap:4px}
+.speed-metrics strong{font-family:var(--ff-d);font-weight:800;font-size:24px;color:var(--blue-deep)}
+.speed-metrics span{font-family:var(--ff-m);font-size:11px;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
+.speed-note{font-size:14.5px;color:var(--ink-soft);max-width:60ch;margin:0}
+.speed-note strong{color:var(--ink)}
+@media (max-width:640px){.speed-proof{padding:28px 20px}.speed-scores{gap:24px 20px}.score-ring{width:84px;height:84px}.score-ring span{font-size:21px}.speed-metrics{gap:22px}}
+
 /* audit example */
 .audit-ex{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .audit-tabs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
