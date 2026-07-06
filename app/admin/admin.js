@@ -156,6 +156,34 @@ async function loadProductClicks() {
   }
 }
 
+async function loadContactMessages() {
+  const loading = document.getElementById('contactMessagesLoading');
+  const wrap = document.getElementById('contactMessagesTableWrap');
+  const tbody = document.getElementById('contactMessagesTableBody');
+
+  try {
+    const res = await authFetch('/api/admin/contact-messages');
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not load contact messages.');
+
+    document.getElementById('statContactMessages').textContent = String(data.messages.length);
+
+    tbody.innerHTML = data.messages.map((m) => `
+      <tr>
+        <td>${formatDate(m.createdAt)}</td>
+        <td>${escapeHtml(m.name)}</td>
+        <td><a class="admin-link" href="mailto:${escapeHtml(m.email)}">${escapeHtml(m.email)}</a></td>
+        <td>${escapeHtml(m.message)}</td>
+        <td>${m.sourcePath ? `<a class="admin-link" href="${escapeHtml(m.sourcePath)}" target="_blank">${escapeHtml(m.sourcePath)}</a>` : '—'}</td>
+      </tr>`).join('');
+
+    loading.hidden = true;
+    wrap.hidden = false;
+  } catch (err) {
+    loading.textContent = err.message || 'Could not load contact messages.';
+  }
+}
+
 async function boot() {
   const user = await initDashboard({ activeNav: 'admin' });
   if (!user) return;
@@ -175,7 +203,7 @@ async function boot() {
   }
 
   bodyEl.hidden = false;
-  await Promise.all([loadUsers(), loadEstimates(), loadContractorLeads(), loadProductClicks()]);
+  await Promise.all([loadUsers(), loadEstimates(), loadContractorLeads(), loadProductClicks(), loadContactMessages()]);
 }
 
 boot().catch((err) => toast(err.message || 'Failed to load admin page.'));

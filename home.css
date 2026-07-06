@@ -83,10 +83,12 @@ main{flex:1;display:flex;flex-direction:column;min-height:0}
 .home-card-link{display:block;margin-top:16px;font-size:13.5px;font-weight:700;color:var(--blue)}
 
 .home-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px}
-.home-mini-card{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;transition:border-color .15s,box-shadow .15s}
+.home-mini-card{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;transition:border-color .15s,box-shadow .15s}
 .home-mini-card:hover{border-color:var(--blue);box-shadow:0 8px 24px rgba(26,92,214,.08)}
+.home-mini-card-thumb{width:76px;height:76px;border-radius:8px;object-fit:cover;flex:none;background:var(--line)}
 .home-mini-card h4{font-family:var(--ff-d);font-size:15px;margin:0 0 4px}
 .home-mini-card p{font-size:13px;color:var(--muted);margin:0}
+@media (max-width:480px){.home-mini-card{padding:12px}.home-mini-card-thumb{width:56px;height:56px}}
 
 @media (max-width:760px){
   .stat-strip-grid{grid-template-columns:repeat(2,1fr);gap:24px 16px}
@@ -94,6 +96,15 @@ main{flex:1;display:flex;flex-direction:column;min-height:0}
   .home-grid-2{grid-template-columns:1fr}
   .home-section{padding:44px 0}
 }
+
+.contact-form{max-width:560px;margin-top:28px}
+.contact-form .row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.contact-form textarea{width:100%;padding:12px 14px;border:1px solid var(--line-2);border-radius:8px;font:inherit;font-size:15px;resize:vertical;margin-bottom:16px}
+.contact-form .fld{display:block;margin-bottom:0}
+.contact-form .fld span{display:block;font-family:var(--ff-m);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.contact-form .fld input{width:100%;padding:12px 14px;border:1px solid var(--line-2);border-radius:8px;font:inherit;font-size:15px}
+.contact-form-honeypot{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;opacity:0}
+@media (max-width:480px){.contact-form .row-2{grid-template-columns:1fr}}
 
 @media (max-width:920px){.hero-grid{grid-template-columns:1fr;gap:28px}}
 /* Nav links + CTA wrap onto a 2nd line below ~840px (measured); the sticky

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claim your listing | EpoxyGrind</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/calculator/calculator.css">
+<link rel="stylesheet" href="/app/dashboard.css">
+</head>
+<body class="dashboard-page">
+<div class="wrap" style="max-width:520px;padding-top:60px">
+  <a class="brand" href="/" style="margin-bottom:28px;display:inline-flex"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
+
+  <div id="loading" class="dashboard-panel">Loading your listing…</div>
+  <div id="error" class="dashboard-panel" hidden></div>
+
+  <div id="formPanel" class="dashboard-panel" hidden>
+    <h1 style="font-family:var(--ff-d);font-size:24px;margin:0 0 6px" id="heading"></h1>
+    <p class="muted" style="margin:0 0 20px">Confirm your details to claim this listing — it takes one minute.</p>
+
+    <form id="claimForm" novalidate>
+      <label class="fld full"><span>Business email</span><input type="email" name="contactEmail" id="contactEmail" required autocomplete="email"></label>
+      <label class="fld full"><span>Best phone for leads</span><input type="tel" name="phone" id="phone" required autocomplete="tel"></label>
+      <label style="display:flex;align-items:flex-start;gap:10px;margin:16px 0;font-size:13.5px;color:var(--ink-soft)">
+        <input type="checkbox" name="smsConsent" id="smsConsent" style="margin-top:3px">
+        <span>Text me when leads come in and about my account.</span>
+      </label>
+      <button class="btn btn-p btn-full" type="submit" id="submitBtn">Claim my listing →</button>
+      <p class="fld-error" id="formError" hidden></p>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+  const loadingEl = document.getElementById('loading');
+  const errorEl = document.getElementById('error');
+  const formPanel = document.getElementById('formPanel');
+  const heading = document.getElementById('heading');
+  const form = document.getElementById('claimForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const formError = document.getElementById('formError');
+
+  async function init() {
+    try {
+      const res = await fetch('/api/contractor/pending-claim');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Could not load your listing.');
+
+      heading.textContent = `Claim ${data.name}`;
+      document.getElementById('contactEmail').value = data.suggestedEmail || '';
+      document.getElementById('phone').value = data.suggestedPhone || '';
+
+      loadingEl.hidden = true;
+      formPanel.hidden = false;
+    } catch (err) {
+      loadingEl.hidden = true;
+      errorEl.hidden = false;
+      errorEl.textContent = err.message || 'Could not load your listing.';
+    }
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formError.hidden = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Claiming…';
+
+    try {
+      const res = await fetch('/api/contractor/complete-claim', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contactEmail: document.getElementById('contactEmail').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          smsConsent: document.getElementById('smsConsent').checked,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Could not complete claim.');
+
+      window.location.href = '/contractor/dashboard/';
+    } catch (err) {
+      formError.hidden = false;
+      formError.textContent = err.message || 'Could not complete claim.';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Claim my listing →';
+    }
+  });
+
+  init();
+</script>
+</body>
+</html>

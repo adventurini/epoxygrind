@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | EpoxyGrind</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/app/dashboard.css">
+</head>
+<body class="dashboard-page">
+<div class="wrap" style="max-width:720px;padding:32px 24px 60px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+    <a class="brand" href="/"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
+    <button class="btn btn-o btn-sm" id="logoutBtn">Log out</button>
+  </div>
+
+  <div id="loading" class="dashboard-panel">Loading your dashboard…</div>
+  <div id="error" class="dashboard-panel" hidden></div>
+
+  <div id="body" hidden>
+    <div class="dashboard-top">
+      <div>
+        <p class="eyebrow" style="font-family:var(--ff-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dash-blue)">Your listing</p>
+        <h1 id="name"></h1>
+        <p class="lede" id="location"></p>
+      </div>
+    </div>
+
+    <div class="dashboard-panel">
+      <h2>Account</h2>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <tbody>
+            <tr><td>Contact email</td><td id="contactEmail"></td></tr>
+            <tr><td>Contact phone</td><td id="contactPhone"></td></tr>
+            <tr><td>Claimed</td><td id="claimedAt"></td></tr>
+            <tr><td>Website</td><td id="website"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="muted" style="margin-top:20px;font-size:13.5px">Audit results, leads, and plan management are coming soon.</p>
+  </div>
+</div>
+
+<script type="module">
+  const loadingEl = document.getElementById('loading');
+  const errorEl = document.getElementById('error');
+  const bodyEl = document.getElementById('body');
+
+  async function init() {
+    try {
+      const res = await fetch('/api/contractor/me');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Not signed in.');
+
+      document.getElementById('name').textContent = data.name;
+      document.getElementById('location').textContent = `${data.city}, ${data.state}`;
+      document.getElementById('contactEmail').textContent = data.contactEmail || '—';
+      document.getElementById('contactPhone').textContent = data.contactPhone || '—';
+      document.getElementById('claimedAt').textContent = data.claimedAt ? new Date(data.claimedAt).toLocaleDateString() : '—';
+      document.getElementById('website').textContent = data.website || '—';
+
+      loadingEl.hidden = true;
+      bodyEl.hidden = false;
+    } catch (err) {
+      loadingEl.hidden = true;
+      errorEl.hidden = false;
+      errorEl.innerHTML = `${err.message || 'Please sign in again.'} <a href="/services/">Request a login link</a>`;
+    }
+  }
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await fetch('/api/contractor/logout', { method: 'POST' });
+    window.location.href = '/';
+  });
+
+  init();
+</script>
+</body>
+</html>

@@ -222,11 +222,34 @@
       <span class="eyebrow eyebrow-dark">Popular right now</span>
       <h2>Start with a real decision, not a blank page</h2>
       <div class="home-grid-2">
-        <a class="home-mini-card" href="/compare/diy-kit-vs-professional/"><h4>DIY kit vs. professional install</h4><p>The real cost, time, and risk tradeoff.</p></a>
-        <a class="home-mini-card" href="/compare/epoxy-vs-polyaspartic/"><h4>Epoxy vs. polyaspartic</h4><p>Cure time, UV stability, hot tire resistance, and price.</p></a>
-        <a class="home-mini-card" href="/diy/how-to-epoxy-garage-floor/"><h4>How to epoxy a garage floor</h4><p>The complete step-by-step process, start to finish.</p></a>
-        <a class="home-mini-card" href="/best/best-garage-floor-epoxy-kits/"><h4>Best garage floor epoxy kits</h4><p>Our top picks, tested against price and durability.</p></a>
+        <a class="home-mini-card" href="/compare/diy-kit-vs-professional/"><img class="home-mini-card-thumb" src="https://i.ytimg.com/vi/SsklODZl9vU/hqdefault.jpg" alt="" loading="lazy"><div><h4>DIY kit vs. professional install</h4><p>The real cost, time, and risk tradeoff.</p></div></a>
+        <a class="home-mini-card" href="/compare/epoxy-vs-polyaspartic/"><img class="home-mini-card-thumb" src="https://i.ytimg.com/vi/NwPg2I5T-uM/hqdefault.jpg" alt="" loading="lazy"><div><h4>Epoxy vs. polyaspartic</h4><p>Cure time, UV stability, hot tire resistance, and price.</p></div></a>
+        <a class="home-mini-card" href="/diy/how-to-epoxy-garage-floor/"><img class="home-mini-card-thumb" src="https://i.ytimg.com/vi/SMMf1kcqr7M/hqdefault.jpg" alt="" loading="lazy"><div><h4>How to epoxy a garage floor</h4><p>The complete step-by-step process, start to finish.</p></div></a>
+        <a class="home-mini-card" href="/best/best-garage-floor-epoxy-kits/"><img class="home-mini-card-thumb" src="https://www.spartanepoxies.com/image/cache/catalog/high-solids-garage-floor-epoxy--500x500.jpg" alt="" loading="lazy"><div><h4>Best garage floor epoxy kits</h4><p>Our top picks, tested against price and durability.</p></div></a>
       </div>
+    </div>
+  </section>
+
+  <section class="home-section" id="contact">
+    <div class="wrap">
+      <span class="eyebrow eyebrow-dark">Get in touch</span>
+      <h2>Questions? Send us a message</h2>
+      <p class="section-lede">Not ready for a full estimate, or have something else on your mind — pricing, a contractor listing, a partnership idea? Tell us here.</p>
+
+      <form id="contactForm" class="contact-form" novalidate>
+        <input type="hidden" id="contactSourcePath" name="sourcePath">
+        <div class="contact-form-honeypot" aria-hidden="true">
+          <label>Company website<input type="text" name="company_website" tabindex="-1" autocomplete="off"></label>
+        </div>
+        <div class="row-2">
+          <label class="fld"><span>Name</span><input type="text" name="name" id="contactName" required autocomplete="name"></label>
+          <label class="fld"><span>Email</span><input type="email" name="email" id="contactEmail" required autocomplete="email"></label>
+        </div>
+        <label class="fld full"><span>Message</span><textarea name="message" id="contactMessage" rows="4" required></textarea></label>
+        <button type="submit" class="btn btn-p" id="contactSubmit">Send message →</button>
+        <p class="fld-error" id="contactError" hidden></p>
+      </form>
+      <p class="tiny muted" id="contactSuccess" hidden>Thanks — we'll get back to you soon.</p>
     </div>
   </section>
 </main>
@@ -239,6 +262,33 @@
 <script>
   var b=document.getElementById('burger'),m=document.getElementById('mobile');
   if(b&&m){b.addEventListener('click',function(){m.classList.toggle('open')});m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});}
+</script>
+<script>
+  (function(){
+    var form = document.getElementById('contactForm');
+    var btn = document.getElementById('contactSubmit');
+    var err = document.getElementById('contactError');
+    var ok = document.getElementById('contactSuccess');
+    document.getElementById('contactSourcePath').value = window.location.pathname;
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      err.hidden = true;
+      var data = Object.fromEntries(new FormData(form).entries());
+      if (!data.name || !data.email || !data.message) { err.hidden = false; err.textContent = 'Name, email, and a message are required.'; return; }
+      btn.disabled = true; btn.textContent = 'Sending…';
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      }).then(function(r){ return r.json().then(function(d){ return {ok:r.ok, d:d}; }); }).then(function(res){
+        if (!res.ok) { err.hidden = false; err.textContent = res.d.error || 'Could not send — try again.'; btn.disabled = false; btn.textContent = 'Send message →'; return; }
+        form.hidden = true;
+        ok.hidden = false;
+      }).catch(function(){
+        err.hidden = false; err.textContent = 'Something went wrong — try again.'; btn.disabled = false; btn.textContent = 'Send message →';
+      });
+    });
+  })();
 </script>
 </body>
 </html>

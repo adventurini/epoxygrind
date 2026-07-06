@@ -46,6 +46,7 @@
       <div class="stat-card"><div class="n" id="statVerified">—</div><div class="l">Verified users</div></div>
       <div class="stat-card"><div class="n" id="statContractorLeads">—</div><div class="l">Contractor leads</div></div>
       <div class="stat-card"><div class="n" id="statProductClicks">—</div><div class="l">Product/affiliate clicks</div></div>
+      <div class="stat-card"><div class="n" id="statContactMessages">—</div><div class="l">Contact messages</div></div>
     </div>
 
     <section class="dashboard-panel" style="margin-bottom:20px">
@@ -65,6 +66,25 @@
             </tr>
           </thead>
           <tbody id="productClicksTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="dashboard-panel" style="margin-bottom:20px">
+      <h2>Contact messages</h2>
+      <div id="contactMessagesLoading" class="muted">Loading messages…</div>
+      <div class="admin-table-wrap" hidden id="contactMessagesTableWrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Received</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Message</th>
+              <th>From page</th>
+            </tr>
+          </thead>
+          <tbody id="contactMessagesTableBody"></tbody>
         </table>
       </div>
     </section>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contractor login | EpoxyGrind</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/calculator/calculator.css">
+<link rel="stylesheet" href="/app/dashboard.css">
+</head>
+<body class="dashboard-page">
+<div class="wrap" style="max-width:420px;padding-top:80px">
+  <a class="brand" href="/" style="margin-bottom:28px;display:inline-flex"><img src="/logo.png" alt="EpoxyGrind" width="32" height="32"> EpoxyGrind</a>
+
+  <div class="dashboard-panel">
+    <h1 style="font-family:var(--ff-d);font-size:22px;margin:0 0 6px">Contractor login</h1>
+    <p class="muted" style="margin:0 0 20px;font-size:14px">Enter the email your listing was found under (or your claimed contact email) and we'll send a link.</p>
+
+    <form id="loginForm" novalidate>
+      <label class="fld full"><span>Email</span><input type="email" name="email" id="email" required autocomplete="email"></label>
+      <button class="btn btn-p btn-full" type="submit" id="submitBtn">Send my link →</button>
+      <p class="fld-error" id="formError" hidden></p>
+    </form>
+    <p class="tiny muted" id="successMsg" hidden></p>
+  </div>
+</div>
+
+<script type="module">
+  const form = document.getElementById('loginForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const formError = document.getElementById('formError');
+  const successMsg = document.getElementById('successMsg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formError.hidden = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    try {
+      const res = await fetch('/api/contractor/request-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: document.getElementById('email').value.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Could not send link.');
+
+      form.hidden = true;
+      successMsg.hidden = false;
+      successMsg.textContent = data.message;
+    } catch (err) {
+      formError.hidden = false;
+      formError.textContent = err.message || 'Could not send link.';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send my link →';
+    }
+  });
+</script>
+</body>
+</html>
