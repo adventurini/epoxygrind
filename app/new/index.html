@@ -55,84 +55,97 @@
   <div class="new-estimate-wrap">
     <div class="calc-shell">
       <div class="calc-panel">
-        <div class="panel-head"><h2>Project details</h2></div>
+        <div class="panel-head"><h2>Project details</h2><span class="wiz-step-label" id="wizStepLabel">Step 1 of 4</span></div>
+        <div class="wiz-progress"><div class="wiz-progress-fill" id="wizProgressFill" style="width:25%"></div></div>
 
-        <div class="upload" id="uploadZone">
-          <input type="file" id="photoInput" accept="image/*" hidden>
-          <div class="upload-empty" id="uploadEmpty">
-            <span class="upload-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"></path><path d="M7 9l5-5 5 5"></path><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"></path></svg>
-            </span>
-            <p class="upload-title">Drop a photo or tap to upload</p>
-            <p class="upload-hint">JPG or PNG, up to 15MB</p>
-          </div>
-          <div class="upload-preview" id="uploadPreview" hidden>
-            <div class="upload-preview-frame">
-              <img id="previewImg" alt="Uploaded space">
-              <button type="button" class="upload-replace-btn" id="changePhoto" aria-label="Replace photo" title="Replace photo">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><polyline points="21 3 21 9 15 9"></polyline></svg>
-              </button>
+        <div class="wiz-step" data-step="1">
+          <div class="upload" id="uploadZone">
+            <input type="file" id="photoInput" accept="image/*" hidden>
+            <div class="upload-empty" id="uploadEmpty">
+              <span class="upload-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"></path><path d="M7 9l5-5 5 5"></path><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"></path></svg>
+              </span>
+              <p class="upload-title">Drop a photo or tap to upload</p>
+              <p class="upload-hint">JPG or PNG, up to 15MB</p>
             </div>
-          </div>
-        </div>
-        <p class="fld-error" id="photoError" hidden></p>
-
-        <div class="fld">
-          <span>Space size</span>
-          <div class="segmented" id="spaceSizeGroup" role="group" aria-label="Space size">
-            <button type="button" class="seg-btn" data-size="1-car">1-car garage</button>
-            <button type="button" class="seg-btn on" data-size="2-car">2-car garage</button>
-            <button type="button" class="seg-btn" data-size="3-car">3-car garage</button>
-            <button type="button" class="seg-btn" data-size="4-car">4-car garage</button>
-            <button type="button" class="seg-btn" data-size="basement">Basement</button>
-            <button type="button" class="seg-btn" data-size="patio">Patio</button>
-            <button type="button" class="seg-btn" data-size="commercial">Commercial</button>
-          </div>
-          <p class="fld-error" id="sizeError" hidden></p>
-        </div>
-
-        <div class="row-2">
-          <label class="fld"><span>Finish</span><select id="finish"><option value="solid">Solid</option><option value="flake" selected>Flake</option><option value="metallic">Metallic</option></select></label>
-          <label class="fld"><span>Pattern</span><select id="pattern"></select></label>
-        </div>
-
-        <label class="fld full"><span>Coating type</span><select id="coatingType"></select></label>
-
-        <div class="color-block">
-          <label class="fld"><span>Base color</span>
-            <div class="color-line">
-              <div class="color-picker-wrap">
-                <span class="color-picker-swatch" style="background:#4A4F54"></span>
-                <input type="color" id="baseColorPicker" value="#4A4F54" aria-label="Pick base color">
+            <div class="upload-preview" id="uploadPreview" hidden>
+              <div class="upload-preview-frame">
+                <img id="previewImg" alt="Uploaded space">
+                <button type="button" class="upload-replace-btn" id="changePhoto" aria-label="Replace photo" title="Replace photo">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><polyline points="21 3 21 9 15 9"></polyline></svg>
+                </button>
               </div>
-              <code id="baseHex">#4A4F54</code>
-              <div class="swatches" id="baseSwatches"></div>
             </div>
-          </label>
-          <label class="fld" id="flakeWrap"><span>Flake color</span>
-            <div class="color-line">
-              <div class="color-picker-wrap">
-                <span class="color-picker-swatch" style="background:#6B7078"></span>
-                <input type="color" id="flakeColorPicker" value="#6B7078" aria-label="Pick flake color">
+          </div>
+          <p class="fld-error" id="photoError" hidden></p>
+
+          <div class="fld">
+            <span>Space size</span>
+            <div class="segmented" id="spaceSizeGroup" role="group" aria-label="Space size">
+              <button type="button" class="seg-btn" data-size="1-car">1-car garage</button>
+              <button type="button" class="seg-btn on" data-size="2-car">2-car garage</button>
+              <button type="button" class="seg-btn" data-size="3-car">3-car garage</button>
+              <button type="button" class="seg-btn" data-size="4-car">4-car garage</button>
+              <button type="button" class="seg-btn" data-size="basement">Basement</button>
+              <button type="button" class="seg-btn" data-size="patio">Patio</button>
+              <button type="button" class="seg-btn" data-size="commercial">Commercial</button>
+            </div>
+            <p class="fld-error" id="sizeError" hidden></p>
+          </div>
+
+          <label class="fld full"><span>Square footage</span><input id="exactSqft" type="number" inputmode="numeric" min="1" placeholder="e.g. 450 (optional)"></label>
+        </div>
+
+        <div class="wiz-step" data-step="2" hidden>
+          <div class="row-2">
+            <label class="fld"><span>Finish</span><select id="finish"><option value="solid">Solid</option><option value="flake" selected>Flake</option><option value="metallic">Metallic</option></select></label>
+            <label class="fld"><span>Pattern</span><select id="pattern"></select></label>
+          </div>
+
+          <label class="fld full"><span>Coating type</span><select id="coatingType"></select></label>
+        </div>
+
+        <div class="wiz-step" data-step="3" hidden>
+          <div class="color-block">
+            <label class="fld"><span>Base color</span>
+              <div class="color-line">
+                <div class="color-picker-wrap">
+                  <span class="color-picker-swatch" style="background:#4A4F54"></span>
+                  <input type="color" id="baseColorPicker" value="#4A4F54" aria-label="Pick base color">
+                </div>
+                <code id="baseHex">#4A4F54</code>
+                <div class="swatches" id="baseSwatches"></div>
               </div>
-              <code id="flakeHex">#6B7078</code>
-              <div class="swatches" id="flakeSwatches"></div>
-            </div>
+            </label>
+            <label class="fld" id="flakeWrap"><span>Flake color</span>
+              <div class="color-line">
+                <div class="color-picker-wrap">
+                  <span class="color-picker-swatch" style="background:#6B7078"></span>
+                  <input type="color" id="flakeColorPicker" value="#6B7078" aria-label="Pick flake color">
+                </div>
+                <code id="flakeHex">#6B7078</code>
+                <div class="swatches" id="flakeSwatches"></div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="wiz-step" data-step="4" hidden>
+          <div class="row-2">
+            <label class="fld"><span>Name</span><input id="customerName" type="text" placeholder="Your name" autocomplete="name"></label>
+            <label class="fld"><span>Email</span><input id="customerEmail" type="email" placeholder="you@email.com" autocomplete="email"></label>
+          </div>
+
+          <label class="fld full"><span>ZIP code</span><input id="projectLocation" type="text" inputmode="numeric" pattern="[0-9]{5}" placeholder="Enter ZIP" autocomplete="postal-code" maxlength="10">
+            <p class="fld-error" id="zipError" hidden></p>
           </label>
         </div>
 
-        <label class="fld full"><span>Square footage</span><input id="exactSqft" type="number" inputmode="numeric" min="1" placeholder="e.g. 450 (optional)"></label>
-
-        <div class="row-2">
-          <label class="fld"><span>Name</span><input id="customerName" type="text" placeholder="Your name" autocomplete="name"></label>
-          <label class="fld"><span>Email</span><input id="customerEmail" type="email" placeholder="you@email.com" autocomplete="email"></label>
+        <div class="wiz-nav">
+          <button type="button" class="btn btn-o" id="wizBack" hidden>← Back</button>
+          <button type="button" class="btn btn-p" id="wizNext">Next →</button>
+          <button class="btn btn-p" id="runCalc" hidden disabled>Generate estimate →</button>
         </div>
-
-        <label class="fld full"><span>ZIP code</span><input id="projectLocation" type="text" inputmode="numeric" pattern="[0-9]{5}" placeholder="Enter ZIP" autocomplete="postal-code" maxlength="10">
-          <p class="fld-error" id="zipError" hidden></p>
-        </label>
-
-        <button class="btn btn-p btn-full" id="runCalc" disabled>Generate estimate →</button>
         <p class="submit-hint" id="submitHint" hidden></p>
       </div>
     </div>

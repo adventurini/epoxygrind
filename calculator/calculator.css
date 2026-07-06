@@ -8,8 +8,18 @@
 .calc-shell{background:#fff;border-radius:16px;box-shadow:0 24px 70px -20px rgba(0,0,0,.45);overflow:hidden;color:var(--calc-ink);font-family:var(--calc-ff);font-size:15px;max-width:100%;min-width:0}
 .calc-panel{padding:20px;display:grid;gap:10px;min-width:0;overflow:visible}
 .calc-panel h2{margin:0;font-family:var(--calc-ff-d);font-weight:800;font-size:18px;letter-spacing:-.02em}
-.panel-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:0}
 .calc-shell .btn-full{width:100%;justify-content:center;margin-top:6px}
+
+.wiz-step-label{font-family:var(--calc-ff-m);font-size:11px;letter-spacing:.04em;color:var(--calc-muted);white-space:nowrap}
+.wiz-progress{height:5px;border-radius:999px;background:var(--calc-bg-2);border:1px solid var(--calc-line);overflow:hidden;margin-bottom:4px}
+.wiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--calc-blue),#4B8BF4);border-radius:999px;transition:width .3s ease-out}
+.wiz-step{display:grid;gap:10px}
+.wiz-step[hidden]{display:none}
+.wiz-nav{display:flex;gap:10px;margin-top:6px}
+.wiz-nav .btn{flex:1;justify-content:center}
+.wiz-nav #wizNext,.wiz-nav #runCalc{flex:2}
+.wiz-nav .btn[hidden]{display:none}
 
 .upload{border:2px dashed var(--calc-line-2);border-radius:12px;background:var(--calc-bg-2);min-height:172px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:24px 16px;text-align:center;transition:border-color .15s,background .15s}
 .upload:hover{border-color:var(--calc-blue);background:var(--calc-blue-soft)}

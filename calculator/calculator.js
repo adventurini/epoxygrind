@@ -20,6 +20,9 @@ const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
 let imageDataUrl = '';
 let selectedSize = '2-car';
 
+const TOTAL_STEPS = 4;
+let currentStep = 1;
+
 function toast(msg) {
   const el = $('toast');
   if (!el) return;
@@ -72,7 +75,7 @@ function syncSubmitState() {
 function updateSubmitHint() {
   const hint = $('submitHint');
   if (!hint) return;
-  if (canSubmit()) {
+  if (currentStep !== TOTAL_STEPS || canSubmit()) {
     hint.hidden = true;
     return;
   }
@@ -122,6 +125,49 @@ function selectSize(size) {
   $('exactSqft').placeholder = size === 'commercial' ? 'Required for commercial spaces' : 'e.g. 450 (optional)';
   $('sizeError').hidden = true;
   syncSubmitState();
+}
+
+function showStep(n) {
+  currentStep = n;
+  document.querySelectorAll('.wiz-step').forEach((el) => {
+    el.hidden = Number(el.dataset.step) !== n;
+  });
+  $('wizStepLabel').textContent = `Step ${n} of ${TOTAL_STEPS}`;
+  $('wizProgressFill').style.width = `${(n / TOTAL_STEPS) * 100}%`;
+  $('wizBack').hidden = n === 1;
+  $('wizNext').hidden = n === TOTAL_STEPS;
+  $('runCalc').hidden = n !== TOTAL_STEPS;
+  updateSubmitHint();
+  track('estimator_step_view', { step: n });
+}
+
+/** Step 1 (photo + space size) is the only step with real validation — the
+ * others (finish/coating/colors) always have a default selected, so there's
+ * nothing to block on. */
+function stepValid(n) {
+  if (n !== 1) return true;
+  if (!imageDataUrl) {
+    toast('Add a photo to continue.');
+    return false;
+  }
+  if (!resolveSqFt()) {
+    $('sizeError').hidden = false;
+    $('sizeError').textContent = selectedSize === 'commercial'
+      ? 'Enter exact square footage for commercial spaces'
+      : 'Enter your space size';
+    toast('Enter your space size.');
+    return false;
+  }
+  return true;
+}
+
+function goNext() {
+  if (!stepValid(currentStep)) return;
+  if (currentStep < TOTAL_STEPS) showStep(currentStep + 1);
+}
+
+function goBack() {
+  if (currentStep > 1) showStep(currentStep - 1);
 }
 
 function runEstimate() {
@@ -257,6 +303,9 @@ function init() {
   });
 
   $('runCalc').addEventListener('click', runEstimate);
+  $('wizNext').addEventListener('click', goNext);
+  $('wizBack').addEventListener('click', goBack);
+  showStep(1);
 
   initBeforeAfterSlider($('baSlider'));
   trackEstimatorView();
