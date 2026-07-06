@@ -128,11 +128,20 @@ async function main() {
   let failed = 0;
   let heroChanged = 0;
 
+  let skipped = 0;
   for (let i = 0; i < targets.length; i++) {
     const c = targets[i];
     const stateSlug = STATE_ABBR_TO_SLUG[c.state] || c.state.toLowerCase();
     const slug = slugifyName(c.name);
     const key = `${stateSlug}/${slug}`;
+
+    // Resume support: skip anyone already processed by this script (has a
+    // `gallery` field) so re-running after a crash/interruption doesn't
+    // redo already-uploaded work.
+    if (manifest[key]?.gallery) {
+      skipped++;
+      continue;
+    }
 
     try {
       const photos = await fetchCachedPhotos(c.place_id);
@@ -171,7 +180,7 @@ async function main() {
   }
 
   writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2));
-  console.log(`\nDone. ${ok} ok, ${failed} failed, ${heroChanged} heroes reselected away from Google's photo[0].`);
+  console.log(`\nDone. ${ok} ok, ${failed} failed, ${skipped} skipped (already done), ${heroChanged} heroes reselected away from Google's photo[0].`);
 }
 
 main().catch((err) => {

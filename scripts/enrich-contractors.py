@@ -22,7 +22,7 @@ import re
 import time
 import urllib.robotparser
 from collections import defaultdict
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse, unquote
 
 try:
     import httpx
@@ -308,7 +308,13 @@ async def enrich_one(client, pacer, robots_cache, contractor):
                 if m:
                     result['phones'].insert(0, normalize_phone(m))
         for mailto in soup.select('a[href^="mailto:"]'):
-            email = mailto['href'].replace('mailto:', '').split('?')[0].strip()
+            # Some sites hand-write a mailto with a stray trailing
+            # %20 (URL-encoded space) or other encoded junk baked into
+            # their own HTML — decode first, then re-extract via EMAIL_RE
+            # so only the actual address survives, never a raw suffix.
+            raw = unquote(mailto['href'].replace('mailto:', '').split('?')[0].strip())
+            m = EMAIL_RE.match(raw)
+            email = m.group(0) if m else None
             if email and not JUNK_EMAIL_PATTERNS.search(email):
                 result['emails'].insert(0, email)
 
