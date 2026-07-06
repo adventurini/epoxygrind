@@ -66,7 +66,7 @@ async function buildDiyHub() {
   if (!existsSync(hubPath)) return;
   const mod = await import(`file://${hubPath}?t=${Date.now()}`);
   try {
-    const html = renderDiyHubPage(mod.default);
+    const html = await renderDiyHubPage(mod.default);
     writePage(join(ROOT, 'diy', 'index.html'), html);
   } catch (err) {
     failures += 1;
