@@ -158,6 +158,14 @@
 .guide-hero img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;display:block}
 .guide-hero figcaption{font-size:11px;color:var(--muted);margin-top:6px}
 
+/* Review page hero (lib/content-templates.js renderReviewPage) — product
+   photos are mostly square/white-bg merchant shots, not 16:9 scenes, so
+   this contains rather than crops (unlike .guide-hero/.contractor-hero). */
+.review-hero{margin:20px 0 0}
+.review-hero-media{border-radius:12px;overflow:hidden;background:var(--bg-2,#F4F7FC);display:flex;align-items:center;justify-content:center;max-height:420px}
+.review-hero-media img{width:100%;height:100%;max-height:420px;object-fit:contain;display:block}
+.review-hero figcaption{font-size:11px;color:var(--muted);margin-top:6px}
+
 .affiliate-disclosure{font-size:11px;color:var(--muted);margin:20px 0;padding:10px 14px;background:var(--blue-soft);border-radius:8px}
 
 /* Google reviews section (place-reviews Edge Function) */

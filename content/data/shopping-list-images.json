@@ -1,0 +1,18 @@
+{
+  "shopping-list-1-car": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/shopping-lists/shopping-list-1-car.jpg",
+    "generated": true
+  },
+  "shopping-list-2-car": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/shopping-lists/shopping-list-2-car.jpg",
+    "generated": true
+  },
+  "shopping-list-3-car": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/shopping-lists/shopping-list-3-car.jpg",
+    "generated": true
+  },
+  "shopping-list-basement": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/shopping-lists/shopping-list-basement.jpg",
+    "generated": true
+  }
+}

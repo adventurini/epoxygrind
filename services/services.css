@@ -166,6 +166,12 @@ section{padding:84px 0}
 .tier li{font-size:14.5px;display:flex;gap:10px;align-items:flex-start;color:var(--ink-soft)}
 .tier li svg{width:18px;height:18px;color:var(--blue);flex:none;margin-top:2px}
 .tier .btn{width:100%;justify-content:center}
+.tier .inherit-line{font-size:12.5px;font-style:italic;color:var(--muted);margin:0 0 12px}
+.tier .zip-addon{font-size:12.5px;color:var(--muted);margin:-14px 0 20px}
+.tier .zip-addon b{color:var(--navy);font-weight:800}
+.tier .commitment{font-family:var(--ff-m);font-size:11px;color:var(--muted);margin:-16px 0 20px;text-transform:uppercase;letter-spacing:.04em}
+.pricing-trust{text-align:center;font-family:var(--ff-m);font-size:12.5px;color:var(--muted);margin-top:26px}
+.pricing-trust b{color:var(--navy)}
 
 /* faq */
 .faq{border-top:1px solid var(--line)}
