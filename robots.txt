@@ -9,4 +9,4 @@ Disallow: /contractor/dashboard/
 Disallow: /contractor/claim/
 Disallow: /contractor/login/
 
-Sitemap: https://epoxygrind.vercel.app/sitemap.xml
+Sitemap: https://www.epoxygrind.com/sitemap.xml

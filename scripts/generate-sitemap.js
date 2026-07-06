@@ -21,7 +21,7 @@ import { CONTRACTORS } from '../lib/contractors.js';
 // TODO: switch to https://epoxygrind.com once the custom domain is
 // connected in Vercel (Supabase auth is already configured for it, but no
 // domain is registered on the Vercel project yet as of this writing).
-const SITE_URL = 'https://epoxygrind.vercel.app';
+const SITE_URL = 'https://www.epoxygrind.com';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CONTENT_DATA_DIR = join(ROOT, 'content', 'data');
