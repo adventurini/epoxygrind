@@ -86,7 +86,7 @@ main{flex:1;display:flex;flex-direction:column;min-height:0}
 .home-mini-card{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;transition:border-color .15s,box-shadow .15s}
 .home-mini-card:hover{border-color:var(--blue);box-shadow:0 8px 24px rgba(26,92,214,.08)}
 .home-mini-card-thumb{width:76px;height:76px;border-radius:8px;object-fit:cover;flex:none;background:var(--line)}
-.home-mini-card h4{font-family:var(--ff-d);font-size:15px;margin:0 0 4px}
+.home-mini-card h3{font-family:var(--ff-d);font-size:15px;margin:0 0 4px}
 .home-mini-card p{font-size:13px;color:var(--muted);margin:0}
 @media (max-width:480px){.home-mini-card{padding:12px}.home-mini-card-thumb{width:56px;height:56px}}
 
