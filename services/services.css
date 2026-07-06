@@ -88,10 +88,6 @@ section{padding:84px 0}
 .sec-head h2{font-size:clamp(30px,4.6vw,50px);font-weight:900;margin-top:14px}
 .sec-head p{margin-top:16px;color:var(--ink-soft);font-size:18px}
 
-.excl-bar{background:var(--red);color:#fff}
-.excl-bar .wrap{padding:18px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;text-align:center;font-family:var(--ff-d);font-weight:800;font-size:clamp(15px,2vw,19px);text-transform:uppercase;letter-spacing:-.01em}
-.excl-bar svg{width:22px;height:22px;flex:none}
-
 /* problem */
 .prob{background:var(--bg)}
 .leaks{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
