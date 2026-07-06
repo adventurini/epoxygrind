@@ -12,16 +12,16 @@ const LOGGED_OUT_LINKS = [
   { href: '/diy/', label: 'DIY guides' },
   { href: '/contractors/', label: 'Find a contractor' },
   { href: '/services/', label: 'Contractor services' },
-  { href: '/login/', label: 'Log in' },
   { href: '/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
+  { href: '/login/', label: 'Log in' },
 ];
 
 const LOGGED_IN_LINKS = [
   { href: '/diy/', label: 'DIY guides' },
   { href: '/contractors/', label: 'Find a contractor' },
   { href: '/services/', label: 'Contractor services' },
-  { action: 'logout', label: 'Log out' },
   { href: '/app/new/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
+  { action: 'logout', label: 'Log out' },
 ];
 
 function linkHtml(link) {
