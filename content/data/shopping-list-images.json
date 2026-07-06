@@ -11,6 +11,10 @@
     "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/shopping-lists/shopping-list-3-car.jpg",
     "generated": true
   },
+  "shopping-list-4-car": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/shopping-lists/shopping-list-4-car.jpg",
+    "generated": true
+  },
   "shopping-list-basement": {
     "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/shopping-lists/shopping-list-basement.jpg",
     "generated": true

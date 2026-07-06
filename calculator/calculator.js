@@ -9,6 +9,7 @@ const SQFT_PRESETS = {
   '1-car': 250,
   '2-car': 450,
   '3-car': 650,
+  '4-car': 850,
   basement: 800,
   patio: 300,
   commercial: null,

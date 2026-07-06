@@ -1,0 +1,22 @@
+export default {
+  slug: 'shopping-list-4-car',
+  title: '4-Car Garage Epoxy Shopping List (~850 sq ft)',
+  metaTitle: '4-Car Garage Epoxy Floor Shopping List (2026) | EpoxyGrind',
+  metaDescription: 'Every product for a DIY 4-car garage epoxy floor — kit, prep tools, and PPE — sized to a ~850 sq ft space with links.',
+  dek: 'At this size, plan the day around grinding in sections and mixing kit batches back to back — the tool list barely changes, the timeline does.',
+  sqft: 850,
+  budgetRange: 'Kit priced for 4-car coverage (see current price) + tools/PPE at current retailer pricing — check each link',
+  items: [
+    { productId: 'dewalt-dwe46153-grinder-shroud-kit', qty: '1', qtyNote: 'fixed — a helper trading off grinding shifts saves more time than a second unit', phase: 'prep' },
+    { productId: 'ediamondtools-7in-cup-wheel', qty: '1–2', qtyNote: 'a spare wheel is worth having — wear adds up over 850 sq ft', phase: 'prep' },
+    { productId: 'dewalt-dwv010-dust-extractor', qty: '1', qtyNote: 'fixed', phase: 'prep' },
+    { productId: 'klein-et140-moisture-meter', qty: '1', qtyNote: 'fixed — test multiple spots, a slab this size can vary corner to corner', phase: 'prep' },
+    { productId: 'spartan-hd-pro-kit', qty: '1 kit', qtyNote: "check the site's 4-car-labeled coverage size against your exact measurement before ordering the 3-car size", phase: 'apply' },
+    { productId: 'wooster-18in-epoxy-roller-cover', qty: '2', qtyNote: 'plan to swap partway through — a loaded cover gets heavy on a floor this size', phase: 'apply' },
+    { productId: 'dupol-notched-squeegee-16', qty: '1', qtyNote: 'fixed', phase: 'apply' },
+    { productId: 'collomix-lx120s-mixing-paddle', qty: '1', qtyNote: 'fixed — pair with a drill you likely already own', phase: 'apply' },
+    { productId: 'osaava-spike-shoes', qty: '2 pair', qtyNote: 'a second pair is standard at this size if you have any help broadcasting flake', phase: 'apply' },
+    { productId: '3m-6502ql-respirator', qty: '1', qtyNote: 'fixed', phase: 'ppe' },
+    { productId: '3m-60923-cartridges', qty: '1–2 pair', qtyNote: 'a spare set covers a longer application day', phase: 'ppe' },
+  ],
+};

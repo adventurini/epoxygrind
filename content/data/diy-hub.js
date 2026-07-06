@@ -157,6 +157,11 @@ export default {
           description: 'Everything to buy for a ~650 sq ft floor — kit, prep, tools, and PPE with quantities.',
         },
         {
+          href: '/diy/shopping-list-4-car/',
+          title: '4-car garage shopping list',
+          description: 'Everything to buy for a ~850 sq ft floor — kit, prep, tools, and PPE with quantities.',
+        },
+        {
           href: '/diy/shopping-list-basement/',
           title: 'Basement floor shopping list',
           description: 'Everything to buy for an ~800 sq ft basement floor, with the extra moisture-prep step.',

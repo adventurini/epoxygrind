@@ -2,7 +2,7 @@ export default {
   slug: 'epoxy-garage-floor-cost-diy-vs-hiring',
   title: 'Epoxy Garage Floor Cost: DIY vs. Hiring a Pro, by Garage Size',
   metaTitle: 'Epoxy Garage Floor Cost: DIY vs. Hiring (2026) | EpoxyGrind',
-  metaDescription: 'Real 2026 cost numbers for a DIY epoxy kit vs. a professional install, broken down by 1-car, 2-car, and 3-car garage size.',
+  metaDescription: 'Real 2026 cost numbers for a DIY epoxy kit vs. a professional install, broken down by 1-car, 2-car, 3-car, and 4-car garage size.',
   dek: 'Short answer: DIY typically runs 60-80% cheaper upfront, but that gap narrows once you price in tools you do not already own and account for the real risk of an early failure.',
   introHtml: `<p>The honest cost comparison has three parts most people only do one of: the kit price, the tools/PPE you likely need to buy or rent, and the professional quote for the same space. Here they are side by side, using the same regional pricing model our instant estimator uses — so these numbers never contradict what you'd actually get quoted.</p>`,
   quickDecision: {
@@ -23,6 +23,7 @@ export default {
           <tr><td class="name-cell">1-Car Garage</td><td>~$300–$500 all-in</td><td>$1,815–$2,815</td></tr>
           <tr><td class="name-cell">2-Car Garage</td><td>~$550–$900 all-in</td><td>$3,265–$5,065</td></tr>
           <tr><td class="name-cell">3-Car Garage</td><td>~$750–$1,200 all-in</td><td>$4,715–$7,315</td></tr>
+          <tr><td class="name-cell">4-Car Garage</td><td>~$950–$1,500 all-in</td><td>$6,165–$9,565</td></tr>
           <tr><td class="name-cell">Basement</td><td>~$850–$1,400 all-in</td><td>$5,800–$9,000</td></tr>
         </tbody>
       </table></div>
