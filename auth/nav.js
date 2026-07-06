@@ -11,7 +11,7 @@ import { getAuthClient, withAuthTimeout, signOut } from './client.js';
 const LOGGED_OUT_LINKS = [
   { href: '/diy/', label: 'DIY guides' },
   { href: '/contractors/', label: 'Find a contractor' },
-  { href: '/services/', label: 'Contractor services' },
+  { href: '/services/', label: 'For contractors' },
   { href: '/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
   { href: '/login/', label: 'Log in' },
 ];
@@ -19,7 +19,7 @@ const LOGGED_OUT_LINKS = [
 const LOGGED_IN_LINKS = [
   { href: '/diy/', label: 'DIY guides' },
   { href: '/contractors/', label: 'Find a contractor' },
-  { href: '/services/', label: 'Contractor services' },
+  { href: '/services/', label: 'For contractors' },
   { href: '/app/new/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
   { action: 'logout', label: 'Log out' },
 ];

@@ -4,5 +4,9 @@ Disallow: /app/
 Disallow: /api/
 Disallow: /auth/callback/
 Disallow: /go/
+Disallow: /claim/
+Disallow: /contractor/dashboard/
+Disallow: /contractor/claim/
+Disallow: /contractor/login/
 
 Sitemap: https://epoxygrind.vercel.app/sitemap.xml

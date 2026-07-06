@@ -1,10 +1,18 @@
 #!/usr/bin/env node
 /**
  * Generates the full favicon/app-icon set from the master logo.png
- * (1024x1024, source of truth) — run after logo.png changes.
+ * (1024x1024, raster source) — run after logo.png changes.
  * Google's own favicon guidelines want a real (not browser-scaled) square
  * icon at a stable URL, ideally with multiple sizes + a manifest for
  * Android/PWA "add to home screen"; Apple wants its own 180x180 touch icon.
+ *
+ * logo.svg (repo root) is the vector source of truth for the <link rel=
+ * "icon" type="image/svg+xml"> tag — hand-traced from this same logo.png
+ * via potrace (two-layer: full silhouette + the monogram cutout, each
+ * potrace'd separately since potrace only traces one color at a time) and
+ * committed directly since it's small and stable; regenerate it the same
+ * way if the logo mark itself ever changes, this script only handles the
+ * raster sizes.
  *
  * favicon.ico is hand-packed here (PNG-in-ICO container, RFC-valid and
  * supported by every current browser) rather than pulling in an ICO
