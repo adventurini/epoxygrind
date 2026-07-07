@@ -128,6 +128,11 @@ function renderSlides(day) {
       ${imageHtml}
       <div class="cal-slide-label"><span>Slide ${s.position} — ${roleLabel}</span><span class="cal-slide-wordcount ${wc > limit ? 'over' : ''}">${wc}/${limit} words</span></div>
       <textarea rows="2" ${day.readOnly ? 'readonly' : ''} data-position="${s.position}">${escapeHtml(s.caption || '')}</textarea>
+      ${day.readOnly ? '' : `
+      <div class="cal-slide-regen">
+        <input type="text" class="cal-slide-delta" data-position="${s.position}" placeholder="Optional: describe a change (e.g. &quot;more panic&quot;)">
+        <button type="button" class="btn btn-o btn-sm cal-slide-regen-btn" data-position="${s.position}">Regenerate this image</button>
+      </div>`}
     </div>`;
   }).join('');
 }
@@ -231,6 +236,35 @@ document.getElementById('dayGenImagesBtn').addEventListener('click', async () =>
     toast('Images generated.');
   } catch (err) {
     toast(err.message || 'Image generation failed.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = original;
+  }
+});
+
+document.getElementById('calSlides').addEventListener('click', async (ev) => {
+  const btn = ev.target.closest('.cal-slide-regen-btn');
+  if (!btn || !currentDate) return;
+  const position = Number(btn.dataset.position);
+  const deltaInput = document.querySelector(`.cal-slide-delta[data-position="${position}"]`);
+  const deltaPrompt = deltaInput ? deltaInput.value.trim() : '';
+
+  btn.disabled = true;
+  const original = btn.textContent;
+  btn.textContent = 'Regenerating…';
+  try {
+    const res = await authFetch('/api/admin/carousel/regenerate-slide-image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: currentDate, position, deltaPrompt }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Regenerate failed.');
+    await openDayPanel(currentDate);
+    await loadMonth();
+    toast('Slide image regenerated.');
+  } catch (err) {
+    toast(err.message || 'Regenerate failed.');
   } finally {
     btn.disabled = false;
     btn.textContent = original;

@@ -64,6 +64,9 @@
     "api/admin/carousel/generate-images.js": {
       "maxDuration": 200
     },
+    "api/admin/carousel/regenerate-slide-image.js": {
+      "maxDuration": 60
+    },
     "api/cron/carousel-nightly.js": {
       "maxDuration": 200
     }

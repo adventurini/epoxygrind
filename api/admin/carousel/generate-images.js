@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { requireAdmin } from '../../../lib/require-admin.js';
 import { getSupabase, isSupabaseConfigured } from '../../../lib/supabase.js';
 import { generateSlideScenes } from '../../../lib/carousel/generate-scenes.js';
-import { generateSlideImage } from '../../../lib/carousel/generate-image.js';
+import { generateSlideImage, buildImagePrompt } from '../../../lib/carousel/generate-image.js';
 import { composeAndStoreFinal } from '../../../lib/carousel/compose-and-store.js';
 
 /**
@@ -63,9 +63,10 @@ export default async function handler(req, res) {
       // pro in it always in the DIY section") — a distinct reference
       // image, only for slide 6 of consumer days.
       const masterUrl = (day.audience === 'consumer' && slide.position === 6 && masters.pro) ? masters.pro : masters.default;
+      const prompt = buildImagePrompt(scene);
 
-      const { imageUrl, prompt } = await generateSlideImage({
-        masterUrl, scene, dayId: day.id, position: slide.position, generationId, supabase,
+      const { imageUrl } = await generateSlideImage({
+        masterUrl, prompt, dayId: day.id, position: slide.position, generationId,
       });
 
       const { error: genErr } = await supabase.from('carousel_generations').insert({
