@@ -138,9 +138,45 @@
     </script>
 
     <div class="claim-banner">
-      <span>Own this business? This listing was built from public info on your website.</span>
-      <a href="mailto:claims@epoxygrind.com?subject=Claim%20listing%3A%20Mile%20High%20Coatings">Claim this page →</a>
+      <div class="claim-banner-text">
+        <strong>Own this business?</strong>
+        <span>This listing was built from public info on your website — claim it to edit anything here and see your website audit.</span>
+      </div>
+      <form id="claimForm" class="claim-form" novalidate>
+        <input type="hidden" name="placeId" value="ChIJzR5wMrFMaYcRoeiqy-vtdUk">
+        <input type="email" name="email" placeholder="you@milehighcoatings.com" autocomplete="email" required>
+        <button type="submit" class="btn btn-p btn-sm" id="claimSubmit">Claim this page →</button>
+      </form>
+      <p class="claim-msg" id="claimMsg" hidden></p>
     </div>
+    <script>
+      (function(){
+        var form = document.getElementById('claimForm');
+        if (!form) return;
+        var btn = document.getElementById('claimSubmit');
+        var msg = document.getElementById('claimMsg');
+        form.addEventListener('submit', function(e){
+          e.preventDefault();
+          var data = Object.fromEntries(new FormData(form).entries());
+          if (!data.placeId) { msg.hidden = false; msg.textContent = "This listing can't be claimed online yet — email claims@epoxygrind.com."; return; }
+          btn.disabled = true; btn.textContent = 'Sending…';
+          fetch('/api/contractor/claim-request', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          }).then(function(r){ return r.json().then(function(d){ return {ok:r.ok, d:d}; }); }).then(function(res){
+            btn.disabled = false;
+            msg.hidden = false;
+            if (!res.ok) { msg.textContent = res.d.error || 'Something went wrong — please try again.'; btn.textContent = 'Claim this page →'; return; }
+            msg.textContent = res.d.message;
+            form.hidden = true;
+          }).catch(function(){
+            btn.disabled = false; btn.textContent = 'Claim this page →';
+            msg.hidden = false; msg.textContent = 'Something went wrong — please try again.';
+          });
+        });
+      })();
+    </script>
       
     </div>
   </div>

@@ -22,9 +22,10 @@
 <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-var.woff2" crossorigin>
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/app/dashboard.css">
+<link rel="stylesheet" href="/contractor/dashboard/profile.css">
 </head>
 <body class="dashboard-page">
-<div class="wrap" style="max-width:720px;padding:32px 24px 60px">
+<div class="wrap" style="max-width:780px;padding:32px 24px 60px">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
     <a class="brand" href="/"><img src="/logo-64.webp" srcset="/logo-64.webp 1x, /logo-128.webp 2x" alt="EpoxyGrind" width="32" height="32" decoding="async"> EpoxyGrind</a>
     <button class="btn btn-o btn-sm" id="logoutBtn">Log out</button>
@@ -43,24 +44,54 @@
       </div>
     </div>
 
-    <div class="dashboard-panel">
+    <div class="dashboard-panel" style="margin-bottom:16px">
+      <h2>Your website audit</h2>
+      <p class="muted" style="margin:0 0 14px;font-size:13.5px">See exactly what's costing you jobs — and what we'd fix.</p>
+      <a class="btn btn-p" href="/contractor/dashboard/audit/">View your audit →</a>
+    </div>
+
+    <form id="profileForm">
+      <div class="dashboard-panel" style="margin-bottom:16px">
+        <h2>Edit your listing</h2>
+        <p class="muted" style="margin:0 0 16px;font-size:13.5px">This is exactly what homeowners see on your public listing page.</p>
+
+        <div class="profile-row">
+          <label class="profile-field"><span>Business name</span><input type="text" id="f_name" required></label>
+          <label class="profile-field"><span>Website</span><input type="url" id="f_website" placeholder="https://yourbusiness.com"></label>
+        </div>
+
+        <label class="profile-field full"><span>Phone number(s) <em>(comma-separated, most important first)</em></span><input type="text" id="f_phones" placeholder="(555) 123-4567"></label>
+        <label class="profile-field full"><span>Service areas <em>(comma-separated cities/towns)</em></span><input type="text" id="f_areas" placeholder="Denver, Aurora, Lakewood"></label>
+
+        <p class="profile-section-label">Services offered</p>
+        <div class="chip-grid" id="servicesGrid"></div>
+
+        <p class="profile-section-label">Trust signals</p>
+        <div class="chip-grid" id="trustGrid"></div>
+        <label class="profile-field" style="max-width:220px;margin-top:10px"><span>Years in business</span><input type="number" id="f_years" min="0" max="150"></label>
+
+        <p class="profile-section-label">Social links</p>
+        <div class="profile-row" id="socialsGrid"></div>
+
+        <div style="margin-top:18px;display:flex;align-items:center;gap:12px">
+          <button type="submit" class="btn btn-p" id="saveBtn">Save changes</button>
+          <span id="saveMsg" class="tiny muted"></span>
+        </div>
+      </div>
+    </form>
+
+    <div class="dashboard-panel" style="margin-bottom:16px">
       <h2>Account</h2>
+      <p class="muted" style="margin:0 0 14px;font-size:13.5px">Private — used for login and lead notifications, not shown publicly.</p>
       <div class="admin-table-wrap">
         <table class="admin-table">
           <tbody>
             <tr><td>Contact email</td><td id="contactEmail"></td></tr>
             <tr><td>Contact phone</td><td id="contactPhone"></td></tr>
             <tr><td>Claimed</td><td id="claimedAt"></td></tr>
-            <tr><td>Website</td><td id="website"></td></tr>
           </tbody>
         </table>
       </div>
-    </div>
-
-    <div class="dashboard-panel" style="margin-top:16px">
-      <h2>Your website audit</h2>
-      <p class="muted" style="margin:0 0 14px;font-size:13.5px">See exactly what's costing you jobs — and what we'd fix.</p>
-      <a class="btn btn-p" href="/contractor/dashboard/audit/">View your audit →</a>
     </div>
 
     <p class="muted" style="margin-top:20px;font-size:13.5px">Leads and plan management are coming soon.</p>
@@ -68,36 +99,106 @@
 </div>
 
 <script type="module">
-  const loadingEl = document.getElementById('loading');
-  const errorEl = document.getElementById('error');
-  const bodyEl = document.getElementById('body');
+  const SERVICE_LABELS = {
+    epoxy_flake: 'Epoxy flake', epoxy_solid: '100% solids epoxy', metallic_epoxy: 'Metallic epoxy',
+    polyaspartic: 'Polyaspartic', polyurea: 'Polyurea', concrete_polish: 'Concrete polishing',
+    concrete_stain: 'Concrete staining', concrete_repair: 'Concrete repair', commercial: 'Commercial',
+    residential: 'Residential', countertops: 'Countertops', pool_deck: 'Pool decks',
+  };
+  const TRUST_LABELS = {
+    licensed: 'Licensed', insured: 'Insured', warranty: 'Warranty offered',
+    free_estimates: 'Free estimates', financing: 'Financing available', family_owned: 'Family owned',
+  };
+  const SOCIAL_LABELS = { facebook: 'Facebook', instagram: 'Instagram', x: 'X / Twitter', linkedin: 'LinkedIn', youtube: 'YouTube', tiktok: 'TikTok' };
+
+  const $ = (id) => document.getElementById(id);
+  const loadingEl = $('loading'), errorEl = $('error'), bodyEl = $('body');
+
+  document.getElementById('servicesGrid').innerHTML = Object.entries(SERVICE_LABELS)
+    .map(([k, label]) => `<label class="chip-toggle"><input type="checkbox" name="service" value="${k}"><span>${label}</span></label>`).join('');
+  document.getElementById('trustGrid').innerHTML = Object.entries(TRUST_LABELS)
+    .map(([k, label]) => `<label class="chip-toggle"><input type="checkbox" name="trust" value="${k}"><span>${label}</span></label>`).join('');
+  document.getElementById('socialsGrid').innerHTML = Object.entries(SOCIAL_LABELS)
+    .map(([k, label]) => `<label class="profile-field"><span>${label}</span><input type="url" name="social" data-key="${k}" placeholder="https://..."></label>`).join('');
+
+  function escapeHtml(s) { return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function fillForm(data) {
+    $('f_name').value = data.name || '';
+    $('f_website').value = data.website || '';
+    $('f_phones').value = (data.phones || []).join(', ');
+    $('f_areas').value = (data.serviceAreas || []).join(', ');
+    $('f_years').value = data.trustSignals?.years_in_business ?? '';
+    document.querySelectorAll('input[name=service]').forEach((el) => { el.checked = (data.services || []).includes(el.value); });
+    document.querySelectorAll('input[name=trust]').forEach((el) => { el.checked = Boolean(data.trustSignals?.[el.value]); });
+    document.querySelectorAll('input[name=social]').forEach((el) => { el.value = data.socials?.[el.dataset.key] || ''; });
+  }
 
   async function init() {
     try {
-      const res = await fetch('/api/contractor/me');
+      const res = await fetch('/api/contractor/profile');
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Not signed in.');
 
-      document.getElementById('name').textContent = data.name;
-      document.getElementById('location').textContent = `${data.city}, ${data.state}`;
-      document.getElementById('contactEmail').textContent = data.contactEmail || '—';
-      document.getElementById('contactPhone').textContent = data.contactPhone || '—';
-      document.getElementById('claimedAt').textContent = data.claimedAt ? new Date(data.claimedAt).toLocaleDateString() : '—';
-      document.getElementById('website').textContent = data.website || '—';
+      $('name').textContent = data.name;
+      $('location').textContent = `${data.city || ''}${data.city && data.state ? ', ' : ''}${data.state || ''}`;
+      $('contactEmail').textContent = data.contactEmail || '—';
+      $('contactPhone').textContent = data.contactPhone || '—';
+      $('claimedAt').textContent = data.claimedAt ? new Date(data.claimedAt).toLocaleDateString() : '—';
 
       if (data.listingUrl) {
-        document.getElementById('listingLink').href = data.listingUrl;
-        document.getElementById('listingLinkWrap').hidden = false;
+        $('listingLink').href = data.listingUrl;
+        $('listingLinkWrap').hidden = false;
       }
+
+      fillForm(data);
 
       loadingEl.hidden = true;
       bodyEl.hidden = false;
     } catch (err) {
       loadingEl.hidden = true;
       errorEl.hidden = false;
-      errorEl.innerHTML = `${err.message || 'Please sign in again.'} <a href="/services/">Request a login link</a>`;
+      errorEl.innerHTML = `${escapeHtml(err.message || 'Please sign in again.')} <a href="/services/">Request a login link</a>`;
     }
   }
+
+  document.getElementById('profileForm').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const btn = $('saveBtn');
+    const msg = $('saveMsg');
+    btn.disabled = true;
+    msg.textContent = 'Saving…';
+
+    const payload = {
+      name: $('f_name').value.trim(),
+      website: $('f_website').value.trim(),
+      phones: $('f_phones').value.split(',').map((s) => s.trim()).filter(Boolean),
+      serviceAreas: $('f_areas').value.split(',').map((s) => s.trim()).filter(Boolean),
+      services: [...document.querySelectorAll('input[name=service]:checked')].map((el) => el.value),
+      trustSignals: {
+        ...Object.fromEntries([...document.querySelectorAll('input[name=trust]')].map((el) => [el.value, el.checked])),
+        years_in_business: $('f_years').value ? Number($('f_years').value) : undefined,
+      },
+      socials: Object.fromEntries([...document.querySelectorAll('input[name=social]')].map((el) => [el.dataset.key, el.value.trim()]).filter(([, v]) => v)),
+    };
+
+    try {
+      const res = await fetch('/api/contractor/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Could not save changes.');
+      fillForm(data);
+      msg.textContent = 'Saved.';
+    } catch (err) {
+      msg.textContent = err.message || 'Could not save changes.';
+    } finally {
+      btn.disabled = false;
+      setTimeout(() => { if (msg.textContent === 'Saved.') msg.textContent = ''; }, 3000);
+    }
+  });
 
   document.getElementById('logoutBtn').addEventListener('click', async () => {
     await fetch('/api/contractor/logout', { method: 'POST' });
