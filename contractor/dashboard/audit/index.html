@@ -93,6 +93,8 @@
 </div>
 
 <script type="module">
+  import { LEARN_LINKS } from '/lib/audit/learn-links.js';
+
   const $ = (id) => document.getElementById(id);
   const loadingEl = $('loading'), errorEl = $('error'), bodyEl = $('body');
   const noWebsiteEl = $('noWebsite'), unreachableEl = $('unreachable');
@@ -144,6 +146,11 @@
     requestAnimationFrame(tick);
   }
 
+  function learnLinkHtml(label) {
+    const slug = LEARN_LINKS[label];
+    return slug ? `<a class="learn-link" href="/learn/${slug}/">Why this matters →</a>` : '';
+  }
+
   function renderFindings(topFindings) {
     const list = $('findingsList');
     if (!topFindings?.length) {
@@ -157,6 +164,7 @@
           <p class="finding-label">${escapeHtml(f.label)}</p>
           <p class="finding-verdict">${escapeHtml(f.verdict || '')}</p>
           ${f.fix ? `<p class="finding-fix">Fix: ${escapeHtml(f.fix)}</p>` : ''}
+          ${learnLinkHtml(f.label)}
         </div>
         <span class="finding-tier">${escapeHtml(tierLabel(f.tier))}</span>
       </div>
@@ -187,6 +195,7 @@
             <p class="check-label">${escapeHtml(c.label)} <span class="check-value">${escapeHtml(String(c.value ?? ''))}</span></p>
             <p class="check-verdict">${escapeHtml(c.verdict || '')}</p>
             ${!c.passed && c.fix ? `<p class="check-fix">Fix: ${escapeHtml(c.fix)}</p>` : ''}
+            ${learnLinkHtml(c.label)}
           </div>
         </div>
       `).join('');

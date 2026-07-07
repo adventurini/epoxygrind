@@ -27,6 +27,7 @@
 .finding-verdict{margin:3px 0 0;font-size:13.5px;color:var(--dash-muted)}
 .finding-fix{margin:5px 0 0;font-size:12.5px;color:var(--dash-blue)}
 .finding-tier{font-family:var(--ff-m);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--dash-muted);border:1px solid var(--dash-line);border-radius:999px;padding:4px 9px;white-space:nowrap}
+.learn-link{display:inline-block;margin-top:6px;font-family:var(--ff-m);font-size:11px;letter-spacing:.02em;color:var(--dash-blue);font-weight:600}
 
 .cat-list{display:grid;gap:8px}
 .cat-item{border:1px solid var(--dash-line);border-radius:12px;overflow:hidden}

@@ -72,6 +72,8 @@ const SHOPPING_LIST_PAGES = listSlugs('shopping-lists');
 const HAS_DIY_HUB = existsSync(join(CONTENT_DATA_DIR, 'diy-hub.js'));
 const HAS_DIY_VS_PRO_PILLAR = existsSync(join(CONTENT_DATA_DIR, 'diy-vs-pro-pillar.js'));
 const HAS_COMPARE_HUB = existsSync(join(CONTENT_DATA_DIR, 'compare-hub.js'));
+const LEARN_PAGES = listSlugs('learn');
+const HAS_LEARN_HUB = existsSync(join(CONTENT_DATA_DIR, 'learn-hub.js'));
 
 // ── Master SEO spec (spec_4) local pages — from content/data/metros.json ─
 // State rollups: all 51. City hubs: every metro (331) — an explicit owner
@@ -193,6 +195,18 @@ const sections = [
         changefreq: 'monthly',
         priority: 0.6,
         lastmod: gitLastModified(`content/data/shopping-lists/${slug}.js`),
+      })),
+    ],
+  },
+  {
+    name: 'learn',
+    entries: [
+      ...(HAS_LEARN_HUB ? [{ path: '/learn/', changefreq: 'weekly', priority: 0.7, lastmod: gitLastModified('content/data/learn-hub.js') }] : []),
+      ...LEARN_PAGES.map((slug) => ({
+        path: `/learn/${slug}/`,
+        changefreq: 'monthly',
+        priority: 0.6,
+        lastmod: gitLastModified(`content/data/learn/${slug}.js`),
       })),
     ],
   },

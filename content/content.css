@@ -103,6 +103,18 @@
 .pro-cta-text h3{font-family:var(--ff-d);margin:0 0 4px;font-size:17px}
 .pro-cta-text p{margin:0;font-size:13.5px;color:var(--muted)}
 
+/* Learning-center supporting evidence + related links */
+.stat-evidence{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:24px 0;padding:20px;background:var(--bg-2,#F6F8FC);border:1px solid var(--line);border-radius:14px}
+.stat-evidence-item{display:flex;flex-direction:column;gap:4px}
+.stat-evidence-item strong{font-family:var(--ff-d);font-weight:900;font-size:28px;color:var(--blue);letter-spacing:-.02em;line-height:1.1}
+.stat-evidence-item span{font-size:13px;color:var(--ink-soft)}
+.stat-evidence-item a{font-family:var(--ff-m);font-size:10.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
+.related-links{display:grid;gap:10px;margin:16px 0 24px}
+.related-link{display:block;padding:14px 18px;border:1px solid var(--line);border-radius:10px;text-decoration:none;transition:border-color .15s,box-shadow .15s}
+.related-link:hover{border-color:var(--blue);box-shadow:0 8px 24px rgba(26,92,214,.08)}
+.related-link strong{display:block;font-family:var(--ff-d);font-size:14.5px;color:var(--ink);margin-bottom:2px}
+.related-link span{font-size:13px;color:var(--muted)}
+
 /* Shopping list */
 .shopping-list{margin:20px 0}
 .shopping-list-phase{font-family:var(--ff-m);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:20px 0 8px}

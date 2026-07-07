@@ -24,6 +24,8 @@ import {
   renderDiyHubPage,
   renderCompareHubPage,
   renderCoverageCalculatorPage,
+  renderLearnPage,
+  renderLearnHubPage,
 } from '../lib/content-templates.js';
 import { renderGuidePage, renderGuidePillar } from '../lib/guide-templates.js';
 
@@ -98,6 +100,8 @@ async function run() {
   await buildSection('diy', 'diy', renderDiyGuidePage);
   await buildSection('shopping-lists', 'diy', renderShoppingListPage);
   await buildSection('guides', 'guides', renderGuidePage);
+  await buildSection('learn', 'learn', renderLearnPage);
+  await buildHub('learn-hub.js', ['learn', 'index.html'], renderLearnHubPage);
 
   console.log(`\nBuilt ${built} page(s), ${failures} failure(s).`);
   if (failures > 0) process.exitCode = 1;
