@@ -25,9 +25,12 @@ export default async function handler(req, res) {
     if (error) throw error;
     if (!day) return res.status(200).json({ day: null });
 
+    // Two FKs exist between these tables (slides.active_generation_id ->
+    // generations.id, and generations.slide_id -> slides.id) — the
+    // constraint-name hint picks the right one for this embed.
     const { data: slides, error: slidesErr } = await supabase
       .from('carousel_slides')
-      .select('id, position, caption, overlay')
+      .select('id, position, caption, overlay, final_url, carousel_generations!carousel_slides_active_generation_fkey(image_url, prompt)')
       .eq('day_id', day.id)
       .order('position', { ascending: true });
     if (slidesErr) throw slidesErr;
@@ -40,7 +43,14 @@ export default async function handler(req, res) {
         status: date < today && day.status !== 'archived' ? 'archived' : day.status,
         readOnly: date < today,
         topic: day.carousel_topics,
-        slides: slides || [],
+        slides: (slides || []).map((s) => ({
+          id: s.id,
+          position: s.position,
+          caption: s.caption,
+          overlay: s.overlay,
+          finalUrl: s.final_url,
+          imageUrl: s.carousel_generations?.image_url || null,
+        })),
       },
     });
   } catch (err) {

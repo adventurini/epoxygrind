@@ -33,6 +33,8 @@
 .cal-day-actions{display:flex;gap:8px;margin-bottom:16px}
 .cal-slides{display:flex;flex-direction:column;gap:14px}
 .cal-slide{border:1px solid var(--dash-line);border-radius:10px;padding:10px 12px}
+.cal-slide-img{width:100%;max-width:220px;aspect-ratio:4/5;object-fit:cover;border-radius:8px;margin-bottom:8px;display:block;background:var(--dash-bg)}
+.cal-slide-img-empty{display:flex;align-items:center;justify-content:center;color:var(--dash-muted);font-size:11px;border:1px dashed var(--dash-line)}
 .cal-slide-label{font-family:var(--ff-m,"IBM Plex Mono",monospace);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--dash-muted);margin-bottom:6px;display:flex;justify-content:space-between}
 .cal-slide textarea{width:100%;box-sizing:border-box;font-family:inherit;font-size:13.5px;padding:8px 10px;border:1px solid var(--dash-line);border-radius:8px;resize:vertical;background:#fff;color:var(--dash-ink)}
 .cal-slide-wordcount{font-family:var(--ff-m,"IBM Plex Mono",monospace)}

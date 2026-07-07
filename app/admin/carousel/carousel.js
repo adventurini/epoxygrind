@@ -120,7 +120,12 @@ function renderSlides(day) {
     const limit = SLIDE_WORD_LIMITS[s.position - 1];
     const wc = wordCount(s.caption);
     const roleLabel = s.position === 1 ? 'Hook' : s.position === 6 ? 'Closer' : `Point ${s.position - 1}`;
+    const image = s.finalUrl || s.imageUrl;
+    const imageHtml = image
+      ? `<img class="cal-slide-img" src="${escapeHtml(image)}" alt="Slide ${s.position} preview">`
+      : `<div class="cal-slide-img cal-slide-img-empty">No image yet</div>`;
     return `<div class="cal-slide" data-position="${s.position}">
+      ${imageHtml}
       <div class="cal-slide-label"><span>Slide ${s.position} — ${roleLabel}</span><span class="cal-slide-wordcount ${wc > limit ? 'over' : ''}">${wc}/${limit} words</span></div>
       <textarea rows="2" ${day.readOnly ? 'readonly' : ''} data-position="${s.position}">${escapeHtml(s.caption || '')}</textarea>
     </div>`;
@@ -152,6 +157,7 @@ async function openDayPanel(date) {
     document.getElementById('dayPanelReadOnlyBanner').hidden = !day.readOnly;
     document.getElementById('daySwapTopicBtn').disabled = day.readOnly;
     document.getElementById('dayRegenBtn').disabled = day.readOnly;
+    document.getElementById('dayGenImagesBtn').disabled = day.readOnly;
     renderSlides(day);
     document.getElementById('dayPanelContent').hidden = false;
   } catch (err) {
@@ -201,6 +207,29 @@ document.getElementById('dayRegenBtn').addEventListener('click', async () => {
     toast(err.message || 'Regenerate failed.');
   } finally {
     btn.disabled = false;
+  }
+});
+
+document.getElementById('dayGenImagesBtn').addEventListener('click', async () => {
+  if (!currentDate) return;
+  const btn = document.getElementById('dayGenImagesBtn');
+  btn.disabled = true;
+  const original = btn.textContent;
+  btn.textContent = 'Generating… (~1 min)';
+  try {
+    const res = await authFetch('/api/admin/carousel/generate-images', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ date: currentDate }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Image generation failed.');
+    await openDayPanel(currentDate);
+    await loadMonth();
+    toast('Images generated.');
+  } catch (err) {
+    toast(err.message || 'Image generation failed.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = original;
   }
 });
 

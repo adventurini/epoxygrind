@@ -47,11 +47,14 @@ export default async function handler(req, res) {
 
     const captions = await generateSlideCaptions({ audience: day.audience, topic: nextTopic });
 
-    await supabase.from('carousel_days').update({ topic_id: nextTopic.id }).eq('id', day.id);
+    await supabase.from('carousel_days').update({ topic_id: nextTopic.id, status: 'drafted' }).eq('id', day.id);
     for (let i = 0; i < 6; i++) {
+      // Detach (not delete) any prior generation — it belonged to the old
+      // topic's scenes and no longer matches, but the generations row
+      // itself stays as history.
       const { error } = await supabase
         .from('carousel_slides')
-        .update({ caption: captions[i] })
+        .update({ caption: captions[i], active_generation_id: null, final_url: null })
         .eq('day_id', day.id)
         .eq('position', i + 1);
       if (error) throw error;
