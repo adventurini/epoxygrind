@@ -41,6 +41,11 @@
 
 .pipeline-backdrop{position:fixed;inset:0;background:rgba(17,33,59,.35);z-index:70}
 .pipeline-panel{position:fixed;top:0;right:0;bottom:0;width:min(420px,92vw);background:#fff;z-index:71;box-shadow:-12px 0 40px rgba(17,33,59,.16);display:flex;flex-direction:column;overflow-y:auto}
+/* .pipeline-panel{display:flex} has equal specificity to the browser's
+   default [hidden]{display:none} but loads later, so it wins and the
+   panel never actually hides — same bug pattern hit twice earlier this
+   session (the wizard's buttons and step containers). Explicit override. */
+.pipeline-backdrop[hidden],.pipeline-panel[hidden]{display:none}
 .pipeline-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 20px 16px;border-bottom:1px solid var(--dash-line)}
 .pipeline-panel-head h3{margin:0;font-family:var(--ff-d,"Archivo",system-ui,sans-serif);font-size:18px}
 .pipeline-panel-body{padding:18px 20px 24px;display:flex;flex-direction:column;gap:16px}
