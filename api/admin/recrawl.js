@@ -76,6 +76,7 @@ export default async function handler(req, res) {
       compositeScore: auditRow.composite_score,
       finalUrl: auditRow.final_url,
       outreachExcludedReason: auditRow.outreach_excluded_reason,
+      error: result.error || null,
     });
   } catch (err) {
     console.error('admin/recrawl failed:', err.message);
