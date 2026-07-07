@@ -1,5 +1,6 @@
 import { requireAdmin } from '../../lib/require-admin.js';
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabase.js';
+import { CONTRACTORS } from '../../lib/contractors.js';
 
 /**
  * GET /api/admin/audits — every website audit, joined with its contractor,
@@ -34,7 +35,7 @@ export default async function handler(req, res) {
     for (let from = 0; ; from += PAGE_SIZE) {
       let query = supabase
         .from('audits')
-        .select('id, contractor_id, has_website, site_unreachable, final_url, composite_score, grade, grade_color, audited_at, public_token, outreach_excluded_reason, contractors(name, city, state, website, claimed_at, status)')
+        .select('id, contractor_id, has_website, site_unreachable, final_url, composite_score, grade, grade_color, audited_at, public_token, outreach_excluded_reason, contractors(name, city, state, website, claimed_at, status, phones, contact_phone, place_id)')
         .range(from, from + PAGE_SIZE - 1);
 
       // A secondary tiebreaker is required, not optional — plenty of rows
@@ -61,6 +62,20 @@ export default async function handler(req, res) {
         city: row.contractors.city,
         state: row.contractors.state,
         website: row.contractors.website,
+        // Prefer the contractor's own provided number (contact_phone, set
+        // when they claim their listing) over the scraped public phones[0]
+        // — but almost nothing is claimed yet, so phones[0] carries most
+        // rows in practice.
+        phone: row.contractors.contact_phone || row.contractors.phones?.[0] || null,
+        // The public directory is a separate static build from
+        // content/data/enriched.json (lib/contractors.js), keyed by Google
+        // place_id — not every audited contractor is actually live there
+        // (passesQualityBar() requires phones + service_areas + a verified
+        // Google rating), so this is genuinely null for a lot of rows.
+        listingUrl: (() => {
+          const listing = row.contractors.place_id ? CONTRACTORS.find((c) => c.place_id === row.contractors.place_id) : null;
+          return listing ? `/contractors/${listing.state_slug}/${listing.slug}/` : null;
+        })(),
         finalUrl: row.final_url,
         hasWebsite: row.has_website,
         siteUnreachable: row.site_unreachable,

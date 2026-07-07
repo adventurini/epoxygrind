@@ -290,16 +290,28 @@ function renderAuditsTable() {
       : a.outreachExcludedReason === 'unreachable'
         ? chip('No outreach — unreachable', 'bad')
         : chip('Eligible', 'ok');
+    const phoneCell = a.phone
+      ? `<a class="admin-link" href="tel:${escapeHtml(a.phone.replace(/[^\d+]/g, ''))}">${escapeHtml(a.phone)}</a>`
+      : '—';
+    const auditCell = auditHref
+      ? `<a class="btn btn-o btn-sm" href="${escapeHtml(auditHref)}" target="_blank" rel="noopener">View audit →</a>`
+      : '—';
+    const listingCell = a.listingUrl
+      ? `<a class="btn btn-o btn-sm" href="${escapeHtml(a.listingUrl)}" target="_blank" rel="noopener">View listing →</a>`
+      : chip('Not in directory', 'warn');
     return `
-      <tr data-audit-href="${escapeHtml(auditHref)}" title="${auditHref ? 'Open this audit — same page the contractor sees on their own dashboard' : 'No audit link available'}">
+      <tr>
         <td data-label="Business"><span class="score-badge ${scoreChipVariant(a.compositeScore)}">${a.compositeScore ?? '—'}</span> ${escapeHtml(a.name)}${a.isSelfServe ? ' ' + chip('self-serve', 'info') : ''}</td>
         <td data-label="Location">${escapeHtml(a.city || '')}${a.city && a.state ? ', ' : ''}${escapeHtml(a.state || '')}</td>
+        <td data-label="Phone">${phoneCell}</td>
         <td data-label="Website">${siteCell}</td>
         <td data-label="Grade">${a.grade ? chip(a.grade, gradeChipVariant(a.gradeColor)) : '—'}</td>
         <td data-label="Outreach">${outreachCell}</td>
         <td data-label="Claimed">${a.claimedAt ? chip('Claimed', 'ok') : '—'}</td>
         <td data-label="Audited">${formatDate(a.auditedAt)}</td>
-        <td data-label="" onclick="event.stopPropagation()">${a.outreachExcludedReason ? `<button type="button" class="btn btn-o btn-sm recrawl-btn" data-contractor-id="${a.contractorId}">Recrawl</button>` : ''}</td>
+        <td data-label="Audit">${auditCell}</td>
+        <td data-label="Directory">${listingCell}</td>
+        <td data-label="">${a.outreachExcludedReason ? `<button type="button" class="btn btn-o btn-sm recrawl-btn" data-contractor-id="${a.contractorId}">Recrawl</button>` : ''}</td>
       </tr>`;
   }).join('');
 
@@ -351,37 +363,28 @@ document.getElementById('auditShowBroken').addEventListener('change', resetAudit
 document.getElementById('auditsPrevBtn').addEventListener('click', () => { auditsPage -= 1; renderAuditsTable(); });
 document.getElementById('auditsNextBtn').addEventListener('click', () => { auditsPage += 1; renderAuditsTable(); });
 
-// Whole row opens the audit page — the same /audit-report/{token} view
-// both the contractor and we see — except a click on the site's own
-// outbound link, or the Recrawl button, which have their own behavior.
 document.getElementById('auditsTableBody').addEventListener('click', async (ev) => {
   const recrawlBtn = ev.target.closest('.recrawl-btn');
-  if (recrawlBtn) {
-    const contractorId = Number(recrawlBtn.dataset.contractorId);
-    recrawlBtn.disabled = true;
-    const originalLabel = recrawlBtn.textContent;
-    recrawlBtn.textContent = 'Recrawling…';
-    try {
-      const res = await authFetch('/api/admin/recrawl', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contractorId }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Recrawl failed.');
-      await loadAudits();
-    } catch (err) {
-      recrawlBtn.disabled = false;
-      recrawlBtn.textContent = originalLabel;
-      toast(err.message || 'Recrawl failed.');
-    }
-    return;
-  }
+  if (!recrawlBtn) return;
 
-  if (ev.target.closest('a')) return;
-  const row = ev.target.closest('tr[data-audit-href]');
-  const href = row?.dataset.auditHref;
-  if (href) window.open(href, '_blank', 'noopener');
+  const contractorId = Number(recrawlBtn.dataset.contractorId);
+  recrawlBtn.disabled = true;
+  const originalLabel = recrawlBtn.textContent;
+  recrawlBtn.textContent = 'Recrawling…';
+  try {
+    const res = await authFetch('/api/admin/recrawl', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contractorId }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Recrawl failed.');
+    await loadAudits();
+  } catch (err) {
+    recrawlBtn.disabled = false;
+    recrawlBtn.textContent = originalLabel;
+    toast(err.message || 'Recrawl failed.');
+  }
 });
 
 async function boot() {
