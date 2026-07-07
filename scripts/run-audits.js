@@ -46,6 +46,7 @@ if (!SUPABASE_URL || !SERVICE_KEY) throw new Error('SUPABASE_URL / SUPABASE_SECR
 
 const { CONTRACTORS } = await import('../lib/contractors.js');
 const { runAudit } = await import('../lib/audit/index.js');
+const { outreachExcludedReason } = await import('../lib/audit/outreach-eligibility.js');
 
 const limitArg = process.argv.indexOf('--limit');
 const LIMIT = limitArg !== -1 ? Number(process.argv[limitArg + 1]) : null;
@@ -150,6 +151,7 @@ async function main() {
             site_structure: result.siteStructureData || null,
             screenshots: null, // data URLs are large; not persisted to Postgres — regenerate on demand for the reveal page later
             error: result.error || null,
+            outreach_excluded_reason: outreachExcludedReason({ finalUrl: result.finalUrl, siteUnreachable: result.siteUnreachable }),
           }),
         });
         done++;

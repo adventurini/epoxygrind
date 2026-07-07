@@ -285,12 +285,18 @@ function renderAuditsTable() {
           ? `<a class="admin-link" href="${escapeHtml(siteHomepage(site))}" target="_blank" rel="noopener" title="${escapeHtml(siteHomepage(site))}">${escapeHtml(siteOrigin(site))}</a>`
           : '—';
     const auditHref = a.publicToken ? `/audit-report/${slugify(a.name)}/${encodeURIComponent(a.publicToken)}` : '';
+    const outreachCell = a.outreachExcludedReason === 'crawl_blocked'
+      ? chip('No outreach — crawl blocked', 'bad')
+      : a.outreachExcludedReason === 'unreachable'
+        ? chip('No outreach — unreachable', 'bad')
+        : chip('Eligible', 'ok');
     return `
       <tr data-audit-href="${escapeHtml(auditHref)}" title="${auditHref ? 'Open this audit — same page the contractor sees on their own dashboard' : 'No audit link available'}">
-        <td data-label="Business"><span class="score-badge ${scoreChipVariant(a.compositeScore)}">${a.compositeScore ?? '—'}</span> ${escapeHtml(a.name)}${a.isSelfServe ? ' ' + chip('self-serve', 'info') : ''}${a.crawlLooksBlocked ? ' ' + chip('crawl blocked — score unreliable', 'bad') : ''}</td>
+        <td data-label="Business"><span class="score-badge ${scoreChipVariant(a.compositeScore)}">${a.compositeScore ?? '—'}</span> ${escapeHtml(a.name)}${a.isSelfServe ? ' ' + chip('self-serve', 'info') : ''}</td>
         <td data-label="Location">${escapeHtml(a.city || '')}${a.city && a.state ? ', ' : ''}${escapeHtml(a.state || '')}</td>
         <td data-label="Website">${siteCell}</td>
         <td data-label="Grade">${a.grade ? chip(a.grade, gradeChipVariant(a.gradeColor)) : '—'}</td>
+        <td data-label="Outreach">${outreachCell}</td>
         <td data-label="Claimed">${a.claimedAt ? chip('Claimed', 'ok') : '—'}</td>
         <td data-label="Audited">${formatDate(a.auditedAt)}</td>
       </tr>`;

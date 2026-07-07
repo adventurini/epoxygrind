@@ -1,14 +1,6 @@
 import { requireAdmin } from '../../lib/require-admin.js';
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabase.js';
 
-// Some crawls land on a security-challenge/bot-block page instead of the
-// real homepage (observed: SGCaptcha's /.well-known/sgcaptcha/ interstitial,
-// a ClickCease block page) — the audit still produces a composite_score in
-// that case, but it's scoring the wrong page entirely. Flag these so the
-// admin table can both warn that the score is unreliable and avoid linking
-// out to the broken URL.
-const BLOCKED_CRAWL_RE = /captcha|clickcease|\.well-known|challenge|cf_chl|recaptcha|access-denied/i;
-
 /**
  * GET /api/admin/audits — every website audit, joined with its contractor,
  * for the "which sites are we sitting on the biggest opportunity for"
@@ -42,7 +34,7 @@ export default async function handler(req, res) {
     for (let from = 0; ; from += PAGE_SIZE) {
       let query = supabase
         .from('audits')
-        .select('id, contractor_id, has_website, site_unreachable, final_url, composite_score, grade, grade_color, audited_at, public_token, contractors(name, city, state, website, claimed_at, status)')
+        .select('id, contractor_id, has_website, site_unreachable, final_url, composite_score, grade, grade_color, audited_at, public_token, outreach_excluded_reason, contractors(name, city, state, website, claimed_at, status)')
         .range(from, from + PAGE_SIZE - 1);
 
       // A secondary tiebreaker is required, not optional — plenty of rows
@@ -79,7 +71,11 @@ export default async function handler(req, res) {
         publicToken: row.public_token,
         claimedAt: row.contractors.claimed_at,
         isSelfServe: row.contractors.status === 'self_serve',
-        crawlLooksBlocked: Boolean(row.final_url && BLOCKED_CRAWL_RE.test(row.final_url)),
+        // Durable, stored on the row (not re-derived here) so a future
+        // outreach/campaign process can exclude these by a plain query
+        // instead of re-implementing this logic.
+        outreachExcludedReason: row.outreach_excluded_reason,
+        crawlLooksBlocked: row.outreach_excluded_reason === 'crawl_blocked',
       }));
 
     const scored = rows.filter((r) => r.compositeScore != null);
@@ -90,6 +86,7 @@ export default async function handler(req, res) {
       unreachable: rows.filter((r) => r.siteUnreachable).length,
       claimed: rows.filter((r) => r.claimedAt).length,
       crawlBlocked: rows.filter((r) => r.crawlLooksBlocked).length,
+      outreachExcluded: rows.filter((r) => r.outreachExcludedReason).length,
     };
 
     return res.status(200).json({ audits: rows, stats });
