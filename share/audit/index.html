@@ -86,7 +86,7 @@
 </div>
 
 <script type="module">
-  import { GRADE_COLOR_VARS, animateMeter, renderFindings, renderCategories, renderImages } from '/contractor/dashboard/audit/audit-render.js';
+  import { GRADE_COLOR_VARS, animateMeter, renderFindings, renderCategories, renderImages, escapeHtml, escapeAttr } from '/contractor/dashboard/audit/audit-render.js';
 
   const $ = (id) => document.getElementById(id);
   const loadingEl = $('loading'), errorEl = $('error'), bodyEl = $('body');
@@ -123,7 +123,9 @@
         $('eyebrowLine').textContent = `${data.contractorName}'s website audit`;
       }
       $('headerLine').textContent = data.gradeHeader || '';
-      $('siteUrl').textContent = data.finalUrl || '';
+      $('siteUrl').innerHTML = data.finalUrl
+        ? `<a href="${escapeAttr(data.finalUrl)}" target="_blank" rel="noopener">${escapeHtml(data.finalUrl)}</a>`
+        : '';
       $('gradeBadge').textContent = data.grade || '';
       $('gradeBadge').style.color = GRADE_COLOR_VARS[data.gradeColor] || GRADE_COLOR_VARS.gray;
       if (data.auditedAt) {
