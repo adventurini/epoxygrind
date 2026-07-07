@@ -157,6 +157,8 @@ section{padding:84px 0}
 .audit-rows .ico{font-family:var(--ff-m);font-weight:700;font-size:14px;line-height:1;margin-top:2px;flex:none}
 .audit-col.bad .ico{color:var(--red)}.audit-col.good .ico{color:var(--blue)}
 .audit-rows b{display:block;font-family:var(--ff-d);font-weight:700;font-size:14.5px;color:var(--ink);margin-bottom:3px}
+.audit-stat{font-family:var(--ff-m);font-weight:700;color:var(--red)}
+.audit-learn{display:inline-block;margin-top:5px;font-family:var(--ff-m);font-size:12px;font-weight:600;color:var(--blue)}
 
 /* steps */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
