@@ -169,6 +169,47 @@
     return 'Launch';
   }
 
+  const DIMENSION_LABELS = {
+    visualHierarchy: 'Visual hierarchy',
+    modernity: 'Modernity',
+    brandConsistency: 'Brand consistency',
+    readability: 'Readability',
+    layoutIntegrity: 'Layout integrity',
+    professionalTrust: 'Professional trust',
+  };
+
+  function renderCatDetail(cat) {
+    if (cat.checks?.length) {
+      return cat.checks.map((c) => `
+        <div class="check-row ${c.passed ? 'pass' : 'fail'}">
+          <span class="check-mark">${c.passed ? '✓' : '✗'}</span>
+          <div class="check-body">
+            <p class="check-label">${escapeHtml(c.label)} <span class="check-value">${escapeHtml(String(c.value ?? ''))}</span></p>
+            <p class="check-verdict">${escapeHtml(c.verdict || '')}</p>
+            ${!c.passed && c.fix ? `<p class="check-fix">Fix: ${escapeHtml(c.fix)}</p>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+    // designUx has no pass/fail checks — 6 AI-scored dimensions with a
+    // justification each, on a 0-10 scale rather than 0-100.
+    if (cat.dimensions?.length) {
+      return cat.dimensions.map((d) => `
+        <div class="check-row ${d.score >= 7 ? 'pass' : 'fail'}">
+          <span class="check-mark">${d.score}/10</span>
+          <div class="check-body">
+            <p class="check-label">${escapeHtml(DIMENSION_LABELS[d.label] || d.label)}</p>
+            <p class="check-verdict">${escapeHtml(d.justification || '')}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+    if (cat.error) {
+      return `<p class="muted tiny">Couldn't be scored this time (${escapeHtml(cat.error)}) — didn't count against the composite score.</p>`;
+    }
+    return '<p class="muted tiny">No detail available for this category.</p>';
+  }
+
   function renderCategories(categoryScores) {
     const order = ['performance', 'mobile', 'funnel', 'designUx', 'imageQuality', 'seo', 'localPresence', 'security', 'siteStructure'];
     const list = $('catList');
@@ -187,16 +228,7 @@
           <svg class="cat-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </summary>
         <div class="cat-checks">
-          ${(cat.checks || []).map((c) => `
-            <div class="check-row ${c.passed ? 'pass' : 'fail'}">
-              <span class="check-mark">${c.passed ? '✓' : '✗'}</span>
-              <div class="check-body">
-                <p class="check-label">${escapeHtml(c.label)} <span class="check-value">${escapeHtml(String(c.value ?? ''))}</span></p>
-                <p class="check-verdict">${escapeHtml(c.verdict || '')}</p>
-                ${!c.passed && c.fix ? `<p class="check-fix">Fix: ${escapeHtml(c.fix)}</p>` : ''}
-              </div>
-            </div>
-          `).join('') || '<p class="muted tiny">No detail available for this category.</p>'}
+          ${renderCatDetail(cat)}
         </div>
       </details>`;
     }).join('');
