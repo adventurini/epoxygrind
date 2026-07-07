@@ -69,6 +69,46 @@
     </div>
 
     <section class="dashboard-panel" style="margin-bottom:20px">
+      <h2>Website audits</h2>
+      <p class="muted" style="margin:-6px 0 14px">Every site we've audited, worst score first — the biggest outreach opportunities by default. Click a row to open its share link.</p>
+      <div class="dashboard-stats" id="auditStats" style="margin-bottom:16px">
+        <div class="stat-card"><div class="n" id="statAuditsTotal">—</div><div class="l">Sites audited</div></div>
+        <div class="stat-card"><div class="n" id="statAuditsAvg">—</div><div class="l">Average score</div></div>
+        <div class="stat-card"><div class="n" id="statAuditsNoSite">—</div><div class="l">No website</div></div>
+        <div class="stat-card"><div class="n" id="statAuditsClaimed">—</div><div class="l">Claimed listings</div></div>
+      </div>
+      <div class="admin-filters">
+        <select id="auditSort">
+          <option value="score">Sort: worst score first</option>
+          <option value="recent">Sort: most recently audited</option>
+        </select>
+        <select id="auditState">
+          <option value="">All states</option>
+        </select>
+        <input type="search" id="auditSearch" placeholder="Search by business name…">
+      </div>
+      <div id="auditsLoading" class="muted">Loading audits…</div>
+      <div class="admin-table-wrap" hidden id="auditsTableWrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Business</th>
+              <th>Location</th>
+              <th>Website</th>
+              <th>Score</th>
+              <th>Grade</th>
+              <th>Claimed</th>
+              <th>Audited</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="auditsTableBody"></tbody>
+        </table>
+      </div>
+      <p class="tiny muted" id="auditsShownCount" style="margin-top:10px"></p>
+    </section>
+
+    <section class="dashboard-panel" style="margin-bottom:20px">
       <h2>Product &amp; affiliate link clicks</h2>
       <p class="muted" style="margin:-6px 0 14px">Every <code>/go/</code> outbound click, by product — sorted by volume so an unmonetized link (no affiliate program yet) that starts getting real clicks stands out immediately. <b>Amazon</b> rows are flagged since those are the most common candidate for adding an Associates tag.</p>
       <div id="productClicksLoading" class="muted">Loading clicks…</div>

@@ -184,6 +184,90 @@ async function loadContactMessages() {
   }
 }
 
+let allAudits = [];
+
+function gradeChipVariant(color) {
+  if (color === 'green' || color === 'lime') return 'ok';
+  if (color === 'yellow' || color === 'orange') return 'warn';
+  if (color === 'red') return 'bad';
+  return 'info';
+}
+
+function renderAuditsTable() {
+  const tbody = document.getElementById('auditsTableBody');
+  const sort = document.getElementById('auditSort').value;
+  const state = document.getElementById('auditState').value;
+  const search = document.getElementById('auditSearch').value.trim().toLowerCase();
+
+  let rows = allAudits;
+  if (state) rows = rows.filter((a) => a.state === state);
+  if (search) rows = rows.filter((a) => (a.name || '').toLowerCase().includes(search));
+
+  rows = [...rows].sort((a, b) => {
+    if (sort === 'recent') return new Date(b.auditedAt || 0) - new Date(a.auditedAt || 0);
+    const as = a.compositeScore ?? 999;
+    const bs = b.compositeScore ?? 999;
+    return as - bs;
+  });
+
+  tbody.innerHTML = rows.map((a) => {
+    const site = a.finalUrl || a.website;
+    const siteCell = !a.hasWebsite
+      ? chip('No website', 'bad')
+      : a.siteUnreachable
+        ? chip('Unreachable', 'warn')
+        : site
+          ? `<a class="admin-link" href="${escapeHtml(site)}" target="_blank" rel="noopener">${escapeHtml(site.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a>`
+          : '—';
+    return `
+      <tr>
+        <td>${escapeHtml(a.name)}${a.isSelfServe ? ' ' + chip('self-serve', 'info') : ''}</td>
+        <td>${escapeHtml(a.city || '')}${a.city && a.state ? ', ' : ''}${escapeHtml(a.state || '')}</td>
+        <td>${siteCell}</td>
+        <td>${a.compositeScore ?? '—'}</td>
+        <td>${a.grade ? chip(a.grade, gradeChipVariant(a.gradeColor)) : '—'}</td>
+        <td>${a.claimedAt ? chip('Claimed', 'ok') : '—'}</td>
+        <td>${formatDate(a.auditedAt)}</td>
+        <td>${a.publicToken ? `<a class="admin-link" href="/audit-report/${encodeURIComponent(a.publicToken)}" target="_blank">View →</a>` : '—'}</td>
+      </tr>`;
+  }).join('');
+
+  document.getElementById('auditsShownCount').textContent = `Showing ${rows.length} of ${allAudits.length} loaded audits.`;
+}
+
+async function loadAudits() {
+  const loading = document.getElementById('auditsLoading');
+  const wrap = document.getElementById('auditsTableWrap');
+
+  try {
+    const res = await authFetch('/api/admin/audits');
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not load audits.');
+
+    allAudits = data.audits;
+
+    document.getElementById('statAuditsTotal').textContent = String(data.stats.total);
+    document.getElementById('statAuditsAvg').textContent = data.stats.avgScore ?? '—';
+    document.getElementById('statAuditsNoSite').textContent = String(data.stats.noWebsite);
+    document.getElementById('statAuditsClaimed').textContent = String(data.stats.claimed);
+
+    const states = [...new Set(allAudits.map((a) => a.state).filter(Boolean))].sort();
+    const stateSelect = document.getElementById('auditState');
+    stateSelect.innerHTML = '<option value="">All states</option>' + states.map((s) => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+
+    renderAuditsTable();
+
+    loading.hidden = true;
+    wrap.hidden = false;
+  } catch (err) {
+    loading.textContent = err.message || 'Could not load audits.';
+  }
+}
+
+document.getElementById('auditSort').addEventListener('change', renderAuditsTable);
+document.getElementById('auditState').addEventListener('change', renderAuditsTable);
+document.getElementById('auditSearch').addEventListener('input', renderAuditsTable);
+
 async function boot() {
   const user = await initDashboard({ activeNav: 'admin' });
   if (!user) return;
@@ -203,7 +287,7 @@ async function boot() {
   }
 
   bodyEl.hidden = false;
-  await Promise.all([loadUsers(), loadEstimates(), loadContractorLeads(), loadProductClicks(), loadContactMessages()]);
+  await Promise.all([loadUsers(), loadEstimates(), loadContractorLeads(), loadProductClicks(), loadContactMessages(), loadAudits()]);
 }
 
 boot().catch((err) => toast(err.message || 'Failed to load admin page.'));

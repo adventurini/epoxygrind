@@ -8,7 +8,10 @@
 .admin-chip.ok{background:#E8F5EE;color:#1B6B3A}
 .admin-chip.warn{background:#FEF3E2;color:#9A6700}
 .admin-chip.info{background:var(--dash-blue-soft);color:var(--dash-blue)}
+.admin-chip.bad{background:#FCECEC;color:#B3261E}
 .admin-link{color:var(--dash-blue);font-weight:600}
+.admin-filters{display:flex;gap:8px;align-items:center;margin:-6px 0 14px;flex-wrap:wrap}
+.admin-filters select,.admin-filters input{font-family:inherit;font-size:12.5px;padding:7px 10px;border:1px solid var(--dash-line);border-radius:8px;background:#fff;color:var(--dash-ink)}
 @media (max-width:720px){
   .admin-table{font-size:12px}
   .admin-table th,.admin-table td{padding:8px}
