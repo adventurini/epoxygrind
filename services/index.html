@@ -96,13 +96,13 @@
       </div>
       <div class="fcard">
         <h3>Get your free audit</h3>
-        <p class="sub">We review your site &amp; ads and reply within one business day.</p>
+        <p class="sub">Real results in about a minute — no signup required.</p>
         <form id="leadForm" novalidate>
           <div class="field"><label for="site">Your website</label><input id="site" name="site" type="url" placeholder="yourepoxysite.com" required></div>
           <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required></div>
-          <button class="btn btn-p" type="submit">Get your free audit →</button>
+          <button class="btn btn-p" type="submit" id="submitBtn">Get your free audit →</button>
         </form>
-        <div class="ok" id="ok">Got it — your audit request is ready to send. We'll be in touch within one business day.</div>
+        <div class="ok" id="msg"></div>
       </div>
     </div>
   </section>
@@ -466,7 +466,34 @@
       if(panel){panel.classList.add('active');panel.hidden=false}
     });
   });
-  document.getElementById('leadForm').addEventListener('submit',function(ev){ev.preventDefault();var f=ev.target,site=f.site.value.trim(),email=f.email.value.trim();if(!site||!email){(site?f.email:f.site).focus();return;}var body=encodeURIComponent('Website: '+site+'\nEmail: '+email);f.style.display='none';document.getElementById('ok').classList.add('show');window.location.href='mailto:hello@epoxygrind.com?subject='+encodeURIComponent('Audit request — '+site)+'&body='+body;});
+  document.getElementById('leadForm').addEventListener('submit', async function (ev) {
+    ev.preventDefault();
+    var f = ev.target, site = f.site.value.trim(), email = f.email.value.trim();
+    if (!site || !email) { (site ? f.email : f.site).focus(); return; }
+
+    var btn = document.getElementById('submitBtn');
+    var msg = document.getElementById('msg');
+    msg.classList.remove('show', 'err');
+    btn.disabled = true;
+    var originalLabel = btn.textContent;
+    btn.textContent = 'Running your audit… (~60s)';
+
+    try {
+      var res = await fetch('/api/audit/request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ site: site, email: email }),
+      });
+      var data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong — please try again.');
+      window.location.href = data.redirect;
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = originalLabel;
+      msg.textContent = err.message || 'Something went wrong — please try again.';
+      msg.classList.add('show', 'err');
+    }
+  });
 </script>
 </body>
 </html>
