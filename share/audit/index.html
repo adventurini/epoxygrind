@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Audit | EpoxyGrind</title>
+<title>Website Audit | EpoxyGrind</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
@@ -28,22 +28,15 @@
 <div class="wrap" style="max-width:900px;padding:24px 24px 100px">
   <div class="audit-topbar">
     <a class="brand" href="/"><img src="/logo-64.webp" srcset="/logo-64.webp 1x, /logo-128.webp 2x" alt="EpoxyGrind" width="32" height="32" decoding="async"> EpoxyGrind</a>
-    <a href="/contractor/dashboard/" class="btn btn-o btn-sm">← Dashboard</a>
   </div>
 
-  <div id="loading" class="dashboard-panel">Loading your audit…</div>
+  <div id="loading" class="dashboard-panel">Loading audit…</div>
   <div id="error" class="dashboard-panel" hidden></div>
 
-  <div id="noWebsite" class="dashboard-panel audit-empty" hidden>
-    <h2>You have no website on file.</h2>
-    <p class="muted">Competitors thank you. Every day without a site is a homeowner who found someone else first — and that's the fastest fix on this whole list.</p>
-    <a class="btn btn-p" href="/audit/">Get your free site built →</a>
-  </div>
-
   <div id="unreachable" class="dashboard-panel audit-empty" hidden>
-    <h2>We couldn't load your site.</h2>
+    <h2>We couldn't load this site.</h2>
     <p class="muted" id="unreachableUrl"></p>
-    <p class="muted">Either it's down right now or something's blocking automated checks. Worth a look regardless — a site that won't load for us won't load for homeowners either.</p>
+    <p class="muted">Either it's down right now or something's blocking automated checks.</p>
   </div>
 
   <div id="body" hidden>
@@ -60,7 +53,7 @@
         </div>
       </div>
       <div class="audit-hero-copy">
-        <p class="eyebrow">Your website audit</p>
+        <p class="eyebrow" id="eyebrowLine">Website audit</p>
         <h1 id="headerLine"></h1>
         <p class="muted" id="siteUrl"></p>
         <p class="tiny muted" id="auditedAt"></p>
@@ -78,8 +71,8 @@
     </div>
 
     <div class="dashboard-panel" id="imagesPanel" hidden>
-      <h2>Your images</h2>
-      <p class="muted tiny">How your own photos read to a homeowner deciding who to call.</p>
+      <h2>Photos</h2>
+      <p class="muted tiny">How these photos read to a homeowner deciding who to call.</p>
       <div class="image-strip" id="imageStrip"></div>
     </div>
   </div>
@@ -97,37 +90,29 @@
 
   const $ = (id) => document.getElementById(id);
   const loadingEl = $('loading'), errorEl = $('error'), bodyEl = $('body');
-  const noWebsiteEl = $('noWebsite'), unreachableEl = $('unreachable');
+  const unreachableEl = $('unreachable');
 
   async function init() {
     try {
-      const res = await fetch('/api/contractor/audit');
+      const token = new URLSearchParams(location.search).get('token');
+      if (!token) throw new Error('Missing link token.');
+
+      const res = await fetch('/api/audit/public?token=' + encodeURIComponent(token));
       const data = await res.json();
 
-      if (res.status === 401) {
-        window.location.href = '/contractor/login/?next=' + encodeURIComponent(location.pathname);
-        return;
-      }
-      if (res.status === 404) {
-        loadingEl.hidden = true;
-        errorEl.hidden = false;
-        errorEl.innerHTML = 'Your audit is still being generated — check back soon.';
-        return;
-      }
-      if (!res.ok) throw new Error(data.error || 'Could not load your audit.');
+      if (!res.ok) throw new Error(data.error || 'Could not load this audit.');
 
       loadingEl.hidden = true;
 
-      if (!data.hasWebsite) {
-        noWebsiteEl.hidden = false;
-        return;
-      }
       if (data.siteUnreachable) {
         unreachableEl.hidden = false;
         $('unreachableUrl').textContent = data.finalUrl || '';
         return;
       }
 
+      if (data.contractorName) {
+        $('eyebrowLine').textContent = `${data.contractorName}'s website audit`;
+      }
       $('headerLine').textContent = data.gradeHeader || '';
       $('siteUrl').textContent = data.finalUrl || '';
       $('gradeBadge').textContent = data.grade || '';
@@ -145,7 +130,7 @@
     } catch (err) {
       loadingEl.hidden = true;
       errorEl.hidden = false;
-      errorEl.textContent = err.message || 'Something went wrong loading your audit.';
+      errorEl.textContent = err.message || 'Something went wrong loading this audit.';
     }
   }
 

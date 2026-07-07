@@ -1,7 +1,8 @@
 {
   "rewrites": [
     { "source": "/go/:id", "destination": "/api/go/:id" },
-    { "source": "/claim/:token", "destination": "/api/claim/:token" }
+    { "source": "/claim/:token", "destination": "/api/claim/:token" },
+    { "source": "/audit-report/:token", "destination": "/share/audit/index.html?token=:token" }
   ],
   "headers": [
     {
