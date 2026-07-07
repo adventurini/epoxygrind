@@ -50,12 +50,12 @@
     },
     "api/audit/request.js": {
       "maxDuration": 200,
-      "memory": 2048,
+      "memory": 3009,
       "includeFiles": "node_modules/lighthouse/**"
     },
     "api/admin/recrawl.js": {
       "maxDuration": 200,
-      "memory": 2048,
+      "memory": 3009,
       "includeFiles": "node_modules/lighthouse/**"
     }
   }
