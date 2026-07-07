@@ -46,17 +46,25 @@ export default async function handler(req, res) {
           displayName: registryProduct?.display_name || key,
           isAmazon: /amazon\.com/i.test(row.merchant || registryProduct?.merchant || ''),
           monetized: Boolean(registryProduct?.affiliate_url),
+          // The actual outbound destination — where a click really ends up,
+          // not just the merchant name. Affiliate URL takes priority since
+          // that's genuinely where /go/ redirects to once monetized.
+          destinationUrl: registryProduct?.affiliate_url || registryProduct?.url || null,
           totalClicks: 0,
           last7dClicks: 0,
           lastClickAt: row.created_at,
+          pages: new Set(),
         });
       }
       const agg = byProduct.get(key);
       agg.totalClicks += 1;
       if (now - new Date(row.created_at).getTime() <= WEEK_MS) agg.last7dClicks += 1;
+      if (row.page) agg.pages.add(row.page);
     }
 
-    const products = [...byProduct.values()].sort((a, b) => b.totalClicks - a.totalClicks);
+    const products = [...byProduct.values()]
+      .map((p) => ({ ...p, pages: [...p.pages].slice(0, 5), pageCount: p.pages.size }))
+      .sort((a, b) => b.totalClicks - a.totalClicks);
 
     return res.status(200).json({
       products,

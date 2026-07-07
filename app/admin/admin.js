@@ -139,15 +139,25 @@ async function loadProductClicks() {
 
     document.getElementById('statProductClicks').textContent = String(data.totalClicks);
 
-    tbody.innerHTML = data.products.map((p) => `
+    tbody.innerHTML = data.products.map((p) => {
+      const pagesCell = p.pages?.length
+        ? p.pages.map((page) => `<a class="admin-link" href="${escapeHtml(page)}" target="_blank" rel="noopener" style="display:block">${escapeHtml(page.replace(/^https?:\/\/[^/]+/, '') || '/')}</a>`).join('') + (p.pageCount > p.pages.length ? `<span class="tiny muted">+${p.pageCount - p.pages.length} more</span>` : '')
+        : '—';
+      const destCell = p.destinationUrl
+        ? `<a class="admin-link" href="${escapeHtml(p.destinationUrl)}" target="_blank" rel="noopener">${escapeHtml(p.destinationUrl.replace(/^https?:\/\//, '').slice(0, 40))}${p.destinationUrl.length > 40 ? '…' : ''}</a>`
+        : chip('No URL on file', 'bad');
+      return `
       <tr>
         <td>${escapeHtml(p.displayName)}</td>
         <td>${escapeHtml(p.merchant || '—')} ${p.isAmazon ? chip('Amazon', 'info') : ''}</td>
         <td>${p.monetized ? chip('Yes', 'ok') : chip('Not yet', 'warn')}</td>
+        <td>${pagesCell}</td>
+        <td>${destCell}</td>
         <td>${p.last7dClicks}</td>
         <td>${p.totalClicks}</td>
         <td>${formatDate(p.lastClickAt)}</td>
-      </tr>`).join('');
+      </tr>`;
+    }).join('');
 
     loading.hidden = true;
     wrap.hidden = false;
