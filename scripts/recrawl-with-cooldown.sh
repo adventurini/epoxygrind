@@ -6,7 +6,10 @@
 # already-cleared contractors won't be re-targeted since the inner script
 # re-queries current status each pass. Caps at MAX_PASSES as a safety
 # bound against looping forever if the underlying issue never clears.
-set -e
+# Deliberately NOT `set -e` — the inner node script exits 2 as its NORMAL
+# signal to "cool down and resume", not a fatal error. set -e aborted the
+# whole wrapper on that expected exit code the first time this ran, so the
+# retry loop below never actually got a chance to execute at all.
 cd "$(dirname "$0")/.."
 
 COOLDOWN_SECONDS=300
@@ -14,7 +17,7 @@ MAX_PASSES=40
 LOG=scripts/recrawl-progress.log
 
 pass=1
-node scripts/recrawl-outreach-excluded.mjs
+node scripts/recrawl-outreach-excluded.mjs --resume
 code=$?
 
 while [ "$code" -eq 2 ] && [ "$pass" -lt "$MAX_PASSES" ]; do
