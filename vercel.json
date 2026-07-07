@@ -51,7 +51,7 @@
     "api/audit/request.js": {
       "maxDuration": 200,
       "memory": 2048,
-      "includeFiles": "node_modules/lighthouse/shared/localization/locales/**"
+      "includeFiles": "node_modules/lighthouse/**"
     }
   }
 }
