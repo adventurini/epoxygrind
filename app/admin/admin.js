@@ -299,6 +299,7 @@ function renderAuditsTable() {
         <td data-label="Outreach">${outreachCell}</td>
         <td data-label="Claimed">${a.claimedAt ? chip('Claimed', 'ok') : '—'}</td>
         <td data-label="Audited">${formatDate(a.auditedAt)}</td>
+        <td data-label="" onclick="event.stopPropagation()">${a.outreachExcludedReason ? `<button type="button" class="btn btn-o btn-sm recrawl-btn" data-contractor-id="${a.contractorId}">Recrawl</button>` : ''}</td>
       </tr>`;
   }).join('');
 
@@ -352,8 +353,31 @@ document.getElementById('auditsNextBtn').addEventListener('click', () => { audit
 
 // Whole row opens the audit page — the same /audit-report/{token} view
 // both the contractor and we see — except a click on the site's own
-// outbound link, which should go to their actual website instead.
-document.getElementById('auditsTableBody').addEventListener('click', (ev) => {
+// outbound link, or the Recrawl button, which have their own behavior.
+document.getElementById('auditsTableBody').addEventListener('click', async (ev) => {
+  const recrawlBtn = ev.target.closest('.recrawl-btn');
+  if (recrawlBtn) {
+    const contractorId = Number(recrawlBtn.dataset.contractorId);
+    recrawlBtn.disabled = true;
+    const originalLabel = recrawlBtn.textContent;
+    recrawlBtn.textContent = 'Recrawling…';
+    try {
+      const res = await authFetch('/api/admin/recrawl', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contractorId }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Recrawl failed.');
+      await loadAudits();
+    } catch (err) {
+      recrawlBtn.disabled = false;
+      recrawlBtn.textContent = originalLabel;
+      toast(err.message || 'Recrawl failed.');
+    }
+    return;
+  }
+
   if (ev.target.closest('a')) return;
   const row = ev.target.closest('tr[data-audit-href]');
   const href = row?.dataset.auditHref;
