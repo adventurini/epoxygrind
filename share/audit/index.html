@@ -94,16 +94,16 @@
 
   async function init() {
     try {
-      // The rewrite (vercel.json: /audit-report/:token -> this static file
-      // with ?token=:token appended) only reliably passes query params
-      // through for serverless-function destinations, not static files —
-      // confirmed the query string doesn't actually arrive here in
-      // production. location.pathname always keeps the original clean URL
-      // regardless (rewrites are transparent to the browser), so pull the
-      // token from there instead; the query-string form still works as a
-      // fallback if this page is ever reached directly.
-      const pathMatch = location.pathname.match(/^\/audit-report\/([^/]+)\/?$/);
-      const token = (pathMatch && pathMatch[1]) || new URLSearchParams(location.search).get('token');
+      // Vercel rewrites don't reliably pass an appended ?query through when
+      // the destination is a static file (only confirmed to work for
+      // serverless-function destinations) — location.pathname always keeps
+      // the original clean URL regardless, so pull the token from there.
+      // Supports both /audit-report/{token} and the newer, friendlier
+      // /audit-report/{business-slug}/{token} — the token is always the
+      // last path segment; the slug (if present) is cosmetic only, never
+      // used to resolve the audit, so it can't be guessed/enumerated by name.
+      const segments = location.pathname.replace(/^\/audit-report\//, '').replace(/\/$/, '').split('/').filter(Boolean);
+      const token = segments[segments.length - 1] || new URLSearchParams(location.search).get('token');
       if (!token) throw new Error('Missing link token.');
 
       const res = await fetch('/api/audit/public?token=' + encodeURIComponent(token));

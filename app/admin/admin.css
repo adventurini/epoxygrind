@@ -24,3 +24,15 @@
   .admin-table{font-size:12px}
   .admin-table th,.admin-table td{padding:8px}
 }
+
+/* Below this width the audits table becomes stacked cards instead of a
+   scrolling table — real business/website content in that table is too
+   wide to ever fit six columns on a phone without either truncating data
+   or scrolling sideways, neither of which is "see everything on mobile". */
+@media (max-width:800px){
+  .admin-table-responsive thead{display:none}
+  .admin-table-responsive,.admin-table-responsive tbody,.admin-table-responsive tr,.admin-table-responsive td{display:block;width:100%}
+  .admin-table-responsive tbody tr{border:1px solid var(--dash-line);border-radius:10px;margin-bottom:10px;padding:2px 0}
+  .admin-table-responsive td{border-bottom:0;padding:7px 12px;white-space:normal;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:right}
+  .admin-table-responsive td[data-label]::before{content:attr(data-label);font-family:var(--ff-m,"IBM Plex Mono",monospace);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--dash-muted);flex:none;text-align:left}
+}

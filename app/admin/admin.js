@@ -196,6 +196,12 @@ function gradeChipVariant(color) {
 const AUDITS_PAGE_SIZE = 50;
 let auditsPage = 1;
 
+/** Cosmetic-only name slug for the audit share URL — never used to look up
+ * the audit (the token still does that), just makes the link readable. */
+function slugify(name) {
+  return String(name || '').toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'listing';
+}
+
 function scoreChipVariant(score) {
   if (score == null) return 'info';
   if (score >= 80) return 'ok';
@@ -252,15 +258,15 @@ function renderAuditsTable() {
         : site
           ? `<a class="admin-link" href="${escapeHtml(site)}" target="_blank" rel="noopener" title="${escapeHtml(site)}">${escapeHtml(siteOrigin(site))}</a>`
           : '—';
-    const auditHref = a.publicToken ? `/audit-report/${encodeURIComponent(a.publicToken)}` : '';
+    const auditHref = a.publicToken ? `/audit-report/${slugify(a.name)}/${encodeURIComponent(a.publicToken)}` : '';
     return `
       <tr data-audit-href="${escapeHtml(auditHref)}" title="${auditHref ? 'Open this audit — same page the contractor sees on their own dashboard' : 'No audit link available'}">
-        <td><span class="score-badge ${scoreChipVariant(a.compositeScore)}">${a.compositeScore ?? '—'}</span> ${escapeHtml(a.name)}${a.isSelfServe ? ' ' + chip('self-serve', 'info') : ''}</td>
-        <td>${escapeHtml(a.city || '')}${a.city && a.state ? ', ' : ''}${escapeHtml(a.state || '')}</td>
-        <td>${siteCell}</td>
-        <td>${a.grade ? chip(a.grade, gradeChipVariant(a.gradeColor)) : '—'}</td>
-        <td>${a.claimedAt ? chip('Claimed', 'ok') : '—'}</td>
-        <td>${formatDate(a.auditedAt)}</td>
+        <td data-label="Business"><span class="score-badge ${scoreChipVariant(a.compositeScore)}">${a.compositeScore ?? '—'}</span> ${escapeHtml(a.name)}${a.isSelfServe ? ' ' + chip('self-serve', 'info') : ''}</td>
+        <td data-label="Location">${escapeHtml(a.city || '')}${a.city && a.state ? ', ' : ''}${escapeHtml(a.state || '')}</td>
+        <td data-label="Website">${siteCell}</td>
+        <td data-label="Grade">${a.grade ? chip(a.grade, gradeChipVariant(a.gradeColor)) : '—'}</td>
+        <td data-label="Claimed">${a.claimedAt ? chip('Claimed', 'ok') : '—'}</td>
+        <td data-label="Audited">${formatDate(a.auditedAt)}</td>
       </tr>`;
   }).join('');
 
