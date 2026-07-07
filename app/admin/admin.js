@@ -247,8 +247,10 @@ function getFilteredSortedAudits() {
   const sort = document.getElementById('auditSort').value;
   const state = document.getElementById('auditState').value;
   const search = document.getElementById('auditSearch').value.trim().toLowerCase();
+  const showBroken = document.getElementById('auditShowBroken').checked;
 
   let rows = allAudits;
+  if (!showBroken) rows = rows.filter((a) => !a.crawlLooksBlocked && !a.siteUnreachable);
   if (state) rows = rows.filter((a) => a.state === state);
   if (search) rows = rows.filter((a) => (a.name || '').toLowerCase().includes(search) || (a.city || '').toLowerCase().includes(search));
 
@@ -322,6 +324,9 @@ async function loadAudits() {
     const stateSelect = document.getElementById('auditState');
     stateSelect.innerHTML = '<option value="">All states</option>' + states.map((s) => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
 
+    const brokenCount = allAudits.filter((a) => a.crawlLooksBlocked || a.siteUnreachable).length;
+    document.getElementById('auditBrokenCount').textContent = brokenCount ? `(${brokenCount})` : '';
+
     renderAuditsTable();
 
     loading.hidden = true;
@@ -335,6 +340,7 @@ function resetAuditsPageAndRender() { auditsPage = 1; renderAuditsTable(); }
 document.getElementById('auditSort').addEventListener('change', resetAuditsPageAndRender);
 document.getElementById('auditState').addEventListener('change', resetAuditsPageAndRender);
 document.getElementById('auditSearch').addEventListener('input', resetAuditsPageAndRender);
+document.getElementById('auditShowBroken').addEventListener('change', resetAuditsPageAndRender);
 document.getElementById('auditsPrevBtn').addEventListener('click', () => { auditsPage -= 1; renderAuditsTable(); });
 document.getElementById('auditsNextBtn').addEventListener('click', () => { auditsPage += 1; renderAuditsTable(); });
 
