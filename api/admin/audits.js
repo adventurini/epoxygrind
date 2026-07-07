@@ -1,6 +1,14 @@
 import { requireAdmin } from '../../lib/require-admin.js';
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabase.js';
 
+// Some crawls land on a security-challenge/bot-block page instead of the
+// real homepage (observed: SGCaptcha's /.well-known/sgcaptcha/ interstitial,
+// a ClickCease block page) — the audit still produces a composite_score in
+// that case, but it's scoring the wrong page entirely. Flag these so the
+// admin table can both warn that the score is unreliable and avoid linking
+// out to the broken URL.
+const BLOCKED_CRAWL_RE = /captcha|clickcease|\.well-known|challenge|cf_chl|recaptcha|access-denied/i;
+
 /**
  * GET /api/admin/audits — every website audit, joined with its contractor,
  * for the "which sites are we sitting on the biggest opportunity for"
@@ -21,7 +29,11 @@ export default async function handler(req, res) {
 
   try {
     const supabase = getSupabase();
-    const limit = Math.min(Number(req.query?.limit) || 500, 2500);
+    // Default high enough to cover every audit (2,185 as of writing) in one
+    // shot — the stat cards need the real total, not however many happened
+    // to fit under an arbitrary cap, and pagination is handled client-side
+    // over the full set anyway.
+    const limit = Math.min(Number(req.query?.limit) || 5000, 10000);
     const sort = req.query?.sort === 'recent' ? 'recent' : 'score';
 
     let query = supabase
@@ -54,6 +66,7 @@ export default async function handler(req, res) {
         publicToken: row.public_token,
         claimedAt: row.contractors.claimed_at,
         isSelfServe: row.contractors.status === 'self_serve',
+        crawlLooksBlocked: Boolean(row.final_url && BLOCKED_CRAWL_RE.test(row.final_url)),
       }));
 
     const scored = rows.filter((r) => r.compositeScore != null);
@@ -63,6 +76,7 @@ export default async function handler(req, res) {
       noWebsite: rows.filter((r) => !r.hasWebsite).length,
       unreachable: rows.filter((r) => r.siteUnreachable).length,
       claimed: rows.filter((r) => r.claimedAt).length,
+      crawlBlocked: rows.filter((r) => r.crawlLooksBlocked).length,
     };
 
     return res.status(200).json({ audits: rows, stats });

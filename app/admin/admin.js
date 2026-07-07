@@ -209,11 +209,21 @@ function scoreChipVariant(score) {
   return 'bad';
 }
 
-/** Bare origin (protocol + host, no path/query/hash) — several scraped
- * website URLs carry a captcha-challenge or ad-tracking path instead of
- * the homepage (e.g. /.well-known/sgcaptcha/..., ?clickcease=block),
- * which both looks wrong here and (worse) may mean the audit crawled the
- * wrong page. Shown trimmed; the full stored value is still the href. */
+/** Bare homepage URL (protocol + host + "/", no path/query/hash) — some
+ * stored website values carry a path/tracking param (a captcha-challenge
+ * redirect the crawler hit, an ad-tracking query string, etc.), which both
+ * looks wrong here and can send a click somewhere other than the homepage.
+ * Used for BOTH the displayed text and the actual href now — normalize
+ * once, use everywhere, rather than only cleaning up what's shown. */
+function siteHomepage(url) {
+  try {
+    const u = new URL(url);
+    return `${u.protocol}//${u.host}/`;
+  } catch {
+    return url;
+  }
+}
+
 function siteOrigin(url) {
   try {
     const u = new URL(url);
@@ -250,18 +260,22 @@ function renderAuditsTable() {
   const rows = filtered.slice(start, start + AUDITS_PAGE_SIZE);
 
   tbody.innerHTML = rows.map((a) => {
-    const site = a.finalUrl || a.website;
+    // Link to the source-of-truth website (contractors.website — always a
+    // clean homepage URL), never audits.final_url: for ~4.5% of audits the
+    // crawl landed on a bot-block/captcha interstitial instead of the real
+    // site, and final_url reflects wherever it actually landed.
+    const site = a.website;
     const siteCell = !a.hasWebsite
       ? chip('No website', 'bad')
       : a.siteUnreachable
         ? chip('Unreachable', 'warn')
         : site
-          ? `<a class="admin-link" href="${escapeHtml(site)}" target="_blank" rel="noopener" title="${escapeHtml(site)}">${escapeHtml(siteOrigin(site))}</a>`
+          ? `<a class="admin-link" href="${escapeHtml(siteHomepage(site))}" target="_blank" rel="noopener" title="${escapeHtml(siteHomepage(site))}">${escapeHtml(siteOrigin(site))}</a>`
           : '—';
     const auditHref = a.publicToken ? `/audit-report/${slugify(a.name)}/${encodeURIComponent(a.publicToken)}` : '';
     return `
       <tr data-audit-href="${escapeHtml(auditHref)}" title="${auditHref ? 'Open this audit — same page the contractor sees on their own dashboard' : 'No audit link available'}">
-        <td data-label="Business"><span class="score-badge ${scoreChipVariant(a.compositeScore)}">${a.compositeScore ?? '—'}</span> ${escapeHtml(a.name)}${a.isSelfServe ? ' ' + chip('self-serve', 'info') : ''}</td>
+        <td data-label="Business"><span class="score-badge ${scoreChipVariant(a.compositeScore)}">${a.compositeScore ?? '—'}</span> ${escapeHtml(a.name)}${a.isSelfServe ? ' ' + chip('self-serve', 'info') : ''}${a.crawlLooksBlocked ? ' ' + chip('crawl blocked — score unreliable', 'bad') : ''}</td>
         <td data-label="Location">${escapeHtml(a.city || '')}${a.city && a.state ? ', ' : ''}${escapeHtml(a.state || '')}</td>
         <td data-label="Website">${siteCell}</td>
         <td data-label="Grade">${a.grade ? chip(a.grade, gradeChipVariant(a.gradeColor)) : '—'}</td>
