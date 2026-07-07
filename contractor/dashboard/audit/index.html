@@ -247,11 +247,16 @@
     const perImage = categoryScores?.imageQuality?.perImage;
     if (!perImage?.length) return;
     $('imagesPanel').hidden = false;
-    $('imageStrip').innerHTML = perImage.map((img) => {
+    // Worst photo first — same "lead with the biggest problem" logic as
+    // the top findings above, not whatever order the crawler happened to
+    // find them in.
+    const ranked = [...perImage].sort((a, b) => (a.combinedScore ?? 0) - (b.combinedScore ?? 0));
+    $('imageStrip').innerHTML = ranked.map((img, i) => {
       const s = img.combinedScore ?? 0;
       return `
       <div class="image-card">
         <div class="image-card-thumb" style="background-image:url('${escapeAttr(img.src)}')"></div>
+        <span class="image-card-rank">${i + 1}/${ranked.length}</span>
         <div class="image-card-score" style="color:${scoreColor(s)}">${s}/100</div>
         ${img.ai?.isBeforeAfter ? '<span class="image-card-tag">Before/after</span>' : ''}
       </div>`;

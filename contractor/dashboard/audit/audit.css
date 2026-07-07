@@ -55,6 +55,7 @@
 .image-card-thumb{width:120px;height:120px;border-radius:10px;background-size:cover;background-position:center;border:1px solid var(--dash-line)}
 .image-card-score{font-family:var(--ff-d);font-weight:800;font-size:13px;margin-top:6px;text-align:center}
 .image-card-tag{position:absolute;top:6px;left:6px;font-family:var(--ff-m);font-size:9px;letter-spacing:.03em;text-transform:uppercase;background:rgba(17,33,59,.75);color:#fff;padding:3px 7px;border-radius:999px}
+.image-card-rank{position:absolute;top:6px;right:6px;font-family:var(--ff-m);font-size:9px;letter-spacing:.03em;background:rgba(17,33,59,.75);color:#fff;padding:3px 7px;border-radius:999px}
 
 .audit-sticky{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--dash-line);box-shadow:0 -8px 24px rgba(17,33,59,.08);z-index:40}
 .audit-sticky-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;flex-wrap:wrap}
