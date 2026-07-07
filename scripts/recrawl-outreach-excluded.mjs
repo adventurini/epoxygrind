@@ -84,14 +84,22 @@ async function getCurrentlyExcluded() {
   return [...latestByContractor.values()].filter((r) => r.outreach_excluded_reason && r.contractors?.website);
 }
 
+const RESUME = process.argv.includes('--resume');
+
 async function main() {
-  writeFileSync(LOG_PATH, '');
+  if (!RESUME) writeFileSync(LOG_PATH, '');
   const targets = await getCurrentlyExcluded();
   log(`Found ${targets.length} currently outreach-excluded contractors to recrawl.`);
+
+  if (targets.length === 0) {
+    log('Nothing left to recrawl — fully done.');
+    return true;
+  }
 
   let token = await mintAdminToken();
   let done = 0, cleared = 0, stillExcluded = 0, failed = 0;
   let consecutiveResourceFailures = 0;
+  let aborted = false;
 
   for (let i = 0; i < targets.length; i++) {
     if (i > 0 && i % TOKEN_REFRESH_EVERY === 0) {
@@ -126,17 +134,21 @@ async function main() {
 
     consecutiveResourceFailures = isResourceFailure ? consecutiveResourceFailures + 1 : 0;
     if (consecutiveResourceFailures >= MAX_CONSECUTIVE_RESOURCE_FAILURES) {
-      log(`\nABORTING: ${consecutiveResourceFailures} consecutive resource-exhaustion failures — Vercel container likely degraded again. Stopping rather than burning through the rest.`);
+      log(`\nABORTING this pass: ${consecutiveResourceFailures} consecutive resource-exhaustion failures — Vercel container likely degraded. Cooling down before resuming.`);
+      aborted = true;
       break;
     }
     done++;
     await new Promise((r) => setTimeout(r, DELAY_MS));
   }
 
-  log(`\nDone. ${done} processed — ${cleared} cleared, ${stillExcluded} still excluded, ${failed} failed.`);
+  log(`\nPass done. ${done} processed — ${cleared} cleared, ${stillExcluded} still excluded, ${failed} failed.`);
+  return !aborted;
 }
 
-main().catch((err) => {
-  log('FATAL: ' + err.message);
-  process.exit(1);
-});
+main()
+  .then((fullyDone) => process.exit(fullyDone ? 0 : 2))
+  .catch((err) => {
+    log('FATAL: ' + err.message);
+    process.exit(1);
+  });
