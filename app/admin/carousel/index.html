@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carousel content | EpoxyGrind Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#1A5CD6">
+<style>
+@font-face{font-family:'Archivo';font-style:normal;font-weight:700 900;font-display:swap;src:url('/fonts/archivo-var.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url('/fonts/inter-var.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/ibm-plex-mono-500.woff2') format('woff2')}
+</style>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-var.woff2" crossorigin>
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/auth/auth.css">
+<link rel="stylesheet" href="/app/dashboard.css">
+<link rel="stylesheet" href="/app/admin/admin.css">
+<link rel="stylesheet" href="/app/admin/carousel/carousel.css">
+</head>
+<body class="dashboard-page">
+
+<div id="dashboardRoot"></div>
+
+<div id="dashboardContent" hidden>
+  <div class="dashboard-top">
+    <div>
+      <p class="eyebrow" style="font-family:var(--ff-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dash-blue)">Admin</p>
+      <h1>Carousel content</h1>
+      <p class="lede">Daily Instagram carousel calendar — Grinder Dad. <a class="admin-link" href="/app/admin/">← Back to admin</a></p>
+    </div>
+  </div>
+
+  <div id="carouselDenied" class="dashboard-panel" hidden>
+    <h2>Not authorized</h2>
+    <p class="muted">This account doesn't have admin access.</p>
+  </div>
+
+  <div id="carouselBody" hidden>
+    <section class="dashboard-panel">
+      <div class="cal-toolbar">
+        <div class="cal-nav">
+          <button type="button" class="btn btn-o btn-sm" id="calPrevBtn">← Prev</button>
+          <h2 id="calMonthLabel" style="margin:0 10px"></h2>
+          <button type="button" class="btn btn-o btn-sm" id="calNextBtn">Next →</button>
+        </div>
+        <button type="button" class="btn btn-p btn-sm" id="calFillBtn">Fill next 30 days</button>
+      </div>
+      <div id="calLoading" class="muted">Loading calendar…</div>
+      <div class="cal-grid" id="calGrid" hidden></div>
+    </section>
+  </div>
+</div>
+
+<div class="pipeline-backdrop" id="dayBackdrop" hidden></div>
+<div class="pipeline-panel cal-day-panel" id="dayPanel" hidden>
+  <div class="pipeline-panel-head">
+    <div>
+      <h3 id="dayPanelDate"></h3>
+      <p class="tiny muted" id="dayPanelMeta"></p>
+    </div>
+    <button type="button" class="dash-icon-btn" id="dayPanelCloseBtn" aria-label="Close">✕</button>
+  </div>
+  <div class="pipeline-panel-body">
+    <p class="tiny muted" id="dayPanelReadOnlyBanner" hidden>This day is archived (in the past) — read-only.</p>
+    <div id="dayPanelEmpty" class="tiny muted" hidden>Not planned yet — run "Fill next 30 days" to draft this day, or it'll be picked up by the nightly job.</div>
+    <div id="dayPanelContent" hidden>
+      <div class="cal-day-actions">
+        <button type="button" class="btn btn-o btn-sm" id="daySwapTopicBtn">Swap topic</button>
+        <button type="button" class="btn btn-o btn-sm" id="dayRegenBtn">Regenerate all captions</button>
+      </div>
+      <div class="cal-slides" id="calSlides"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script type="module" src="/js/app-admin-carousel.bundle.js"></script>
+</body>
+</html>

@@ -57,6 +57,15 @@
       "maxDuration": 200,
       "memory": 3009,
       "includeFiles": "node_modules/lighthouse/**"
+    },
+    "api/admin/carousel/fill.js": {
+      "maxDuration": 200
+    },
+    "api/cron/carousel-nightly.js": {
+      "maxDuration": 200
     }
-  }
+  },
+  "crons": [
+    { "path": "/api/cron/carousel-nightly", "schedule": "0 9 * * *" }
+  ]
 }

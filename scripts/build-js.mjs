@@ -42,6 +42,7 @@ const ENTRIES = {
   'app': 'app/app.js',
   'app-new': 'app/new/new.js',
   'app-admin': 'app/admin/admin.js',
+  'app-admin-carousel': 'app/admin/carousel/carousel.js',
   'app-estimate': 'app/estimate/estimate.js',
 };
 
