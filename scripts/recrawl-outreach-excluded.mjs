@@ -81,7 +81,20 @@ async function getCurrentlyExcluded() {
   for (const row of all) {
     if (!latestByContractor.has(row.contractor_id)) latestByContractor.set(row.contractor_id, row);
   }
-  return [...latestByContractor.values()].filter((r) => r.outreach_excluded_reason && r.contractors?.website);
+  const targets = [...latestByContractor.values()].filter((r) => r.outreach_excluded_reason && r.contractors?.website);
+
+  // The query orders by contractor_id, which is stable across passes — a
+  // handful of genuinely slow/broken sites (confirmed: magicpoxy.com times
+  // out on a direct local crawl too, nothing to do with Vercel) always
+  // sorted first and ate the entire 5-consecutive-failure abort budget
+  // every single pass, so the other ~180 real targets were never even
+  // attempted. Shuffle so a handful of unfixable stragglers can't
+  // permanently block progress on everything behind them.
+  for (let i = targets.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [targets[i], targets[j]] = [targets[j], targets[i]];
+  }
+  return targets;
 }
 
 const RESUME = process.argv.includes('--resume');
