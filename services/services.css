@@ -219,6 +219,7 @@ section{padding:84px 0}
 .fcard .btn-p{width:100%;justify-content:center;margin-top:6px}
 .ok{display:none;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:16px;color:var(--ink);font-size:14px}
 .ok.show{display:block}
+.ok.err{background:#FDECEC;border-color:#B3261E;color:#B3261E}
 
 footer{background:var(--bg);border-top:1px solid var(--line);padding:50px 0 32px}
 .foot{display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;align-items:flex-start}

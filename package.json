@@ -12,9 +12,11 @@
     "build-local": "node scripts/build-local-pages.js"
   },
   "dependencies": {
+    "@sparticuz/chromium": "^149.0.0",
     "@supabase/supabase-js": "^2.109.0",
     "lighthouse": "^12.8.2",
     "playwright": "^1.61.1",
+    "playwright-core": "^1.61.1",
     "sharp": "^0.35.3"
   },
   "devDependencies": {
