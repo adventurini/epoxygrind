@@ -294,7 +294,9 @@ function renderAuditsTable() {
       </tr>`;
   }).join('');
 
-  document.getElementById('auditsShownCount').textContent = `Showing ${start + 1}–${Math.min(start + rows.length, filtered.length)} of ${filtered.length} (${allAudits.length} loaded).`;
+  const isFiltered = filtered.length !== allAudits.length;
+  const rangeText = `Showing ${start + 1}–${Math.min(start + rows.length, filtered.length)} of ${filtered.length}${isFiltered ? ' matching audits' : ' audits'}`;
+  document.getElementById('auditsShownCount').textContent = isFiltered ? `${rangeText} (${allAudits.length} total).` : `${rangeText}.`;
   document.getElementById('auditsPageIndicator').textContent = `Page ${auditsPage} of ${pageCount}`;
   document.getElementById('auditsPrevBtn').disabled = auditsPage <= 1;
   document.getElementById('auditsNextBtn').disabled = auditsPage >= pageCount;

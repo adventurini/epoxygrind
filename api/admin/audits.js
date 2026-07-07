@@ -29,26 +29,39 @@ export default async function handler(req, res) {
 
   try {
     const supabase = getSupabase();
-    // Default high enough to cover every audit (2,185 as of writing) in one
-    // shot — the stat cards need the real total, not however many happened
-    // to fit under an arbitrary cap, and pagination is handled client-side
-    // over the full set anyway.
-    const limit = Math.min(Number(req.query?.limit) || 5000, 10000);
     const sort = req.query?.sort === 'recent' ? 'recent' : 'score';
 
-    let query = supabase
-      .from('audits')
-      .select('contractor_id, has_website, site_unreachable, final_url, composite_score, grade, grade_color, audited_at, public_token, contractors(name, city, state, website, claimed_at, status)')
-      .limit(limit);
+    // Supabase's PostgREST enforces its own server-side max-rows cap
+    // (1,000) regardless of what .limit() a client requests — a single
+    // query silently truncates instead of erroring, which is how this
+    // table ended up stuck at exactly 1,000 rows before. Page through with
+    // .range() to actually get everything, the same pattern already used
+    // by scripts/run-audits.js for the same reason.
+    const PAGE_SIZE = 1000;
+    let allRows = [];
+    for (let from = 0; ; from += PAGE_SIZE) {
+      let query = supabase
+        .from('audits')
+        .select('id, contractor_id, has_website, site_unreachable, final_url, composite_score, grade, grade_color, audited_at, public_token, contractors(name, city, state, website, claimed_at, status)')
+        .range(from, from + PAGE_SIZE - 1);
 
-    query = sort === 'recent'
-      ? query.order('audited_at', { ascending: false })
-      : query.order('composite_score', { ascending: true, nullsFirst: false });
+      // A secondary tiebreaker is required, not optional — plenty of rows
+      // share the same composite_score, and without a unique secondary key
+      // Postgres doesn't guarantee stable ordering across separate paged
+      // requests. Confirmed this was silently dropping/duplicating rows
+      // across the 1000-row page boundary before adding `id` here.
+      query = sort === 'recent'
+        ? query.order('audited_at', { ascending: false }).order('id', { ascending: true })
+        : query.order('composite_score', { ascending: true, nullsFirst: false }).order('id', { ascending: true });
 
-    const { data, error } = await query;
-    if (error) throw error;
+      const { data, error } = await query;
+      if (error) throw error;
+      if (!data?.length) break;
+      allRows = allRows.concat(data);
+      if (data.length < PAGE_SIZE) break;
+    }
 
-    const rows = (data || [])
+    const rows = allRows
       .filter((row) => row.contractors) // a handful of self-serve/orphaned rows might not join cleanly — skip rather than crash the table
       .map((row) => ({
         contractorId: row.contractor_id,
