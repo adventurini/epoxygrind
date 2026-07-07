@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8';
+      document.head.appendChild(s);
+    }, 1500);
+  });
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why the Viewport Meta Tag Matters for Mobile | EpoxyGrind</title>
+<meta name="description" content="Without a viewport meta tag, phones render your site at desktop width and shrink it to fit — real data on what that does to mobile visitors.">
+<meta property="og:title" content="Why the Viewport Meta Tag Matters for Mobile | EpoxyGrind">
+<meta property="og:description" content="Without a viewport meta tag, phones render your site at desktop width and shrink it to fit — real data on what that does to mobile visitors.">
+<meta property="og:image" content="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/viewport-meta-tag.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/viewport-meta-tag.webp">
+<link rel="canonical" href="https://www.epoxygrind.com/learn/viewport-meta-tag/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#1A5CD6">
+<style>
+@font-face{font-family:'Archivo';font-style:normal;font-weight:600 900;font-display:swap;src:url('/fonts/archivo-var.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url('/fonts/inter-var.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/ibm-plex-mono-500.woff2') format('woff2')}
+</style>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-var.woff2" crossorigin>
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/auth/auth.css">
+<link rel="stylesheet" href="/content/content.css">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Why the Viewport Meta Tag Is the First Thing Your Audit Checks","description":"Without a viewport meta tag, phones render your site at desktop width and shrink it to fit — real data on what that does to mobile visitors.","image":"https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/viewport-meta-tag.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What exactly does the viewport meta tag do?","acceptedAnswer":{"@type":"Answer","text":"It tells the browser to render the page at the device's actual screen width instead of assuming a ~980px desktop width and shrinking the result to fit."}},{"@type":"Question","name":"Why would a modern website be missing it?","acceptedAnswer":{"@type":"Answer","text":"Almost every current site builder and theme includes it by default — it's usually missing on older, hand-coded sites or heavily customized templates that predate mobile-first design norms."}},{"@type":"Question","name":"Is this hard to fix?","acceptedAnswer":{"@type":"Answer","text":"No — it's a single line of HTML in the page's <head>. The harder part is making sure the rest of the site's CSS actually uses relative units so the layout adapts once the tag is in place."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.epoxygrind.com/"},{"@type":"ListItem","position":2,"name":"Learning center","item":"https://www.epoxygrind.com/learn/"},{"@type":"ListItem","position":3,"name":"Why the Viewport Meta Tag Is the First Thing Your Audit Checks","item":"https://www.epoxygrind.com/learn/viewport-meta-tag/"}]}</script>
+</head>
+<body class="home-page content-page" data-nav-variant="content">
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><img src="/logo-64.webp" srcset="/logo-64.webp 1x, /logo-128.webp 2x" alt="EpoxyGrind" width="32" height="32" decoding="async"> EpoxyGrind</a>
+    <div class="nav-auth" data-auth-nav></div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+  <div class="mobile" id="mobile" data-auth-mobile></div>
+</header>
+<main>
+  <div class="content-main">
+    <div class="content-wrap">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span class="sep">/</span><a href="/learn/">Learning center</a><span class="sep">/</span><span aria-current="page">Why the Viewport Meta Tag Is the First Thing Your Audit Checks</span></nav>
+    <p class="content-eyebrow">Learning center</p>
+  <h1 class="content-h1">Why the Viewport Meta Tag Is the First Thing Your Audit Checks</h1>
+  <p class="content-dek">One missing line of HTML tells a phone to render your site like a shrunk-down desktop page instead of a real mobile page — and most of your traffic is a phone.</p>
+    <figure class="guide-hero"><img src="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/viewport-meta-tag.webp" alt="Why the Viewport Meta Tag Is the First Thing Your Audit Checks" loading="eager"></figure>
+    <div class="content-prose"><p>Your audit checks for one specific line of code: <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code>. Without it, a phone assumes your page was built for a ~980px desktop screen and renders the whole thing at that width, then shrinks it down to fit — text becomes unreadably small, buttons become nearly untappable, and every layout decision your site made stops working on the device most homeowners are actually using.</p></div>
+    <div class="stat-evidence">
+        <div class="stat-evidence-item"><strong>63%</strong><span>of all web traffic in 2026 comes from mobile devices</span><a href="https://www.scalify.ai/blog/what-percentage-web-traffic-is-mobile-2026-statistics" target="_blank" rel="noopener">Scalify 2026 web traffic report</a></div><div class="stat-evidence-item"><strong>11–18%</strong><span>higher conversion rate for responsive sites vs. non-responsive equivalents</span><a href="https://celerart.com/blog/responsive-web-design-statistics" target="_blank" rel="noopener">Celerart 2026 Responsive Web Design Statistics</a></div><div class="stat-evidence-item"><strong>51.8% vs. 39.7%</strong><span>mobile bounce rate vs. desktop bounce rate — a 12-point gap</span><a href="https://www.digitalapplied.com/blog/bounce-rate-benchmarks-2026-industry-channel-data" target="_blank" rel="noopener">DigitalApplied 2,000-page study, 2026</a></div>
+      </div>
+    <div class="video-embed">
+    <div class="video-embed-frame">
+      <button type="button" class="video-embed-facade" data-video-id="fgOO9YUFlGI" data-video-title="Responsive Design Tutorial - Tips for making web sites look great on any device" aria-label="Play video: Responsive Design Tutorial - Tips for making web sites look great on any device" style="background-image:url('https://i.ytimg.com/vi/fgOO9YUFlGI/hqdefault.jpg')">
+        <span class="video-embed-play" aria-hidden="true">&#9658;</span>
+      </button>
+    </div>
+    <p class="video-embed-caption">"Responsive Design Tutorial - Tips for making web sites look great on any device" — LearnCode.academy on YouTube (third-party video)</p>
+  </div>
+    <h2>A missing viewport tag breaks everything downstream of it</h2><p>Every other mobile check your audit runs — <a href="/learn/tap-target-size/">tap target size</a>, whether the page fits the screen width, whether a call-to-action stays reachable while scrolling — assumes the page is actually rendering at phone width in the first place. Without the viewport tag, none of those checks matter, because the phone never switched into mobile layout at all. It's the one line of code every other mobile fix depends on.</p><h2>This is a five-minute fix with an outsized effect</h2><p>Unlike a slow page or a weak trust signal, this isn't a design decision or a content problem — it's a single missing tag, usually because the site was hand-built or exported from an old template that predates mobile-first design. Adding it is close to a five-minute fix, and the layout the site was designed with (assuming it used relative units and media queries at all) will typically just start working correctly on phones immediately.</p><h2>Why this specific gap is rare but severe when it happens</h2><p>Most modern site builders (Squarespace, Wix, WordPress themes) include this tag by default, so it's uncommon in 2026 — which is exactly why it's worth checking rather than assuming. When it's missing, it's usually on an older, hand-coded, or heavily customized site, and it correlates with a business that hasn't touched their site's underlying code in years. If a homeowner opens that site on a phone — which, per the traffic numbers above, is most of them — they get a broken-looking business before they've read a word of your copy.</p>
+    <div class="pro-cta">
+    <div class="pro-cta-text">
+      <h3>Want us to just fix this for you?</h3>
+      <p>Free audit shows you exactly what's costing you jobs on your own site — no obligation.</p>
+    </div>
+    <a class="btn btn-p" href="/audit/">Get my free audit →</a>
+  </div>
+    <h2>Related</h2><div class="related-links">
+        <a class="related-link" href="/learn/tap-target-size/"><strong>Why tap target size matters</strong><span>The next mobile check, once the page actually renders at phone width.</span></a><a class="related-link" href="/learn/lighthouse-performance-score/"><strong>Why site speed matters</strong><span>The other half of the mobile experience.</span></a>
+      </div>
+    <h2>FAQ</h2><div class="faq-list">
+    <div class="faq-item"><p class="faq-q">What exactly does the viewport meta tag do?</p><p class="faq-a">It tells the browser to render the page at the device's actual screen width instead of assuming a ~980px desktop width and shrinking the result to fit.</p></div><div class="faq-item"><p class="faq-q">Why would a modern website be missing it?</p><p class="faq-a">Almost every current site builder and theme includes it by default — it's usually missing on older, hand-coded sites or heavily customized templates that predate mobile-first design norms.</p></div><div class="faq-item"><p class="faq-q">Is this hard to fix?</p><p class="faq-a">No — it's a single line of HTML in the page's &lt;head&gt;. The harder part is making sure the rest of the site's CSS actually uses relative units so the layout adapts once the tag is in place.</p></div>
+  </div>
+      
+    </div>
+  </div>
+</main>
+<footer class="site-foot"><div class="wrap">© 2026 EpoxyGrind · <a href="/diy/">DIY guides</a> · <a href="/services/">For contractors</a></div></footer>
+<script src="/js/nav.bundle.js" defer></script>
+<script>
+  var b=document.getElementById('burger'),m=document.getElementById('mobile');
+  if(b&&m){b.addEventListener('click',function(){m.classList.toggle('open')});m.querySelectorAll('a,button').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});}
+</script>
+<script>
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.video-embed-facade');
+    if(!btn) return;
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + btn.dataset.videoId + '?autoplay=1';
+    iframe.title = btn.dataset.videoTitle || 'YouTube video';
+    iframe.loading = 'lazy';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    btn.replaceWith(iframe);
+  });
+</script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
+</body>
+</html>

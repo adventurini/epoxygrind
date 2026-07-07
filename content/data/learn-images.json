@@ -10,5 +10,161 @@
   "google-rating": {
     "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/google-rating.webp",
     "generated": true
+  },
+  "viewport-meta-tag": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/viewport-meta-tag.webp",
+    "generated": true
+  },
+  "tap-target-size": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/tap-target-size.webp",
+    "generated": true
+  },
+  "click-to-call-link": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/click-to-call-link.webp",
+    "generated": true
+  },
+  "cta-reachable-while-scrolling": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/cta-reachable-while-scrolling.webp",
+    "generated": true
+  },
+  "no-horizontal-scroll": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/no-horizontal-scroll.webp",
+    "generated": true
+  },
+  "primary-cta-above-the-fold": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/primary-cta-above-the-fold.webp",
+    "generated": true
+  },
+  "phone-number-above-the-fold": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/phone-number-above-the-fold.webp",
+    "generated": true
+  },
+  "click-to-call": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/click-to-call.webp",
+    "generated": true
+  },
+  "chat-widget": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/chat-widget.webp",
+    "generated": true
+  },
+  "response-time-expectation-set": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/response-time-expectation-set.webp",
+    "generated": true
+  },
+  "trust-signals-near-the-cta": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/trust-signals-near-the-cta.webp",
+    "generated": true
+  },
+  "title-tag": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/title-tag.webp",
+    "generated": true
+  },
+  "meta-description": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/meta-description.webp",
+    "generated": true
+  },
+  "single-h1": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/single-h1.webp",
+    "generated": true
+  },
+  "image-alt-text-coverage": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/image-alt-text-coverage.webp",
+    "generated": true
+  },
+  "localbusiness-schema": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/localbusiness-schema.webp",
+    "generated": true
+  },
+  "sitemap-robots-txt": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/sitemap-robots-txt.webp",
+    "generated": true
+  },
+  "city-service-landing-pages": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/city-service-landing-pages.webp",
+    "generated": true
+  },
+  "valid-ssl-https": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/valid-ssl-https.webp",
+    "generated": true
+  },
+  "no-mixed-content": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/no-mixed-content.webp",
+    "generated": true
+  },
+  "custom-domain": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/custom-domain.webp",
+    "generated": true
+  },
+  "console-errors-on-load": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/console-errors-on-load.webp",
+    "generated": true
+  },
+  "favicon-present": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/favicon-present.webp",
+    "generated": true
+  },
+  "largest-contentful-paint": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/largest-contentful-paint.webp",
+    "generated": true
+  },
+  "total-page-weight": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/total-page-weight.webp",
+    "generated": true
+  },
+  "google-business-profile-photos": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/google-business-profile-photos.webp",
+    "generated": true
+  },
+  "review-count-vs-local-median": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/review-count-vs-local-median.webp",
+    "generated": true
+  },
+  "nap-consistency-phone": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/nap-consistency-phone.webp",
+    "generated": true
+  },
+  "reviews-displayed-on-site": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/reviews-displayed-on-site.webp",
+    "generated": true
+  },
+  "real-project-photos": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/real-project-photos.webp",
+    "generated": true
+  },
+  "before-after-photo": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/before-after-photo.webp",
+    "generated": true
+  },
+  "image-technical-quality": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/image-technical-quality.webp",
+    "generated": true
+  },
+  "broken-links": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/broken-links.webp",
+    "generated": true
+  },
+  "unique-title-tags-across-pages": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/unique-title-tags-across-pages.webp",
+    "generated": true
+  },
+  "unique-meta-descriptions-across-pages": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/unique-meta-descriptions-across-pages.webp",
+    "generated": true
+  },
+  "open-graph-tags-across-pages": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/open-graph-tags-across-pages.webp",
+    "generated": true
+  },
+  "phone-number-consistency-across-pages": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/phone-number-consistency-across-pages.webp",
+    "generated": true
+  },
+  "contact-cta-presence-across-pages": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/contact-cta-presence-across-pages.webp",
+    "generated": true
+  },
+  "image-alt-text-coverage-sitewide": {
+    "path": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/image-alt-text-coverage-sitewide.webp",
+    "generated": true
   }
 }

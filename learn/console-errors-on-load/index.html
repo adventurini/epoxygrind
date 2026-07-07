@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8';
+      document.head.appendChild(s);
+    }, 1500);
+  });
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Console Errors on Your Site Actually Mean | EpoxyGrind</title>
+<meta name="description" content="JavaScript errors that fire the moment your page loads rarely change what a visitor sees directly — but they're a reliable sign something on the site is broken or outdated.">
+<meta property="og:title" content="What Console Errors on Your Site Actually Mean | EpoxyGrind">
+<meta property="og:description" content="JavaScript errors that fire the moment your page loads rarely change what a visitor sees directly — but they're a reliable sign something on the site is broken or outdated.">
+<meta property="og:image" content="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/console-errors-on-load.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/console-errors-on-load.webp">
+<link rel="canonical" href="https://www.epoxygrind.com/learn/console-errors-on-load/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#1A5CD6">
+<style>
+@font-face{font-family:'Archivo';font-style:normal;font-weight:600 900;font-display:swap;src:url('/fonts/archivo-var.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url('/fonts/inter-var.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/ibm-plex-mono-500.woff2') format('woff2')}
+</style>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-var.woff2" crossorigin>
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/auth/auth.css">
+<link rel="stylesheet" href="/content/content.css">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Console Errors: The Invisible Sign of a Neglected Site","description":"JavaScript errors that fire the moment your page loads rarely change what a visitor sees directly — but they're a reliable sign something on the site is broken or outdated.","image":"https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/console-errors-on-load.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.epoxygrind.com/"},{"@type":"ListItem","position":2,"name":"Learning center","item":"https://www.epoxygrind.com/learn/"},{"@type":"ListItem","position":3,"name":"Console Errors: The Invisible Sign of a Neglected Site","item":"https://www.epoxygrind.com/learn/console-errors-on-load/"}]}</script>
+</head>
+<body class="home-page content-page" data-nav-variant="content">
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><img src="/logo-64.webp" srcset="/logo-64.webp 1x, /logo-128.webp 2x" alt="EpoxyGrind" width="32" height="32" decoding="async"> EpoxyGrind</a>
+    <div class="nav-auth" data-auth-nav></div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+  <div class="mobile" id="mobile" data-auth-mobile></div>
+</header>
+<main>
+  <div class="content-main">
+    <div class="content-wrap">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span class="sep">/</span><a href="/learn/">Learning center</a><span class="sep">/</span><span aria-current="page">Console Errors: The Invisible Sign of a Neglected Site</span></nav>
+    <p class="content-eyebrow">Learning center</p>
+  <h1 class="content-h1">Console Errors: The Invisible Sign of a Neglected Site</h1>
+  <p class="content-dek">Nobody sees these errors unless they go looking — which is exactly why they tend to pile up unnoticed for years.</p>
+    <figure class="guide-hero"><img src="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/content-images/learn/console-errors-on-load.webp" alt="Console Errors: The Invisible Sign of a Neglected Site" loading="eager"></figure>
+    <div class="content-prose"><p>Your audit checks your site's browser console — a diagnostic log every browser keeps, invisible unless someone opens developer tools — for JavaScript errors that fire the moment the page loads. A clean console isn't something homeowners consciously notice, but it's a reliable signal of how well-maintained the site actually is underneath the surface.</p></div>
+    
+    
+    <h2>What actually causes this</h2><p>The most common causes: a plugin or script that's out of date, a tracking snippet pointing at a service you no longer use, a theme update that broke something minor, or a broken reference left over from a past redesign. None of these are catastrophic on their own, but they accumulate on sites nobody's actively maintaining.</p><h2>Why it's worth fixing even though visitors can't see it directly</h2><p>A handful of console errors alone rarely breaks the visible page. The real value in checking is what it usually indicates: an unmaintained site is far more likely to also have the more visible problems on this audit — slow load times, broken links, an outdated design — because the same neglect that let errors pile up unnoticed tends to affect everything else too.</p><h2>The fix</h2><p>Open your browser's developer tools (right-click → Inspect → Console tab) on your own homepage and see what's actually there. Most errors point directly at the broken script or missing file in the message itself, making this one of the more straightforward fixes on the audit once someone looks.</p>
+    <div class="pro-cta">
+    <div class="pro-cta-text">
+      <h3>Want us to just fix this for you?</h3>
+      <p>Free audit shows you exactly what's costing you jobs on your own site — no obligation.</p>
+    </div>
+    <a class="btn btn-p" href="/audit/">Get my free audit →</a>
+  </div>
+    <h2>Related</h2><div class="related-links">
+        <a class="related-link" href="/learn/no-mixed-content/"><strong>Why mixed content matters</strong><span>Shows up in the same console, for a related reason.</span></a><a class="related-link" href="/learn/broken-links/"><strong>Why broken links matter</strong><span>The more visible symptom of the same underlying neglect.</span></a>
+      </div>
+    
+      
+    </div>
+  </div>
+</main>
+<footer class="site-foot"><div class="wrap">© 2026 EpoxyGrind · <a href="/diy/">DIY guides</a> · <a href="/services/">For contractors</a></div></footer>
+<script src="/js/nav.bundle.js" defer></script>
+<script>
+  var b=document.getElementById('burger'),m=document.getElementById('mobile');
+  if(b&&m){b.addEventListener('click',function(){m.classList.toggle('open')});m.querySelectorAll('a,button').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});}
+</script>
+<script>
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.video-embed-facade');
+    if(!btn) return;
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + btn.dataset.videoId + '?autoplay=1';
+    iframe.title = btn.dataset.videoTitle || 'YouTube video';
+    iframe.loading = 'lazy';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    btn.replaceWith(iframe);
+  });
+</script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
+</body>
+</html>
