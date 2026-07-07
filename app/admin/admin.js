@@ -193,22 +193,55 @@ function gradeChipVariant(color) {
   return 'info';
 }
 
-function renderAuditsTable() {
-  const tbody = document.getElementById('auditsTableBody');
+const AUDITS_PAGE_SIZE = 50;
+let auditsPage = 1;
+
+function scoreChipVariant(score) {
+  if (score == null) return 'info';
+  if (score >= 80) return 'ok';
+  if (score >= 55) return 'warn';
+  return 'bad';
+}
+
+/** Bare origin (protocol + host, no path/query/hash) — several scraped
+ * website URLs carry a captcha-challenge or ad-tracking path instead of
+ * the homepage (e.g. /.well-known/sgcaptcha/..., ?clickcease=block),
+ * which both looks wrong here and (worse) may mean the audit crawled the
+ * wrong page. Shown trimmed; the full stored value is still the href. */
+function siteOrigin(url) {
+  try {
+    const u = new URL(url);
+    return u.host;
+  } catch {
+    return url.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+  }
+}
+
+function getFilteredSortedAudits() {
   const sort = document.getElementById('auditSort').value;
   const state = document.getElementById('auditState').value;
   const search = document.getElementById('auditSearch').value.trim().toLowerCase();
 
   let rows = allAudits;
   if (state) rows = rows.filter((a) => a.state === state);
-  if (search) rows = rows.filter((a) => (a.name || '').toLowerCase().includes(search));
+  if (search) rows = rows.filter((a) => (a.name || '').toLowerCase().includes(search) || (a.city || '').toLowerCase().includes(search));
 
-  rows = [...rows].sort((a, b) => {
+  return [...rows].sort((a, b) => {
     if (sort === 'recent') return new Date(b.auditedAt || 0) - new Date(a.auditedAt || 0);
     const as = a.compositeScore ?? 999;
     const bs = b.compositeScore ?? 999;
     return as - bs;
   });
+}
+
+function renderAuditsTable() {
+  const tbody = document.getElementById('auditsTableBody');
+  const filtered = getFilteredSortedAudits();
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / AUDITS_PAGE_SIZE));
+  auditsPage = Math.min(Math.max(1, auditsPage), pageCount);
+  const start = (auditsPage - 1) * AUDITS_PAGE_SIZE;
+  const rows = filtered.slice(start, start + AUDITS_PAGE_SIZE);
 
   tbody.innerHTML = rows.map((a) => {
     const site = a.finalUrl || a.website;
@@ -217,22 +250,24 @@ function renderAuditsTable() {
       : a.siteUnreachable
         ? chip('Unreachable', 'warn')
         : site
-          ? `<a class="admin-link" href="${escapeHtml(site)}" target="_blank" rel="noopener">${escapeHtml(site.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a>`
+          ? `<a class="admin-link" href="${escapeHtml(site)}" target="_blank" rel="noopener" title="${escapeHtml(site)}">${escapeHtml(siteOrigin(site))}</a>`
           : '—';
+    const auditHref = a.publicToken ? `/audit-report/${encodeURIComponent(a.publicToken)}` : '';
     return `
-      <tr>
-        <td>${escapeHtml(a.name)}${a.isSelfServe ? ' ' + chip('self-serve', 'info') : ''}</td>
+      <tr data-audit-href="${escapeHtml(auditHref)}" title="${auditHref ? 'Open this audit — same page the contractor sees on their own dashboard' : 'No audit link available'}">
+        <td><span class="score-badge ${scoreChipVariant(a.compositeScore)}">${a.compositeScore ?? '—'}</span> ${escapeHtml(a.name)}${a.isSelfServe ? ' ' + chip('self-serve', 'info') : ''}</td>
         <td>${escapeHtml(a.city || '')}${a.city && a.state ? ', ' : ''}${escapeHtml(a.state || '')}</td>
         <td>${siteCell}</td>
-        <td>${a.compositeScore ?? '—'}</td>
         <td>${a.grade ? chip(a.grade, gradeChipVariant(a.gradeColor)) : '—'}</td>
         <td>${a.claimedAt ? chip('Claimed', 'ok') : '—'}</td>
         <td>${formatDate(a.auditedAt)}</td>
-        <td>${a.publicToken ? `<a class="admin-link" href="/audit-report/${encodeURIComponent(a.publicToken)}" target="_blank">View →</a>` : '—'}</td>
       </tr>`;
   }).join('');
 
-  document.getElementById('auditsShownCount').textContent = `Showing ${rows.length} of ${allAudits.length} loaded audits.`;
+  document.getElementById('auditsShownCount').textContent = `Showing ${start + 1}–${Math.min(start + rows.length, filtered.length)} of ${filtered.length} (${allAudits.length} loaded).`;
+  document.getElementById('auditsPageIndicator').textContent = `Page ${auditsPage} of ${pageCount}`;
+  document.getElementById('auditsPrevBtn').disabled = auditsPage <= 1;
+  document.getElementById('auditsNextBtn').disabled = auditsPage >= pageCount;
 }
 
 async function loadAudits() {
@@ -264,9 +299,22 @@ async function loadAudits() {
   }
 }
 
-document.getElementById('auditSort').addEventListener('change', renderAuditsTable);
-document.getElementById('auditState').addEventListener('change', renderAuditsTable);
-document.getElementById('auditSearch').addEventListener('input', renderAuditsTable);
+function resetAuditsPageAndRender() { auditsPage = 1; renderAuditsTable(); }
+document.getElementById('auditSort').addEventListener('change', resetAuditsPageAndRender);
+document.getElementById('auditState').addEventListener('change', resetAuditsPageAndRender);
+document.getElementById('auditSearch').addEventListener('input', resetAuditsPageAndRender);
+document.getElementById('auditsPrevBtn').addEventListener('click', () => { auditsPage -= 1; renderAuditsTable(); });
+document.getElementById('auditsNextBtn').addEventListener('click', () => { auditsPage += 1; renderAuditsTable(); });
+
+// Whole row opens the audit page — the same /audit-report/{token} view
+// both the contractor and we see — except a click on the site's own
+// outbound link, which should go to their actual website instead.
+document.getElementById('auditsTableBody').addEventListener('click', (ev) => {
+  if (ev.target.closest('a')) return;
+  const row = ev.target.closest('tr[data-audit-href]');
+  const href = row?.dataset.auditHref;
+  if (href) window.open(href, '_blank', 'noopener');
+});
 
 async function boot() {
   const user = await initDashboard({ activeNav: 'admin' });

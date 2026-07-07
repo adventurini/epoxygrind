@@ -85,27 +85,30 @@
         <select id="auditState">
           <option value="">All states</option>
         </select>
-        <input type="search" id="auditSearch" placeholder="Search by business name…">
+        <input type="search" id="auditSearch" placeholder="Search by business name or city…">
       </div>
       <div id="auditsLoading" class="muted">Loading audits…</div>
       <div class="admin-table-wrap" hidden id="auditsTableWrap">
-        <table class="admin-table">
+        <table class="admin-table admin-table-clickable">
           <thead>
             <tr>
-              <th>Business</th>
+              <th>Business (score)</th>
               <th>Location</th>
               <th>Website</th>
-              <th>Score</th>
               <th>Grade</th>
               <th>Claimed</th>
               <th>Audited</th>
-              <th></th>
             </tr>
           </thead>
           <tbody id="auditsTableBody"></tbody>
         </table>
       </div>
-      <p class="tiny muted" id="auditsShownCount" style="margin-top:10px"></p>
+      <div class="admin-pager">
+        <button type="button" class="btn btn-o btn-sm" id="auditsPrevBtn">← Prev</button>
+        <span class="tiny muted" id="auditsPageIndicator"></span>
+        <button type="button" class="btn btn-o btn-sm" id="auditsNextBtn">Next →</button>
+      </div>
+      <p class="tiny muted" id="auditsShownCount" style="margin-top:6px"></p>
     </section>
 
     <section class="dashboard-panel" style="margin-bottom:20px">
