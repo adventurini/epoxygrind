@@ -54,6 +54,22 @@ export default async function handler(req, res) {
       if (data.length < PAGE_SIZE) break;
     }
 
+    // Bulk-fetch pipeline stage per contractor so the table can show
+    // current status without a request per row — most contractors have no
+    // row here yet (pipeline only gets created on first interaction).
+    let pipelineRows = [];
+    for (let from = 0; ; from += PAGE_SIZE) {
+      const { data, error } = await supabase
+        .from('contractor_pipeline')
+        .select('contractor_id, stage, answered')
+        .range(from, from + PAGE_SIZE - 1);
+      if (error) throw error;
+      if (!data?.length) break;
+      pipelineRows = pipelineRows.concat(data);
+      if (data.length < PAGE_SIZE) break;
+    }
+    const pipelineByContractor = new Map(pipelineRows.map((p) => [p.contractor_id, p]));
+
     const rows = allRows
       .filter((row) => row.contractors) // a handful of self-serve/orphaned rows might not join cleanly — skip rather than crash the table
       .map((row) => ({
@@ -91,6 +107,8 @@ export default async function handler(req, res) {
         // instead of re-implementing this logic.
         outreachExcludedReason: row.outreach_excluded_reason,
         crawlLooksBlocked: row.outreach_excluded_reason === 'crawl_blocked',
+        pipelineStage: pipelineByContractor.get(row.contractor_id)?.stage || 'not_contacted',
+        pipelineAnswered: pipelineByContractor.get(row.contractor_id)?.answered ?? null,
       }));
 
     const scored = rows.filter((r) => r.compositeScore != null);

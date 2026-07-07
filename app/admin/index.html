@@ -90,7 +90,7 @@
       </div>
       <div id="auditsLoading" class="muted">Loading audits…</div>
       <div class="admin-table-wrap" hidden id="auditsTableWrap">
-        <table class="admin-table admin-table-responsive">
+        <table class="admin-table admin-table-clickable admin-table-responsive">
           <thead>
             <tr>
               <th>Business (score)</th>
@@ -99,6 +99,7 @@
               <th>Website</th>
               <th>Grade</th>
               <th>Outreach</th>
+              <th>Pipeline</th>
               <th>Claimed</th>
               <th>Audited</th>
               <th>Audit</th>
@@ -223,6 +224,45 @@
         </table>
       </div>
     </section>
+  </div>
+</div>
+
+<div class="pipeline-backdrop" id="pipelineBackdrop" hidden></div>
+<div class="pipeline-panel" id="pipelinePanel" hidden>
+  <div class="pipeline-panel-head">
+    <div>
+      <h3 id="pipelineName"></h3>
+      <p class="tiny muted" id="pipelineLocation"></p>
+    </div>
+    <button type="button" class="dash-icon-btn" id="pipelineCloseBtn" aria-label="Close">✕</button>
+  </div>
+  <div class="pipeline-panel-body">
+    <div class="pipeline-field">
+      <label for="pipelineStage">Stage</label>
+      <select id="pipelineStage">
+        <option value="not_contacted">Not contacted</option>
+        <option value="called">Called</option>
+        <option value="audit_texted">Audit texted</option>
+        <option value="responded">Responded</option>
+        <option value="no_response">No response</option>
+        <option value="rebuilt">Website rebuilt</option>
+        <option value="lost">Lost</option>
+      </select>
+    </div>
+    <div class="pipeline-field">
+      <label for="pipelineAnswered">Answered?</label>
+      <select id="pipelineAnswered">
+        <option value="">Unknown</option>
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+    </div>
+    <div class="pipeline-field">
+      <label for="pipelineNewNote">Add a note</label>
+      <textarea id="pipelineNewNote" rows="3" placeholder="e.g. Left voicemail, follow up Thursday"></textarea>
+      <button type="button" class="btn btn-p btn-sm" id="pipelineAddNoteBtn" style="margin-top:8px">Add note</button>
+    </div>
+    <div class="pipeline-notes" id="pipelineNotes"></div>
   </div>
 </div>
 

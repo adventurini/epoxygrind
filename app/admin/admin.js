@@ -206,6 +206,16 @@ function gradeChipVariant(color) {
 const AUDITS_PAGE_SIZE = 50;
 let auditsPage = 1;
 
+const PIPELINE_STAGE_META = {
+  not_contacted: { label: 'Not contacted', bg: '#F0F2F6', fg: '#647189' },
+  called: { label: 'Called', bg: '#E9F0FE', fg: '#1A5CD6' },
+  audit_texted: { label: 'Audit texted', bg: '#E9F0FE', fg: '#1A5CD6' },
+  responded: { label: 'Responded', bg: '#E8F5EE', fg: '#1B6B3A' },
+  no_response: { label: 'No response', bg: '#FEF3E2', fg: '#9A6700' },
+  rebuilt: { label: 'Website rebuilt', bg: '#E8F5EE', fg: '#1B6B3A' },
+  lost: { label: 'Lost', bg: '#FCECEC', fg: '#B3261E' },
+};
+
 /** Cosmetic-only name slug for the audit share URL — never used to look up
  * the audit (the token still does that), just makes the link readable. */
 function slugify(name) {
@@ -299,14 +309,16 @@ function renderAuditsTable() {
     const listingCell = a.listingUrl
       ? `<a class="btn btn-o btn-sm" href="${escapeHtml(a.listingUrl)}" target="_blank" rel="noopener">View listing →</a>`
       : chip('Not in directory', 'warn');
+    const stageMeta = PIPELINE_STAGE_META[a.pipelineStage] || PIPELINE_STAGE_META.not_contacted;
     return `
-      <tr>
+      <tr data-contractor-id="${a.contractorId}" data-contractor-name="${escapeHtml(a.name)}" data-contractor-location="${escapeHtml(a.city || '')}${a.city && a.state ? ', ' : ''}${escapeHtml(a.state || '')}">
         <td data-label="Business"><span class="score-badge ${scoreChipVariant(a.compositeScore)}">${a.compositeScore ?? '—'}</span> ${escapeHtml(a.name)}${a.isSelfServe ? ' ' + chip('self-serve', 'info') : ''}</td>
         <td data-label="Location">${escapeHtml(a.city || '')}${a.city && a.state ? ', ' : ''}${escapeHtml(a.state || '')}</td>
         <td data-label="Phone">${phoneCell}</td>
         <td data-label="Website">${siteCell}</td>
         <td data-label="Grade">${a.grade ? chip(a.grade, gradeChipVariant(a.gradeColor)) : '—'}</td>
         <td data-label="Outreach">${outreachCell}</td>
+        <td data-label="Pipeline"><span class="pipeline-stage-chip" style="background:${stageMeta.bg};color:${stageMeta.fg}">${stageMeta.label}</span></td>
         <td data-label="Claimed">${a.claimedAt ? chip('Claimed', 'ok') : '—'}</td>
         <td data-label="Audited">${formatDate(a.auditedAt)}</td>
         <td data-label="Audit">${auditCell}</td>
@@ -384,6 +396,97 @@ document.getElementById('auditsTableBody').addEventListener('click', async (ev) 
     recrawlBtn.disabled = false;
     recrawlBtn.textContent = originalLabel;
     toast(err.message || 'Recrawl failed.');
+  }
+});
+
+document.getElementById('auditsTableBody').addEventListener('click', (ev) => {
+  if (ev.target.closest('a, button')) return;
+  const row = ev.target.closest('tr[data-contractor-id]');
+  if (row) openPipelinePanel(Number(row.dataset.contractorId), row.dataset.contractorName, row.dataset.contractorLocation);
+});
+
+let currentPipelineContractorId = null;
+
+function renderPipelineNotes(notes) {
+  const el = document.getElementById('pipelineNotes');
+  if (!notes.length) { el.innerHTML = '<p class="tiny muted">No notes yet.</p>'; return; }
+  el.innerHTML = notes.map((n) => `
+    <div class="pipeline-note">
+      <p class="pipeline-note-text">${escapeHtml(n.note)}</p>
+      <p class="pipeline-note-time">${new Date(n.createdAt).toLocaleString()}</p>
+    </div>`).join('');
+}
+
+async function openPipelinePanel(contractorId, name, location) {
+  currentPipelineContractorId = contractorId;
+  document.getElementById('pipelineName').textContent = name;
+  document.getElementById('pipelineLocation').textContent = location;
+  document.getElementById('pipelineNewNote').value = '';
+  document.getElementById('pipelineBackdrop').hidden = false;
+  document.getElementById('pipelinePanel').hidden = false;
+
+  try {
+    const res = await authFetch(`/api/admin/pipeline?contractorId=${contractorId}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not load pipeline data.');
+    document.getElementById('pipelineStage').value = data.stage;
+    document.getElementById('pipelineAnswered').value = data.answered === null ? '' : String(data.answered);
+    renderPipelineNotes(data.notes);
+  } catch (err) {
+    toast(err.message || 'Could not load pipeline data.');
+  }
+}
+
+function closePipelinePanel() {
+  document.getElementById('pipelineBackdrop').hidden = true;
+  document.getElementById('pipelinePanel').hidden = true;
+  currentPipelineContractorId = null;
+}
+
+document.getElementById('pipelineCloseBtn').addEventListener('click', closePipelinePanel);
+document.getElementById('pipelineBackdrop').addEventListener('click', closePipelinePanel);
+
+async function savePipelineField(field, value) {
+  if (!currentPipelineContractorId) return;
+  try {
+    const res = await authFetch('/api/admin/pipeline', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contractorId: currentPipelineContractorId, [field]: value }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not save.');
+    await loadAudits();
+  } catch (err) {
+    toast(err.message || 'Could not save.');
+  }
+}
+
+document.getElementById('pipelineStage').addEventListener('change', (ev) => savePipelineField('stage', ev.target.value));
+document.getElementById('pipelineAnswered').addEventListener('change', (ev) => savePipelineField('answered', ev.target.value === '' ? null : ev.target.value === 'true'));
+
+document.getElementById('pipelineAddNoteBtn').addEventListener('click', async () => {
+  const textarea = document.getElementById('pipelineNewNote');
+  const note = textarea.value.trim();
+  if (!note || !currentPipelineContractorId) return;
+  const btn = document.getElementById('pipelineAddNoteBtn');
+  btn.disabled = true;
+  try {
+    const res = await authFetch('/api/admin/pipeline', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contractorId: currentPipelineContractorId, note }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not save note.');
+    textarea.value = '';
+    const notesRes = await authFetch(`/api/admin/pipeline?contractorId=${currentPipelineContractorId}`);
+    const notesData = await notesRes.json();
+    renderPipelineNotes(notesData.notes || []);
+  } catch (err) {
+    toast(err.message || 'Could not save note.');
+  } finally {
+    btn.disabled = false;
   }
 });
 
