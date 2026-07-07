@@ -216,6 +216,56 @@ const PIPELINE_STAGE_META = {
   lost: { label: 'Lost', bg: '#FCECEC', fg: '#B3261E' },
 };
 
+const CONTACT_METHOD_LABELS = {
+  call: 'Call',
+  text: 'Text',
+  email: 'Email',
+  in_person: 'In person',
+  other: 'Other',
+};
+
+/**
+ * "Odds of closing" out of 100 — NOT the same thing as compositeScore. A
+ * site that's already great has nothing to sell; a site that's completely
+ * broken/unreachable is a bad pitch experience and often not a real,
+ * workable business. The best outreach target does some things okay but
+ * has real, visible, fixable gaps — a bell curve peaking in the
+ * "middling — clearly room to improve" band, not a straight worst-first
+ * sort. Piecewise-linear over a few hand-picked control points rather than
+ * a formula, so the shape stays easy to reason about and retune.
+ */
+const CLOSEABILITY_CURVE = [
+  [0, 2], [20, 15], [35, 45], [50, 85], [62, 100], [72, 95], [82, 60], [90, 25], [100, 5],
+];
+
+function closeabilityFromScore(score) {
+  const pts = CLOSEABILITY_CURVE;
+  if (score <= pts[0][0]) return pts[0][1];
+  if (score >= pts[pts.length - 1][0]) return pts[pts.length - 1][1];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const [x0, y0] = pts[i];
+    const [x1, y1] = pts[i + 1];
+    if (score >= x0 && score <= x1) {
+      const t = (score - x0) / (x1 - x0);
+      return Math.round(y0 + t * (y1 - y0));
+    }
+  }
+  return 0;
+}
+
+/** @returns {number|null} null means "not applicable to this ranking" (no website — a different pitch entirely) */
+function closeScoreFor(a) {
+  if (!a.hasWebsite) return null;
+  if (a.outreachExcludedReason || a.siteUnreachable) return 0;
+  if (a.compositeScore == null) return null;
+  let score = closeabilityFromScore(a.compositeScore);
+  // Already claimed their listing == already know about us and engaged on
+  // their own terms — not a cold-outreach target anymore, so it shouldn't
+  // dominate the default "who do we call next" view.
+  if (a.claimedAt) score = Math.round(score * 0.15);
+  return score;
+}
+
 /** Cosmetic-only name slug for the audit share URL — never used to look up
  * the audit (the token still does that), just makes the link readable. */
 function slugify(name) {
@@ -256,16 +306,29 @@ function siteOrigin(url) {
 function getFilteredSortedAudits() {
   const sort = document.getElementById('auditSort').value;
   const state = document.getElementById('auditState').value;
+  const pipelineStage = document.getElementById('auditPipelineStage').value;
+  const contactMethod = document.getElementById('auditContactMethod').value;
   const search = document.getElementById('auditSearch').value.trim().toLowerCase();
   const showBroken = document.getElementById('auditShowBroken').checked;
 
   let rows = allAudits;
   if (!showBroken) rows = rows.filter((a) => !a.crawlLooksBlocked && !a.siteUnreachable);
   if (state) rows = rows.filter((a) => a.state === state);
+  if (pipelineStage) rows = rows.filter((a) => (a.pipelineStage || 'not_contacted') === pipelineStage);
+  if (contactMethod === 'never') rows = rows.filter((a) => !a.lastContactMethod);
+  else if (contactMethod) rows = rows.filter((a) => a.lastContactMethod === contactMethod);
   if (search) rows = rows.filter((a) => (a.name || '').toLowerCase().includes(search) || (a.city || '').toLowerCase().includes(search));
 
   return [...rows].sort((a, b) => {
     if (sort === 'recent') return new Date(b.auditedAt || 0) - new Date(a.auditedAt || 0);
+    if (sort === 'closeability') {
+      const ac = closeScoreFor(a);
+      const bc = closeScoreFor(b);
+      if (ac == null && bc == null) return 0;
+      if (ac == null) return 1; // not-applicable rows always sink to the bottom
+      if (bc == null) return -1;
+      return bc - ac;
+    }
     const as = a.compositeScore ?? 999;
     const bs = b.compositeScore ?? 999;
     return as - bs;
@@ -310,6 +373,11 @@ function renderAuditsTable() {
       ? `<a class="btn btn-o btn-sm" href="${escapeHtml(a.listingUrl)}" target="_blank" rel="noopener">View listing →</a>`
       : chip('Not in directory', 'warn');
     const stageMeta = PIPELINE_STAGE_META[a.pipelineStage] || PIPELINE_STAGE_META.not_contacted;
+    const closeScore = closeScoreFor(a);
+    const oddsCell = closeScore == null ? '—' : `<span class="score-badge ${scoreChipVariant(closeScore)}">${closeScore}</span>`;
+    const lastContactCell = a.lastContactMethod
+      ? `${CONTACT_METHOD_LABELS[a.lastContactMethod] || a.lastContactMethod} · ${formatDate(a.lastContactedAt)}`
+      : '—';
     return `
       <tr data-contractor-id="${a.contractorId}" data-contractor-name="${escapeHtml(a.name)}" data-contractor-location="${escapeHtml(a.city || '')}${a.city && a.state ? ', ' : ''}${escapeHtml(a.state || '')}">
         <td data-label="Business"><span class="score-badge ${scoreChipVariant(a.compositeScore)}">${a.compositeScore ?? '—'}</span> ${escapeHtml(a.name)}${a.isSelfServe ? ' ' + chip('self-serve', 'info') : ''}</td>
@@ -317,8 +385,10 @@ function renderAuditsTable() {
         <td data-label="Phone">${phoneCell}</td>
         <td data-label="Website">${siteCell}</td>
         <td data-label="Grade">${a.grade ? chip(a.grade, gradeChipVariant(a.gradeColor)) : '—'}</td>
+        <td data-label="Odds">${oddsCell}</td>
         <td data-label="Outreach">${outreachCell}</td>
         <td data-label="Pipeline"><span class="pipeline-stage-chip" style="background:${stageMeta.bg};color:${stageMeta.fg}">${stageMeta.label}</span></td>
+        <td data-label="Last contact">${lastContactCell}</td>
         <td data-label="Claimed">${a.claimedAt ? chip('Claimed', 'ok') : '—'}</td>
         <td data-label="Audited">${formatDate(a.auditedAt)}</td>
         <td data-label="Audit">${auditCell}</td>
@@ -370,6 +440,8 @@ async function loadAudits() {
 function resetAuditsPageAndRender() { auditsPage = 1; renderAuditsTable(); }
 document.getElementById('auditSort').addEventListener('change', resetAuditsPageAndRender);
 document.getElementById('auditState').addEventListener('change', resetAuditsPageAndRender);
+document.getElementById('auditPipelineStage').addEventListener('change', resetAuditsPageAndRender);
+document.getElementById('auditContactMethod').addEventListener('change', resetAuditsPageAndRender);
 document.getElementById('auditSearch').addEventListener('input', resetAuditsPageAndRender);
 document.getElementById('auditShowBroken').addEventListener('change', resetAuditsPageAndRender);
 document.getElementById('auditsPrevBtn').addEventListener('click', () => { auditsPage -= 1; renderAuditsTable(); });
@@ -412,6 +484,7 @@ function renderPipelineNotes(notes) {
   if (!notes.length) { el.innerHTML = '<p class="tiny muted">No notes yet.</p>'; return; }
   el.innerHTML = notes.map((n) => `
     <div class="pipeline-note">
+      ${n.method ? chip(CONTACT_METHOD_LABELS[n.method] || n.method, 'info') : ''}
       <p class="pipeline-note-text">${escapeHtml(n.note)}</p>
       <p class="pipeline-note-time">${new Date(n.createdAt).toLocaleString()}</p>
     </div>`).join('');
@@ -422,6 +495,8 @@ async function openPipelinePanel(contractorId, name, location) {
   document.getElementById('pipelineName').textContent = name;
   document.getElementById('pipelineLocation').textContent = location;
   document.getElementById('pipelineNewNote').value = '';
+  document.getElementById('pipelineContactMethod').value = '';
+  document.getElementById('pipelineLastContact').textContent = '';
   document.getElementById('pipelineBackdrop').hidden = false;
   document.getElementById('pipelinePanel').hidden = false;
 
@@ -431,6 +506,9 @@ async function openPipelinePanel(contractorId, name, location) {
     if (!res.ok) throw new Error(data.error || 'Could not load pipeline data.');
     document.getElementById('pipelineStage').value = data.stage;
     document.getElementById('pipelineAnswered').value = data.answered === null ? '' : String(data.answered);
+    document.getElementById('pipelineLastContact').textContent = data.lastContact
+      ? `Last contact: ${CONTACT_METHOD_LABELS[data.lastContact.method] || data.lastContact.method} — ${new Date(data.lastContact.at).toLocaleString()}`
+      : 'No contact logged yet.';
     renderPipelineNotes(data.notes);
   } catch (err) {
     toast(err.message || 'Could not load pipeline data.');
@@ -467,7 +545,9 @@ document.getElementById('pipelineAnswered').addEventListener('change', (ev) => s
 
 document.getElementById('pipelineAddNoteBtn').addEventListener('click', async () => {
   const textarea = document.getElementById('pipelineNewNote');
+  const methodSelect = document.getElementById('pipelineContactMethod');
   const note = textarea.value.trim();
+  const method = methodSelect.value || undefined;
   if (!note || !currentPipelineContractorId) return;
   const btn = document.getElementById('pipelineAddNoteBtn');
   btn.disabled = true;
@@ -475,14 +555,19 @@ document.getElementById('pipelineAddNoteBtn').addEventListener('click', async ()
     const res = await authFetch('/api/admin/pipeline', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contractorId: currentPipelineContractorId, note }),
+      body: JSON.stringify({ contractorId: currentPipelineContractorId, note, method }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Could not save note.');
     textarea.value = '';
+    methodSelect.value = '';
     const notesRes = await authFetch(`/api/admin/pipeline?contractorId=${currentPipelineContractorId}`);
     const notesData = await notesRes.json();
     renderPipelineNotes(notesData.notes || []);
+    document.getElementById('pipelineLastContact').textContent = notesData.lastContact
+      ? `Last contact: ${CONTACT_METHOD_LABELS[notesData.lastContact.method] || notesData.lastContact.method} — ${new Date(notesData.lastContact.at).toLocaleString()}`
+      : 'No contact logged yet.';
+    if (method) await loadAudits(); // a new logged contact changes the table's "Last contact" column/filter results
   } catch (err) {
     toast(err.message || 'Could not save note.');
   } finally {

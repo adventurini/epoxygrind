@@ -70,7 +70,7 @@
 
     <section class="dashboard-panel" style="margin-bottom:20px">
       <h2>Website audits</h2>
-      <p class="muted" style="margin:-6px 0 14px">Every site we've audited, worst score first — the biggest outreach opportunities by default. Click a row to open its share link.</p>
+      <p class="muted" style="margin:-6px 0 14px">Every site we've audited, ranked by odds of closing by default — sites doing okay but with real, fixable gaps outrank both the hopeless and the already-great. Click a row to open its pipeline notes.</p>
       <div class="dashboard-stats" id="auditStats" style="margin-bottom:16px">
         <div class="stat-card"><div class="n" id="statAuditsTotal">—</div><div class="l">Total sites audited</div></div>
         <div class="stat-card"><div class="n" id="statAuditsAvg">—</div><div class="l">Average score</div></div>
@@ -79,11 +79,31 @@
       </div>
       <div class="admin-filters">
         <select id="auditSort">
+          <option value="closeability" selected>Sort: odds of closing</option>
           <option value="score">Sort: worst score first</option>
           <option value="recent">Sort: most recently audited</option>
         </select>
         <select id="auditState">
           <option value="">All states</option>
+        </select>
+        <select id="auditPipelineStage">
+          <option value="">All pipeline stages</option>
+          <option value="not_contacted">Not contacted</option>
+          <option value="called">Called</option>
+          <option value="audit_texted">Audit texted</option>
+          <option value="responded">Responded</option>
+          <option value="no_response">No response</option>
+          <option value="rebuilt">Website rebuilt</option>
+          <option value="lost">Lost</option>
+        </select>
+        <select id="auditContactMethod">
+          <option value="">Any contact method</option>
+          <option value="never">Never contacted</option>
+          <option value="call">Call</option>
+          <option value="text">Text</option>
+          <option value="email">Email</option>
+          <option value="in_person">In person</option>
+          <option value="other">Other</option>
         </select>
         <input type="search" id="auditSearch" placeholder="Search by business name or city…">
         <label class="admin-checkbox"><input type="checkbox" id="auditShowBroken"> Show blocked/unreachable sites <span class="tiny muted" id="auditBrokenCount"></span></label>
@@ -98,8 +118,10 @@
               <th>Phone</th>
               <th>Website</th>
               <th>Grade</th>
+              <th>Odds</th>
               <th>Outreach</th>
               <th>Pipeline</th>
+              <th>Last contact</th>
               <th>Claimed</th>
               <th>Audited</th>
               <th>Audit</th>
@@ -233,6 +255,7 @@
     <div>
       <h3 id="pipelineName"></h3>
       <p class="tiny muted" id="pipelineLocation"></p>
+      <p class="tiny muted" id="pipelineLastContact"></p>
     </div>
     <button type="button" class="dash-icon-btn" id="pipelineCloseBtn" aria-label="Close">✕</button>
   </div>
@@ -255,6 +278,17 @@
         <option value="">Unknown</option>
         <option value="true">Yes</option>
         <option value="false">No</option>
+      </select>
+    </div>
+    <div class="pipeline-field">
+      <label for="pipelineContactMethod">Log contact (optional)</label>
+      <select id="pipelineContactMethod">
+        <option value="">Not a contact attempt — just a note</option>
+        <option value="call">Call</option>
+        <option value="text">Text</option>
+        <option value="email">Email</option>
+        <option value="in_person">In person</option>
+        <option value="other">Other</option>
       </select>
     </div>
     <div class="pipeline-field">

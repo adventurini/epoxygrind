@@ -70,6 +70,29 @@ export default async function handler(req, res) {
     }
     const pipelineByContractor = new Map(pipelineRows.map((p) => [p.contractor_id, p]));
 
+    // Bulk-fetch the latest logged contact attempt (a note with a method —
+    // plain freeform notes don't count) per contractor, same pattern as the
+    // pipeline fetch above. Ordered so the first row seen per contractor_id
+    // is the most recent.
+    let contactRows = [];
+    for (let from = 0; ; from += PAGE_SIZE) {
+      const { data, error } = await supabase
+        .from('contractor_notes')
+        .select('contractor_id, method, created_at')
+        .not('method', 'is', null)
+        .order('contractor_id', { ascending: true })
+        .order('created_at', { ascending: false })
+        .range(from, from + PAGE_SIZE - 1);
+      if (error) throw error;
+      if (!data?.length) break;
+      contactRows = contactRows.concat(data);
+      if (data.length < PAGE_SIZE) break;
+    }
+    const lastContactByContractor = new Map();
+    for (const c of contactRows) {
+      if (!lastContactByContractor.has(c.contractor_id)) lastContactByContractor.set(c.contractor_id, c);
+    }
+
     const rows = allRows
       .filter((row) => row.contractors) // a handful of self-serve/orphaned rows might not join cleanly — skip rather than crash the table
       .map((row) => ({
@@ -109,6 +132,8 @@ export default async function handler(req, res) {
         crawlLooksBlocked: row.outreach_excluded_reason === 'crawl_blocked',
         pipelineStage: pipelineByContractor.get(row.contractor_id)?.stage || 'not_contacted',
         pipelineAnswered: pipelineByContractor.get(row.contractor_id)?.answered ?? null,
+        lastContactMethod: lastContactByContractor.get(row.contractor_id)?.method || null,
+        lastContactedAt: lastContactByContractor.get(row.contractor_id)?.created_at || null,
       }));
 
     const scored = rows.filter((r) => r.compositeScore != null);
