@@ -39,6 +39,7 @@
         <p class="eyebrow" style="font-family:var(--ff-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dash-blue)">Your listing</p>
         <h1 id="name"></h1>
         <p class="lede" id="location"></p>
+        <p id="listingLinkWrap" style="margin:6px 0 0" hidden><a id="listingLink" href="#" target="_blank" rel="noopener">View your public listing →</a></p>
       </div>
     </div>
 
@@ -83,6 +84,11 @@
       document.getElementById('contactPhone').textContent = data.contactPhone || '—';
       document.getElementById('claimedAt').textContent = data.claimedAt ? new Date(data.claimedAt).toLocaleDateString() : '—';
       document.getElementById('website').textContent = data.website || '—';
+
+      if (data.listingUrl) {
+        document.getElementById('listingLink').href = data.listingUrl;
+        document.getElementById('listingLinkWrap').hidden = false;
+      }
 
       loadingEl.hidden = true;
       bodyEl.hidden = false;
