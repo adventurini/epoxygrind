@@ -186,6 +186,10 @@ document.getElementById('calSlides').addEventListener('blur', async (ev) => {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Could not save.');
+    if (data.finalUrl) {
+      const img = document.querySelector(`.cal-slide[data-position="${position}"] .cal-slide-img`);
+      if (img && img.tagName === 'IMG') img.src = data.finalUrl;
+    }
   } catch (err) {
     toast(err.message || 'Could not save.');
   }

@@ -12,6 +12,7 @@
     "build-local": "node scripts/build-local-pages.js"
   },
   "dependencies": {
+    "@napi-rs/canvas": "^1.0.2",
     "@sparticuz/chromium": "^149.0.0",
     "@supabase/supabase-js": "^2.109.0",
     "lighthouse": "^12.8.2",

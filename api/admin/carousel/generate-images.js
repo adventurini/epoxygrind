@@ -3,14 +3,15 @@ import { requireAdmin } from '../../../lib/require-admin.js';
 import { getSupabase, isSupabaseConfigured } from '../../../lib/supabase.js';
 import { generateSlideScenes } from '../../../lib/carousel/generate-scenes.js';
 import { generateSlideImage } from '../../../lib/carousel/generate-image.js';
+import { composeAndStoreFinal } from '../../../lib/carousel/compose-and-store.js';
 
 /**
  * POST /api/admin/carousel/generate-images — generates all 6 images for
- * one day's slides via the fal.ai FLUX.2 edit endpoint, conditioned on the
- * single approved Grinder Dad reference image. Sequential, not parallel —
- * fal.ai edit calls run ~4-15s each and 6 in a row is well inside a
- * reasonable function timeout without needing Vercel-specific concurrency
- * tricks. { date }
+ * one day's slides via the fal.ai FLUX.2 edit endpoint, then immediately
+ * composites each slide's current caption onto its image (auto-applied,
+ * not gated behind a manual approval step). Sequential, not parallel —
+ * each edit call is 4-15s and 6 in a row is well inside a reasonable
+ * function timeout. { date }
  */
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -31,10 +32,10 @@ export default async function handler(req, res) {
   try {
     const supabase = getSupabase();
 
-    const { data: config, error: configErr } = await supabase.from('carousel_config').select('value').eq('key', 'characterMasterUrl').maybeSingle();
+    const { data: config, error: configErr } = await supabase.from('carousel_config').select('value').eq('key', 'characterMasters').maybeSingle();
     if (configErr) throw configErr;
-    const masterUrl = config?.value?.url;
-    if (!masterUrl) return res.status(409).json({ error: 'No Grinder Dad reference image configured yet.' });
+    const masters = config?.value;
+    if (!masters?.default) return res.status(409).json({ error: 'No Grinder Dad reference image configured yet.' });
 
     const { data: day, error: dayErr } = await supabase
       .from('carousel_days')
@@ -46,7 +47,7 @@ export default async function handler(req, res) {
 
     const { data: slides, error: slidesErr } = await supabase
       .from('carousel_slides')
-      .select('id, position')
+      .select('id, position, caption')
       .eq('day_id', day.id)
       .order('position', { ascending: true });
     if (slidesErr) throw slidesErr;
@@ -58,6 +59,11 @@ export default async function handler(req, res) {
       const scene = scenes[slide.position - 1];
       const generationId = randomUUID();
 
+      // Consumer posts end on "the Pro" (Anthony: "The last photo has a
+      // pro in it always in the DIY section") — a distinct reference
+      // image, only for slide 6 of consumer days.
+      const masterUrl = (day.audience === 'consumer' && slide.position === 6 && masters.pro) ? masters.pro : masters.default;
+
       const { imageUrl, prompt } = await generateSlideImage({
         masterUrl, scene, dayId: day.id, position: slide.position, generationId, supabase,
       });
@@ -67,10 +73,15 @@ export default async function handler(req, res) {
       });
       if (genErr) throw genErr;
 
-      const { error: updateErr } = await supabase.from('carousel_slides').update({ active_generation_id: generationId }).eq('id', slide.id);
+      const finalUrl = await composeAndStoreFinal({ imageUrl, caption: slide.caption, dayId: day.id, position: slide.position });
+
+      const { error: updateErr } = await supabase
+        .from('carousel_slides')
+        .update({ active_generation_id: generationId, final_url: finalUrl })
+        .eq('id', slide.id);
       if (updateErr) throw updateErr;
 
-      results.push({ position: slide.position, imageUrl });
+      results.push({ position: slide.position, imageUrl, finalUrl });
     }
 
     await supabase.from('carousel_days').update({ status: 'generated' }).eq('id', day.id);

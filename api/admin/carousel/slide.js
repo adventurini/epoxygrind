@@ -1,9 +1,12 @@
 import { requireAdmin } from '../../../lib/require-admin.js';
 import { getSupabase, isSupabaseConfigured } from '../../../lib/supabase.js';
+import { composeAndStoreFinal } from '../../../lib/carousel/compose-and-store.js';
 
 /**
- * PATCH /api/admin/carousel/slide — edit one slide's caption text.
- * { date, position, caption }
+ * PATCH /api/admin/carousel/slide — edit one slide's caption text. If the
+ * slide already has a generated image, immediately re-composites it with
+ * the new caption (auto-applied, per Anthony — no separate approval step
+ * exists yet to gate this behind). { date, position, caption }
  */
 export default async function handler(req, res) {
   if (req.method !== 'PATCH') {
@@ -30,18 +33,31 @@ export default async function handler(req, res) {
     if (dayErr) throw dayErr;
     if (!day) return res.status(404).json({ error: 'That day has not been drafted yet.' });
 
-    const { error } = await supabase
+    const trimmedCaption = caption.slice(0, 500);
+
+    const { data: slide, error: slideErr } = await supabase
       .from('carousel_slides')
-      .update({ caption: caption.slice(0, 500) })
+      .select('id, carousel_generations!carousel_slides_active_generation_fkey(image_url)')
       .eq('day_id', day.id)
-      .eq('position', position);
+      .eq('position', position)
+      .maybeSingle();
+    if (slideErr) throw slideErr;
+    if (!slide) return res.status(404).json({ error: 'Slide not found.' });
+
+    const update = { caption: trimmedCaption };
+    const rawImageUrl = slide.carousel_generations?.image_url;
+    if (rawImageUrl) {
+      update.final_url = await composeAndStoreFinal({ imageUrl: rawImageUrl, caption: trimmedCaption, dayId: day.id, position });
+    }
+
+    const { error } = await supabase.from('carousel_slides').update(update).eq('id', slide.id);
     if (error) throw error;
 
     if (day.status === 'drafted' || day.status === 'generated') {
       await supabase.from('carousel_days').update({ status: 'edited' }).eq('id', day.id);
     }
 
-    return res.status(200).json({ ok: true });
+    return res.status(200).json({ ok: true, finalUrl: update.final_url || null });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: err.message || 'Failed to save slide.' });
