@@ -269,6 +269,15 @@ function init() {
 
   $('finish').addEventListener('change', syncPatterns);
 
+  // Bug fix: the browser's back/forward cache restores a <select>'s
+  // selected value on navigating back to this page, but does NOT fire a
+  // change event or re-run this init() — so the #pattern dropdown stayed
+  // stuck with whatever options were rendered at the ORIGINAL page load
+  // (e.g. Flake's patterns) even after #finish got restored to a different
+  // value (e.g. Metallic), showing the wrong pattern list with no user
+  // interaction able to trigger a resync except re-touching #finish itself.
+  window.addEventListener('pageshow', (e) => { if (e.persisted) syncPatterns(); });
+
   const zone = $('uploadZone');
   zone.addEventListener('click', () => $('photoInput').click());
   $('changePhoto').addEventListener('click', (e) => { e.stopPropagation(); $('photoInput').click(); });
