@@ -71,6 +71,15 @@ async function loadCredits(user) {
         link.textContent = 'Leads';
         drawer.appendChild(link);
       }
+
+      // Leads is the default dashboard view for admins — a bare landing on
+      // /app/ (bookmark, typed URL, brand-logo click) goes straight there.
+      // Gated on an empty hash so the "My estimates" nav link (/app/#estimates)
+      // still works instead of bouncing right back here.
+      if (window.location.pathname === '/app/' && !window.location.hash) {
+        window.location.replace('/app/admin/');
+        return;
+      }
     }
   } catch {
     /* optional — not worth surfacing a fetch error for this */
