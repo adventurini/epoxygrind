@@ -72,6 +72,15 @@
     },
     "api/cron/carousel-nightly.js": {
       "maxDuration": 200
+    },
+    "api/webhooks/voice/inbound.js": {
+      "maxDuration": 30
+    },
+    "api/webhooks/voice/recording.js": {
+      "maxDuration": 30
+    },
+    "api/webhooks/sms/inbound.js": {
+      "maxDuration": 30
     }
   },
   "crons": [

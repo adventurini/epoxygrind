@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead responder | EpoxyGrind Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#1A5CD6">
+<style>
+@font-face{font-family:'Archivo';font-style:normal;font-weight:700 900;font-display:swap;src:url('/fonts/archivo-var.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url('/fonts/inter-var.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/ibm-plex-mono-500.woff2') format('woff2')}
+</style>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-var.woff2" crossorigin>
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/auth/auth.css">
+<link rel="stylesheet" href="/app/dashboard.css">
+<link rel="stylesheet" href="/app/admin/admin.css">
+<link rel="stylesheet" href="/app/admin/responder/responder.css">
+</head>
+<body class="dashboard-page">
+
+<div id="dashboardRoot"></div>
+
+<div id="dashboardContent" hidden>
+  <div class="dashboard-top">
+    <div>
+      <p class="eyebrow" style="font-family:var(--ff-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dash-blue)">Admin</p>
+      <h1>Lead responder</h1>
+      <p class="lede">Missed calls + texts — Phase 1 (no AI yet, manual reply). <a class="admin-link" href="/app/admin/">← Back to admin</a></p>
+    </div>
+  </div>
+
+  <div id="responderDenied" class="dashboard-panel" hidden>
+    <h2>Not authorized</h2>
+    <p class="muted">This account doesn't have admin access.</p>
+  </div>
+
+  <div id="responderBody" hidden>
+    <section class="dashboard-panel resp-panel">
+      <div class="resp-list" id="respList">
+        <div id="respListLoading" class="muted" style="padding:14px">Loading…</div>
+        <div id="respListEmpty" class="muted" style="padding:14px" hidden>No conversations yet.</div>
+        <div id="respListItems"></div>
+      </div>
+      <div class="resp-thread" id="respThread">
+        <div id="respThreadEmpty" class="muted" style="padding:24px">Select a conversation.</div>
+        <div id="respThreadContent" hidden>
+          <div class="resp-thread-head">
+            <div>
+              <h3 id="respThreadName"></h3>
+              <p class="tiny muted" id="respThreadMeta"></p>
+            </div>
+          </div>
+          <div class="resp-messages" id="respMessages"></div>
+          <div class="resp-composer">
+            <textarea id="respReplyText" rows="2" placeholder="Reply…"></textarea>
+            <button type="button" class="btn btn-p btn-sm" id="respSendBtn">Send</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script type="module" src="/js/app-admin-responder.bundle.js"></script>
+</body>
+</html>
