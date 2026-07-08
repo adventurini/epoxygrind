@@ -18,13 +18,14 @@ import { track } from './analytics.js';
 const CHIP_SIZE = 128;
 
 /** Spec Part 4: "Group chips: Grays & Neutrals / Earth Tones / Bold &
- * Custom." Covers all 13 blends lib/flake-recipes.js now carries — the
- * spec's own Part 1.2 verified seed set, fully transcribed (catalog
- * completion pass). Grouped by the components' dominant tone. */
+ * Custom." Covers all 20 blends lib/flake-recipes.js now carries — the
+ * spec's own Part 1.2 verified seed set (13) plus the Part 1.3 scrape
+ * task's 7 additional verified blends (catalog completion pass). Grouped
+ * by the components' dominant tone. */
 const BLEND_GROUPS = [
-  { label: 'Grays & Neutrals', blendIds: ['domino', 'gravel', 'wombat', 'nightfall', 'raven'] },
+  { label: 'Grays & Neutrals', blendIds: ['domino', 'gravel', 'wombat', 'nightfall', 'raven', 'feather-gray', 'blizzard', 'water-lily', 'weathered-gray'] },
   { label: 'Earth Tones', blendIds: ['cabin-fever', 'coyote', 'creekbed', 'shoreline', 'outback'] },
-  { label: 'Bold & Custom', blendIds: ['tidal-wave', 'orbit', 'galaxy'] },
+  { label: 'Bold & Custom', blendIds: ['tidal-wave', 'orbit', 'galaxy', 'hog', 'rapids', 'rebel'] },
 ];
 
 const BLEND_LABELS = {
@@ -32,6 +33,8 @@ const BLEND_LABELS = {
   'cabin-fever': 'Cabin Fever', wombat: 'Wombat', coyote: 'Coyote',
   nightfall: 'Nightfall', raven: 'Raven', creekbed: 'Creekbed',
   shoreline: 'Shoreline', outback: 'Outback', orbit: 'Orbit', galaxy: 'Galaxy',
+  'feather-gray': 'Feather Gray', hog: 'Hog', blizzard: 'Blizzard',
+  'water-lily': 'Water Lily', rapids: 'Rapids', rebel: 'Rebel', 'weathered-gray': 'Weathered Gray',
 };
 
 /** Standard professional base coat palette — constrained on purpose (spec
