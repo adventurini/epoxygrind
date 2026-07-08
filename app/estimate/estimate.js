@@ -5,6 +5,7 @@ import {
   renderBeforeAfterPreview,
   previewLoadingHtml,
   humanizeLabel,
+  formatMoney,
 } from '/calculator/estimate-view.js';
 import {
   clearPendingEstimate,
@@ -16,6 +17,9 @@ import { createPreviewProgress } from '/calculator/preview-progress.js';
 import { initDashboard, refreshDashboardProfile } from '/app/shell.js';
 import { authFetch } from '/auth/client.js';
 import { track } from '/calculator/analytics.js';
+import { calculateEstimate } from '/lib/pricing.js';
+import { resolveDesign } from '/lib/finish-design.js';
+import { findSolidColor } from '/lib/flake-recipes.js';
 
 const params = new URLSearchParams(location.search);
 let estimateId = params.get('id');
@@ -98,6 +102,104 @@ function designSnapshot(data) {
   };
 }
 
+/**
+ * Coverage/density has no direct pricing-engine concept — the visualizer's
+ * density slider maps onto the SAME pattern ids lib/pricing.js already
+ * knows about (partial-broadcast is priced lower) so this recomputes
+ * pricing without adding a new pricing concept or touching lib/pricing.js.
+ */
+function densityToPatternId(finish, density) {
+  if (finish !== 'flake') return undefined;
+  return density < 0.4 ? 'partial' : 'full-broadcast';
+}
+
+/**
+ * Recomputes design + pricing client-side from a visualizer FloorSpec —
+ * this is the instant, network-free replacement for the old phase:'redesign'
+ * server round trip (buildSinglePreview's gen-AI call is gone from this
+ * path entirely; lib/pricing.js and lib/finish-design.js are pure
+ * functions, safe to run in the browser exactly as-is).
+ */
+function recomputeFromFloorSpec(finish, floorSpec) {
+  const design = resolveDesign({
+    finish,
+    baseColor: floorSpec.baseCoatId,
+    flakeColor: floorSpec.blendId !== 'CUSTOM' ? floorSpec.blendId : undefined,
+    pattern: densityToPatternId(finish, floorSpec.density),
+  });
+
+  if (floorSpec.blendId === 'CUSTOM' && floorSpec.customComponents?.length) {
+    design.flakeColorLabel = 'Custom blend';
+    design.flakeColorHex = findSolidColor(floorSpec.customComponents[0].colorCode).hex;
+    design.colorLabel = `${design.baseColorLabel} base · Custom blend`;
+    design.summary = `${design.colorLabel} · ${design.patternLabel}`;
+  }
+
+  const sqFt = currentEstimate?.analysis?.estimatedSqFt || currentEstimate?.pricing?.sqFt || 0;
+  const pricing = calculateEstimate(sqFt, finish, {
+    design,
+    regionalRates: currentEstimate?.pricing?.market || null,
+    coatingType: currentEstimate?.meta?.coatingType || 'epoxy',
+  });
+
+  return { design, pricing };
+}
+
+/** Updates just the top-line price display in place — deliberately does
+ * NOT call showEstimate()/renderEstimate() again, which would tear down
+ * and remount the live WebGL canvas (re-running segmentation) on every
+ * blend/density tweak. */
+function updatePriceDom(pricing) {
+  const exact = pricing.totalExact ?? Math.round(((pricing.totalLow + pricing.totalHigh) / 2) / 5) * 5;
+  const rangeLow = Math.round((exact * 0.9) / 5) * 5;
+  const rangeHigh = Math.round((exact * 1.1) / 5) * 5;
+  const priceExact = doc.querySelector('.price-exact');
+  const priceNote = doc.querySelector('.price-note');
+  if (priceExact) priceExact.textContent = `${formatMoney(rangeLow)} – ${formatMoney(rangeHigh)}`;
+  if (priceNote) priceNote.textContent = `${pricing.finishLabel} · ${Math.round(pricing.sqFt)} sq ft`;
+}
+
+/**
+ * Wired to visualizer-controls' onSpecChange/onFinishChange via
+ * calculator/estimate-view.js's wireVisualizer. Fires on every control
+ * change (already debounced ~600ms upstream so this isn't hammered), so it
+ * intentionally does the minimum: update in-memory state + the price
+ * display, then best-effort persist for saved estimates.
+ */
+function onVisualizerChange({ floorSpec, image }) {
+  if (!currentEstimate) return;
+  const finish = floorSpec.finish;
+  const { design, pricing } = recomputeFromFloorSpec(finish, floorSpec);
+
+  currentEstimate = {
+    ...currentEstimate,
+    design,
+    pricing,
+    floorSpec,
+    visualizerResult: { image },
+    meta: { ...currentEstimate.meta, finish, previewMode: 'visualizer' },
+  };
+  updatePriceDom(pricing);
+
+  if (estimateId) {
+    authFetch(`/api/estimates?id=${encodeURIComponent(estimateId)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        payload: {
+          pricing: currentEstimate.pricing,
+          design: currentEstimate.design,
+          floorSpec: currentEstimate.floorSpec,
+          visualizerResult: currentEstimate.visualizerResult,
+          meta: currentEstimate.meta,
+        },
+      }),
+    })
+      .then(() => track('visualizer_result_in_lead', { finish }))
+      .catch(() => {});
+  }
+}
+
 function showEstimate(data) {
   currentEstimate = data;
   renderEstimate(doc, data, {
@@ -107,6 +209,7 @@ function showEstimate(data) {
     previewHistory,
     activeHistoryIndex,
     onSelectPreview: selectPreviewFromHistory,
+    onVisualizerChange,
   });
   loading.hidden = true;
   error.hidden = true;

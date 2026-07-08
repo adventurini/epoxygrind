@@ -1,5 +1,8 @@
 import { initBeforeAfterSlider } from './before-after-slider.js';
 import { renderDesignEditor } from './design-editor.js';
+import { FloorVisualizer } from './visualizer-gl.js';
+import { renderVisualizerControls, findBaseCoat, BASE_COAT_PALETTE } from './visualizer-controls.js';
+import { track } from './analytics.js';
 
 export function formatMoney(n) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
@@ -43,6 +46,13 @@ export function previewLoadingHtml(caption) {
 }
 
 export function previewsNeedGeneration(data = {}) {
+  // Visualizer-pipeline estimates never had (and will never get) a
+  // server-generated gen-AI preview image — the client composites live
+  // instead (visualizer-build-spec Part 3). Without this check, every GET
+  // of a new-style estimate would look like a "missing preview" and fall
+  // through to the old, expensive on-demand generateAllEstimatePreviews
+  // path — exactly the per-render cost/latency this feature replaces.
+  if (data.meta?.previewMode === 'visualizer') return false;
   if (data.previewPaths?.some((item) => item.id === 'original' && item.path)) return false;
   return !(data.previews || []).some((item) => item.id === 'original' && item.image);
 }
@@ -59,6 +69,16 @@ export function estimatePayload(data) {
     customerName: data.customerName || '',
     email: data.email || data.meta?.email || '',
     location: data.location || data.meta?.location || '',
+    // Extra visualizer state (blend/base coat/density/size/metallic
+    // colorway) that doesn't fit lib/finish-design.js's resolveDesign()
+    // shape — kept as its own top-level field rather than overloading
+    // `design` so pricing.js/finish-design.js stay untouched.
+    floorSpec: data.floorSpec || null,
+    // The rendered composite (canvas.toBlob -> data URL), persisted so a
+    // contractor viewing a shared link sees exactly what the homeowner
+    // configured (visualizer-build-spec Part 4), without re-running
+    // segmentation on their end.
+    visualizerResult: data.visualizerResult || null,
   };
 }
 
@@ -144,20 +164,241 @@ function wireDesignEditor(container, opts = {}) {
   });
 }
 
-function photoBlockHtml(data, opts) {
-  const { originalImage, previews = [] } = data;
-  const previewImage = previews.find((item) => item.id === 'original' && item.image)?.image;
+/**
+ * Default FloorSpec (visualizer-build-spec Part 1.1) for an estimate that
+ * hasn't had the visualizer opened yet — seeded from the finish/color the
+ * user picked in the pre-photo wizard so the first live render matches
+ * what they already chose instead of resetting to Gravel/medium-gray.
+ */
+export function defaultFloorSpec(data) {
+  if (data.floorSpec) return data.floorSpec;
+  const design = data.design || {};
+  const finish = ['solid', 'flake', 'metallic'].includes(design.finish)
+    ? design.finish
+    : (data.meta?.finish || 'flake');
+  return {
+    finish,
+    baseCoatId: BASE_COAT_PALETTE.some((c) => c.id === design.baseColor) ? design.baseColor : 'medium-gray',
+    blendId: design.flakeColor || 'gravel',
+    customComponents: null,
+    density: 1,
+    flakeSizeIn: 0.25,
+    metallicId: 'silver-pearl',
+  };
+}
 
-  if (previewImage) {
-    return beforeAfterBlockHtml(originalImage, previewImage, opts);
+function visualizerBlockHtml() {
+  return `
+    <div class="viz-wrap" data-role="vizWrap">
+      <div class="viz-canvas-frame" data-role="vizFrame">
+        <canvas class="viz-canvas" data-role="vizCanvas"></canvas>
+        <div class="viz-skeleton" data-role="vizSkeleton"><span class="viz-spinner"></span><p>Finding your floor…</p></div>
+        <div class="viz-error" data-role="vizError" hidden></div>
+        <div class="viz-wipe-track" data-role="vizWipeTrack" role="slider" tabindex="0"
+          aria-label="Drag to compare your photo and the new floor" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+          <div class="viz-wipe-handle" data-role="vizWipeHandle">
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </div>
+        </div>
+      </div>
+      <div data-role="vizControlsMount"></div>
+      <div class="viz-actions">
+        <button type="button" class="btn btn-o btn-sm" data-role="vizDownload">Share / download my floor</button>
+      </div>
+    </div>`;
+}
+
+function blobToDataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+/** Mirrors before-after-slider.js's drag math on the visualizer's own
+ * wipe track (kept separate from that module — it's wired to a WebGL
+ * uniform here, not a clip-path — per the build task's "reuse the pattern,
+ * don't touch the original" instruction). */
+function wireWipeInteraction(track, handle, visualizer) {
+  if (!track || !handle || !visualizer) return;
+  let pct = 50;
+  let dragging = false;
+  let tracked = false;
+
+  function setPct(next) {
+    pct = Math.min(100, Math.max(0, next));
+    handle.style.left = `${pct}%`;
+    track.setAttribute('aria-valuenow', String(Math.round(pct)));
+    visualizer.setWipePct(pct / 100);
+    if (!tracked) {
+      tracked = true;
+      track_interacted();
+    }
+  }
+  function track_interacted() {
+    track.dispatchEvent(new CustomEvent('viz-wipe-interacted'));
+  }
+  function pctFromClientX(clientX) {
+    const rect = track.getBoundingClientRect();
+    if (!rect.width) return pct;
+    return ((clientX - rect.left) / rect.width) * 100;
+  }
+  track.addEventListener('pointerdown', (e) => {
+    dragging = true;
+    track.setPointerCapture(e.pointerId);
+    setPct(pctFromClientX(e.clientX));
+  });
+  track.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    setPct(pctFromClientX(e.clientX));
+  });
+  track.addEventListener('pointerup', (e) => {
+    dragging = false;
+    try { track.releasePointerCapture(e.pointerId); } catch { /* already released */ }
+  });
+  track.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') { setPct(pct - 5); e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { setPct(pct + 5); e.preventDefault(); }
+  });
+  setPct(50);
+}
+
+/**
+ * Mounts the live WebGL visualizer + control panel into a rendered
+ * visualizerBlockHtml() container. This is the owner-only interactive
+ * path (spec Part 3/4) — a non-owner shared-link viewer instead sees the
+ * static persisted snapshot via beforeAfterBlockHtml, wired below.
+ * @param {HTMLElement} container
+ * @param {object} data - current estimate data
+ * @param {object} opts
+ * @param {(payload:{floorSpec:object, image:string})=>void} [opts.onVisualizerChange]
+ * @param {(finish:string)=>void} [opts.onFinishChange]
+ */
+function wireVisualizer(container, data, opts = {}) {
+  if (!container) return;
+  const canvas = container.querySelector('[data-role="vizCanvas"]');
+  const skeleton = container.querySelector('[data-role="vizSkeleton"]');
+  const errorEl = container.querySelector('[data-role="vizError"]');
+  const controlsMount = container.querySelector('[data-role="vizControlsMount"]');
+  const wipeTrack = container.querySelector('[data-role="vizWipeTrack"]');
+  const wipeHandle = container.querySelector('[data-role="vizWipeHandle"]');
+  const downloadBtn = container.querySelector('[data-role="vizDownload"]');
+  if (!canvas) return;
+
+  let visualizer;
+  try {
+    visualizer = new FloorVisualizer(canvas);
+  } catch {
+    if (skeleton) skeleton.hidden = true;
+    if (errorEl) {
+      errorEl.hidden = false;
+      errorEl.textContent = "Your browser doesn't support the interactive floor preview (WebGL2). Try a recent Chrome, Safari, or Edge.";
+    }
+    return;
   }
 
-  if (previewsNeedGeneration(data)) {
-    return `<p class="label">Uploaded photo</p>
-      <div class="est-photo-generating">
-        <img src="${originalImage}" alt="Uploaded space">
-        ${previewLoadingHtml('Generating your floor preview…')}
-      </div>`;
+  const spec = defaultFloorSpec(data);
+  let renderedOnce = false;
+  let persistTimer = null;
+
+  function modeFor(finish) {
+    return finish === 'metallic' ? 'metallic' : finish === 'solid' ? 'solid' : 'flake';
+  }
+
+  function applySpec() {
+    visualizer.setSpec({
+      mode: modeFor(spec.finish),
+      blendId: spec.blendId,
+      customComponents: spec.customComponents,
+      baseCoatHex: findBaseCoat(spec.baseCoatId).hex,
+      density: spec.density,
+      flakeSizeIn: spec.flakeSizeIn,
+      metallicId: spec.metallicId,
+    });
+  }
+
+  function schedulePersist() {
+    if (!renderedOnce) return;
+    if (persistTimer) clearTimeout(persistTimer);
+    persistTimer = setTimeout(async () => {
+      try {
+        const blob = await visualizer.toBlob('image/jpeg', 0.82);
+        const image = await blobToDataUrl(blob);
+        opts.onVisualizerChange?.({ floorSpec: { ...spec }, image });
+      } catch { /* best-effort persistence only */ }
+    }, 600);
+  }
+
+  renderVisualizerControls(controlsMount, spec, {
+    onSpecChange: (partial) => {
+      Object.assign(spec, partial);
+      applySpec();
+      schedulePersist();
+    },
+    onFinishChange: (finish) => {
+      spec.finish = finish;
+      applySpec();
+      schedulePersist();
+      opts.onFinishChange?.(finish);
+    },
+  });
+
+  wireWipeInteraction(wipeTrack, wipeHandle, visualizer);
+  wipeTrack?.addEventListener('viz-wipe-interacted', () => track('slider_interacted', { pct: Number(wipeTrack.getAttribute('aria-valuenow')) }), { once: true });
+
+  downloadBtn?.addEventListener('click', async () => {
+    try {
+      const blob = await visualizer.toBlob('image/jpeg', 0.92);
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'my-epoxy-floor.jpg';
+      a.click();
+      track('visualizer_result_in_lead', { action: 'download' });
+    } catch { /* ignore */ }
+  });
+
+  applySpec();
+  visualizer
+    .loadPhoto(data.originalImage)
+    .then((result) => {
+      if (skeleton) skeleton.hidden = true;
+      if (result.needsManualAssist) {
+        if (errorEl) {
+          errorEl.hidden = false;
+          errorEl.textContent = "We couldn't clearly find the floor in this photo — try a straight-on shot of the empty floor for the best preview.";
+        }
+        return;
+      }
+      renderedOnce = true;
+      track('visualizer_rendered', { finish: spec.finish });
+      schedulePersist();
+    })
+    .catch(() => {
+      if (skeleton) skeleton.hidden = true;
+      if (errorEl) {
+        errorEl.hidden = false;
+        errorEl.textContent = 'Could not generate a live preview for this photo. Try another photo.';
+      }
+    });
+}
+
+function photoBlockHtml(data, opts) {
+  const { originalImage } = data;
+  const staticImage = data.visualizerResult?.image;
+
+  // Owner: always the live, instant WebGL visualizer (spec: "replaces the
+  // current preview slot in the estimator's results view").
+  if (opts.allowEdit) {
+    return `<p class="label">Your new floor — drag to compare, then customize below</p>${visualizerBlockHtml()}`;
+  }
+
+  // Non-owner / shared link: the persisted static snapshot of whatever the
+  // homeowner last configured — no segmentation call, no controls.
+  if (staticImage) {
+    return `<p class="label">Before &amp; after — drag to compare</p>${beforeAfterHtml(originalImage, staticImage)}`;
   }
 
   return `<p class="label">Uploaded photo</p><img src="${originalImage}" alt="Uploaded space">`;
@@ -337,8 +578,9 @@ export function renderEstimate(target, data, opts = {}) {
     </footer>`;
 
   initBeforeAfterSlider(target.querySelector('.ba-slider'));
-  wireDesignEditor(target.querySelector('#estimatePhotoBlock'), opts);
-  wireHistoryThumbnails(target.querySelector('#estimatePhotoBlock'), opts);
+  if (opts.allowEdit) {
+    wireVisualizer(target.querySelector('#estimatePhotoBlock [data-role="vizWrap"]'), data, opts);
+  }
 }
 
 export function storageKey(id) {
