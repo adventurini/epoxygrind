@@ -1,6 +1,7 @@
 import { requireAdmin } from '../../../lib/require-admin.js';
 import { getSupabase, isSupabaseConfigured } from '../../../lib/supabase.js';
 import { generateSlideCaptions } from '../../../lib/carousel/generate-captions.js';
+import { generatePostCaption } from '../../../lib/carousel/generate-post-caption.js';
 
 /**
  * POST /api/admin/carousel/swap-topic — pull a different least-recently-
@@ -45,9 +46,12 @@ export default async function handler(req, res) {
     if (topicErr) throw topicErr;
     if (!nextTopic) return res.status(409).json({ error: 'No other topic available in this pool.' });
 
-    const captions = await generateSlideCaptions({ audience: day.audience, topic: nextTopic });
+    const [captions, igCaption] = await Promise.all([
+      generateSlideCaptions({ audience: day.audience, topic: nextTopic }),
+      generatePostCaption({ audience: day.audience, topic: nextTopic }),
+    ]);
 
-    await supabase.from('carousel_days').update({ topic_id: nextTopic.id, status: 'drafted' }).eq('id', day.id);
+    await supabase.from('carousel_days').update({ topic_id: nextTopic.id, status: 'drafted', ig_caption: igCaption }).eq('id', day.id);
     for (let i = 0; i < 6; i++) {
       // Detach (not delete) any prior generation — it belonged to the old
       // topic's scenes and no longer matches, but the generations row

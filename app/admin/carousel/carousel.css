@@ -38,6 +38,10 @@
 .cal-slide-regen{display:flex;gap:6px;margin-top:8px}
 .cal-slide-delta{flex:1;min-width:0;font-family:inherit;font-size:12px;padding:6px 9px;border:1px solid var(--dash-line);border-radius:7px;background:#fff;color:var(--dash-ink)}
 .cal-slide-regen-btn{white-space:nowrap}
+.cal-post-caption{margin-top:18px;padding-top:16px;border-top:1px solid var(--dash-line)}
+.cal-post-caption textarea{font-size:13px;line-height:1.5}
+.cal-publish{margin-top:16px;padding-top:16px;border-top:1px solid var(--dash-line)}
+.cal-publish .cal-day-actions{margin-bottom:8px}
 .cal-slide-label{font-family:var(--ff-m,"IBM Plex Mono",monospace);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--dash-muted);margin-bottom:6px;display:flex;justify-content:space-between}
 .cal-slide textarea{width:100%;box-sizing:border-box;font-family:inherit;font-size:13.5px;padding:8px 10px;border:1px solid var(--dash-line);border-radius:8px;resize:vertical;background:#fff;color:var(--dash-ink)}
 .cal-slide-wordcount{font-family:var(--ff-m,"IBM Plex Mono",monospace)}

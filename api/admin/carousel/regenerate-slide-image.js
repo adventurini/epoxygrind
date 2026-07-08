@@ -58,6 +58,9 @@ export default async function handler(req, res) {
     if (slideErr) throw slideErr;
     if (!slide) return res.status(404).json({ error: 'Slide not found.' });
 
+    const isDualCloser = position === 6 && masters.pro;
+    const masterUrls = isDualCloser ? [masters.default, masters.pro] : [masters.default];
+
     const basePrompt = slide.carousel_generations?.prompt;
     let prompt;
     if (basePrompt) {
@@ -67,13 +70,12 @@ export default async function handler(req, res) {
       // day-generation would (spec §2.3), then apply the delta if given.
       const scenes = await generateSlideScenes({ audience: day.audience, topic: day.carousel_topics });
       const scene = deltaPrompt ? `${scenes[position - 1]} ${deltaPrompt}.` : scenes[position - 1];
-      prompt = buildImagePrompt(scene);
+      prompt = buildImagePrompt(scene, { dualCharacter: isDualCloser });
     }
 
-    const masterUrl = (day.audience === 'consumer' && position === 6 && masters.pro) ? masters.pro : masters.default;
     const generationId = randomUUID();
 
-    const { imageUrl } = await generateSlideImage({ masterUrl, prompt, dayId: day.id, position, generationId });
+    const { imageUrl } = await generateSlideImage({ masterUrls, prompt, dayId: day.id, position, generationId });
 
     const { error: genErr } = await supabase.from('carousel_generations').insert({
       id: generationId, slide_id: slide.id, prompt, delta_prompt: deltaPrompt || null, image_url: imageUrl, model: 'fal-ai/flux-2/edit',

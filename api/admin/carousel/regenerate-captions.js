@@ -1,12 +1,21 @@
 import { requireAdmin } from '../../../lib/require-admin.js';
 import { getSupabase, isSupabaseConfigured } from '../../../lib/supabase.js';
 import { generateSlideCaptions } from '../../../lib/carousel/generate-captions.js';
+import { generatePostCaption } from '../../../lib/carousel/generate-post-caption.js';
+import { composeAndStoreFinal } from '../../../lib/carousel/compose-and-store.js';
 
 /**
- * POST /api/admin/carousel/regenerate-captions — re-run caption generation
- * for a day's already-assigned topic (spec §4 day-level "regenerate all
- * captions"). Does not change the topic; see swap-topic.js for that.
- * { date }
+ * POST /api/admin/carousel/regenerate-captions — re-runs caption
+ * generation for a day's already-assigned topic (spec §4 day-level
+ * "regenerate all captions"). Does not change the topic; see
+ * swap-topic.js for that.
+ *
+ * Regenerates the whole day cohesively, not just the caption text field:
+ * any slide that already has a generated image gets recomposited with the
+ * new caption (confirmed real bug otherwise — the on-image text and the
+ * caption field silently went out of sync), and the IG/FB post caption
+ * regenerates alongside so the day is never left with on-image text that
+ * doesn't match what's burned in, or missing its post caption. { date }
  */
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -34,18 +43,32 @@ export default async function handler(req, res) {
     if (dayErr) throw dayErr;
     if (!day) return res.status(404).json({ error: 'That day has not been drafted yet.' });
 
-    const captions = await generateSlideCaptions({ audience: day.audience, topic: day.carousel_topics });
+    const [captions, igCaption] = await Promise.all([
+      generateSlideCaptions({ audience: day.audience, topic: day.carousel_topics }),
+      generatePostCaption({ audience: day.audience, topic: day.carousel_topics }),
+    ]);
 
-    for (let i = 0; i < 6; i++) {
-      const { error } = await supabase
-        .from('carousel_slides')
-        .update({ caption: captions[i] })
-        .eq('day_id', day.id)
-        .eq('position', i + 1);
+    const { data: slides, error: slidesErr } = await supabase
+      .from('carousel_slides')
+      .select('id, position, carousel_generations!carousel_slides_active_generation_fkey(image_url)')
+      .eq('day_id', day.id)
+      .order('position', { ascending: true });
+    if (slidesErr) throw slidesErr;
+
+    for (const slide of slides) {
+      const caption = captions[slide.position - 1];
+      const update = { caption };
+      const rawImageUrl = slide.carousel_generations?.image_url;
+      if (rawImageUrl) {
+        update.final_url = await composeAndStoreFinal({ imageUrl: rawImageUrl, caption, dayId: day.id, position: slide.position });
+      }
+      const { error } = await supabase.from('carousel_slides').update(update).eq('id', slide.id);
       if (error) throw error;
     }
 
-    return res.status(200).json({ ok: true, captions });
+    await supabase.from('carousel_days').update({ ig_caption: igCaption }).eq('id', day.id);
+
+    return res.status(200).json({ ok: true, captions, igCaption });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: err.message || 'Failed to regenerate captions.' });

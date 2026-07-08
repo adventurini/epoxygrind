@@ -50,6 +50,7 @@
           <button type="button" class="btn btn-o btn-sm" id="calNextBtn">Next →</button>
         </div>
         <button type="button" class="btn btn-p btn-sm" id="calFillBtn">Fill next 30 days</button>
+        <button type="button" class="btn btn-o btn-sm" id="calMetaSettingsBtn">Meta/IG settings</button>
       </div>
       <div id="calLoading" class="muted">Loading calendar…</div>
       <div class="cal-grid" id="calGrid" hidden></div>
@@ -76,7 +77,48 @@
         <button type="button" class="btn btn-o btn-sm" id="dayRegenBtn">Regenerate all captions</button>
       </div>
       <div class="cal-slides" id="calSlides"></div>
+
+      <div class="cal-post-caption">
+        <div class="pipeline-field">
+          <label for="dayIgCaption">Instagram / Facebook post caption <span class="tiny muted" id="dayIgCaptionCount"></span></label>
+          <textarea id="dayIgCaption" rows="8"></textarea>
+          <button type="button" class="btn btn-o btn-sm" id="dayRegenPostCaptionBtn" style="margin-top:8px">Regenerate post caption</button>
+        </div>
+      </div>
+
+      <div class="cal-publish">
+        <div class="cal-day-actions">
+          <label class="admin-checkbox"><input type="checkbox" id="publishIg" checked> Instagram</label>
+          <label class="admin-checkbox"><input type="checkbox" id="publishFb" checked> Facebook</label>
+          <button type="button" class="btn btn-p btn-sm" id="dayPublishBtn">Publish now</button>
+        </div>
+        <p class="tiny muted" id="dayPublishStatus"></p>
+      </div>
     </div>
+  </div>
+</div>
+
+<div class="pipeline-backdrop" id="metaSettingsBackdrop" hidden></div>
+<div class="pipeline-panel cal-day-panel" id="metaSettingsPanel" hidden>
+  <div class="pipeline-panel-head">
+    <div><h3>Meta / Instagram settings</h3></div>
+    <button type="button" class="dash-icon-btn" id="metaSettingsCloseBtn" aria-label="Close">✕</button>
+  </div>
+  <div class="pipeline-panel-body">
+    <p class="tiny muted">Stored in the DB (not an env var) so the token can be rotated without a redeploy. Long-lived Page tokens expire roughly every 60 days.</p>
+    <div class="pipeline-field">
+      <label for="metaIgUserId">Instagram Business Account ID</label>
+      <input type="text" id="metaIgUserId" placeholder="17841400000000000">
+    </div>
+    <div class="pipeline-field">
+      <label for="metaPageId">Facebook Page ID</label>
+      <input type="text" id="metaPageId" placeholder="100000000000000">
+    </div>
+    <div class="pipeline-field">
+      <label for="metaPageAccessToken">Page Access Token <span class="tiny muted" id="metaTokenStatus"></span></label>
+      <textarea id="metaPageAccessToken" rows="3" placeholder="Paste a new long-lived Page access token to rotate it — leave blank to keep the current one"></textarea>
+    </div>
+    <button type="button" class="btn btn-p btn-sm" id="metaSettingsSaveBtn">Save</button>
   </div>
 </div>
 

@@ -127,8 +127,11 @@ function renderSlides(day) {
     return `<div class="cal-slide" data-position="${s.position}">
       ${imageHtml}
       <div class="cal-slide-label"><span>Slide ${s.position} — ${roleLabel}</span><span class="cal-slide-wordcount ${wc > limit ? 'over' : ''}">${wc}/${limit} words</span></div>
-      <textarea rows="2" ${day.readOnly ? 'readonly' : ''} data-position="${s.position}">${escapeHtml(s.caption || '')}</textarea>
+      <textarea rows="2" ${day.readOnly ? 'readonly' : ''} data-position="${s.position}" data-caption-input>${escapeHtml(s.caption || '')}</textarea>
       ${day.readOnly ? '' : `
+      <div class="cal-slide-apply">
+        <button type="button" class="btn btn-p btn-sm cal-slide-apply-btn" data-position="${s.position}">Apply caption to image</button>
+      </div>
       <div class="cal-slide-regen">
         <input type="text" class="cal-slide-delta" data-position="${s.position}" placeholder="Optional: describe a change (e.g. &quot;more panic&quot;)">
         <button type="button" class="btn btn-o btn-sm cal-slide-regen-btn" data-position="${s.position}">Regenerate this image</button>
@@ -163,6 +166,13 @@ async function openDayPanel(date) {
     document.getElementById('daySwapTopicBtn').disabled = day.readOnly;
     document.getElementById('dayRegenBtn').disabled = day.readOnly;
     document.getElementById('dayGenImagesBtn').disabled = day.readOnly;
+    document.getElementById('dayRegenPostCaptionBtn').disabled = day.readOnly;
+    document.getElementById('dayPublishBtn').disabled = day.readOnly;
+    const igCaptionEl = document.getElementById('dayIgCaption');
+    igCaptionEl.value = day.igCaption || '';
+    igCaptionEl.readOnly = day.readOnly;
+    document.getElementById('dayIgCaptionCount').textContent = `${(day.igCaption || '').length}/2200 chars`;
+    document.getElementById('dayPublishStatus').textContent = day.approvedAt ? `Published ${new Date(day.approvedAt).toLocaleString()}` : '';
     renderSlides(day);
     document.getElementById('dayPanelContent').hidden = false;
   } catch (err) {
@@ -179,10 +189,20 @@ function closeDayPanel() {
 document.getElementById('dayPanelCloseBtn').addEventListener('click', closeDayPanel);
 document.getElementById('dayBackdrop').addEventListener('click', closeDayPanel);
 
-document.getElementById('calSlides').addEventListener('blur', async (ev) => {
-  const textarea = ev.target.closest('textarea[data-position]');
-  if (!textarea || !currentDate) return;
-  const position = Number(textarea.dataset.position);
+// Explicit "Apply" button rather than a silent save-on-blur (Anthony: "If
+// we change it, there should be an apply button, to retrigger") — editing
+// a caption doesn't touch the image until this fires, so the on-image
+// text and the textarea can never silently drift apart.
+document.getElementById('calSlides').addEventListener('click', async (ev) => {
+  const btn = ev.target.closest('.cal-slide-apply-btn');
+  if (!btn || !currentDate) return;
+  const position = Number(btn.dataset.position);
+  const textarea = document.querySelector(`.cal-slide[data-position="${position}"] textarea[data-caption-input]`);
+  if (!textarea) return;
+
+  btn.disabled = true;
+  const original = btn.textContent;
+  btn.textContent = 'Applying…';
   try {
     const res = await authFetch('/api/admin/carousel/slide', {
       method: 'PATCH',
@@ -195,10 +215,18 @@ document.getElementById('calSlides').addEventListener('blur', async (ev) => {
       const img = document.querySelector(`.cal-slide[data-position="${position}"] .cal-slide-img`);
       if (img && img.tagName === 'IMG') img.src = data.finalUrl;
     }
+    const wc = wordCount(textarea.value);
+    const limit = SLIDE_WORD_LIMITS[position - 1];
+    const wcEl = document.querySelector(`.cal-slide[data-position="${position}"] .cal-slide-wordcount`);
+    if (wcEl) { wcEl.textContent = `${wc}/${limit} words`; wcEl.classList.toggle('over', wc > limit); }
+    toast(data.finalUrl ? 'Caption applied to image.' : 'Caption saved.');
   } catch (err) {
     toast(err.message || 'Could not save.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = original;
   }
-}, true);
+});
 
 document.getElementById('dayRegenBtn').addEventListener('click', async () => {
   if (!currentDate) return;
@@ -286,6 +314,122 @@ document.getElementById('daySwapTopicBtn').addEventListener('click', async () =>
     toast(`Swapped to "${data.topicTitle}".`);
   } catch (err) {
     toast(err.message || 'Swap failed.');
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+document.getElementById('dayIgCaption').addEventListener('input', (ev) => {
+  document.getElementById('dayIgCaptionCount').textContent = `${ev.target.value.length}/2200 chars`;
+});
+
+document.getElementById('dayIgCaption').addEventListener('blur', async (ev) => {
+  if (!currentDate) return;
+  try {
+    const res = await authFetch('/api/admin/carousel/day-fields', {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ date: currentDate, igCaption: ev.target.value }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not save.');
+  } catch (err) {
+    toast(err.message || 'Could not save.');
+  }
+});
+
+document.getElementById('dayRegenPostCaptionBtn').addEventListener('click', async () => {
+  if (!currentDate) return;
+  const btn = document.getElementById('dayRegenPostCaptionBtn');
+  btn.disabled = true;
+  try {
+    const res = await authFetch('/api/admin/carousel/regenerate-post-caption', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ date: currentDate }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Regenerate failed.');
+    document.getElementById('dayIgCaption').value = data.igCaption;
+    document.getElementById('dayIgCaptionCount').textContent = `${data.igCaption.length}/2200 chars`;
+    toast('Post caption regenerated.');
+  } catch (err) {
+    toast(err.message || 'Regenerate failed.');
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+document.getElementById('dayPublishBtn').addEventListener('click', async () => {
+  if (!currentDate) return;
+  const platforms = [];
+  if (document.getElementById('publishIg').checked) platforms.push('ig');
+  if (document.getElementById('publishFb').checked) platforms.push('fb');
+  if (!platforms.length) { toast('Pick at least one platform.'); return; }
+  if (!confirm(`Publish ${currentDate} to ${platforms.join(', ').toUpperCase()} right now? This posts publicly and cannot be undone from here.`)) return;
+
+  const btn = document.getElementById('dayPublishBtn');
+  btn.disabled = true;
+  const original = btn.textContent;
+  btn.textContent = 'Publishing…';
+  try {
+    const res = await authFetch('/api/admin/carousel/publish', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ date: currentDate, platforms }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Publish failed.');
+    const summary = data.results.map((r) => `${r.platform.toUpperCase()}: ${r.ok ? 'published' : 'FAILED — ' + r.error}`).join(' / ');
+    document.getElementById('dayPublishStatus').textContent = summary;
+    await loadMonth();
+    toast(summary);
+  } catch (err) {
+    toast(err.message || 'Publish failed.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = original;
+  }
+});
+
+async function openMetaSettings() {
+  document.getElementById('metaSettingsBackdrop').hidden = false;
+  document.getElementById('metaSettingsPanel').hidden = false;
+  document.getElementById('metaPageAccessToken').value = '';
+  try {
+    const res = await authFetch('/api/admin/carousel/meta-config');
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not load Meta settings.');
+    document.getElementById('metaIgUserId').value = data.igUserId || '';
+    document.getElementById('metaPageId').value = data.pageId || '';
+    document.getElementById('metaTokenStatus').textContent = data.pageAccessTokenMasked ? `current: ${data.pageAccessTokenMasked}` : 'not set';
+  } catch (err) {
+    toast(err.message || 'Could not load Meta settings.');
+  }
+}
+
+function closeMetaSettings() {
+  document.getElementById('metaSettingsBackdrop').hidden = true;
+  document.getElementById('metaSettingsPanel').hidden = true;
+}
+
+document.getElementById('calMetaSettingsBtn').addEventListener('click', openMetaSettings);
+document.getElementById('metaSettingsCloseBtn').addEventListener('click', closeMetaSettings);
+document.getElementById('metaSettingsBackdrop').addEventListener('click', closeMetaSettings);
+
+document.getElementById('metaSettingsSaveBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('metaSettingsSaveBtn');
+  btn.disabled = true;
+  try {
+    const res = await authFetch('/api/admin/carousel/meta-config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        igUserId: document.getElementById('metaIgUserId').value,
+        pageId: document.getElementById('metaPageId').value,
+        pageAccessToken: document.getElementById('metaPageAccessToken').value,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not save.');
+    toast('Meta settings saved.');
+    await openMetaSettings();
+  } catch (err) {
+    toast(err.message || 'Could not save.');
   } finally {
     btn.disabled = false;
   }

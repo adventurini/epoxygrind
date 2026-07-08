@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const supabase = getSupabase();
     const { data: day, error } = await supabase
       .from('carousel_days')
-      .select('id, date, audience, status, carousel_topics(id, title, hook, points, closer, source)')
+      .select('id, date, audience, status, post_time, ig_caption, approved_at, carousel_topics(id, title, hook, points, closer, source)')
       .eq('date', date)
       .maybeSingle();
     if (error) throw error;
@@ -42,6 +42,9 @@ export default async function handler(req, res) {
         audience: day.audience,
         status: date < today && day.status !== 'archived' ? 'archived' : day.status,
         readOnly: date < today,
+        postTime: day.post_time,
+        igCaption: day.ig_caption,
+        approvedAt: day.approved_at,
         topic: day.carousel_topics,
         slides: (slides || []).map((s) => ({
           id: s.id,

@@ -59,14 +59,16 @@ export default async function handler(req, res) {
       const scene = scenes[slide.position - 1];
       const generationId = randomUUID();
 
-      // Consumer posts end on "the Pro" (Anthony: "The last photo has a
-      // pro in it always in the DIY section") — a distinct reference
-      // image, only for slide 6 of consumer days.
-      const masterUrl = (day.audience === 'consumer' && slide.position === 6 && masters.pro) ? masters.pro : masters.default;
-      const prompt = buildImagePrompt(scene);
+      // Slide 6, both audiences, is a dual-character shot: Grinder Dad +
+      // "the Pro" together (Anthony: "a picture with the consumer and the
+      // contractor together" / "the pro contractor with the dad guy at
+      // the end"). Slides 1-5 stay single-character (Grinder Dad).
+      const isDualCloser = slide.position === 6 && masters.pro;
+      const masterUrls = isDualCloser ? [masters.default, masters.pro] : [masters.default];
+      const prompt = buildImagePrompt(scene, { dualCharacter: isDualCloser });
 
       const { imageUrl } = await generateSlideImage({
-        masterUrl, prompt, dayId: day.id, position: slide.position, generationId,
+        masterUrls, prompt, dayId: day.id, position: slide.position, generationId,
       });
 
       const { error: genErr } = await supabase.from('carousel_generations').insert({
