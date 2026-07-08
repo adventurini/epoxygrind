@@ -38,6 +38,17 @@ function isFresh(fetchedAt: string | null) {
   return ageMs < TTL_DAYS * 24 * 60 * 60 * 1000;
 }
 
+// `data.photos[].media_url` embeds the raw Google Maps API key (it's built
+// server-side for a future photo-proxy to consume from places_cache
+// directly). This function is the only thing that ever sends `data` to a
+// browser — never forward photos as-is, or the key leaks in plain sight in
+// the network response.
+function sanitizeForClient(data: any) {
+  if (!data) return data;
+  const { photos, ...rest } = data;
+  return rest;
+}
+
 function normalize(raw: any, apiKey: string) {
   const reviews = (raw.reviews || []).map((r: any) => ({
     rating: r.rating ?? null,
@@ -158,7 +169,7 @@ Deno.serve(async (req) => {
 
   if (row?.status === 'ok' && row.data && isFresh(row.fetched_at)) {
     await supabase.rpc('bump_stat', { key: 'hit' });
-    return jsonResponse({ status: 'fresh', data: row.data });
+    return jsonResponse({ status: 'fresh', data: sanitizeForClient(row.data) });
   }
 
   // @ts-ignore — EdgeRuntime is available in the Supabase Edge Functions runtime
@@ -167,7 +178,7 @@ Deno.serve(async (req) => {
 
   if (row?.data) {
     await supabase.rpc('bump_stat', { key: 'stale_served' });
-    return jsonResponse({ status: 'stale', data: row.data });
+    return jsonResponse({ status: 'stale', data: sanitizeForClient(row.data) });
   }
 
   await supabase.rpc('bump_stat', { key: 'miss' });
