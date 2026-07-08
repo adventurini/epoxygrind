@@ -33,18 +33,18 @@ export default {
     },
     {
       heading: 'Finding contractors near you',
-      bodyHtml: `<p>Browse real, vetted local contractors — with phone numbers, service areas, and services offered, not a lead-buying middleman — on our <a href="/contractors/">contractor directory</a>.</p>`,
+      bodyHtml: `<p>Browse real, listed local contractors — with phone numbers, service areas, and services offered, not a lead-buying middleman — on our <a href="/contractors/">contractor directory</a>.</p>`,
     },
   ],
   faq: [
     { q: 'What questions should I ask an epoxy contractor before hiring?', a: 'Ask about their prep method (grinding vs. etching), moisture testing process, product solids content, licensing/insurance, and get the warranty terms in writing.' },
     { q: 'What are red flags when hiring an epoxy contractor?', a: 'No mention of surface prep or moisture testing, one-day-completion promises, no written estimate, unusually low pricing, or pressure to sign immediately.' },
     { q: 'Should an epoxy contractor be licensed and insured?', a: 'Yes — always ask for proof of insurance before work starts; requirements for formal licensing vary by state but insurance protects you regardless.' },
-    { q: 'How do I find a good epoxy contractor near me?', a: 'Start with a directory of vetted, real local contractors with verified contact info, and use the checklist on this page to vet whoever you\'re considering.' },
+    { q: 'How do I find a good epoxy contractor near me?', a: 'Start with a directory of real local contractors with verified contact info, and use the checklist on this page to vet whoever you\'re considering.' },
   ],
   relatedLinks: [
     { href: '/compare/diy-kit-vs-professional-epoxy/', title: 'The complete DIY vs. pro decision guide', description: 'Every angle of the decision in one place.' },
     { href: '/guides/what-does-a-pro-epoxy-job-include/', title: "What you're actually paying a pro for", description: 'What should be in every legitimate quote.' },
-    { href: '/contractors/', title: 'Find a local contractor', description: 'Real, vetted contractors by state and metro area.' },
+    { href: '/contractors/', title: 'Find a local contractor', description: 'Real, listed contractors by state and metro area.' },
   ],
 };
