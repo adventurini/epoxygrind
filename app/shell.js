@@ -63,14 +63,13 @@ async function loadCredits(user) {
     el.hidden = false;
 
     if (data?.is_admin) {
-      const actions = document.querySelector('.dashboard-profile-actions');
-      if (actions && !document.getElementById('dashAdminLink')) {
+      const drawer = document.getElementById('dashDrawer');
+      if (drawer && !document.getElementById('dashLeadsLink')) {
         const link = document.createElement('a');
-        link.id = 'dashAdminLink';
-        link.className = 'btn btn-o btn-sm';
+        link.id = 'dashLeadsLink';
         link.href = '/app/admin/';
-        link.textContent = 'Admin';
-        actions.prepend(link);
+        link.textContent = 'Leads';
+        drawer.appendChild(link);
       }
     }
   } catch {
