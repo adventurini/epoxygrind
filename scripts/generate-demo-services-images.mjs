@@ -49,7 +49,7 @@ const TARGETS = [
   },
   {
     id: 'decorative-concrete',
-    prompt: 'Photo of a finished decorative concrete patio with a stamped stone-pattern texture and warm brown/tan stain, outdoor residential backyard setting, natural daylight, wide angle, realistic, no people, no text, no logos.',
+    prompt: 'Photo of a finished decorative concrete patio floor, poured concrete stamped with a clearly visible ashlar-slate or running-bond brick pattern (real stamped-concrete texture — raised pattern lines pressed into a single continuous concrete slab, NOT individual stone pavers, NOT a smooth blank surface), warm brown/tan color with a subtle darker accent stain in the recessed lines, outdoor residential patio setting visible at the edges, natural daylight, shot from a slight angle showing the pattern clearly across the floor, photorealistic, no people, no text, no logos.',
   },
 ];
 

@@ -61,6 +61,7 @@ header.demo-header{position:sticky;top:33px;z-index:70;background:rgba(13,15,18,
 .brand .demo-tag{font-family:var(--ff-m);font-size:9.5px;letter-spacing:.08em;background:var(--rust-soft);color:#F0987F;padding:2px 7px;border-radius:2px;text-transform:uppercase;font-weight:700;border:1px solid rgba(210,89,63,.35)}
 .nav-links{display:flex;align-items:center;gap:24px;margin-left:auto;font-size:13.5px;font-weight:600;text-transform:uppercase;letter-spacing:.03em}
 .nav-links a{color:var(--ink-soft)}
+.nav-links a.btn-p{color:#181000}
 .nav-links a:hover{color:var(--copper)}
 .nav-social{display:flex;gap:10px;align-items:center}
 .nav-social a{width:30px;height:30px;border-radius:50%;background:var(--bg-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft)}
@@ -242,6 +243,10 @@ body.tour-off .tour-badge{display:none}
 /* ── Service areas ───────────────────────────────────────────────────── */
 .city-ticker{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}
 .city-chip{font-family:var(--ff-m);font-size:12.5px;background:var(--steel-soft);color:var(--steel);border:1px solid rgba(138,151,168,.3);padding:7px 14px;border-radius:2px}
+.city-chip{cursor:pointer;transition:border-color .15s,color .15s}
+.city-chip:hover{border-color:var(--copper);color:var(--copper)}
+.city-chip-current{cursor:default;background:var(--copper-soft);color:var(--copper);border-color:rgba(232,162,61,.4);font-weight:700}
+.city-chip-current:hover{border-color:rgba(232,162,61,.4);color:var(--copper)}
 
 /* ── Warranty & financing ────────────────────────────────────────────── */
 .wf-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}

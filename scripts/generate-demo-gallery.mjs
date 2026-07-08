@@ -56,12 +56,12 @@ const BASES = [
   {
     id: '3-car-garage',
     label: '3-Car Garage',
-    prompt: 'Photo of a worn, bare three-car residential garage floor, plain gray concrete, wide angle showing full depth of a large garage, some surface pitting, natural light from open doors, realistic, no people, no text.',
+    prompt: 'Photo taken from inside a very wide three-car residential garage, showing THREE separate garage door bays clearly visible side by side across the full width of the frame (or one continuous triple-wide garage door with three distinct panel sections), bare worn gray concrete floor with a few small cracks, garage doors open to daylight, ultra-wide angle to convey the large width of the space, realistic, no people, no text.',
   },
   {
     id: 'basement',
     label: 'Basement',
-    prompt: 'Photo of a bare, unfinished residential basement concrete floor, plain gray concrete, foundation walls visible at the edges, single overhead bulb lighting, realistic, no people, no text.',
+    prompt: 'Photo of an unfinished residential basement, below-grade specific cues clearly visible: gray poured-concrete foundation walls (unpainted, visible form-tie marks), exposed ceiling floor joists and ductwork overhead, one visible support column/lally column in the middle distance, a small high egress window near the ceiling letting in a little daylight, a partial view of basement stairs with a handrail in the background, bare concrete floor, single hanging bulb light, realistic, no people, no text.',
   },
   {
     id: 'commercial-bay',
@@ -127,7 +127,7 @@ async function main() {
     console.log(`\n[${base.id}] generating before...`);
     let beforeUrl;
     try {
-      const dataUrl = await generateImageWithFal(base.prompt);
+      const dataUrl = await generateImageWithFal(base.prompt, { image_size: { width: 1280, height: 800 } });
       calls++;
       beforeUrl = await uploadDataUrl(`${PREFIX}/${base.id}-before.jpg`, dataUrl);
       console.log(`  OK: ${beforeUrl}`);

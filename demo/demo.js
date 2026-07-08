@@ -399,7 +399,7 @@ function initPsiCheck() {
       // intentionally noindexed as a fictional-business sample, and
       // Lighthouse's SEO category always flags noindex as a finding,
       // which would misleadingly tank this section's own pitch.
-      const url = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=' + encodeURIComponent('https://www.epoxygrind.com/estimator/') + '&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo';
+      const url = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=' + encodeURIComponent('https://www.epoxygrind.com/demo/') + '&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo';
       const res = await fetch(url);
       if (!res.ok) throw new Error('PSI request failed');
       const data = await res.json();
