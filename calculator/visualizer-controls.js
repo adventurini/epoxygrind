@@ -18,18 +18,20 @@ import { track } from './analytics.js';
 const CHIP_SIZE = 128;
 
 /** Spec Part 4: "Group chips: Grays & Neutrals / Earth Tones / Bold &
- * Custom." Built from the 6 recipes lib/flake-recipes.js has today — the
- * full Torginol catalog scrape is a separate, parallel step (spec Part 5
- * build order step 5), not this one. */
+ * Custom." Covers all 13 blends lib/flake-recipes.js now carries — the
+ * spec's own Part 1.2 verified seed set, fully transcribed (catalog
+ * completion pass). Grouped by the components' dominant tone. */
 const BLEND_GROUPS = [
-  { label: 'Grays & Neutrals', blendIds: ['domino', 'gravel', 'wombat'] },
-  { label: 'Earth Tones', blendIds: ['cabin-fever', 'coyote'] },
-  { label: 'Bold & Custom', blendIds: ['tidal-wave'] },
+  { label: 'Grays & Neutrals', blendIds: ['domino', 'gravel', 'wombat', 'nightfall', 'raven'] },
+  { label: 'Earth Tones', blendIds: ['cabin-fever', 'coyote', 'creekbed', 'shoreline', 'outback'] },
+  { label: 'Bold & Custom', blendIds: ['tidal-wave', 'orbit', 'galaxy'] },
 ];
 
 const BLEND_LABELS = {
   domino: 'Domino', gravel: 'Gravel', 'tidal-wave': 'Tidal Wave',
   'cabin-fever': 'Cabin Fever', wombat: 'Wombat', coyote: 'Coyote',
+  nightfall: 'Nightfall', raven: 'Raven', creekbed: 'Creekbed',
+  shoreline: 'Shoreline', outback: 'Outback', orbit: 'Orbit', galaxy: 'Galaxy',
 };
 
 /** Standard professional base coat palette — constrained on purpose (spec
