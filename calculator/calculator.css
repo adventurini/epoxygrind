@@ -192,6 +192,18 @@
 @keyframes viz-spin{to{transform:rotate(360deg)}}
 .viz-error{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;background:rgba(11,20,40,.86);color:#fff;font-size:13.5px;line-height:1.5}
 .viz-error[hidden]{display:none}
+/* Manual mask-assist (spec 3.1's deferred-to-v2 fallback) */
+.viz-assist{position:absolute;inset:0;display:flex;background:rgba(11,20,40,.92);overflow:auto;z-index:2}
+.viz-assist[hidden]{display:none}
+.viz-assist-inner{margin:auto;width:100%;max-width:420px;padding:16px;display:grid;gap:10px;justify-items:center}
+.viz-assist-msg{color:#fff;font-size:13px;line-height:1.5;text-align:center;margin:0}
+.viz-assist-photo-wrap{position:relative;width:100%;border-radius:8px;overflow:hidden;cursor:crosshair;line-height:0}
+.viz-assist-photo{display:block;width:100%;height:auto;pointer-events:none;user-select:none}
+.viz-assist-marks{position:absolute;inset:0}
+.viz-assist-mark{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:var(--calc-blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;box-shadow:0 0 0 2px #fff,0 2px 6px rgba(0,0,0,.4);pointer-events:none}
+.viz-assist-hint{color:rgba(255,255,255,.75);font-size:11.5px;margin:0}
+.viz-assist-actions{display:flex;gap:8px}
+.viz-assist-actions .btn[disabled]{opacity:.5;cursor:default}
 .viz-wipe-track{position:absolute;inset:0;cursor:ew-resize}
 .viz-wipe-handle{position:absolute;top:0;bottom:0;left:50%;width:36px;margin-left:-18px;display:flex;align-items:center;justify-content:center;gap:2px;color:var(--calc-blue);pointer-events:none}
 .viz-wipe-handle::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.12)}

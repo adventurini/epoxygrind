@@ -2,6 +2,7 @@ import { initBeforeAfterSlider } from './before-after-slider.js';
 import { renderDesignEditor } from './design-editor.js';
 import { FloorVisualizer } from './visualizer-gl.js';
 import { renderVisualizerControls, findBaseCoat, BASE_COAT_PALETTE } from './visualizer-controls.js';
+import { renderMaskAssist } from './visualizer-mask-assist.js';
 import { track } from './analytics.js';
 
 export function formatMoney(n) {
@@ -192,7 +193,10 @@ function wireDesignEditor(container, opts = {}) {
  * what they already chose instead of resetting to Gravel/medium-gray.
  */
 export function defaultFloorSpec(data) {
-  if (data.floorSpec) return data.floorSpec;
+  // `sheen` (spec 3.4) is a v2 addition — a floorSpec persisted before this
+  // shipped won't have it; default it to 'gloss' rather than leaving it
+  // undefined (spread order lets an existing sheen value still win).
+  if (data.floorSpec) return { sheen: 'gloss', ...data.floorSpec };
   const design = data.design || {};
   const finish = ['solid', 'flake', 'metallic'].includes(design.finish)
     ? design.finish
@@ -205,6 +209,9 @@ export function defaultFloorSpec(data) {
     density: 1,
     flakeSizeIn: 0.25,
     metallicId: 'silver-pearl',
+    // Spec 3.4/1.1: gloss vs satin. Gloss is the default (matches epoxy's
+    // actual look).
+    sheen: 'gloss',
   };
 }
 
@@ -215,6 +222,7 @@ function visualizerBlockHtml() {
         <canvas class="viz-canvas" data-role="vizCanvas"></canvas>
         <div class="viz-skeleton" data-role="vizSkeleton"><span class="viz-spinner"></span><p>Finding your floor…</p></div>
         <div class="viz-error" data-role="vizError" hidden></div>
+        <div class="viz-assist" data-role="vizAssist" hidden></div>
         <div class="viz-wipe-track" data-role="vizWipeTrack" role="slider" tabindex="0"
           aria-label="Drag to compare your photo and the new floor" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
           <div class="viz-wipe-handle" data-role="vizWipeHandle">
@@ -303,6 +311,7 @@ function wireVisualizer(container, data, opts = {}) {
   const canvas = container.querySelector('[data-role="vizCanvas"]');
   const skeleton = container.querySelector('[data-role="vizSkeleton"]');
   const errorEl = container.querySelector('[data-role="vizError"]');
+  const assistEl = container.querySelector('[data-role="vizAssist"]');
   const controlsMount = container.querySelector('[data-role="vizControlsMount"]');
   const wipeTrack = container.querySelector('[data-role="vizWipeTrack"]');
   const wipeHandle = container.querySelector('[data-role="vizWipeHandle"]');
@@ -338,6 +347,7 @@ function wireVisualizer(container, data, opts = {}) {
       density: spec.density,
       flakeSizeIn: spec.flakeSizeIn,
       metallicId: spec.metallicId,
+      sheen: spec.sheen,
     });
   }
 
@@ -388,27 +398,60 @@ function wireVisualizer(container, data, opts = {}) {
   const cachedSegmentation =
     data.segmentation?.mask && data.segmentation.photoKey === photoKey ? data.segmentation : null;
 
+  /** Handles a successful segmentation/retry result shared by the initial
+   * load and the manual-assist retry path below. */
+  function onSegmented(result) {
+    renderedOnce = true;
+    track('visualizer_rendered', { finish: spec.finish });
+    schedulePersist();
+    // Only a cache miss / fresh network call returns a segmentation to
+    // persist — a cache hit intentionally returns null here (see
+    // FloorVisualizer._applySegmentedResult) so an unchanged mask isn't
+    // rewritten on every load.
+    if (result.segmentation) {
+      opts.onSegmentationReady?.({ ...result.segmentation, photoKey });
+    }
+  }
+
+  /** Mounts the manual mask-assist UI (spec 3.1's deferred-to-v2 fallback,
+   * now built): user taps 2-3 points on their own floor; those points are
+   * sent to /api/segment (via FloorVisualizer.retryWithPoints) instead of
+   * the automatic box. Re-mounts itself (with an updated message) if a
+   * retry still can't find the floor, so the user can keep adjusting taps
+   * without reloading the page. */
+  function mountAssist(message) {
+    if (!assistEl) return;
+    if (skeleton) skeleton.hidden = true;
+    if (errorEl) errorEl.hidden = true;
+    assistEl.hidden = false;
+    renderMaskAssist(assistEl, data.originalImage, {
+      message,
+      onSubmit: async (points) => {
+        try {
+          const result = await visualizer.retryWithPoints(points);
+          if (result.needsManualAssist) {
+            mountAssist("Still couldn't find your floor there — try different spots, or upload another photo.");
+            return;
+          }
+          assistEl.hidden = true;
+          onSegmented(result);
+        } catch {
+          mountAssist('Something went wrong finding your floor — try again.');
+        }
+      },
+    });
+  }
+
   applySpec();
   visualizer
     .loadPhoto(data.originalImage, cachedSegmentation)
     .then((result) => {
       if (skeleton) skeleton.hidden = true;
       if (result.needsManualAssist) {
-        if (errorEl) {
-          errorEl.hidden = false;
-          errorEl.textContent = "We couldn't clearly find the floor in this photo — try a straight-on shot of the empty floor for the best preview.";
-        }
+        mountAssist();
         return;
       }
-      renderedOnce = true;
-      track('visualizer_rendered', { finish: spec.finish });
-      schedulePersist();
-      // Only a cache miss returns a fresh segmentation to persist — a cache
-      // hit intentionally returns null here (see FloorVisualizer.loadPhoto)
-      // so an unchanged mask isn't rewritten on every load.
-      if (result.segmentation) {
-        opts.onSegmentationReady?.({ ...result.segmentation, photoKey });
-      }
+      onSegmented(result);
     })
     .catch(() => {
       if (skeleton) skeleton.hidden = true;
