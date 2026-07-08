@@ -120,12 +120,19 @@ export default async function handler(req, res) {
     const input = parseEstimateInput(body);
 
     if (phase === 'generate') {
-      // Anonymous: photo analysis + pricing + the one preview image, no
-      // Supabase writes at all. The client holds this until (if) the user
-      // unlocks the full result with their email, at which point it's sent
-      // back as `precomputed` to phase:'build' rather than recomputed.
+      // Anonymous: photo analysis + pricing, no Supabase writes at all. The
+      // client holds this until (if) the user unlocks the full result with
+      // their email, at which point it's sent back as `precomputed` to
+      // phase:'build' rather than recomputed.
+      //
+      // No gen-AI preview image here anymore — the results view composites
+      // the floor live client-side (WebGL visualizer,
+      // epoxygrind-visualizer-build-spec.md Part 3) once it mounts, instead
+      // of this endpoint paying for a fal.ai edit call on every estimate.
+      // buildSinglePreview/editImagesWithFal still exist and work fine —
+      // they're just no longer called from the estimator's live path (kept
+      // for marketing hero-shot generation and other callers per spec).
       const pricing = await buildPricingEstimate(input);
-      const preview = await buildSinglePreview('original', pricing.previewContext);
 
       return res.status(200).json({
         phase: 'generate',
@@ -134,7 +141,6 @@ export default async function handler(req, res) {
         design: pricing.design,
         previewContext: slimPreviewContext(pricing.previewContext),
         meta: pricing.meta,
-        preview,
       });
     }
 
