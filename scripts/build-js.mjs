@@ -46,6 +46,7 @@ const ENTRIES = {
   'app-admin-responder': 'app/admin/responder/responder.js',
   'chat-widget': 'chat-widget/chat-widget.js',
   'app-estimate': 'app/estimate/estimate.js',
+  'demo': 'demo/demo.js',
 };
 
 for (const [name, entry] of Object.entries(ENTRIES)) {

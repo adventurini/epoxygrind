@@ -1,0 +1,221 @@
+{
+  "pairs": [
+    {
+      "space": "1-car-garage",
+      "spaceLabel": "1-Car Garage",
+      "finish": "full-flake-charcoal",
+      "finishLabel": "Full-Flake Epoxy (Charcoal Blend)",
+      "finishType": "full-flake",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/1-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/1-car-garage-full-flake-charcoal-after.jpg"
+    },
+    {
+      "space": "1-car-garage",
+      "spaceLabel": "1-Car Garage",
+      "finish": "metallic-silver",
+      "finishLabel": "Metallic Epoxy (Silver Swirl)",
+      "finishType": "metallic",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/1-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/1-car-garage-metallic-silver-after.jpg"
+    },
+    {
+      "space": "1-car-garage",
+      "spaceLabel": "1-Car Garage",
+      "finish": "solid-slate-gray",
+      "finishLabel": "Solid Epoxy (Slate Gray)",
+      "finishType": "solid",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/1-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/1-car-garage-solid-slate-gray-after.jpg"
+    },
+    {
+      "space": "1-car-garage",
+      "spaceLabel": "1-Car Garage",
+      "finish": "polyaspartic-flake",
+      "finishLabel": "Polyaspartic Flake",
+      "finishType": "polyaspartic",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/1-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/1-car-garage-polyaspartic-flake-after.jpg"
+    },
+    {
+      "space": "2-car-garage",
+      "spaceLabel": "2-Car Garage",
+      "finish": "full-flake-charcoal",
+      "finishLabel": "Full-Flake Epoxy (Charcoal Blend)",
+      "finishType": "full-flake",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/2-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/2-car-garage-full-flake-charcoal-after.jpg"
+    },
+    {
+      "space": "2-car-garage",
+      "spaceLabel": "2-Car Garage",
+      "finish": "metallic-silver",
+      "finishLabel": "Metallic Epoxy (Silver Swirl)",
+      "finishType": "metallic",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/2-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/2-car-garage-metallic-silver-after.jpg"
+    },
+    {
+      "space": "2-car-garage",
+      "spaceLabel": "2-Car Garage",
+      "finish": "solid-slate-gray",
+      "finishLabel": "Solid Epoxy (Slate Gray)",
+      "finishType": "solid",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/2-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/2-car-garage-solid-slate-gray-after.jpg"
+    },
+    {
+      "space": "2-car-garage",
+      "spaceLabel": "2-Car Garage",
+      "finish": "polyaspartic-flake",
+      "finishLabel": "Polyaspartic Flake",
+      "finishType": "polyaspartic",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/2-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/2-car-garage-polyaspartic-flake-after.jpg"
+    },
+    {
+      "space": "3-car-garage",
+      "spaceLabel": "3-Car Garage",
+      "finish": "full-flake-charcoal",
+      "finishLabel": "Full-Flake Epoxy (Charcoal Blend)",
+      "finishType": "full-flake",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/3-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/3-car-garage-full-flake-charcoal-after.jpg"
+    },
+    {
+      "space": "3-car-garage",
+      "spaceLabel": "3-Car Garage",
+      "finish": "metallic-silver",
+      "finishLabel": "Metallic Epoxy (Silver Swirl)",
+      "finishType": "metallic",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/3-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/3-car-garage-metallic-silver-after.jpg"
+    },
+    {
+      "space": "3-car-garage",
+      "spaceLabel": "3-Car Garage",
+      "finish": "solid-slate-gray",
+      "finishLabel": "Solid Epoxy (Slate Gray)",
+      "finishType": "solid",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/3-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/3-car-garage-solid-slate-gray-after.jpg"
+    },
+    {
+      "space": "3-car-garage",
+      "spaceLabel": "3-Car Garage",
+      "finish": "polyaspartic-flake",
+      "finishLabel": "Polyaspartic Flake",
+      "finishType": "polyaspartic",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/3-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/3-car-garage-polyaspartic-flake-after.jpg"
+    },
+    {
+      "space": "basement",
+      "spaceLabel": "Basement",
+      "finish": "full-flake-charcoal",
+      "finishLabel": "Full-Flake Epoxy (Charcoal Blend)",
+      "finishType": "full-flake",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/basement-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/basement-full-flake-charcoal-after.jpg"
+    },
+    {
+      "space": "basement",
+      "spaceLabel": "Basement",
+      "finish": "metallic-silver",
+      "finishLabel": "Metallic Epoxy (Silver Swirl)",
+      "finishType": "metallic",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/basement-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/basement-metallic-silver-after.jpg"
+    },
+    {
+      "space": "basement",
+      "spaceLabel": "Basement",
+      "finish": "solid-slate-gray",
+      "finishLabel": "Solid Epoxy (Slate Gray)",
+      "finishType": "solid",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/basement-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/basement-solid-slate-gray-after.jpg"
+    },
+    {
+      "space": "basement",
+      "spaceLabel": "Basement",
+      "finish": "polyaspartic-flake",
+      "finishLabel": "Polyaspartic Flake",
+      "finishType": "polyaspartic",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/basement-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/basement-polyaspartic-flake-after.jpg"
+    },
+    {
+      "space": "commercial-bay",
+      "spaceLabel": "Commercial Bay",
+      "finish": "full-flake-charcoal",
+      "finishLabel": "Full-Flake Epoxy (Charcoal Blend)",
+      "finishType": "full-flake",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/commercial-bay-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/commercial-bay-full-flake-charcoal-after.jpg"
+    },
+    {
+      "space": "commercial-bay",
+      "spaceLabel": "Commercial Bay",
+      "finish": "metallic-silver",
+      "finishLabel": "Metallic Epoxy (Silver Swirl)",
+      "finishType": "metallic",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/commercial-bay-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/commercial-bay-metallic-silver-after.jpg"
+    },
+    {
+      "space": "commercial-bay",
+      "spaceLabel": "Commercial Bay",
+      "finish": "solid-slate-gray",
+      "finishLabel": "Solid Epoxy (Slate Gray)",
+      "finishType": "solid",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/commercial-bay-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/commercial-bay-solid-slate-gray-after.jpg"
+    },
+    {
+      "space": "commercial-bay",
+      "spaceLabel": "Commercial Bay",
+      "finish": "polyaspartic-flake",
+      "finishLabel": "Polyaspartic Flake",
+      "finishType": "polyaspartic",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/commercial-bay-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/commercial-bay-polyaspartic-flake-after.jpg"
+    },
+    {
+      "space": "covered-patio",
+      "spaceLabel": "Covered Patio",
+      "finish": "full-flake-charcoal",
+      "finishLabel": "Full-Flake Epoxy (Charcoal Blend)",
+      "finishType": "full-flake",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/covered-patio-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/covered-patio-full-flake-charcoal-after.jpg"
+    },
+    {
+      "space": "covered-patio",
+      "spaceLabel": "Covered Patio",
+      "finish": "metallic-silver",
+      "finishLabel": "Metallic Epoxy (Silver Swirl)",
+      "finishType": "metallic",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/covered-patio-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/covered-patio-metallic-silver-after.jpg"
+    },
+    {
+      "space": "covered-patio",
+      "spaceLabel": "Covered Patio",
+      "finish": "solid-slate-gray",
+      "finishLabel": "Solid Epoxy (Slate Gray)",
+      "finishType": "solid",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/covered-patio-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/covered-patio-solid-slate-gray-after.jpg"
+    },
+    {
+      "space": "covered-patio",
+      "spaceLabel": "Covered Patio",
+      "finish": "polyaspartic-flake",
+      "finishLabel": "Polyaspartic Flake",
+      "finishType": "polyaspartic",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/covered-patio-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/covered-patio-polyaspartic-flake-after.jpg"
+    }
+  ],
+  "generatedAt": "2026-07-08T06:05:29.045Z"
+}
