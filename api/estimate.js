@@ -7,6 +7,7 @@ import {
 import { createInstantSession } from '../lib/instant-auth.js';
 import { saveEstimateForUser } from '../lib/save-estimate.js';
 import { getSupabase, isSupabaseConfigured } from '../lib/supabase.js';
+import { getUserFromRequest } from '../lib/auth-request.js';
 import { spendCredit } from '../lib/credits.js';
 import { resolveDesign, buildDesignPrompt } from '../lib/finish-design.js';
 import { calculateEstimate } from '../lib/pricing.js';
@@ -153,15 +154,33 @@ export default async function handler(req, res) {
       }
 
       const supabase = getSupabase();
-      const session = await createInstantSession(supabase, input.email, input.customerName);
 
-      const spend = await spendCredit(supabase, session.user.id);
+      // If this request already carries a valid session (a real, logged-in
+      // user submitting another estimate), use that account directly and
+      // skip createInstantSession entirely. Calling createInstantSession
+      // unconditionally here — regardless of an existing session — used to
+      // mean that ANY already-verified, already-logged-in user submitting a
+      // new estimate got their account silently reset back to
+      // instant_demo:true/email_verified:false (see instant-auth.js's own
+      // "always force it back" correction, which has no way to know a given
+      // email belongs to a real account vs. a brand-new instant one) —
+      // permanently re-triggering the "verify your email" banner for a
+      // real, previously-verified user on every new estimate. Only fall
+      // back to createInstantSession for a genuinely unauthenticated
+      // request, which is the actual anonymous-user-unlocks-with-email flow
+      // this was built for.
+      const existingAuth = await getUserFromRequest(req);
+      const isExistingUser = Boolean(existingAuth?.user);
+      const userId = isExistingUser ? existingAuth.user.id : null;
+      const session = isExistingUser ? null : await createInstantSession(supabase, input.email, input.customerName);
+      const effectiveUserId = isExistingUser ? userId : session.user.id;
+
+      const spend = await spendCredit(supabase, effectiveUserId);
       if (!spend.ok) {
         return res.status(402).json({
           error: "You've used all your free estimates.",
           code: 'OUT_OF_CREDITS',
-          access_token: session.access_token,
-          refresh_token: session.refresh_token,
+          ...(session ? { access_token: session.access_token, refresh_token: session.refresh_token } : {}),
         });
       }
 
@@ -186,7 +205,7 @@ export default async function handler(req, res) {
       let estimate;
       let saved = true;
       try {
-        estimate = await saveEstimateForUser(supabase, session.user.id, {
+        estimate = await saveEstimateForUser(supabase, effectiveUserId, {
           customerName: input.customerName,
           email: input.email,
           location: input.location,
@@ -201,7 +220,7 @@ export default async function handler(req, res) {
           customerName: input.customerName,
           email: input.email,
           location: input.location,
-          userId: session.user.id,
+          userId: effectiveUserId,
           ...savePayload,
           saved: false,
         };
@@ -215,8 +234,7 @@ export default async function handler(req, res) {
         phase: 'build',
         estimate,
         creditsRemaining: spend.creditsRemaining,
-        access_token: session.access_token,
-        refresh_token: session.refresh_token,
+        ...(session ? { access_token: session.access_token, refresh_token: session.refresh_token } : {}),
       });
     }
 

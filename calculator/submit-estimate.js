@@ -1,4 +1,4 @@
-import { getAuthClient, waitForAccessToken } from '/auth/client.js';
+import { getAuthClient, getAccessToken, waitForAccessToken } from '/auth/client.js';
 
 export const PENDING_ESTIMATE_KEY = 'epoxygrind-pending-estimate';
 
@@ -71,9 +71,17 @@ export async function generateAndSaveEstimate(form, progress = {}) {
 
   onPhaseStart('build', 'Analyzing your photo & pricing…');
 
+  // Attach the current session's token, if any, so the server can tell this
+  // apart from a brand-new anonymous submission and attach the estimate to
+  // the already-logged-in user's real account instead of minting a fresh
+  // instant-demo one (see api/estimate.js's phase:'build' handler).
+  const existingToken = await getAccessToken();
   const result = await fetchJson('/api/estimate', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(existingToken ? { Authorization: `Bearer ${existingToken}` } : {}),
+    },
     body: { phase: 'build', ...form },
     timeoutMs: 110_000,
   });
