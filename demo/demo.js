@@ -31,6 +31,7 @@ const TOUR_CONTENT = {
   'seo-pages': { title: 'SEO Service-Page Architecture', body: 'Each service gets its own ranking page — not just a card on the homepage. That means separate search visibility for "residential epoxy floors near me," "commercial floor coatings," and every other service you offer.' },
   process: { title: 'Fewer Tire-Kicker Calls', body: 'Explaining your process up front — especially mechanical prep vs. a cheap acid-etch shortcut — educates the right buyers and filters out the ones who just want the lowest number.' },
   gallery: { title: 'Gallery + Visualizer Are One System', body: 'Every image in this gallery came from the same AI engine as the hero estimator. Every finish type shows multiple real-looking floors, filterable by space and finish.' },
+  'before-after': { title: 'Draggable Before & After Slider', body: 'A homeowner drags the handle to reveal the finished floor over the bare concrete — the single most convincing proof element on the page, and it takes zero effort to look at.' },
   'content-depth': { title: 'Content Depth = SEO + Buyer Education', body: 'Dedicated pages explaining each finish type capture long-tail searches ("metallic epoxy garage floor") and pre-sell the buyer before they ever call.' },
   founder: { title: 'Founder Story Converts', body: 'People hire people, not companies. A real founder story — even a short one — measurably increases quote-to-close rate versus a faceless "About Us" paragraph.' },
   video: { title: 'Video Without the Speed Penalty', body: 'Install and timelapse video builds trust fast, but a raw embed can tank your Lighthouse score. We handle compression and lazy-loading so you get the video without the speed hit.' },
@@ -43,7 +44,7 @@ const TOUR_CONTENT = {
   social: { title: 'Social Integration', body: "On your site, these icons link to your real Instagram and Facebook profiles — we'll also set up and optimize them if you don't already have them." },
   'mobile-cta': { title: 'Mobile Sticky CTA Bar', body: "A persistent Call + Get Estimate bar at the bottom of the screen on mobile — a proven conversion pattern most contractor sites (including the one we modeled this structure on) don't have." },
 };
-const TOUR_ORDER = ['visualizer', 'click-to-call', 'social', 'mobile-cta', 'trust', 'reviews', 'seo-pages', 'process', 'gallery', 'content-depth', 'founder', 'video', 'local-seo', 'risk-reversal', 'faq-seo', 'lead-form', 'speed'];
+const TOUR_ORDER = ['visualizer', 'click-to-call', 'social', 'mobile-cta', 'trust', 'reviews', 'seo-pages', 'process', 'gallery', 'before-after', 'content-depth', 'founder', 'video', 'local-seo', 'risk-reversal', 'faq-seo', 'lead-form', 'speed'];
 
 function initTour() {
   const toggle = $('tourToggle');
