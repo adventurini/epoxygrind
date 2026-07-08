@@ -1,19 +1,20 @@
 #!/usr/bin/env node
 /**
  * One-time (approved) batch fetch of Google Places data — rating, review
- * count, reviews, and a hero photo — for every contractor that already
- * passes the phone+service-area quality bar (lib/contractors.js). Unlike
- * the live place-reviews Edge Function (which fetches lazily per profile
- * visit and only caches text), this:
+ * count, and reviews — for every contractor that already passes the
+ * phone+service-area quality bar (lib/contractors.js). Unlike the live
+ * place-reviews Edge Function (which fetches lazily per profile visit and
+ * only caches text), this:
  *   1. Writes the same normalized shape into Supabase places_cache, so a
  *      profile page's first real visit is already a cache hit.
- *   2. Downloads, compresses, and uploads one photo per contractor to the
- *      public Supabase Storage bucket `contractor-images` (not hotlinked to
- *      Google, not written to local disk/git) — so displaying it costs
- *      nothing per page view and the git repo never holds image binaries.
- *   3. Merges google_rating/google_review_count back into enriched.json
+ *   2. Merges google_rating/google_review_count back into enriched.json
  *      so build-time pages (listing cards, the "no reviews" filter) have
  *      the data without a live fetch.
+ *
+ * Photos are NOT downloaded/rehosted here (or anywhere) — Google's Places
+ * API terms forbid storing Place content beyond place_id and lat/lng.
+ * Photos are served live at request time by api/places-photo.js, reading
+ * the same places_cache row this script writes.
  *
  * Real Google API cost — Enterprise+Atmosphere tier (rating+reviews+
  * photos together, ~$0.02-0.025/call as of this writing). Confirm actual
@@ -21,17 +22,12 @@
  *
  * Usage: node scripts/batch-fetch-places.js [--limit N]
  */
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import sharp from 'sharp';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const ENRICHED_PATH = join(ROOT, 'content', 'data', 'enriched.json');
-const MANIFEST_PATH = join(ROOT, 'content', 'data', 'contractor-images.json');
-const IMAGES_BUCKET = 'contractor-images';
-const HERO_MAX_WIDTH = 900;
-const HERO_JPEG_QUALITY = 72;
 
 function loadEnv() {
   const path = join(ROOT, '.env.local');
@@ -52,22 +48,6 @@ if (!SUPABASE_URL || !SERVICE_KEY || !GOOGLE_KEY) {
 const FIELD_MASK = 'id,displayName,rating,userRatingCount,googleMapsUri,reviews,photos';
 const PLACES_API = 'https://places.googleapis.com/v1/places';
 const EST_COST_PER_CALL = 0.023;
-
-const STATE_ABBR_TO_SLUG = {
-  AL: 'alabama', AK: 'alaska', AZ: 'arizona', AR: 'arkansas', CA: 'california', CO: 'colorado',
-  CT: 'connecticut', DE: 'delaware', DC: 'district-of-columbia', FL: 'florida', GA: 'georgia',
-  HI: 'hawaii', ID: 'idaho', IL: 'illinois', IN: 'indiana', IA: 'iowa', KS: 'kansas', KY: 'kentucky',
-  LA: 'louisiana', ME: 'maine', MD: 'maryland', MA: 'massachusetts', MI: 'michigan', MN: 'minnesota',
-  MS: 'mississippi', MO: 'missouri', MT: 'montana', NE: 'nebraska', NV: 'nevada', NH: 'new-hampshire',
-  NJ: 'new-jersey', NM: 'new-mexico', NY: 'new-york', NC: 'north-carolina', ND: 'north-dakota',
-  OH: 'ohio', OK: 'oklahoma', OR: 'oregon', PA: 'pennsylvania', RI: 'rhode-island',
-  SC: 'south-carolina', SD: 'south-dakota', TN: 'tennessee', TX: 'texas', UT: 'utah', VT: 'vermont',
-  VA: 'virginia', WA: 'washington', WV: 'west-virginia', WI: 'wisconsin', WY: 'wyoming',
-};
-
-function slugifyName(name) {
-  return name.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-}
 
 async function fetchWithRetry(url, headers, maxAttempts = 4) {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
@@ -136,40 +116,6 @@ async function upsertPlacesCache(data) {
   });
 }
 
-/** Downloads, compresses, and uploads straight to Supabase Storage — no
- * image ever touches local disk or the git repo. */
-async function downloadHeroPhoto(contractor, photo) {
-  if (!photo) return null;
-  const stateSlug = STATE_ABBR_TO_SLUG[contractor.state] || contractor.state.toLowerCase();
-  const slug = slugifyName(contractor.name);
-
-  const res = await fetch(photo.media_url);
-  if (!res.ok) return null;
-  const rawBuf = Buffer.from(await res.arrayBuffer());
-  const compressed = await sharp(rawBuf)
-    .resize({ width: HERO_MAX_WIDTH, withoutEnlargement: true })
-    .jpeg({ quality: HERO_JPEG_QUALITY, mozjpeg: true })
-    .toBuffer();
-
-  const storagePath = `${stateSlug}/${slug}/hero.jpg`;
-  const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${IMAGES_BUCKET}/${storagePath}`, {
-    method: 'POST',
-    headers: {
-      apikey: SERVICE_KEY,
-      Authorization: `Bearer ${SERVICE_KEY}`,
-      'Content-Type': 'image/jpeg',
-      'x-upsert': 'true',
-    },
-    body: compressed,
-  });
-  if (!uploadRes.ok) return null;
-
-  return {
-    path: `${SUPABASE_URL}/storage/v1/object/public/${IMAGES_BUCKET}/${storagePath}`,
-    attributions: photo.attributions,
-  };
-}
-
 async function main() {
   const limitArg = process.argv.indexOf('--limit');
   const limit = limitArg !== -1 ? Number(process.argv[limitArg + 1]) : null;
@@ -180,11 +126,9 @@ async function main() {
 
   console.log(`Fetching Places data for ${targets.length} contractors...`);
 
-  const imageManifest = existsSync(MANIFEST_PATH) ? JSON.parse(readFileSync(MANIFEST_PATH, 'utf8')) : {};
   const byPlaceId = new Map(enriched.map((c) => [c.place_id, c]));
   let calls = 0;
   let zeroReviews = 0;
-  let withPhoto = 0;
   let errors = 0;
 
   for (let i = 0; i < targets.length; i++) {
@@ -212,18 +156,7 @@ async function main() {
       }
       if (!data.reviews?.length) zeroReviews++;
 
-      const stateSlug = STATE_ABBR_TO_SLUG[c.state] || c.state.toLowerCase();
-      const slug = slugifyName(c.name);
-      const key = `${stateSlug}/${slug}`;
-      if (data.photos?.[0]) {
-        const photo = await downloadHeroPhoto(c, data.photos[0]);
-        if (photo) {
-          imageManifest[key] = photo;
-          withPhoto++;
-        }
-      }
-
-      console.log(`  [${i + 1}/${targets.length}] ${c.name}: rating=${data.rating ?? '—'} reviews=${data.review_count} photo=${imageManifest[key] ? 'yes' : 'no'}`);
+      console.log(`  [${i + 1}/${targets.length}] ${c.name}: rating=${data.rating ?? '—'} reviews=${data.review_count} photos=${data.photos?.length || 0}`);
     } catch (err) {
       errors++;
       console.log(`  [${i + 1}/${targets.length}] ${c.name}: ERROR ${err.message}`);
@@ -232,17 +165,14 @@ async function main() {
     // Checkpoint every 100 so a crash mid-run doesn't lose everything.
     if (i % 100 === 0) {
       writeFileSync(ENRICHED_PATH, JSON.stringify(enriched, null, 2));
-      writeFileSync(MANIFEST_PATH, JSON.stringify(imageManifest, null, 2));
     }
   }
 
   writeFileSync(ENRICHED_PATH, JSON.stringify(enriched, null, 2));
-  writeFileSync(MANIFEST_PATH, JSON.stringify(imageManifest, null, 2));
 
   console.log(`\nDone. ${calls} API calls, ${errors} errors.`);
   console.log(`Estimated cost: ~$${(calls * EST_COST_PER_CALL).toFixed(2)} (ballpark — confirm actual spend in Google Cloud Console)`);
   console.log(`Zero-review contractors: ${zeroReviews}/${targets.length}`);
-  console.log(`Photos downloaded: ${withPhoto}/${targets.length}`);
 }
 
 main().catch((err) => {
