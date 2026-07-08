@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     for (let from = 0; ; from += PAGE_SIZE) {
       let query = supabase
         .from('audits')
-        .select('id, contractor_id, has_website, site_unreachable, final_url, composite_score, grade, grade_color, audited_at, public_token, outreach_excluded_reason, contractors(name, city, state, website, claimed_at, status, phones, contact_phone, place_id, google_rating, google_review_count)')
+        .select('id, contractor_id, has_website, site_unreachable, final_url, composite_score, grade, grade_color, audited_at, public_token, outreach_excluded_reason, contractors(name, city, state, website, claimed_at, status, phones, contact_phone, place_id)')
         .range(from, from + PAGE_SIZE - 1);
 
       // A secondary tiebreaker is required, not optional — plenty of rows
@@ -95,7 +95,14 @@ export default async function handler(req, res) {
 
     const rows = allRows
       .filter((row) => row.contractors) // a handful of self-serve/orphaned rows might not join cleanly — skip rather than crash the table
-      .map((row) => ({
+      .map((row) => {
+        // google_rating/google_review_count don't exist on the DB
+        // contractors table (confirmed real 500 error — the audit
+        // engine reads these from the static content/data/enriched.json
+        // CONTRACTORS array instead, keyed by place_id) — same source
+        // already used for listingUrl, so look it up once and reuse it.
+        const listing = row.contractors.place_id ? CONTRACTORS.find((c) => c.place_id === row.contractors.place_id) : null;
+        return {
         contractorId: row.contractor_id,
         name: row.contractors.name,
         city: row.contractors.city,
@@ -111,10 +118,7 @@ export default async function handler(req, res) {
         // place_id — not every audited contractor is actually live there
         // (passesQualityBar() requires phones + service_areas + a verified
         // Google rating), so this is genuinely null for a lot of rows.
-        listingUrl: (() => {
-          const listing = row.contractors.place_id ? CONTRACTORS.find((c) => c.place_id === row.contractors.place_id) : null;
-          return listing ? `/contractors/${listing.state_slug}/${listing.slug}/` : null;
-        })(),
+        listingUrl: listing ? `/contractors/${listing.state_slug}/${listing.slug}/` : null,
         finalUrl: row.final_url,
         hasWebsite: row.has_website,
         siteUnreachable: row.site_unreachable,
@@ -125,8 +129,8 @@ export default async function handler(req, res) {
         publicToken: row.public_token,
         claimedAt: row.contractors.claimed_at,
         isSelfServe: row.contractors.status === 'self_serve',
-        googleRating: row.contractors.google_rating,
-        googleReviewCount: row.contractors.google_review_count,
+        googleRating: listing?.google_rating ?? null,
+        googleReviewCount: listing?.google_review_count ?? null,
         // Durable, stored on the row (not re-derived here) so a future
         // outreach/campaign process can exclude these by a plain query
         // instead of re-implementing this logic.
@@ -136,7 +140,8 @@ export default async function handler(req, res) {
         pipelineAnswered: pipelineByContractor.get(row.contractor_id)?.answered ?? null,
         lastContactMethod: lastContactByContractor.get(row.contractor_id)?.method || null,
         lastContactedAt: lastContactByContractor.get(row.contractor_id)?.created_at || null,
-      }));
+        };
+      });
 
     const scored = rows.filter((r) => r.compositeScore != null);
     const stats = {
