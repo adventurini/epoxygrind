@@ -35,6 +35,14 @@ export const FLAKE_COLORS = [
   { id: 'outback', label: 'Outback', hex: '#A78769' },
   { id: 'orbit', label: 'Orbit', hex: '#70798C' },
   { id: 'galaxy', label: 'Galaxy', hex: '#AFAFAA' },
+  // Kept in sync with lib/finish-design.js's Part 1.3 scrape-task addition.
+  { id: 'feather-gray', label: 'Feather Gray', hex: '#CCCAC5' },
+  { id: 'hog', label: 'Hog', hex: '#968B80' },
+  { id: 'blizzard', label: 'Blizzard', hex: '#898B95' },
+  { id: 'water-lily', label: 'Water Lily', hex: '#A6A7A3' },
+  { id: 'rapids', label: 'Rapids', hex: '#BDBEBD' },
+  { id: 'rebel', label: 'Rebel', hex: '#DFD9D4' },
+  { id: 'weathered-gray', label: 'Weathered Gray', hex: '#918D8E' },
 ];
 
 const PATTERNS = {
