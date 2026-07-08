@@ -78,6 +78,17 @@ export async function initAuthNav() {
   renderNav(nav, mobile, false);
 
   const isLoggedIn = await checkAuthState();
+
+  // The homepage is the marketing landing page — a signed-in visitor
+  // hitting "/" directly (bookmark, typed URL, back button) means the
+  // dashboard, not another look at the pitch. Other marketing pages (DIY
+  // guides, contractor directory, services) stay freely browsable while
+  // logged in — this redirect is homepage-only.
+  if (isLoggedIn && window.location.pathname === '/') {
+    window.location.replace('/app/');
+    return;
+  }
+
   if (isLoggedIn) renderNav(nav, mobile, true);
 }
 
