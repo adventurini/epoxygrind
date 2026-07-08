@@ -1,28 +1,50 @@
 import { getAuthClient, withAuthTimeout, signOut } from './client.js';
 
 /**
- * One consistent nav across every marketing/content page (previously
- * differed per page — home/services/content variants each had their own
- * link set and ordering, which read as inconsistent/messy across the
- * site). Every link renders the same plain style; "Get an estimate" is
- * the only visually distinct element (the one CTA), so the row reads as
- * one hierarchy instead of a row of competing badges/buttons.
+ * Nav is variant-aware via <body data-nav-variant="...">, read at render
+ * time — NOT one hardcoded link set for every page (that was the previous
+ * design, and it's why hand-authored per-page nav markup kept getting
+ * silently overwritten the moment this script ran). Unset/unrecognized
+ * variant falls back to 'consumer' so every existing content page (DIY
+ * guides, contractor directory, etc. — none of which set the attribute)
+ * keeps behaving exactly as before.
  */
-const LOGGED_OUT_LINKS = [
-  { href: '/diy/', label: 'DIY guides' },
-  { href: '/contractors/', label: 'Find a contractor' },
-  { href: '/services/', label: 'For contractors' },
-  { href: '/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
-  { href: '/login/', label: 'Log in' },
-];
+const TRACKING_PHONE = { href: 'tel:+19476004935', label: '(947) 600-4935', className: 'nav-phone' };
 
-const LOGGED_IN_LINKS = [
-  { href: '/diy/', label: 'DIY guides' },
-  { href: '/contractors/', label: 'Find a contractor' },
-  { href: '/services/', label: 'For contractors' },
-  { href: '/app/new/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
-  { action: 'logout', label: 'Log out' },
-];
+const NAV_VARIANTS = {
+  consumer: {
+    loggedOut: [
+      { href: '/diy/', label: 'DIY guides' },
+      { href: '/contractors/', label: 'Find a contractor' },
+      { href: '/services/', label: 'For contractors' },
+      { href: '/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
+      { href: '/login/', label: 'Log in' },
+    ],
+    loggedIn: [
+      { href: '/diy/', label: 'DIY guides' },
+      { href: '/contractors/', label: 'Find a contractor' },
+      { href: '/services/', label: 'For contractors' },
+      { href: '/app/new/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
+      { action: 'logout', label: 'Log out' },
+    ],
+  },
+  // Contractor-funnel pages (services/pricing/audit) — no DIY/directory
+  // links (off-pitch for a contractor buyer), click-to-call front and
+  // center instead.
+  services: {
+    loggedOut: [
+      TRACKING_PHONE,
+      { href: '/', label: 'Estimator' },
+      { href: '/login/', label: 'Log in' },
+      { href: '/signup/', label: 'Sign up', className: 'btn btn-p btn-sm' },
+    ],
+    loggedIn: [
+      TRACKING_PHONE,
+      { href: '/', label: 'Estimator' },
+      { action: 'logout', label: 'Log out' },
+    ],
+  },
+};
 
 function linkHtml(link) {
   const cls = link.className ? ` class="${link.className}"` : '';
@@ -45,8 +67,8 @@ function bindLogout(container) {
   });
 }
 
-function renderNav(container, mobile, isLoggedIn) {
-  const links = isLoggedIn ? LOGGED_IN_LINKS : LOGGED_OUT_LINKS;
+function renderNav(container, mobile, isLoggedIn, variant) {
+  const links = isLoggedIn ? variant.loggedIn : variant.loggedOut;
   container.innerHTML = links.map(linkHtml).join('');
   bindLogout(container);
   if (mobile) {
@@ -70,12 +92,13 @@ export async function initAuthNav() {
   if (!nav) return;
 
   const mobile = document.querySelector('[data-auth-mobile]');
+  const variant = NAV_VARIANTS[document.body.dataset.navVariant] || NAV_VARIANTS.consumer;
 
   // Render the logged-out nav immediately (no flash of empty nav / layout
   // shift), then upgrade to the logged-in state once the session check
   // resolves — bounded by withAuthTimeout so a hung getUser() call can't
   // leave the nav stuck showing "Log in" for an already-signed-in visitor.
-  renderNav(nav, mobile, false);
+  renderNav(nav, mobile, false, variant);
 
   const isLoggedIn = await checkAuthState();
 
@@ -89,7 +112,7 @@ export async function initAuthNav() {
     return;
   }
 
-  if (isLoggedIn) renderNav(nav, mobile, true);
+  if (isLoggedIn) renderNav(nav, mobile, true, variant);
 }
 
 initAuthNav();
