@@ -200,6 +200,26 @@ function onVisualizerChange({ floorSpec, image }) {
   }
 }
 
+/**
+ * Persists a freshly-computed segmentation mask (cache miss in
+ * FloorVisualizer.loadPhoto) so the next time this estimate's page loads,
+ * wireVisualizer finds a matching `data.segmentation` and skips the
+ * /api/segment network call entirely. Best-effort, like onVisualizerChange —
+ * a failed save just means the next load re-segments once more, not a
+ * broken page.
+ */
+function onSegmentationReady(segmentation) {
+  if (!currentEstimate) return;
+  currentEstimate = { ...currentEstimate, segmentation };
+  if (estimateId) {
+    authFetch(`/api/estimates?id=${encodeURIComponent(estimateId)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ payload: { segmentation } }),
+    }).catch(() => {});
+  }
+}
+
 function showEstimate(data) {
   currentEstimate = data;
   renderEstimate(doc, data, {
@@ -210,6 +230,7 @@ function showEstimate(data) {
     activeHistoryIndex,
     onSelectPreview: selectPreviewFromHistory,
     onVisualizerChange,
+    onSegmentationReady,
   });
   loading.hidden = true;
   error.hidden = true;

@@ -104,6 +104,16 @@ function linkProgram(gl, vsSrc, fsSrc) {
 function loadImage(src) {
   return new Promise((resolve, reject) => {
     const img = new Image();
+    // A saved estimate's originalImage is a cross-origin Supabase Storage
+    // signed URL (lib/estimate-storage.js's hydrateEstimateImages), not the
+    // inline data: URL a brand-new upload is. Without crossOrigin set, an
+    // image loaded from that URL taints this canvas — computeMaskAndShading's
+    // getImageData() (and the WebGL texture upload below) then throws
+    // SecurityError, silently breaking the entire visualizer for every
+    // estimate that's ever been reloaded from storage. Harmless to set for
+    // the mask image too (always a data: URL) — browsers ignore crossOrigin
+    // on non-network sources.
+    img.crossOrigin = 'anonymous';
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error('Could not load image.'));
     img.src = src;
@@ -301,23 +311,40 @@ export class FloorVisualizer {
    * Runs the full pipeline for a new photo: segmentation (network, ~2-3s),
    * then the one-time luminance/mask CPU pass. Everything after this is
    * network-free per spec 3.5.
+   *
+   * Caching (spec Part 5 build-order item — persist the mask per estimate):
+   * an owner reopening the same estimate's page shouldn't pay for a fresh
+   * fal.ai segmentation call every time. Pass a previously-persisted
+   * segmentation result as `cachedSegmentation` (shape matches /api/segment's
+   * response: `{mask, confidence, maskAreaPct, needsManualAssist, reason}`)
+   * and this skips the network call entirely, reusing the stored mask. The
+   * caller (calculator/estimate-view.js's wireVisualizer) is responsible for
+   * only supplying a cached result when it still matches the current photo.
    * @param {string} photoDataUrl
-   * @returns {Promise<{needsManualAssist: boolean, reason: string|null, confidence: number|null}>}
+   * @param {{mask:string, confidence:number|null, maskAreaPct:number|null}|null} [cachedSegmentation]
+   * @returns {Promise<{needsManualAssist: boolean, reason: string|null, confidence: number|null, segmentation: object|null}>}
    */
-  async loadPhoto(photoDataUrl) {
+  async loadPhoto(photoDataUrl, cachedSegmentation = null) {
     this.ready = false;
-    const res = await fetch('/api/segment', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ image: photoDataUrl }),
-    });
-    const data = await res.json();
+    let data;
+    const fromCache = Boolean(cachedSegmentation?.mask);
+    if (fromCache) {
+      data = cachedSegmentation;
+    } else {
+      const res = await fetch('/api/segment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: photoDataUrl }),
+      });
+      data = await res.json();
+    }
 
     if (!data.mask || data.needsManualAssist) {
       return {
         needsManualAssist: true,
         reason: data.reason || null,
         confidence: data.confidence ?? null,
+        segmentation: null,
       };
     }
 
@@ -338,7 +365,23 @@ export class FloorVisualizer {
     this.ready = true;
     this.render();
 
-    return { needsManualAssist: false, reason: null, confidence: data.confidence ?? null };
+    return {
+      needsManualAssist: false,
+      reason: null,
+      confidence: data.confidence ?? null,
+      // Only hand back a fresh cache entry when this call actually hit the
+      // network — re-persisting an unchanged cached result would just
+      // rewrite the same data on every page load.
+      segmentation: fromCache
+        ? null
+        : {
+            mask: data.mask,
+            confidence: data.confidence ?? null,
+            maskAreaPct: data.maskAreaPct ?? null,
+            needsManualAssist: false,
+            reason: null,
+          },
+    };
   }
 
   _disposeTexture(tex) {

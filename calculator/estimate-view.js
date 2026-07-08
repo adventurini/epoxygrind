@@ -79,7 +79,28 @@ export function estimatePayload(data) {
     // configured (visualizer-build-spec Part 4), without re-running
     // segmentation on their end.
     visualizerResult: data.visualizerResult || null,
+    // Cached /api/segment result (mask + confidence/maskAreaPct), keyed to
+    // the photo it was computed from — see photoFingerprint() below. Lets a
+    // repeat page load skip the fal.ai segmentation call entirely instead of
+    // re-running it on every visit to the owner's estimate page.
+    segmentation: data.segmentation || null,
   };
+}
+
+/**
+ * Cheap same-photo fingerprint for the persisted segmentation-mask cache.
+ * Once an estimate is saved its photo never changes in place (no
+ * re-upload-into-existing-estimate flow exists today), so `originalImagePath`
+ * — the stable Supabase Storage path — is the right cache key when present.
+ * Falls back to a length+sample fingerprint of the inline data URL for
+ * estimates that never got a storage path (demo/session-only mode), which
+ * avoids hashing what can be a multi-megabyte string on every page load.
+ */
+export function photoFingerprint(data) {
+  if (data.originalImagePath) return `path:${data.originalImagePath}`;
+  const img = data.originalImage || '';
+  if (img.length < 128) return `inline:${img}`;
+  return `inline:${img.length}:${img.slice(32, 96)}:${img.slice(-64)}`;
 }
 
 /**
@@ -360,9 +381,16 @@ function wireVisualizer(container, data, opts = {}) {
     } catch { /* ignore */ }
   });
 
+  // Segmentation-mask cache (spec Part 5 build-order): reuse a mask
+  // persisted from a prior page load of this same estimate/photo instead of
+  // paying for another fal.ai call every time the owner reopens the page.
+  const photoKey = photoFingerprint(data);
+  const cachedSegmentation =
+    data.segmentation?.mask && data.segmentation.photoKey === photoKey ? data.segmentation : null;
+
   applySpec();
   visualizer
-    .loadPhoto(data.originalImage)
+    .loadPhoto(data.originalImage, cachedSegmentation)
     .then((result) => {
       if (skeleton) skeleton.hidden = true;
       if (result.needsManualAssist) {
@@ -375,6 +403,12 @@ function wireVisualizer(container, data, opts = {}) {
       renderedOnce = true;
       track('visualizer_rendered', { finish: spec.finish });
       schedulePersist();
+      // Only a cache miss returns a fresh segmentation to persist — a cache
+      // hit intentionally returns null here (see FloorVisualizer.loadPhoto)
+      // so an unchanged mask isn't rewritten on every load.
+      if (result.segmentation) {
+        opts.onSegmentationReady?.({ ...result.segmentation, photoKey });
+      }
     })
     .catch(() => {
       if (skeleton) skeleton.hidden = true;
