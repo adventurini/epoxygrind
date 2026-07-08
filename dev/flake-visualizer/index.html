@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flake Texture Renderer — Internal QA</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{color-scheme:dark;--bg:#15171a;--panel:#1e2126;--line:#30343a;--ink:#e9e9e7;--ink-soft:#9a9fa6;--accent:#e8a23d}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  header{padding:20px 28px;border-bottom:1px solid var(--line)}
+  header h1{margin:0;font-size:19px}
+  header p{margin:4px 0 0;color:var(--ink-soft);font-size:13.5px}
+  .layout{display:grid;grid-template-columns:340px 1fr;gap:0;min-height:calc(100vh - 73px)}
+  .panel{border-right:1px solid var(--line);padding:20px;overflow-y:auto}
+  .stage{display:flex;align-items:center;justify-content:center;padding:32px;background:
+    repeating-conic-gradient(#26292e 0% 25%, #1c1f23 0% 50%) 50% / 24px 24px}
+  .stage canvas{width:min(70vh,560px);height:min(70vh,560px);border-radius:4px;box-shadow:0 12px 40px rgba(0,0,0,.5);image-rendering:auto}
+  .fld{display:block;margin-bottom:18px}
+  .fld > span{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin-bottom:8px}
+  select,input[type=number]{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--ink);padding:8px 10px;border-radius:6px;font-size:14px}
+  input[type=range]{width:100%}
+  .swatches{display:flex;flex-wrap:wrap;gap:8px}
+  .swatch{width:30px;height:30px;border-radius:6px;border:2px solid transparent;cursor:pointer;padding:0}
+  .swatch.on{border-color:var(--accent)}
+  .row{display:flex;gap:8px}
+  .row .fld{flex:1}
+  .seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .seg button{flex:1;background:var(--panel);color:var(--ink-soft);border:0;padding:8px 4px;font-size:13px;cursor:pointer}
+  .seg button.on{background:var(--accent);color:#1a1200;font-weight:600}
+  .value{color:var(--ink-soft);font-size:12.5px;float:right}
+  .custom-rows{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+  .custom-row{display:flex;gap:6px;align-items:center}
+  .custom-row select{flex:1}
+  .custom-row input{width:64px}
+  .custom-row button{background:none;border:0;color:var(--ink-soft);cursor:pointer;font-size:16px;padding:0 4px}
+  .btn-sm{background:var(--panel);border:1px solid var(--line);color:var(--ink);padding:7px 10px;border-radius:6px;font-size:13px;cursor:pointer}
+  .mode-tabs{display:flex;gap:6px;margin-bottom:16px}
+  .mode-tabs button{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--ink-soft);padding:8px;border-radius:6px;font-size:13px;cursor:pointer}
+  .mode-tabs button.on{border-color:var(--accent);color:var(--accent)}
+  .hidden{display:none}
+  .recipe-out{font-family:ui-monospace,monospace;font-size:11.5px;color:var(--ink-soft);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px;white-space:pre-wrap;word-break:break-all}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Flake Texture Renderer — Internal QA</h1>
+  <p>lib/flake-texture-renderer.js control layer · not part of the public site · visualizer-build-spec Part 2 checkpoint</p>
+</header>
+
+<div class="layout">
+  <div class="panel">
+    <label class="fld"><span>Base coat</span>
+      <div class="swatches" id="baseSwatches"></div>
+    </label>
+
+    <div class="mode-tabs">
+      <button type="button" class="on" data-mode="stock">Stock blend</button>
+      <button type="button" data-mode="custom">Custom blend</button>
+    </div>
+
+    <div id="stockMode">
+      <label class="fld"><span>Flake blend</span>
+        <div class="swatches" id="blendSwatches"></div>
+      </label>
+    </div>
+
+    <div id="customMode" class="hidden">
+      <label class="fld"><span>Custom components</span>
+        <div class="custom-rows" id="customRows"></div>
+        <button type="button" class="btn-sm" id="addComponent">+ Add color</button>
+      </label>
+    </div>
+
+    <label class="fld"><span>Density <span class="value" id="densityValue">100%</span></span>
+      <input type="range" id="density" min="0" max="1" step="0.01" value="1">
+    </label>
+
+    <label class="fld"><span>Flake size</span>
+      <div class="seg" id="flakeSizeSeg">
+        <button type="button" data-size="0.0625">Small</button>
+        <button type="button" data-size="0.25" class="on">Medium</button>
+        <button type="button" data-size="0.5">Large</button>
+      </div>
+    </label>
+
+    <label class="fld"><span>Recipe (resolved components)</span>
+      <div class="recipe-out" id="recipeOut"></div>
+    </label>
+  </div>
+
+  <div class="stage">
+    <canvas id="floorCanvas" width="1024" height="1024"></canvas>
+  </div>
+</div>
+
+<script type="module" src="/dev/flake-visualizer/visualizer-demo.js"></script>
+</body>
+</html>
