@@ -27,6 +27,14 @@ export const FLAKE_COLORS = [
   { id: 'cabin-fever', label: 'Cabin Fever', hex: '#BAB6AA' },
   { id: 'wombat', label: 'Wombat', hex: '#676765' },
   { id: 'coyote', label: 'Coyote', hex: '#CFC8BB' },
+  // Kept in sync with lib/finish-design.js's catalog-completion addition.
+  { id: 'nightfall', label: 'Nightfall', hex: '#5A5A58' },
+  { id: 'raven', label: 'Raven', hex: '#3F3F3E' },
+  { id: 'creekbed', label: 'Creekbed', hex: '#C3B6A1' },
+  { id: 'shoreline', label: 'Shoreline', hex: '#CABCA2' },
+  { id: 'outback', label: 'Outback', hex: '#A78769' },
+  { id: 'orbit', label: 'Orbit', hex: '#70798C' },
+  { id: 'galaxy', label: 'Galaxy', hex: '#AFAFAA' },
 ];
 
 const PATTERNS = {
