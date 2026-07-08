@@ -30,6 +30,27 @@ const REGEN_DEBOUNCE_MS = 30;
 // a relight signal, and capped so a big upload photo can't make this slow.
 const LUMINANCE_WORK_SIZE = 720;
 
+// Bug fix: tileRepeat used to be a flat constant (6) regardless of the
+// actual floor's real-world size — a one-car-garage photo and a sprawling
+// multi-room great-room photo both got exactly 6 tile repeats across the
+// homography-mapped floor quad. Since each "tile" represents a fixed real
+// -world footprint (the flake/metallic texture is generated to represent a
+// roughly TILE_INCHES-wide swatch — see flake-texture-renderer.js), a floor
+// spanning much more real square footage needs proportionally MORE repeats
+// to keep the apparent flake/tile size visually consistent — otherwise a
+// big floor reads as an obviously coarse, mechanically-repeating lattice
+// (confirmed via screenshot on a multi-room house photo: a clear repeating
+// diamond/quatrefoil artifact). BASE_TILE_REPEAT=6 is the value already
+// tuned/tested against a ~2-car-garage-sized floor; scale by sqrt(sqFt)
+// relative to that baseline (area scales with the square of linear size, so
+// sqrt(area ratio) approximates the linear scale-up needed) and clamp to a
+// sane range so a tiny or huge sqFt value can never make the tiling
+// degenerate.
+const BASE_TILE_REPEAT = 6;
+const BASE_SQFT = 450; // ~2-car garage — matches BASE_TILE_REPEAT's existing tuning
+const MIN_TILE_REPEAT = 4;
+const MAX_TILE_REPEAT = 24; // headroom for large commercial spaces
+
 const VERTEX_SRC = `#version 300 es
 in vec2 aPosition;
 in vec2 aUV;
@@ -452,7 +473,11 @@ export class FloorVisualizer {
     this.spec = { ...DEFAULT_SPEC };
     this.seed = defaultSeedFor(this.spec.density, this.spec.flakeSizeIn);
     this.wipePct = 0.5;
-    this.tileRepeat = 6;
+    // Default matches BASE_TILE_REPEAT/BASE_SQFT until a real sqFt is known
+    // (see setSqFt) — same value this constant always held before the fix,
+    // so a caller that never calls setSqFt gets the old, already-tuned
+    // behavior.
+    this.tileRepeat = BASE_TILE_REPEAT;
     this.ready = false;
     // Spec 3.2: identity (no correction) until a photo's mask produces a
     // real quad fit — see computeHomographyInv, wired in _applySegmentedResult.
@@ -695,6 +720,25 @@ export class FloorVisualizer {
   setWipePct(pct) {
     this.wipePct = Math.min(1, Math.max(0, pct));
     this.render();
+  }
+
+  /**
+   * Scales tileRepeat to the room's actual estimated square footage, so the
+   * apparent flake/tile size in the photo stays visually consistent whether
+   * the floor is a one-car garage or a sprawling multi-room great room (see
+   * this file's BASE_TILE_REPEAT/BASE_SQFT comment). Area scales with the
+   * square of linear size, so sqrt(sqFt/BASE_SQFT) approximates how much
+   * bigger the room is *linearly* relative to the already-tuned baseline —
+   * that's the factor tileRepeat should scale by. Safe to call before a
+   * photo is loaded (just updates the value used on the next render) and
+   * with any junk input (falls back to the baseline).
+   * @param {number} sqFt
+   */
+  setSqFt(sqFt) {
+    const area = Number(sqFt) > 0 ? Number(sqFt) : BASE_SQFT;
+    const scaled = BASE_TILE_REPEAT * Math.sqrt(area / BASE_SQFT);
+    this.tileRepeat = Math.min(MAX_TILE_REPEAT, Math.max(MIN_TILE_REPEAT, scaled));
+    if (this.ready) this.render();
   }
 
   /** Render-on-demand (spec 3.5) — called only when a control, photo, or

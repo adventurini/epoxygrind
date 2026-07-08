@@ -330,6 +330,13 @@ function wireVisualizer(container, data, opts = {}) {
     return;
   }
 
+  // Bug fix: the floor texture used to tile at a flat repeat count
+  // regardless of the room's actual size — a one-car garage and a sprawling
+  // multi-room floor both got the same tile density, which reads as an
+  // obviously coarse repeating lattice on a big floor. Scale it to this
+  // estimate's real square footage (same field used for pricing).
+  visualizer.setSqFt(data.analysis?.estimatedSqFt || data.pricing?.sqFt);
+
   const spec = defaultFloorSpec(data);
   let renderedOnce = false;
   let persistTimer = null;
