@@ -215,6 +215,42 @@
       "finishType": "polyaspartic",
       "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/2-car-garage-before.jpg",
       "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/2-car-garage-polyaspartic-flake-after.jpg"
+    },
+    {
+      "space": "covered-patio",
+      "spaceLabel": "Covered Patio",
+      "finish": "overlay-micro-cement",
+      "finishLabel": "Overlay / Micro-Cement",
+      "finishType": "overlay",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/covered-patio-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/covered-patio-overlay-micro-cement-after.jpg"
+    },
+    {
+      "space": "commercial-bay",
+      "spaceLabel": "Commercial Bay",
+      "finish": "stains-earthtone",
+      "finishLabel": "Acid Stain (Earth Tone)",
+      "finishType": "stains",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/commercial-bay-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/commercial-bay-stains-earthtone-after.jpg"
+    },
+    {
+      "space": "3-car-garage",
+      "spaceLabel": "3-Car Garage",
+      "finish": "quartz-broadcast",
+      "finishLabel": "Quartz Broadcast",
+      "finishType": "quartz",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/3-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/3-car-garage-quartz-broadcast-after.jpg"
+    },
+    {
+      "space": "1-car-garage",
+      "spaceLabel": "1-Car Garage",
+      "finish": "custom-colors-blue",
+      "finishLabel": "Custom Colors (Team Blue)",
+      "finishType": "custom",
+      "before": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/1-car-garage-before.jpg",
+      "after": "https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/1-car-garage-custom-colors-blue-after.jpg"
     }
   ],
   "generatedAt": "2026-07-08T15:26:02.651Z"
