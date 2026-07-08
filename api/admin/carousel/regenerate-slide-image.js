@@ -4,6 +4,7 @@ import { getSupabase, isSupabaseConfigured } from '../../../lib/supabase.js';
 import { generateSlideScenes } from '../../../lib/carousel/generate-scenes.js';
 import { generateSlideImage, buildImagePrompt } from '../../../lib/carousel/generate-image.js';
 import { composeAndStoreFinal } from '../../../lib/carousel/compose-and-store.js';
+import { selectMasters } from '../../../lib/carousel/select-masters.js';
 
 /**
  * POST /api/admin/carousel/regenerate-slide-image — regenerates ONE
@@ -58,8 +59,7 @@ export default async function handler(req, res) {
     if (slideErr) throw slideErr;
     if (!slide) return res.status(404).json({ error: 'Slide not found.' });
 
-    const isDualCloser = position === 6 && masters.pro;
-    const masterUrls = isDualCloser ? [masters.default, masters.pro] : [masters.default];
+    const { masterUrls, dualCharacter } = selectMasters({ audience: day.audience, position, masters });
 
     const basePrompt = slide.carousel_generations?.prompt;
     let prompt;
@@ -70,7 +70,7 @@ export default async function handler(req, res) {
       // day-generation would (spec §2.3), then apply the delta if given.
       const scenes = await generateSlideScenes({ audience: day.audience, topic: day.carousel_topics });
       const scene = deltaPrompt ? `${scenes[position - 1]} ${deltaPrompt}.` : scenes[position - 1];
-      prompt = buildImagePrompt(scene, { dualCharacter: isDualCloser });
+      prompt = buildImagePrompt(scene, { dualCharacter });
     }
 
     const generationId = randomUUID();

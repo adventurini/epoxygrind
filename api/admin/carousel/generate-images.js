@@ -4,6 +4,7 @@ import { getSupabase, isSupabaseConfigured } from '../../../lib/supabase.js';
 import { generateSlideScenes } from '../../../lib/carousel/generate-scenes.js';
 import { generateSlideImage, buildImagePrompt } from '../../../lib/carousel/generate-image.js';
 import { composeAndStoreFinal } from '../../../lib/carousel/compose-and-store.js';
+import { selectMasters } from '../../../lib/carousel/select-masters.js';
 
 /**
  * POST /api/admin/carousel/generate-images — generates all 6 images for
@@ -59,13 +60,8 @@ export default async function handler(req, res) {
       const scene = scenes[slide.position - 1];
       const generationId = randomUUID();
 
-      // Slide 6, both audiences, is a dual-character shot: Grinder Dad +
-      // "the Pro" together (Anthony: "a picture with the consumer and the
-      // contractor together" / "the pro contractor with the dad guy at
-      // the end"). Slides 1-5 stay single-character (Grinder Dad).
-      const isDualCloser = slide.position === 6 && masters.pro;
-      const masterUrls = isDualCloser ? [masters.default, masters.pro] : [masters.default];
-      const prompt = buildImagePrompt(scene, { dualCharacter: isDualCloser });
+      const { masterUrls, dualCharacter } = selectMasters({ audience: day.audience, position: slide.position, masters });
+      const prompt = buildImagePrompt(scene, { dualCharacter });
 
       const { imageUrl } = await generateSlideImage({
         masterUrls, prompt, dayId: day.id, position: slide.position, generationId,

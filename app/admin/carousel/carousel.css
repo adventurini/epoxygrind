@@ -35,6 +35,7 @@
 .cal-slide{border:1px solid var(--dash-line);border-radius:10px;padding:10px 12px}
 .cal-slide-img{width:100%;max-width:220px;aspect-ratio:4/5;object-fit:cover;border-radius:8px;margin-bottom:8px;display:block;background:var(--dash-bg)}
 .cal-slide-img-empty{display:flex;align-items:center;justify-content:center;color:var(--dash-muted);font-size:11px;border:1px dashed var(--dash-line)}
+.cal-slide-apply{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .cal-slide-regen{display:flex;gap:6px;margin-top:8px}
 .cal-slide-delta{flex:1;min-width:0;font-family:inherit;font-size:12px;padding:6px 9px;border:1px solid var(--dash-line);border-radius:7px;background:#fff;color:var(--dash-ink)}
 .cal-slide-regen-btn{white-space:nowrap}

@@ -131,6 +131,7 @@ function renderSlides(day) {
       ${day.readOnly ? '' : `
       <div class="cal-slide-apply">
         <button type="button" class="btn btn-p btn-sm cal-slide-apply-btn" data-position="${s.position}">Apply caption to image</button>
+        <button type="button" class="btn btn-o btn-sm cal-slide-regen-caption-btn" data-position="${s.position}">Regenerate this caption</button>
       </div>
       <div class="cal-slide-regen">
         <input type="text" class="cal-slide-delta" data-position="${s.position}" placeholder="Optional: describe a change (e.g. &quot;more panic&quot;)">
@@ -222,6 +223,45 @@ document.getElementById('calSlides').addEventListener('click', async (ev) => {
     toast(data.finalUrl ? 'Caption applied to image.' : 'Caption saved.');
   } catch (err) {
     toast(err.message || 'Could not save.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = original;
+  }
+});
+
+// Per-slide caption regeneration (Anthony: "a way to do it individually
+// (captions and images)") — complements the per-slide image regen button
+// and the day-level "Regenerate all captions".
+document.getElementById('calSlides').addEventListener('click', async (ev) => {
+  const btn = ev.target.closest('.cal-slide-regen-caption-btn');
+  if (!btn || !currentDate) return;
+  const position = Number(btn.dataset.position);
+
+  btn.disabled = true;
+  const original = btn.textContent;
+  btn.textContent = 'Regenerating…';
+  try {
+    const res = await authFetch('/api/admin/carousel/regenerate-slide-caption', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: currentDate, position }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Regenerate failed.');
+
+    const textarea = document.querySelector(`.cal-slide[data-position="${position}"] textarea[data-caption-input]`);
+    if (textarea) textarea.value = data.caption;
+    if (data.finalUrl) {
+      const img = document.querySelector(`.cal-slide[data-position="${position}"] .cal-slide-img`);
+      if (img && img.tagName === 'IMG') img.src = data.finalUrl;
+    }
+    const wc = wordCount(data.caption);
+    const limit = SLIDE_WORD_LIMITS[position - 1];
+    const wcEl = document.querySelector(`.cal-slide[data-position="${position}"] .cal-slide-wordcount`);
+    if (wcEl) { wcEl.textContent = `${wc}/${limit} words`; wcEl.classList.toggle('over', wc > limit); }
+    toast('Caption regenerated.');
+  } catch (err) {
+    toast(err.message || 'Regenerate failed.');
   } finally {
     btn.disabled = false;
     btn.textContent = original;
