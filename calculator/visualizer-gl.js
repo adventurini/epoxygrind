@@ -79,6 +79,7 @@ uniform float uTileRepeat;
 uniform float uWipePct;
 uniform float uOpacity;
 uniform float uFinish; // 1.0 = gloss, 0.0 = satin (spec 3.4)
+uniform vec3 uAvgFloorColor; // flake texture's own average color (see JS side computeAverageColor)
 
 // Bug fix: the luminance-relight shading factor is clamped to [0.25, 1.9]
 // but was multiplied in *linearly* with no rolloff, so a photo with strong
@@ -116,8 +117,73 @@ void main() {
   // anyway); clamp its magnitude so fract() below always sees a finite value.
   float wComp = hUV.z >= 0.0 ? max(hUV.z, 1e-4) : min(hUV.z, -1e-4);
   vec2 floorUV = hUV.xy / wComp;
-  vec2 tiledUV = fract(floorUV * uTileRepeat);
-  vec3 floorColor = texture(uFloor, tiledUV).rgb;
+
+  // Root-cause fix for the "regular grid/waffle" artifact (this is the 4th
+  // pass on this bug — see this file's header — so this replaces the
+  // mechanism, not just another tileRepeat/foreshorten nudge). Verified
+  // empirically against a real deep-room photo (two-story foyer, tileRepeat
+  // ~16.7 from its ~3500 sqft): the far/compressed part of the mapped floor
+  // renders a strong, regular diagonal moire/washboard pattern; the SAME
+  // photo at baseline tileRepeat~6 shows none, and within the SAME
+  // tileRepeat~16.7 render the far edge is visibly worse than the near
+  // edge. That's the signature of texture-minification aliasing, not a
+  // flaw in the generated texture's own randomness (flake-texture-renderer.js
+  // is unchanged and still verified organic in isolation) — real hardware
+  // commonly caps anisotropic filtering at 16x, well under what a ~4x
+  // foreshorten * ~17-24x tileRepeat floor needs at its worst point.
+  vec2 uvScaled = floorUV * uTileRepeat;
+  // Derivatives of the PRE-fract/pre-cell-transform coordinate — computing
+  // dFdx/dFdy on a wrapped or per-cell-transformed coordinate instead would
+  // see false huge jumps right at tile/cell boundaries and pick wildly
+  // wrong (over-blurred) mip levels exactly there. This smooth version is
+  // reused below both to drive the detail fade and as explicit
+  // textureGrad() derivatives so the per-cell transform (also below) can't
+  // create its own seam artifact.
+  vec2 duvdx = dFdx(uvScaled);
+  vec2 duvdy = dFdy(uvScaled);
+  // "Tile-units compressed per screen pixel" in the worst axis — exactly
+  // what LINEAR_MIPMAP_LINEAR + anisotropic filtering are trying (and, at
+  // extreme values, failing) to resolve.
+  float texelDensity = max(length(duvdx), length(duvdy));
+
+  // Second, independent fix: even with perfect filtering, a finite texture
+  // tiled 15-24+ times across a floor literally repeats its own content at
+  // a regular interval — the site owner's exact complaint ("you can't
+  // divide these into repeating squares... this design does not repeat").
+  // Hash each integer tile cell to one of 8 dihedral-square transforms
+  // (4 rotations x mirror) before sampling, so no two neighboring tile
+  // copies ever line up the same way and the eye can't lock onto a
+  // repeating grid — standard "stochastic tiling" technique. Uses
+  // textureGrad with the untransformed derivatives above (not the
+  // discontinuous post-transform coordinate) specifically so this doesn't
+  // introduce its own blurry seam at every cell boundary.
+  vec2 cellId = floor(uvScaled);
+  vec2 cellFrac = fract(uvScaled);
+  float cellHash = fract(sin(dot(cellId, vec2(127.1, 311.7))) * 43758.5453123);
+  if (cellHash > 0.5) cellFrac.x = 1.0 - cellFrac.x; // mirror bit
+  float cellRot = fract(cellHash * 3.271);
+  if (cellRot > 0.75) cellFrac = vec2(cellFrac.y, 1.0 - cellFrac.x);
+  else if (cellRot > 0.5) cellFrac = vec2(1.0 - cellFrac.x, 1.0 - cellFrac.y);
+  else if (cellRot > 0.25) cellFrac = vec2(1.0 - cellFrac.y, cellFrac.x);
+  vec2 tiledUV = cellFrac;
+  vec3 rawFloorColor = textureGrad(uFloor, tiledUV, duvdx, duvdy).rgb;
+
+  // The actual anti-moire fix: once local minification is severe enough
+  // that individual flakes can no longer be resolved anyway, stop fighting
+  // the aliasing and fade to the texture's own average color instead —
+  // reads as "very fine, evenly-lit aggregate" at a glance, and immune to
+  // moire because there's no remaining high-frequency content left to
+  // alias. Thresholds calibrated against the same real repro case: at
+  // tileRepeat=6 (confirmed clean) typical texelDensity stays under
+  // FADE_START everywhere in frame; at tileRepeat~16.7's confirmed-bad far
+  // edge it's well past FADE_END (fades essentially fully to flat average
+  // right where the moire was worst), while that same render's near edge
+  // (confirmed fine-looking even at tileRepeat~16.7) stays under
+  // FADE_START and keeps full flake detail.
+  const float FADE_START = 0.025;
+  const float FADE_END = 0.09;
+  float fade = smoothstep(FADE_START, FADE_END, texelDensity);
+  vec3 floorColor = mix(rawFloorColor, uAvgFloorColor, fade);
 
   // Spec 3.3: shading was normalized/packed into [0,1] client-side from the
   // clamped [0.25, 1.9] range — unpack it back out here.
@@ -436,6 +502,38 @@ function createR8Texture(gl, width, height, data) {
   return tex;
 }
 
+/**
+ * Average color of a rendered flake/metallic texture canvas — used by the
+ * fragment shader's detail fade (see FADE_START/FADE_END above) as the
+ * color to blend toward once local minification gets too severe to
+ * resolve individual flakes without aliasing. Downsamples to a small
+ * canvas (a real pixel average over many samples, not a single drawImage
+ * scale-to-1x1 which some browsers resolve via a single point sample
+ * rather than a true box-filter average) and means the small handful of
+ * RGB reads in JS, not a full 1024x1024 getImageData — cheap enough to run
+ * once per texture regen (same cadence as _regenerateFloorTexture itself,
+ * already debounced — never per frame).
+ */
+function computeAverageColor(sourceCanvas) {
+  const DS = 48;
+  const tiny = document.createElement('canvas');
+  tiny.width = DS;
+  tiny.height = DS;
+  const tctx = tiny.getContext('2d');
+  tctx.drawImage(sourceCanvas, 0, 0, DS, DS);
+  const { data } = tctx.getImageData(0, 0, DS, DS);
+  let r = 0;
+  let g = 0;
+  let b = 0;
+  const n = DS * DS;
+  for (let i = 0; i < n; i++) {
+    r += data[i * 4];
+    g += data[i * 4 + 1];
+    b += data[i * 4 + 2];
+  }
+  return new Float32Array([r / n / 255, g / n / 255, b / n / 255]);
+}
+
 function createImageTexture(gl, image, { repeat = false } = {}) {
   const tex = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, tex);
@@ -529,6 +627,10 @@ export class FloorVisualizer {
     // so a caller that never calls setSqFt gets the old, already-tuned
     // behavior.
     this.tileRepeat = BASE_TILE_REPEAT;
+    // Safe default until the first _regenerateFloorTexture call computes a
+    // real one — render() is never reached before that happens (see
+    // _applySegmentedResult), but keep a sane fallback regardless.
+    this._avgFloorColor = new Float32Array([0.5, 0.5, 0.5]);
     this.ready = false;
     // Spec 3.2: identity (no correction) until a photo's mask produces a
     // real quad fit — see computeHomographyInv, wired in _applySegmentedResult.
@@ -584,6 +686,7 @@ export class FloorVisualizer {
       uWipePct: gl.getUniformLocation(this.program, 'uWipePct'),
       uOpacity: gl.getUniformLocation(this.program, 'uOpacity'),
       uFinish: gl.getUniformLocation(this.program, 'uFinish'),
+      uAvgFloorColor: gl.getUniformLocation(this.program, 'uAvgFloorColor'),
     };
   }
 
@@ -766,6 +869,9 @@ export class FloorVisualizer {
 
     this._disposeTexture(this.floorTex);
     this.floorTex = createImageTexture(gl, this._flakeCanvas, { repeat: true });
+    // See computeAverageColor's doc comment — feeds the shader's detail
+    // fade at extreme minification.
+    this._avgFloorColor = computeAverageColor(this._flakeCanvas);
   }
 
   setWipePct(pct) {
@@ -823,6 +929,7 @@ export class FloorVisualizer {
     gl.uniform1f(this.uniforms.uWipePct, this.wipePct);
     gl.uniform1f(this.uniforms.uOpacity, 1);
     gl.uniform1f(this.uniforms.uFinish, this.spec.sheen === 'satin' ? 0 : 1);
+    gl.uniform3fv(this.uniforms.uAvgFloorColor, this._avgFloorColor);
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     gl.bindVertexArray(null);
