@@ -5,7 +5,7 @@ export default {
   dek: 'Everything for doing your own epoxy floor — what to buy, how to prep, and where it\'s easy to mess up. Rather have a pro do it? Get a priced estimate instead.',
   groups: [
     {
-      title: 'How-to guides — in order',
+      title: 'How-to guides',
       items: [
         {
           href: '/diy/how-to-test-concrete-for-moisture/',
