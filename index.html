@@ -273,7 +273,7 @@
     <div class="wrap">
       <span class="eyebrow eyebrow-dark">Get in touch</span>
       <h2>Questions? Send us a message</h2>
-      <p class="section-lede">Not ready for a full estimate, or have something else on your mind — pricing, a contractor listing, a partnership idea? Tell us here.</p>
+      <p class="section-lede">Not ready for a full estimate, or have something else on your mind about your floor? Tell us here.</p>
 
       <form id="contactForm" class="contact-form" novalidate>
         <input type="hidden" id="contactSourcePath" name="sourcePath">
@@ -284,11 +284,13 @@
           <label class="fld"><span>Name</span><input type="text" name="name" id="contactName" required autocomplete="name"></label>
           <label class="fld"><span>Email</span><input type="email" name="email" id="contactEmail" required autocomplete="email"></label>
         </div>
+        <label class="fld full"><span>ZIP code</span><input type="text" name="zip" id="contactZip" inputmode="numeric" pattern="[0-9]{5}" maxlength="10" autocomplete="postal-code"></label>
         <label class="fld full"><span>Message</span><textarea name="message" id="contactMessage" rows="4" required></textarea></label>
         <button type="submit" class="btn btn-p" id="contactSubmit">Send message →</button>
         <p class="fld-error" id="contactError" hidden></p>
       </form>
       <p class="tiny muted" id="contactSuccess" hidden>Thanks — we'll get back to you soon.</p>
+      <p class="tiny muted contact-form-b2b-link">Own an epoxy business? <a href="/services/">Get listed or ask about marketing →</a></p>
     </div>
   </section>
 </main>

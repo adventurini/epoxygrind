@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
     const { data, error } = await supabase
       .from('contact_messages')
-      .select('id, created_at, name, email, message, source_path')
+      .select('id, created_at, name, email, zip, message, source_path')
       .order('created_at', { ascending: false })
       .limit(limit);
 
@@ -31,6 +31,7 @@ export default async function handler(req, res) {
         createdAt: row.created_at,
         name: row.name,
         email: row.email,
+        zip: row.zip,
         message: row.message,
         sourcePath: row.source_path,
       })),

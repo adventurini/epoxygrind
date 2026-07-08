@@ -183,6 +183,7 @@ async function loadContactMessages() {
         <td>${formatDate(m.createdAt)}</td>
         <td>${escapeHtml(m.name)}</td>
         <td><a class="admin-link" href="mailto:${escapeHtml(m.email)}">${escapeHtml(m.email)}</a></td>
+        <td>${m.zip ? escapeHtml(m.zip) : '—'}</td>
         <td>${escapeHtml(m.message)}</td>
         <td>${m.sourcePath ? `<a class="admin-link" href="${escapeHtml(m.sourcePath)}" target="_blank">${escapeHtml(m.sourcePath)}</a>` : '—'}</td>
       </tr>`).join('');

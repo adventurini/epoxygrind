@@ -24,6 +24,7 @@ export default async function handler(req, res) {
 
   const name = String(body.name || '').trim().slice(0, 200);
   const email = String(body.email || '').trim().slice(0, 200);
+  const zip = String(body.zip || '').trim().slice(0, 10);
   const message = String(body.message || '').trim().slice(0, 2000);
   const sourcePath = String(body.sourcePath || '').trim().slice(0, 300);
 
@@ -36,6 +37,7 @@ export default async function handler(req, res) {
     const { error } = await supabase.from('contact_messages').insert({
       name,
       email,
+      zip: zip || null,
       message,
       source_path: sourcePath || null,
     });
