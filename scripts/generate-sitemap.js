@@ -56,7 +56,7 @@ function listSlugs(subdir) {
 // ── Pages that exist today ───────────────────────────────────────────────
 const STATIC_PAGES = [
   { path: '/', changefreq: 'weekly', priority: 1.0, lastmod: gitLastModified('index.html') },
-  { path: '/services/', changefreq: 'weekly', priority: 0.9, lastmod: gitLastModified('services/index.html') },
+  { path: '/estimator/', changefreq: 'weekly', priority: 0.9, lastmod: gitLastModified('estimator/index.html') },
   { path: '/pricing/', changefreq: 'weekly', priority: 0.9, lastmod: gitLastModified('pricing/index.html') },
   { path: '/audit/', changefreq: 'weekly', priority: 0.8, lastmod: gitLastModified('audit/index.html') },
   { path: '/epoxy-flooring/', changefreq: 'weekly', priority: 0.8, lastmod: gitLastModified('content/data/metros.json') },

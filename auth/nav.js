@@ -16,31 +16,31 @@ const NAV_VARIANTS = {
     loggedOut: [
       { href: '/diy/', label: 'DIY guides' },
       { href: '/contractors/', label: 'Find a contractor' },
-      { href: '/services/', label: 'For contractors' },
-      { href: '/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
+      { href: '/', label: 'For contractors' },
+      { href: '/estimator/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
       { href: '/login/', label: 'Log in' },
     ],
     loggedIn: [
       { href: '/diy/', label: 'DIY guides' },
       { href: '/contractors/', label: 'Find a contractor' },
-      { href: '/services/', label: 'For contractors' },
+      { href: '/', label: 'For contractors' },
       { href: '/app/new/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
       { action: 'logout', label: 'Log out' },
     ],
   },
-  // Contractor-funnel pages (services/pricing/audit) — no DIY/directory
-  // links (off-pitch for a contractor buyer), click-to-call front and
-  // center instead.
+  // Contractor-funnel pages (the homepage, pricing, audit) — no DIY/
+  // directory links (off-pitch for a contractor buyer), click-to-call
+  // front and center instead.
   services: {
     loggedOut: [
       TRACKING_PHONE,
-      { href: '/', label: 'Estimator' },
+      { href: '/estimator/', label: 'Estimator' },
       { href: '/login/', label: 'Log in' },
       { href: '/signup/', label: 'Sign up', className: 'btn btn-p btn-sm' },
     ],
     loggedIn: [
       TRACKING_PHONE,
-      { href: '/', label: 'Estimator' },
+      { href: '/estimator/', label: 'Estimator' },
       { action: 'logout', label: 'Log out' },
     ],
   },
@@ -102,11 +102,11 @@ export async function initAuthNav() {
 
   const isLoggedIn = await checkAuthState();
 
-  // The homepage is the marketing landing page — a signed-in visitor
-  // hitting "/" directly (bookmark, typed URL, back button) means the
-  // dashboard, not another look at the pitch. Other marketing pages (DIY
-  // guides, contractor directory, services) stay freely browsable while
-  // logged in — this redirect is homepage-only.
+  // The homepage is the marketing landing page (now the contractor pitch)
+  // — a signed-in visitor hitting "/" directly (bookmark, typed URL, back
+  // button) means the dashboard, not another look at the pitch. Other
+  // marketing pages (DIY guides, contractor directory, /estimator/) stay
+  // freely browsable while logged in — this redirect is homepage-only.
   if (isLoggedIn && window.location.pathname === '/') {
     window.location.replace('/app/');
     return;

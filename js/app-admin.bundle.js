@@ -45,7 +45,7 @@ ${_}`}var R=class extends Error{constructor({message:e,code:r,cause:s,name:n}){v
     <a href="/app/" class="${t==="overview"?"active":""}">Overview</a>
     <a href="/app/#estimates" class="${t==="estimates"?"active":""}">My estimates</a>
     <a href="/app/new/" class="${t==="new"?"active":""}">New estimate</a>
-    <a href="/services/">Contractor services</a>`}function da(t){let e=Er(t);return`
+    <a href="/">Contractor services</a>`}function da(t){let e=Er(t);return`
     <p class="dashboard-profile-name">${kr(ca(t))}</p>
     <p class="dashboard-profile-email">${kr(t.email||"")}</p>
     <p class="dashboard-profile-meta">Member since ${kr(ua(t.created_at))}</p>

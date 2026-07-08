@@ -1,4 +1,8 @@
 {
+  "redirects": [
+    { "source": "/services", "destination": "/", "permanent": true },
+    { "source": "/services/", "destination": "/", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/go/:id", "destination": "/api/go/:id" },
     { "source": "/claim/:token", "destination": "/api/claim/:token" },

@@ -6,7 +6,7 @@ function errorPage(message) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
 <body style="font-family:system-ui,sans-serif;max-width:480px;margin:80px auto;padding:0 24px;text-align:center">
 <h1 style="font-size:20px">${message}</h1>
-<p><a href="/services/">Request a new link</a></p>
+<p><a href="/">Request a new link</a></p>
 </body></html>`;
 }
 

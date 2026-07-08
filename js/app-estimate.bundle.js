@@ -170,7 +170,7 @@ ${_}`}var C=class extends Error{constructor({message:e,code:r,cause:s,name:n}){v
     <a href="/app/" class="${t==="overview"?"active":""}">Overview</a>
     <a href="/app/#estimates" class="${t==="estimates"?"active":""}">My estimates</a>
     <a href="/app/new/" class="${t==="new"?"active":""}">New estimate</a>
-    <a href="/services/">Contractor services</a>`}function fo(t){let e=$r(t);return`
+    <a href="/">Contractor services</a>`}function fo(t){let e=$r(t);return`
     <p class="dashboard-profile-name">${Nr(co(t))}</p>
     <p class="dashboard-profile-email">${Nr(t.email||"")}</p>
     <p class="dashboard-profile-meta">Member since ${Nr(uo(t.created_at))}</p>

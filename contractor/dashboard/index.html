@@ -158,7 +158,7 @@
     } catch (err) {
       loadingEl.hidden = true;
       errorEl.hidden = false;
-      errorEl.innerHTML = `${escapeHtml(err.message || 'Please sign in again.')} <a href="/services/">Request a login link</a>`;
+      errorEl.innerHTML = `${escapeHtml(err.message || 'Please sign in again.')} <a href="/">Request a login link</a>`;
     }
   }
 

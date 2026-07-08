@@ -45,7 +45,7 @@ ${b}`}var A=class extends Error{constructor({message:e,code:r,cause:s,name:n}){v
     <a href="/app/" class="${t==="overview"?"active":""}">Overview</a>
     <a href="/app/#estimates" class="${t==="estimates"?"active":""}">My estimates</a>
     <a href="/app/new/" class="${t==="new"?"active":""}">New estimate</a>
-    <a href="/services/">Contractor services</a>`}function Qi(t){let e=pr(t);return`
+    <a href="/">Contractor services</a>`}function Qi(t){let e=pr(t);return`
     <p class="dashboard-profile-name">${gr(zi(t))}</p>
     <p class="dashboard-profile-email">${gr(t.email||"")}</p>
     <p class="dashboard-profile-meta">Member since ${gr(Xi(t.created_at))}</p>
