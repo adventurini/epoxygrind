@@ -44,6 +44,7 @@ const ENTRIES = {
   'app-admin': 'app/admin/admin.js',
   'app-admin-carousel': 'app/admin/carousel/carousel.js',
   'app-admin-responder': 'app/admin/responder/responder.js',
+  'chat-widget': 'chat-widget/chat-widget.js',
   'app-estimate': 'app/estimate/estimate.js',
 };
 

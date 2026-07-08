@@ -81,6 +81,9 @@
     },
     "api/webhooks/sms/inbound.js": {
       "maxDuration": 30
+    },
+    "api/webhooks/web/capture.js": {
+      "maxDuration": 30
     }
   },
   "crons": [
