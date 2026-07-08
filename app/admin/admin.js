@@ -253,12 +253,52 @@ function closeabilityFromScore(score) {
   return 0;
 }
 
+function lerpCurve(curve, x) {
+  if (x <= curve[0][0]) return curve[0][1];
+  if (x >= curve[curve.length - 1][0]) return curve[curve.length - 1][1];
+  for (let i = 0; i < curve.length - 1; i++) {
+    const [x0, y0] = curve[i];
+    const [x1, y1] = curve[i + 1];
+    if (x >= x0 && x <= x1) return y0 + ((x - x0) / (x1 - x0)) * (y1 - y0);
+  }
+  return curve[curve.length - 1][1];
+}
+
+// Anthony: "prioritize the ones with the mediocre site... with 5 star
+// reviews and 10-30 reviews, give or take. The more reviews they have,
+// potentially the more booked they are now. And the less, the less
+// likely we can get them to close anyways." Two multipliers (0-1) on top
+// of the base composite-score curve above — a contractor missing either
+// signal gets pulled down relative to one that has both, which is what
+// surfaces the target cohort at the top without discarding everyone else.
+// Missing data (not yet enriched) gets a neutral-ish multiplier rather
+// than a penalty, since that's a data gap, not a signal about the lead.
+const RATING_MULTIPLIER_CURVE = [
+  [0, 0.85], [3.5, 0.4], [4.0, 0.6], [4.5, 0.85], [4.8, 1], [5.0, 1],
+];
+const REVIEW_COUNT_MULTIPLIER_CURVE = [
+  [0, 0.85], [3, 0.5], [10, 1], [20, 1], [30, 0.9], [50, 0.6], [100, 0.35], [300, 0.15],
+];
+
+function ratingMultiplier(rating) {
+  if (rating == null) return 0.85;
+  return lerpCurve(RATING_MULTIPLIER_CURVE, rating);
+}
+
+function reviewCountMultiplier(count) {
+  if (count == null) return 0.85;
+  return lerpCurve(REVIEW_COUNT_MULTIPLIER_CURVE, count);
+}
+
 /** @returns {number|null} null means "not applicable to this ranking" (no website — a different pitch entirely) */
 function closeScoreFor(a) {
   if (!a.hasWebsite) return null;
   if (a.outreachExcludedReason || a.siteUnreachable) return 0;
   if (a.compositeScore == null) return null;
   let score = closeabilityFromScore(a.compositeScore);
+  score *= ratingMultiplier(a.googleRating);
+  score *= reviewCountMultiplier(a.googleReviewCount);
+  score = Math.round(score);
   // Already claimed their listing == already know about us and engaged on
   // their own terms — not a cold-outreach target anymore, so it shouldn't
   // dominate the default "who do we call next" view.
@@ -375,6 +415,9 @@ function renderAuditsTable() {
     const stageMeta = PIPELINE_STAGE_META[a.pipelineStage] || PIPELINE_STAGE_META.not_contacted;
     const closeScore = closeScoreFor(a);
     const oddsCell = closeScore == null ? '—' : `<span class="score-badge ${scoreChipVariant(closeScore)}">${closeScore}</span>`;
+    const reviewsCell = a.googleRating != null
+      ? `${a.googleRating.toFixed(1)}★ (${a.googleReviewCount ?? 0})`
+      : '—';
     const lastContactCell = a.lastContactMethod
       ? `${CONTACT_METHOD_LABELS[a.lastContactMethod] || a.lastContactMethod} · ${formatDate(a.lastContactedAt)}`
       : '—';
@@ -385,6 +428,7 @@ function renderAuditsTable() {
         <td data-label="Phone">${phoneCell}</td>
         <td data-label="Website">${siteCell}</td>
         <td data-label="Grade">${a.grade ? chip(a.grade, gradeChipVariant(a.gradeColor)) : '—'}</td>
+        <td data-label="Reviews">${reviewsCell}</td>
         <td data-label="Odds">${oddsCell}</td>
         <td data-label="Outreach">${outreachCell}</td>
         <td data-label="Pipeline"><span class="pipeline-stage-chip" style="background:${stageMeta.bg};color:${stageMeta.fg}">${stageMeta.label}</span></td>

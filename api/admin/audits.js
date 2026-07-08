@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     for (let from = 0; ; from += PAGE_SIZE) {
       let query = supabase
         .from('audits')
-        .select('id, contractor_id, has_website, site_unreachable, final_url, composite_score, grade, grade_color, audited_at, public_token, outreach_excluded_reason, contractors(name, city, state, website, claimed_at, status, phones, contact_phone, place_id)')
+        .select('id, contractor_id, has_website, site_unreachable, final_url, composite_score, grade, grade_color, audited_at, public_token, outreach_excluded_reason, contractors(name, city, state, website, claimed_at, status, phones, contact_phone, place_id, google_rating, google_review_count)')
         .range(from, from + PAGE_SIZE - 1);
 
       // A secondary tiebreaker is required, not optional — plenty of rows
@@ -125,6 +125,8 @@ export default async function handler(req, res) {
         publicToken: row.public_token,
         claimedAt: row.contractors.claimed_at,
         isSelfServe: row.contractors.status === 'self_serve',
+        googleRating: row.contractors.google_rating,
+        googleReviewCount: row.contractors.google_review_count,
         // Durable, stored on the row (not re-derived here) so a future
         // outreach/campaign process can exclude these by a plain query
         // instead of re-implementing this logic.
