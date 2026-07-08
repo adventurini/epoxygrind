@@ -13,6 +13,10 @@ export const BASE_COLORS = [
   { id: 'off-white', label: 'Off white', hex: '#E8E6E1' },
   { id: 'tile-red', label: 'Tile red', hex: '#8C3B32' },
   { id: 'dark-blue', label: 'Dark blue', hex: '#26385C' },
+  // Additive — see lib/finish-design.js for why these three were added.
+  { id: 'dark-gray', label: 'Dark gray', hex: '#6B7078' },
+  { id: 'beige', label: 'Beige', hex: '#D9CBAE' },
+  { id: 'white', label: 'White', hex: '#F4F3EF' },
 ];
 
 /** Real, named Torginol vinyl flake blends — see lib/finish-design.js. */
