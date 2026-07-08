@@ -84,6 +84,9 @@
     },
     "api/webhooks/web/capture.js": {
       "maxDuration": 30
+    },
+    "api/places-photo.js": {
+      "maxDuration": 20
     }
   },
   "crons": [

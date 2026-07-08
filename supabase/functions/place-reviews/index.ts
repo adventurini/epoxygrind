@@ -39,14 +39,20 @@ function isFresh(fetchedAt: string | null) {
 }
 
 // `data.photos[].media_url` embeds the raw Google Maps API key (it's built
-// server-side for a future photo-proxy to consume from places_cache
-// directly). This function is the only thing that ever sends `data` to a
-// browser — never forward photos as-is, or the key leaks in plain sight in
-// the network response.
+// server-side for /api/places-photo, a proxy that serves the actual image
+// bytes — see api/places-photo.js). This function is the only thing that
+// ever sends `data` to a browser — never forward photos as-is, or the key
+// leaks in plain sight in the network response. Only the attribution
+// (author name + link, required by Google's display terms) is safe to
+// expose; the client fetches actual photo bytes from the key-protecting
+// proxy by index, never from Google directly.
 function sanitizeForClient(data: any) {
   if (!data) return data;
   const { photos, ...rest } = data;
-  return rest;
+  return {
+    ...rest,
+    photo_attributions: (photos || []).map((p: any) => p.attributions?.[0] || null),
+  };
 }
 
 function normalize(raw: any, apiKey: string) {
