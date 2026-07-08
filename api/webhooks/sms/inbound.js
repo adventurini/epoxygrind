@@ -1,6 +1,6 @@
 import twilioPkg from 'twilio';
 import { getSupabase, isSupabaseConfigured } from '../../../lib/supabase.js';
-import { isValidTwilioRequest, sendSms, isTwilioConfigured } from '../../../lib/twilio.js';
+import { isValidTwilioRequest, sendSms, isTwilioConfigured, isTwilioWebhookValidationConfigured } from '../../../lib/twilio.js';
 import { findOrCreateContact, findOrCreateConversation, insertMessage } from '../../../lib/responder/upsert.js';
 
 const { twiml: { MessagingResponse } } = twilioPkg;
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     res.setHeader('Allow', 'POST');
     return res.status(405).send('Method not allowed');
   }
-  if (!isSupabaseConfigured() || !isTwilioConfigured()) return res.status(503).send('Not configured');
+  if (!isSupabaseConfigured() || !isTwilioConfigured() || !isTwilioWebhookValidationConfigured()) return res.status(503).send('Not configured');
   if (!isValidTwilioRequest(req, '/api/webhooks/sms/inbound')) return res.status(403).send('Invalid signature');
 
   const supabase = getSupabase();

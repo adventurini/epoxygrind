@@ -1,6 +1,6 @@
 import twilioPkg from 'twilio';
 import { getSupabase, isSupabaseConfigured } from '../../../lib/supabase.js';
-import { isValidTwilioRequest, lookupLineType, sendSms, isTwilioConfigured } from '../../../lib/twilio.js';
+import { isValidTwilioRequest, lookupLineType, sendSms, isTwilioConfigured, isTwilioWebhookValidationConfigured } from '../../../lib/twilio.js';
 import { findOrCreateContact, findOrCreateConversation, createLead, insertMessage, logLeadEvent } from '../../../lib/responder/upsert.js';
 
 const { twiml: { VoiceResponse } } = twilioPkg;
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     res.setHeader('Allow', 'POST');
     return res.status(405).send('Method not allowed');
   }
-  if (!isSupabaseConfigured() || !isTwilioConfigured()) {
+  if (!isSupabaseConfigured() || !isTwilioConfigured() || !isTwilioWebhookValidationConfigured()) {
     return res.status(503).send('Not configured');
   }
   if (!isValidTwilioRequest(req, '/api/webhooks/voice/inbound')) {

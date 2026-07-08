@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M2Y4D751K8');
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch(e){} }
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-M2Y4D751K8';
+      document.head.appendChild(s);
+    }, 1500);
+  });
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service | EpoxyGrind</title>
+<meta name="description" content="The terms that apply to using epoxygrind.com and our SMS text messaging program.">
+<meta property="og:title" content="Terms of Service | EpoxyGrind">
+<meta property="og:description" content="The terms that apply to using epoxygrind.com and our SMS text messaging program.">
+
+<link rel="canonical" href="https://www.epoxygrind.com/terms/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#1A5CD6">
+<style>
+@font-face{font-family:'Archivo';font-style:normal;font-weight:600 900;font-display:swap;src:url('/fonts/archivo-var.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url('/fonts/inter-var.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/ibm-plex-mono-500.woff2') format('woff2')}
+</style>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-var.woff2" crossorigin>
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/auth/auth.css">
+<link rel="stylesheet" href="/content/content.css">
+
+
+</head>
+<body class="home-page content-page" data-nav-variant="content">
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><img src="/logo-64.webp" srcset="/logo-64.webp 1x, /logo-128.webp 2x" alt="EpoxyGrind" width="32" height="32" decoding="async"> EpoxyGrind</a>
+    <div class="nav-auth" data-auth-nav></div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+  <div class="mobile" id="mobile" data-auth-mobile></div>
+</header>
+<main>
+  <div class="content-main">
+    <div class="content-wrap">
+      <p class="content-eyebrow">Legal</p>
+<h1 class="content-h1">Terms of Service</h1>
+<p class="content-dek">Last updated July 8, 2026.</p>
+
+<div class="content-prose">
+<p>By using epoxygrind.com, calling, or texting our business phone number, you agree to these terms.</p>
+
+<h2>Our services</h2>
+<p>EpoxyGrind provides free website audits, DIY epoxy flooring guides, cost estimates, and a directory connecting homeowners with epoxy flooring contractors. Estimates are informational only and not a binding quote; actual pricing is determined by the contractor you work with.</p>
+
+<h2>SMS/text messaging</h2>
+<p>If you call or text our tracking number, you consent to receive text message replies related to your request, as described in our <a href="/privacy/">Privacy Policy</a>. Message and data rates may apply. Message frequency varies. Reply STOP to opt out at any time, or HELP for help.</p>
+
+<h2>Contractor directory</h2>
+<p>EpoxyGrind is a marketing platform, not a contractor and not a party to any agreement between you and a contractor. We do not guarantee the work, pricing, licensing, or insurance status of any listed contractor — verify these directly before hiring.</p>
+
+<h2>Acceptable use</h2>
+<p>Don't misuse the site: no scraping, no attempting to disrupt the service, no submitting false information to obtain estimates or audits under false pretenses.</p>
+
+<h2>Changes</h2>
+<p>We may update these terms from time to time; continued use of the site after a change means you accept the updated terms.</p>
+
+<h2>Contact us</h2>
+<p>Questions? Email us through the contact form on our <a href="/">homepage</a>.</p>
+</div>
+      
+    </div>
+  </div>
+</main>
+<footer class="site-foot"><div class="wrap">© 2026 EpoxyGrind · <a href="/diy/">DIY guides</a> · <a href="/services/">For contractors</a></div></footer>
+<script src="/js/nav.bundle.js" defer></script>
+<script>
+  var b=document.getElementById('burger'),m=document.getElementById('mobile');
+  if(b&&m){b.addEventListener('click',function(){m.classList.toggle('open')});m.querySelectorAll('a,button').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});}
+</script>
+<script>
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.video-embed-facade');
+    if(!btn) return;
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + btn.dataset.videoId + '?autoplay=1';
+    iframe.title = btn.dataset.videoTitle || 'YouTube video';
+    iframe.loading = 'lazy';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    btn.replaceWith(iframe);
+  });
+</script>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a.product-link[href^="/go/"]');
+    if(!a || typeof track !== 'function') return;
+    var productId = decodeURIComponent(a.getAttribute('href').slice(4));
+    track('outbound_product_click', { product_id: productId, merchant: a.dataset.merchant || '', page_template: (location.pathname.split('/').filter(Boolean)[0] || 'home') });
+  });
+</script>
+
+</body>
+</html>
