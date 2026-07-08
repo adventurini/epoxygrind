@@ -446,6 +446,34 @@ function createImageTexture(gl, image, { repeat = false } = {}) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+    // Bug fix: sampling this texture through the homography's perspective
+    // foreshortening creates highly anisotropic UV derivatives (du/dx, dv/dy
+    // — much bigger in one direction than the other, worse toward the
+    // far/compressed edge of the floor, close to 1:1 near the camera).
+    // Standard LINEAR_MIPMAP_LINEAR picks a single isotropic mip level based
+    // on the larger derivative, over-blurring along the axis where the
+    // derivative is smaller — a well-documented GPU texture-perspective
+    // artifact that reads exactly as directional streaking/smearing
+    // (confirmed on a large multi-room floor photo: individual flakes
+    // rendered as elongated, uniformly-angled smears, worse toward the far
+    // edge and fine near the camera — the anisotropy signature, not present
+    // in the pre-homography version that used a simple linear vertical
+    // scale with no perspective-driven derivative blowup).
+    // EXT_texture_filter_anisotropic is the standard fix. Widely supported
+    // on real hardware/browsers but not universal — degrade gracefully (a
+    // console note, not a throw) if it's unavailable.
+    const anisoExt =
+      gl.getExtension('EXT_texture_filter_anisotropic') ||
+      gl.getExtension('MOZ_EXT_texture_filter_anisotropic') ||
+      gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic');
+    if (anisoExt) {
+      const maxAniso = gl.getParameter(anisoExt.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+      gl.texParameterf(gl.TEXTURE_2D, anisoExt.TEXTURE_MAX_ANISOTROPY_EXT, maxAniso);
+    } else if (typeof console !== 'undefined') {
+      console.warn(
+        '[visualizer] EXT_texture_filter_anisotropic not supported on this device — the floor texture may show directional streaking on steep perspective.',
+      );
+    }
   } else {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
