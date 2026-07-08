@@ -8,12 +8,15 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="https://www.epoxygrind.com/demo/residential-epoxy-floors/">
 <link rel="icon" href="/favicon.ico" sizes="any">
-<meta name="theme-color" content="#0F2C5C">
+<meta name="theme-color" content="#0D0F12">
 <style>
 @font-face{font-family:'Archivo';font-style:normal;font-weight:600 900;font-display:swap;src:url('/fonts/archivo-var.woff2') format('woff2')}
 @font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url('/fonts/inter-var.woff2') format('woff2')}
 @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/ibm-plex-mono-500.woff2') format('woff2')}
 </style>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/ibm-plex-mono-500.woff2" crossorigin>
 <link rel="stylesheet" href="/demo/demo.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Residential Epoxy Floors — Sample Service Page","url":"https://www.epoxygrind.com/demo/residential-epoxy-floors/","description":"Labeled spec demo of an SEO service subpage, built by EpoxyGrind."}
@@ -51,11 +54,11 @@
 <main>
   <section class="svc-hero" style="background:var(--navy);color:#fff;padding:52px 0 60px">
     <div class="wrap">
-      <span class="eyebrow" style="color:#7FB0FF">Residential Service</span>
-      <h1 style="color:#fff;font-size:clamp(30px,4.6vw,44px);margin-top:12px">Residential Epoxy Floors in Sampleville, ST*</h1>
-      <p style="color:#C5D2E8;max-width:600px;margin-top:14px;font-size:17px">Garage, basement, and living-space floors in full-flake, metallic, or solid-color epoxy — mechanically prepped, not acid-etched, so the coating actually bonds.</p>
+      <span class="eyebrow">Residential Service</span>
+      <h1 style="color:#F5F3EE;font-size:clamp(30px,4.6vw,44px);margin-top:12px;text-transform:uppercase;letter-spacing:-.015em">Residential Epoxy Floors in Sampleville, ST*</h1>
+      <p style="color:#B9B3A6;max-width:600px;margin-top:14px;font-size:17px">Garage, basement, and living-space floors in full-flake, metallic, or solid-color epoxy — mechanically prepped, not acid-etched, so the coating actually bonds.</p>
       <a class="btn btn-p" style="margin-top:20px" href="/demo/#calculator">Get an instant estimate →</a>
-      <p class="sample-note" style="color:#9FB3D6;margin-top:14px">*Sample page for a fictional business — demonstrates the SEO service-page template every EpoxyGrind site gets, one per service.</p>
+      <p class="sample-note" style="margin-top:14px">*Sample page for a fictional business — demonstrates the SEO service-page template every EpoxyGrind site gets, one per service.</p>
     </div>
   </section>
 
@@ -132,11 +135,14 @@
   });
   if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});}else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in')});}
 
+  function sizedImage(url, width, quality) {
+    return url.replace('/object/public/', '/render/image/public/') + '?width=' + width + '&quality=' + (quality || 72);
+  }
   fetch('/demo/gallery.json').then(function(r){return r.json()}).then(function(data){
     var pairs = (data.pairs || []).slice(0, 8);
     var grid = document.getElementById('subpageGalleryGrid');
     grid.innerHTML = pairs.map(function(p){
-      return '<div class="gallery-item"><img src="' + p.after + '" alt="' + p.spaceLabel + ' — ' + p.finishLabel + '" loading="lazy"><span class="tag">' + p.spaceLabel + '</span></div>';
+      return '<div class="gallery-item"><img src="' + sizedImage(p.after, 320) + '" alt="' + p.spaceLabel + ' — ' + p.finishLabel + '" loading="lazy"><span class="tag">' + p.spaceLabel + '</span></div>';
     }).join('');
   }).catch(function(){});
 </script>

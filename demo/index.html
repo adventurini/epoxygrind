@@ -10,7 +10,7 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="theme-color" content="#0F2C5C">
+<meta name="theme-color" content="#0D0F12">
 <style>
 @font-face{font-family:'Archivo';font-style:normal;font-weight:600 900;font-display:swap;src:url('/fonts/archivo-var.woff2') format('woff2')}
 @font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url('/fonts/inter-var.woff2') format('woff2')}
@@ -18,6 +18,7 @@
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-var.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/ibm-plex-mono-500.woff2" crossorigin>
 <link rel="stylesheet" href="/demo/demo.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Demo Coatings Co. — Sample Contractor Site by EpoxyGrind","url":"https://www.epoxygrind.com/demo/","description":"A labeled spec demo of an epoxy contractor website built by EpoxyGrind. Fictional business, sample content."}
@@ -80,7 +81,7 @@
 
   <!-- 1. HERO / ESTIMATOR -->
   <section class="demo-hero" id="calculator">
-    <div class="demo-hero-bg" aria-hidden="true"><img src="https://images.unsplash.com/photo-1613545325278-f24b0cae1224?w=1600&q=60&auto=format" alt="" loading="eager"></div>
+    <div class="demo-hero-bg" aria-hidden="true"><img src="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/render/image/public/contractor-images/demo-gallery/2-car-garage-metallic-silver-after.jpg?width=1600&quality=75" alt="" loading="eager" fetchpriority="high"></div>
     <div class="wrap demo-hero-grid">
       <div class="demo-hero-copy tour-anchor">
         <span class="tour-badge" data-tour="visualizer" data-tier="All plans">1</span>
@@ -89,7 +90,7 @@
         <p class="lede">Upload a photo. Our AI visualizer shows you the finished floor and a real price — before you ever pick up the phone.</p>
       </div>
       <div class="est-card">
-        <h3>Get your instant estimate</h3>
+        <h2>Get your instant estimate</h2>
         <p class="muted" style="font-size:13px;margin-top:4px">No call required — real AI analysis, real pricing.</p>
 
         <div class="est-upload" id="estUpload">
@@ -100,9 +101,9 @@
         </div>
         <p class="est-samples-label">Or try a sample photo:</p>
         <div class="est-samples" id="estSamples">
-          <button type="button" data-sample="0"><img src="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/object/public/contractor-images/demo-gallery/1-car-garage-before.jpg" alt="Sample 1-car garage" loading="lazy"></button>
-          <button type="button" data-sample="1"><img src="https://images.unsplash.com/photo-1613545325278-f24b0cae1224?w=300&q=60&auto=format" alt="Sample 2-car garage" loading="lazy"></button>
-          <button type="button" data-sample="2"><img src="https://images.unsplash.com/photo-1558402529-d2638a7023e9?w=300&q=60&auto=format" alt="Sample worn floor" loading="lazy"></button>
+          <button type="button" data-sample="0"><img src="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/render/image/public/contractor-images/demo-gallery/1-car-garage-before.jpg?width=500&quality=72" alt="Sample 1-car garage" loading="lazy"></button>
+          <button type="button" data-sample="1"><img src="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/render/image/public/contractor-images/demo-gallery/2-car-garage-before.jpg?width=500&quality=72" alt="Sample 2-car garage" loading="lazy"></button>
+          <button type="button" data-sample="2"><img src="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/render/image/public/contractor-images/demo-gallery/basement-before.jpg?width=500&quality=72" alt="Sample basement floor" loading="lazy"></button>
         </div>
 
         <div class="est-preview" id="estPreview" hidden><img id="estPreviewImg" alt="Uploaded floor"></div>
@@ -178,7 +179,7 @@
       </div>
       <div class="svc-grid">
         <div class="svc-card reveal">
-          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&q=60&auto=format" alt="Residential epoxy floor" loading="lazy">
+          <img src="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/render/image/public/contractor-images/demo-services/residential.jpg?width=340&quality=68" alt="Finished residential garage floor with full-flake epoxy coating" loading="lazy">
           <div class="svc-card-body">
             <span class="svc-no">01</span>
             <h3>Residential Epoxy Floors</h3>
@@ -187,7 +188,7 @@
           </div>
         </div>
         <div class="svc-card reveal">
-          <img src="https://images.unsplash.com/photo-1565183997392-2f6f122e5912?w=500&q=60&auto=format" alt="Commercial epoxy floor" loading="lazy">
+          <img src="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/render/image/public/contractor-images/demo-services/commercial.jpg?width=340&quality=68" alt="Finished commercial retail floor with quartz-broadcast epoxy coating" loading="lazy">
           <div class="svc-card-body">
             <span class="svc-no">02</span>
             <h3>Commercial Epoxy Floors</h3>
@@ -197,7 +198,7 @@
           </div>
         </div>
         <div class="svc-card reveal">
-          <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500&q=60&auto=format" alt="Industrial floor coating" loading="lazy">
+          <img src="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/render/image/public/contractor-images/demo-services/industrial.jpg?width=340&quality=68" alt="Finished industrial warehouse floor with urethane cement coating" loading="lazy">
           <div class="svc-card-body">
             <span class="svc-no">03</span>
             <h3>Industrial Floor Coatings</h3>
@@ -207,7 +208,7 @@
           </div>
         </div>
         <div class="svc-card reveal">
-          <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=500&q=60&auto=format" alt="Decorative concrete" loading="lazy">
+          <img src="https://aiaaevgrewudgcazphpy.supabase.co/storage/v1/render/image/public/contractor-images/demo-services/decorative-concrete.jpg?width=340&quality=68" alt="Finished decorative concrete patio with stamped stone pattern" loading="lazy">
           <div class="svc-card-body">
             <span class="svc-no">04</span>
             <h3>Decorative Concrete</h3>
@@ -283,9 +284,9 @@
   <section class="tour-anchor">
     <span class="tour-badge" data-tour="founder" data-tier="Launch and up">9</span>
     <div class="wrap">
-      <div class="sec-head reveal"><span class="eyebrow">Meet the Owner</span></div>
+      <div class="sec-head reveal"><span class="eyebrow">Meet the Owner</span><h2>People hire people, not just companies.</h2></div>
       <div class="founder-grid reveal">
-        <img class="founder-portrait" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&q=60&auto=format" alt="Illustrative placeholder portrait — sample only" loading="lazy">
+        <img class="founder-portrait" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=260&q=52&auto=format" alt="Illustrative placeholder portrait — sample only" loading="lazy">
         <div class="founder-copy">
           <h3>Sam Sample, Owner</h3>
           <p>"I started out grinding floors for other contractors before I ever ran my own crew — I've seen every shortcut that leads to a coating peeling up eighteen months later, and I built this business around not taking them. Every floor gets the same mechanical prep and the same attention, whether it's a one-car garage or a commercial bay."</p>
@@ -397,9 +398,9 @@
           <div class="score-ring" style="--pct:100"><span>100</span><label>Best Practices</label></div>
           <div class="score-ring" style="--pct:100"><span>100</span><label>SEO</label></div>
         </div>
-        <p class="muted" style="margin:0">These are real numbers from epoxygrind.com's own engine — every site we build runs through the same speed bar before it goes live.</p>
+        <p class="muted" style="margin:0">This is epoxygrind.com/estimator/ itself, Lighthouse-audited today — a real, indexed page (this demo is intentionally noindexed as a fictional-business sample, so we check the engine on a real page instead). Every site we build runs through the same speed bar before it goes live.</p>
         <div class="lh-actions">
-          <a class="btn btn-o" id="psiLink" href="https://pagespeed.web.dev/analysis?url=https://www.epoxygrind.com/demo/" target="_blank" rel="noopener">Run the test yourself →</a>
+          <a class="btn btn-o" id="psiLink" href="https://pagespeed.web.dev/analysis?url=https://www.epoxygrind.com/estimator/" target="_blank" rel="noopener">Run the test yourself →</a>
           <button type="button" class="btn btn-p" id="psiCheckBtn">Check it live</button>
         </div>
         <p class="lh-status" id="psiStatus"></p>
@@ -421,9 +422,9 @@
         </div>
       </div>
       <div class="foot-links">
-        <div><h4>Services</h4><a href="#services">Residential</a><a href="#services">Commercial</a><a href="#services">Industrial</a><a href="#services">Decorative Concrete</a></div>
-        <div><h4>Quick Access</h4><a href="#gallery">Gallery</a><a href="#reviews">Reviews</a><a href="#faq">FAQs</a><a href="#contact">Contact</a></div>
-        <div><h4>Get In Touch</h4><a href="tel:+15550120000">(555) 012-DEMO</a><a href="#">quotes@sample-demo.test</a></div>
+        <div><h3>Services</h3><a href="#services">Residential</a><a href="#services">Commercial</a><a href="#services">Industrial</a><a href="#services">Decorative Concrete</a></div>
+        <div><h3>Quick Access</h3><a href="#gallery">Gallery</a><a href="#reviews">Reviews</a><a href="#faq">FAQs</a><a href="#contact">Contact</a></div>
+        <div><h3>Get In Touch</h3><a href="tel:+15550120000">(555) 012-DEMO</a><a href="#">quotes@sample-demo.test</a></div>
       </div>
     </div>
     <p class="demo-disclosure">This is a demonstration website for a fictional business ("Demo Coatings Co.") built by <a href="/">EpoxyGrind</a> to showcase real contractor-marketing features. All reviews, credentials, staff names, and service areas shown are sample content, not real claims about any actual business. <a href="/">Built by EpoxyGrind →</a></p>

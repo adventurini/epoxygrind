@@ -1,4 +1,12 @@
 const $ = (id) => document.getElementById(id);
+
+/* Supabase Storage image transform — serves a properly-sized/compressed
+ * render instead of the full-size original (originals are ~1024px source
+ * images; grid thumbnails only display at ~260px, so requesting the
+ * original there was ~170KB of pure waste per image). */
+function sizedImage(url, width, quality = 72) {
+  return url.replace('/object/public/', `/render/image/public/`) + `?width=${width}&quality=${quality}`;
+}
 const TIER_MAP = {
   'All plans': 'All plans (Launch, Dominate, Own Your Market)',
   'Launch and up': 'Launch and up',
@@ -200,8 +208,8 @@ async function loadGallery() {
 function renderGalleryHero(pair) {
   if (!pair) return;
   const hero = $('galleryHero');
-  hero.querySelector('.g-before-img').src = pair.before;
-  hero.querySelector('.g-after-img').src = pair.after;
+  hero.querySelector('.g-before-img').src = sizedImage(pair.before, 1024, 78);
+  hero.querySelector('.g-after-img').src = sizedImage(pair.after, 1024, 78);
 }
 
 function renderGalleryGrid() {
@@ -209,7 +217,7 @@ function renderGalleryGrid() {
   const filtered = galleryData.filter((p) => (activeSpace === 'all' || p.space === activeSpace) && (activeFinish === 'all' || p.finish === activeFinish));
   grid.innerHTML = filtered.map((p, i) => `
     <div class="gallery-item" data-index="${galleryData.indexOf(p)}">
-      <img src="${p.after}" alt="${p.spaceLabel} — ${p.finishLabel}" loading="lazy">
+      <img src="${sizedImage(p.after, 320)}" alt="${p.spaceLabel} — ${p.finishLabel}" loading="lazy">
       <span class="tag">${p.spaceLabel}</span>
     </div>`).join('');
   grid.querySelectorAll('.gallery-item').forEach((item) => {
@@ -219,7 +227,7 @@ function renderGalleryGrid() {
 
 function openLightbox(pair) {
   if (!pair) return;
-  $('lightboxImg').src = pair.after;
+  $('lightboxImg').src = sizedImage(pair.after, 1024, 78);
   $('lightboxTitle').textContent = `${pair.spaceLabel} — ${pair.finishLabel}`;
   $('lightboxSub').textContent = 'Generated with the EpoxyGrind visualizer.';
   $('lightbox').classList.add('open');
@@ -387,7 +395,11 @@ function initPsiCheck() {
     const status = $('psiStatus');
     status.textContent = 'Checking live scores… (~20-30s)';
     try {
-      const url = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=' + encodeURIComponent('https://www.epoxygrind.com/demo/') + '&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo';
+      // Checks a real, indexed page (not /demo/ itself) — /demo/ is
+      // intentionally noindexed as a fictional-business sample, and
+      // Lighthouse's SEO category always flags noindex as a finding,
+      // which would misleadingly tank this section's own pitch.
+      const url = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=' + encodeURIComponent('https://www.epoxygrind.com/estimator/') + '&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo';
       const res = await fetch(url);
       if (!res.ok) throw new Error('PSI request failed');
       const data = await res.json();
