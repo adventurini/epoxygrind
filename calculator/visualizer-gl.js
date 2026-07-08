@@ -246,8 +246,8 @@ export class FloorVisualizer {
     this.program = linkProgram(gl, VERTEX_SRC, FRAGMENT_SRC);
 
     // Full-screen quad. UVs chosen so vUV.y=0 is the TOP of the source
-    // image and 1 is the bottom once paired with UNPACK_FLIP_Y_WEBGL=true
-    // on upload — see the perspective comment on the fragment shader.
+    // image and 1 is the bottom (no UNPACK_FLIP_Y_WEBGL — see the texture
+    // upload comment above) — see the perspective comment on the fragment shader.
     const quad = new Float32Array([
       // x,    y,    u, v
       -1, -1, 0, 1,
