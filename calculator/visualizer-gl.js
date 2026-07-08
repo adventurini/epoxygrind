@@ -80,6 +80,27 @@ uniform float uWipePct;
 uniform float uOpacity;
 uniform float uFinish; // 1.0 = gloss, 0.0 = satin (spec 3.4)
 
+// Bug fix: the luminance-relight shading factor is clamped to [0.25, 1.9]
+// but was multiplied in *linearly* with no rolloff, so a photo with strong
+// bright/reflective patches (skylights, gloss reflections off a polished
+// floor) pushed floorColor*shade well past 1.0 per channel — the
+// framebuffer just hard-clips that to solid white, which showed up as
+// visible white blotches exactly where the source photo had bright light
+// patches. This softly compresses values above a knee point toward 1.0
+// instead (a simple exponential soft-clip / tone-map curve) so bright
+// highlights roll off gracefully into a soft glow rather than a flat white
+// patch with a sharp edge. Values at or below the knee (ordinary, non
+// -blown-out floor lighting) pass through completely unchanged — verified
+// against a normally-lit sample photo to confirm no darkening regression.
+float softClip(float c) {
+  const float knee = 0.8;
+  if (c <= knee) return c;
+  return knee + (1.0 - knee) * (1.0 - exp(-(c - knee) / (1.0 - knee)));
+}
+vec3 softClipRgb(vec3 c) {
+  return vec3(softClip(c.r), softClip(c.g), softClip(c.b));
+}
+
 void main() {
   vec4 photoColor = texture(uPhoto, vUV);
   float m = texture(uMask, vUV).r;
@@ -101,10 +122,12 @@ void main() {
   // Spec 3.3: shading was normalized/packed into [0,1] client-side from the
   // clamped [0.25, 1.9] range — unpack it back out here.
   float shade = texture(uShade, vUV).r * 1.65 + 0.25;
-  vec3 coated = floorColor * shade;
+  vec3 coated = softClipRgb(floorColor * shade);
 
   // Spec 3.4: gloss/satin specular highlight — brighter, tighter highlight
-  // for gloss (epoxy's actual look, default), softer for satin.
+  // for gloss (epoxy's actual look, default), softer for satin. Added after
+  // the soft-clip above (it's a small, already-gated highlight term, not
+  // the source of the blowout) so gloss still reads as genuinely brighter.
   float spec = smoothstep(1.25, 1.75, shade) * mix(0.12, 0.35, uFinish);
   coated = coated + vec3(spec);
 
