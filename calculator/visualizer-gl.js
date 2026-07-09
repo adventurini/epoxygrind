@@ -17,39 +17,96 @@
  *
  * Remaining v1 simplification still in place: mask edge softened with a
  * flat 2px canvas blur, not a tuned kernel.
+ *
+ * No-tiling rewrite (5th pass on the floor-texture pipeline — see this
+ * file's git history: moire fix, anisotropic filtering, tile-density
+ * scaling, metallic sine-wave fix all patched SYMPTOMS of tiling a small
+ * finite texture many times across a big floor). Root-cause fix per the
+ * site owner's explicit direction: stop tiling entirely. The flake/metallic
+ * generators are procedural (seeded scatter/blobs, not a sampled image), so
+ * there's no reason they have to stay a small repeated tile — generate real
+ * unique content across the WHOLE mapped floor once per photo instead.
+ * Concretely:
+ *  - uTileRepeat and the fragment shader's fract()-based tiling (plus the
+ *    stochastic per-cell mirror/rotation hack added to fight tiling
+ *    repetition) are gone. floorUV (the homography-mapped photo->texture
+ *    coordinate) is sampled against uFloor directly, once, with
+ *    CLAMP_TO_EDGE wrap — there is no second copy to wrap into anymore.
+ *  - the floor texture's generation SIZE and (for flake) flake COUNT now
+ *    scale with the room's real square footage (see spanInches/genSize
+ *    below) instead of always being a fixed 1024x1024 tile.
+ *  - metallic's blob/streak placement no longer needs to wrap seamlessly at
+ *    the canvas edges (that constraint existed only to support tiling), so
+ *    lib/metallic-swatches.js could move to one continuous flow-field-driven
+ *    design instead of forcing streaks to loop back for a seamless repeat.
+ * See lib/flake-texture-renderer.js and lib/metallic-swatches.js for the
+ * generator-side half of this change.
  */
 import { renderFlakeTexture, defaultSeedFor } from '/lib/flake-texture-renderer.js';
 import { renderMetallicSwatchTexture } from '/lib/metallic-swatches.js';
 import { resolveRenderComponents } from '/lib/flake-recipes.js';
 
-// Spec 3.5: "cap flake texture at 1024^2" for mobile.
-const FLAKE_TEXTURE_SIZE = 1024;
 // Spec 2.1 / 5: "debounce slider at ~30ms."
 const REGEN_DEBOUNCE_MS = 30;
 // Working resolution for the one-time luminance/mask CPU pass — plenty for
 // a relight signal, and capped so a big upload photo can't make this slow.
 const LUMINANCE_WORK_SIZE = 720;
 
-// Bug fix: tileRepeat used to be a flat constant (6) regardless of the
-// actual floor's real-world size — a one-car-garage photo and a sprawling
-// multi-room great-room photo both got exactly 6 tile repeats across the
-// homography-mapped floor quad. Since each "tile" represents a fixed real
-// -world footprint (the flake/metallic texture is generated to represent a
-// roughly TILE_INCHES-wide swatch — see flake-texture-renderer.js), a floor
-// spanning much more real square footage needs proportionally MORE repeats
-// to keep the apparent flake/tile size visually consistent — otherwise a
-// big floor reads as an obviously coarse, mechanically-repeating lattice
-// (confirmed via screenshot on a multi-room house photo: a clear repeating
-// diamond/quatrefoil artifact). BASE_TILE_REPEAT=6 is the value already
-// tuned/tested against a ~2-car-garage-sized floor; scale by sqrt(sqFt)
-// relative to that baseline (area scales with the square of linear size, so
-// sqrt(area ratio) approximates the linear scale-up needed) and clamp to a
-// sane range so a tiny or huge sqFt value can never make the tiling
-// degenerate.
-const BASE_TILE_REPEAT = 6;
-const BASE_SQFT = 450; // ~2-car garage — matches BASE_TILE_REPEAT's existing tuning
-const MIN_TILE_REPEAT = 4;
-const MAX_TILE_REPEAT = 24; // headroom for large commercial spaces
+// --- No-tiling room-size calibration -----------------------------------
+// The floor texture now covers the WHOLE mapped floor once (no repeat), so
+// instead of a tileRepeat COUNT we need the real-world SPAN (inches) that
+// texture represents, to convert flakeSizeIn (a real inch measurement) into
+// a correctly-proportioned pixel radius (see flake-texture-renderer.js's
+// spec.spanInches doc) and to scale generation resolution/flake count with
+// the room's actual size. Same underlying sqrt(sqFt)-scaling law the old
+// tileRepeat used (area scales with the square of linear size), just
+// producing an inches figure instead of a repeat count — BASE_SPAN_INCHES
+// (144 = the old BASE_TILE_REPEAT(6) * TILE_INCHES(24)) and the MIN/MAX
+// bounds are numerically identical to the old tileRepeat system's tuned
+// range, so a baseline ~2-car-garage room gets the exact same real-world
+// scale assumption it always did.
+const BASE_SPAN_INCHES = 144;
+const MIN_SPAN_INCHES = 96;
+const MAX_SPAN_INCHES = 576; // headroom for large commercial spaces
+const BASE_SQFT = 450; // ~2-car garage — matches BASE_SPAN_INCHES's tuning
+
+// Generation resolution for the floor texture: scales mildly (sqrt, same
+// law as spanInches) with the room's real span, hard-capped for perf/
+// hardware. Timing note (see lib/flake-texture-renderer.js's maxFlakeCount
+// doc and scratch-flake-qa/timing-current.mjs): canvas PIXEL size barely
+// affects one-time generation wall-clock time for either generator (flake's
+// cost is dominated by per-flake draw calls, not canvas fill-rate; metallic
+// is cheap regardless, <5ms even at MAX_GEN_SIZE) — this cap exists for GPU
+// memory/upload cost and hardware texture-size limits, not generation
+// speed. 2048 is comfortably above this file's own display-resolution cap
+// (canvas never renders wider than 1000 CSS px * 1.5 dpr = 1500px — see
+// _resizeCanvasToDisplaySize), leaving real headroom for mipmap/anisotropic
+// filtering at oblique perspective angles without wasting memory on
+// resolution nothing will ever display.
+const MIN_GEN_SIZE = 1024;
+const BASE_GEN_SIZE = 1536;
+const MAX_GEN_SIZE = 2048; // also intersected with gl.MAX_TEXTURE_SIZE at runtime
+
+// Perf cap on flake COUNT (see lib/flake-texture-renderer.js's maxFlakeCount
+// doc for the full reasoning) — filling a real room's whole span with
+// unique flakes at the old tile's calibrated density needs vastly more
+// flakes than the old fixed tile ever drew (a bigger real floor genuinely
+// needs proportionally more real chips), which gets expensive fast: a
+// baseline ~450sqft room's fully-correct density is ~1.6M flakes, ~7.7s to
+// draw with this renderer (measured via @napi-rs/canvas,
+// scratch-flake-qa/timing-current.mjs) — too slow to feel responsive as a
+// one-time generation. 300,000 was the empirical knee (measured ~1.5s for
+// this exact case): scratch-flake-qa/crop-density-300k.png (this count,
+// original-radius) still reads clearly denser than the 150k sample and only
+// modestly sparser than the uncapped 1.6M reference, and with the
+// coverage-preserving radius boost the renderer applies when this cap
+// engages (scratch-flake-qa/crop-cov-350k-scaled.png), the visible result
+// is close to indistinguishable from full density at realistic viewing
+// resolution. Accepted, documented tradeoff: on rooms large/fine enough to
+// hit this cap, individual chips read as somewhat larger than their literal
+// flakeSizeIn spec (see that file's comment) — better than a visibly sparse
+// floor, but not literally to-spec.
+const MAX_FLAKE_COUNT = 300000;
 
 const VERTEX_SRC = `#version 300 es
 in vec2 aPosition;
@@ -75,10 +132,10 @@ uniform sampler2D uMask;
 uniform sampler2D uShade;
 uniform sampler2D uFloor;
 uniform mat3 uHomographyInv;
-uniform float uTileRepeat;
 uniform float uWipePct;
 uniform float uOpacity;
 uniform float uFinish; // 1.0 = gloss, 0.0 = satin (spec 3.4)
+uniform float uMetallic; // 1.0 when spec.mode === 'metallic', else 0.0 — see the gloss section below
 uniform vec3 uAvgFloorColor; // flake texture's own average color (see JS side computeAverageColor)
 
 // Bug fix: the luminance-relight shading factor is clamped to [0.25, 1.9]
@@ -114,74 +171,56 @@ void main() {
   vec3 hUV = uHomographyInv * vec3(vUV, 1.0);
   // Guard the perspective divide — hUV.z can get close to 0 for UVs well
   // outside the fitted quad (e.g. photo corners the floor mask excludes
-  // anyway); clamp its magnitude so fract() below always sees a finite value.
+  // anyway); clamp its magnitude so floorUV below is always finite.
   float wComp = hUV.z >= 0.0 ? max(hUV.z, 1e-4) : min(hUV.z, -1e-4);
   vec2 floorUV = hUV.xy / wComp;
 
-  // Root-cause fix for the "regular grid/waffle" artifact (this is the 4th
-  // pass on this bug — see this file's header — so this replaces the
-  // mechanism, not just another tileRepeat/foreshorten nudge). Verified
-  // empirically against a real deep-room photo (two-story foyer, tileRepeat
-  // ~16.7 from its ~3500 sqft): the far/compressed part of the mapped floor
-  // renders a strong, regular diagonal moire/washboard pattern; the SAME
-  // photo at baseline tileRepeat~6 shows none, and within the SAME
-  // tileRepeat~16.7 render the far edge is visibly worse than the near
-  // edge. That's the signature of texture-minification aliasing, not a
-  // flaw in the generated texture's own randomness (flake-texture-renderer.js
-  // is unchanged and still verified organic in isolation) — real hardware
-  // commonly caps anisotropic filtering at 16x, well under what a ~4x
-  // foreshorten * ~17-24x tileRepeat floor needs at its worst point.
-  vec2 uvScaled = floorUV * uTileRepeat;
-  // Derivatives of the PRE-fract/pre-cell-transform coordinate — computing
-  // dFdx/dFdy on a wrapped or per-cell-transformed coordinate instead would
-  // see false huge jumps right at tile/cell boundaries and pick wildly
-  // wrong (over-blurred) mip levels exactly there. This smooth version is
-  // reused below both to drive the detail fade and as explicit
-  // textureGrad() derivatives so the per-cell transform (also below) can't
-  // create its own seam artifact.
-  vec2 duvdx = dFdx(uvScaled);
-  vec2 duvdy = dFdy(uvScaled);
-  // "Tile-units compressed per screen pixel" in the worst axis — exactly
-  // what LINEAR_MIPMAP_LINEAR + anisotropic filtering are trying (and, at
-  // extreme values, failing) to resolve.
+  // No-tiling rewrite: the floor texture now spans the whole homography
+  // -mapped floor quad exactly once (see this file's header), so floorUV is
+  // sampled directly against uFloor — no fract()/tileRepeat scaling, and no
+  // stochastic per-cell mirror/rotation (that hack existed purely to break
+  // up the regular repeat of a small tiled texture; with nothing repeating
+  // there's nothing for it to break up). uFloor is uploaded with
+  // CLAMP_TO_EDGE wrap (see createImageTexture) since there's no second
+  // copy to wrap into.
+  //
+  // Still using explicit derivatives + textureGrad rather than a plain
+  // texture() call: perspective foreshortening makes floorUV's derivatives
+  // highly anisotropic near the far/compressed edge of the floor (much
+  // bigger in one screen-space axis than the other) regardless of whether
+  // the texture tiles — that's a property of the homography, not of
+  // repetition — and LINEAR_MIPMAP_LINEAR + EXT_texture_filter_anisotropic
+  // (still enabled on this texture, see createImageTexture) need real
+  // derivatives to pick the right mip/anisotropy, not ones distorted by a
+  // downstream transform.
+  vec2 duvdx = dFdx(floorUV);
+  vec2 duvdy = dFdy(floorUV);
+  // "UV units compressed per screen pixel" in the worst axis — how hard
+  // filtering has to work at this fragment.
   float texelDensity = max(length(duvdx), length(duvdy));
+  vec3 rawFloorColor = textureGrad(uFloor, floorUV, duvdx, duvdy).rgb;
 
-  // Second, independent fix: even with perfect filtering, a finite texture
-  // tiled 15-24+ times across a floor literally repeats its own content at
-  // a regular interval — the site owner's exact complaint ("you can't
-  // divide these into repeating squares... this design does not repeat").
-  // Hash each integer tile cell to one of 8 dihedral-square transforms
-  // (4 rotations x mirror) before sampling, so no two neighboring tile
-  // copies ever line up the same way and the eye can't lock onto a
-  // repeating grid — standard "stochastic tiling" technique. Uses
-  // textureGrad with the untransformed derivatives above (not the
-  // discontinuous post-transform coordinate) specifically so this doesn't
-  // introduce its own blurry seam at every cell boundary.
-  vec2 cellId = floor(uvScaled);
-  vec2 cellFrac = fract(uvScaled);
-  float cellHash = fract(sin(dot(cellId, vec2(127.1, 311.7))) * 43758.5453123);
-  if (cellHash > 0.5) cellFrac.x = 1.0 - cellFrac.x; // mirror bit
-  float cellRot = fract(cellHash * 3.271);
-  if (cellRot > 0.75) cellFrac = vec2(cellFrac.y, 1.0 - cellFrac.x);
-  else if (cellRot > 0.5) cellFrac = vec2(1.0 - cellFrac.x, 1.0 - cellFrac.y);
-  else if (cellRot > 0.25) cellFrac = vec2(1.0 - cellFrac.y, cellFrac.x);
-  vec2 tiledUV = cellFrac;
-  vec3 rawFloorColor = textureGrad(uFloor, tiledUV, duvdx, duvdy).rgb;
-
-  // The actual anti-moire fix: once local minification is severe enough
-  // that individual flakes can no longer be resolved anyway, stop fighting
-  // the aliasing and fade to the texture's own average color instead —
-  // reads as "very fine, evenly-lit aggregate" at a glance, and immune to
-  // moire because there's no remaining high-frequency content left to
-  // alias. Thresholds calibrated against the same real repro case: at
-  // tileRepeat=6 (confirmed clean) typical texelDensity stays under
-  // FADE_START everywhere in frame; at tileRepeat~16.7's confirmed-bad far
-  // edge it's well past FADE_END (fades essentially fully to flat average
-  // right where the moire was worst), while that same render's near edge
-  // (confirmed fine-looking even at tileRepeat~16.7) stays under
-  // FADE_START and keeps full flake detail.
-  const float FADE_START = 0.025;
-  const float FADE_END = 0.09;
+  // Detail fade at extreme minification: kept as a conservative safety net,
+  // NOT because it was still doing visible work in this pass's testing.
+  // Re-verified empirically after the no-tiling rewrite (Playwright render
+  // of a steep ~3500-6000sqft deep-foyer-style mask, foreshorten ratio near
+  // FORESHORTEN_MAX, smallest flake size — the worst-case combination for
+  // minification aliasing) with this fade ablated (thresholds pushed far out
+  // of range) vs. active: the two renders were visually indistinguishable —
+  // mipmapping + anisotropic filtering alone were already handling the far
+  // edge cleanly once tiling (the actual root cause of the old moire) was
+  // removed. So unlike the anisotropic-filtering fix (still load-bearing —
+  // perspective foreshortening creates real anisotropic derivatives
+  // independent of tiling), this mechanism's ORIGINAL justification (fight
+  // moire from a texture repeating many times) no longer applies, and no
+  // new justification was observed to replace it in testing. Left in at a
+  // conservative threshold (rarely engages — see above) rather than removed
+  // outright, since a single texture stretched thin enough near a true
+  // vanishing point could theoretically still alias on some real photo this
+  // pass didn't test; if a future pass confirms it never engages on real
+  // traffic, it's safe to delete.
+  const float FADE_START = 0.0025;
+  const float FADE_END = 0.012;
   float fade = smoothstep(FADE_START, FADE_END, texelDensity);
   vec3 floorColor = mix(rawFloorColor, uAvgFloorColor, fade);
 
@@ -194,7 +233,42 @@ void main() {
   // for gloss (epoxy's actual look, default), softer for satin. Added after
   // the soft-clip above (it's a small, already-gated highlight term, not
   // the source of the blowout) so gloss still reads as genuinely brighter.
+  // Unchanged for flake/solid — this is the exact original formula/tuning.
   float spec = smoothstep(1.25, 1.75, shade) * mix(0.12, 0.35, uFinish);
+
+  // Metallic-specific gloss: real metallic epoxy is dramatically more
+  // mirror-like than flake/solid — a shared, modest additive highlight
+  // (the spec term above, tuned for flake/solid) doesn't capture that
+  // distinction at all; on a large room it reads as barely brighter than
+  // matte. Two additions, gated entirely on uMetallic so flake/solid are
+  // completely untouched (verified: uMetallic=0.0 makes this whole block a
+  // no-op):
+  //  1. A tighter, brighter highlight lobe on top of the same shade signal
+  //     — narrower smoothstep window (only the brightest parts of frame
+  //     qualify) but a higher peak (0.5 vs flake's 0.12-0.35), so lit
+  //     regions bloom toward a glassy near-white instead of a soft sheen.
+  //     (Tuned down from an initial 0.65 — verified against a light
+  //     "silver-pearl" colorway, which otherwise washed out toward flat
+  //     white over most of a lit floor instead of keeping the swirl
+  //     legible; darker colorways like charcoal/onyx read clearly glossy
+  //     with visible swirl detail at either value.)
+  //  2. A gradient-driven glint: real specular highlights are a function of
+  //     view/light angle, which this pipeline doesn't model directly, but
+  //     the shading map's SPATIAL GRADIENT is a reasonable proxy — where
+  //     luminance changes fastest in the source photo is typically an edge
+  //     of a reflection or a light falloff boundary, exactly where a real
+  //     mirror-like surface would show a crisp glint rather than a flat
+  //     tone. Gated to only fire where the base shading is already
+  //     reasonably lit (avoids adding glints in shadowed corners where a
+  //     noisy gradient could otherwise fire).
+  // Verified visually against a real photo with strong overhead/skylight
+  // lighting (scratch-flake-qa render): metallic reads as noticeably
+  // glossy/reflective next to flake's more matte sheen from the same light.
+  float shadeGradMag = length(vec2(dFdx(shade), dFdy(shade)));
+  float metallicLobe = smoothstep(1.42, 1.72, shade) * 0.5;
+  float metallicGlint = smoothstep(0.012, 0.05, shadeGradMag) * smoothstep(1.0, 1.3, shade) * 0.3;
+  spec += uMetallic * (metallicLobe + metallicGlint);
+
   coated = coated + vec3(spec);
 
   vec3 composited = mix(photoColor.rgb, coated, m * uOpacity);
@@ -534,16 +608,23 @@ function computeAverageColor(sourceCanvas) {
   return new Float32Array([r / n / 255, g / n / 255, b / n / 255]);
 }
 
-function createImageTexture(gl, image, { repeat = false } = {}) {
+function createImageTexture(gl, image, { mipmap = false } = {}) {
   const tex = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, tex);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-  if (repeat) {
+  if (mipmap) {
+    // Used for the floor texture only. No-tiling rewrite: WRAP is
+    // CLAMP_TO_EDGE, not REPEAT — the floor texture now spans the mapped
+    // quad exactly once (see FRAGMENT_SRC), so there's no second copy to
+    // wrap into; REPEAT would just clamp-adjacent-then-repeat visible edge
+    // pixels into the fitted quad's actual visible range, which we don't
+    // want. Mipmap + anisotropic filtering are unrelated to tiling and stay
+    // on regardless — see the comment below.
     gl.generateMipmap(gl.TEXTURE_2D);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     // Bug fix: sampling this texture through the homography's perspective
     // foreshortening creates highly anisotropic UV derivatives (du/dx, dv/dy
     // — much bigger in one direction than the other, worse toward the
@@ -622,11 +703,12 @@ export class FloorVisualizer {
     this.spec = { ...DEFAULT_SPEC };
     this.seed = defaultSeedFor(this.spec.density, this.spec.flakeSizeIn);
     this.wipePct = 0.5;
-    // Default matches BASE_TILE_REPEAT/BASE_SQFT until a real sqFt is known
-    // (see setSqFt) — same value this constant always held before the fix,
-    // so a caller that never calls setSqFt gets the old, already-tuned
-    // behavior.
-    this.tileRepeat = BASE_TILE_REPEAT;
+    // Default matches BASE_SPAN_INCHES/BASE_SQFT until a real sqFt is known
+    // (see setSqFt) — same real-world scale assumption the old tileRepeat
+    // constant always held, so a caller that never calls setSqFt gets the
+    // same baseline behavior it always did.
+    this.spanInches = BASE_SPAN_INCHES;
+    this.genSize = BASE_GEN_SIZE;
     // Safe default until the first _regenerateFloorTexture call computes a
     // real one — render() is never reached before that happens (see
     // _applySegmentedResult), but keep a sane fallback regardless.
@@ -639,9 +721,12 @@ export class FloorVisualizer {
     this._regenTimer = null;
     this._lastTextureKey = null;
     this._photoDataUrl = null;
+    // Resized on demand in _regenerateFloorTexture to whatever genSize the
+    // current room calls for (see BASE_GEN_SIZE/MAX_GEN_SIZE) — no-tiling
+    // rewrite: this used to stay fixed at a 1024^2 tile forever.
     this._flakeCanvas = document.createElement('canvas');
-    this._flakeCanvas.width = FLAKE_TEXTURE_SIZE;
-    this._flakeCanvas.height = FLAKE_TEXTURE_SIZE;
+    this._flakeCanvas.width = this.genSize;
+    this._flakeCanvas.height = this.genSize;
     this._flakeCtx = this._flakeCanvas.getContext('2d');
 
     this._initGl();
@@ -650,6 +735,10 @@ export class FloorVisualizer {
   _initGl() {
     const gl = this.gl;
     this.program = linkProgram(gl, VERTEX_SRC, FRAGMENT_SRC);
+    // Hardware ceiling for the floor texture's generation resolution — see
+    // MAX_GEN_SIZE's doc comment. Queried once; intersected with
+    // MAX_GEN_SIZE wherever genSize is computed (setSqFt).
+    this.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE) || MAX_GEN_SIZE;
 
     // Full-screen quad. UVs chosen so vUV.y=0 is the TOP of the source
     // image and 1 is the bottom (no UNPACK_FLIP_Y_WEBGL — see the texture
@@ -682,10 +771,10 @@ export class FloorVisualizer {
       uShade: gl.getUniformLocation(this.program, 'uShade'),
       uFloor: gl.getUniformLocation(this.program, 'uFloor'),
       uHomographyInv: gl.getUniformLocation(this.program, 'uHomographyInv'),
-      uTileRepeat: gl.getUniformLocation(this.program, 'uTileRepeat'),
       uWipePct: gl.getUniformLocation(this.program, 'uWipePct'),
       uOpacity: gl.getUniformLocation(this.program, 'uOpacity'),
       uFinish: gl.getUniformLocation(this.program, 'uFinish'),
+      uMetallic: gl.getUniformLocation(this.program, 'uMetallic'),
       uAvgFloorColor: gl.getUniformLocation(this.program, 'uAvgFloorColor'),
     };
   }
@@ -783,7 +872,7 @@ export class FloorVisualizer {
     this._disposeTexture(this.photoTex);
     this._disposeTexture(this.maskTex);
     this._disposeTexture(this.shadeTex);
-    this.photoTex = createImageTexture(gl, photoImg, { repeat: false });
+    this.photoTex = createImageTexture(gl, photoImg);
     this.maskTex = createR8Texture(gl, width, height, maskBuffer);
     this.shadeTex = createR8Texture(gl, width, height, shadeBuffer);
 
@@ -838,13 +927,27 @@ export class FloorVisualizer {
     }, REGEN_DEBOUNCE_MS);
   }
 
+  /** Resizes the offscreen generation canvas to this.genSize if it isn't
+   * already — no-op most of the time (genSize only changes via setSqFt,
+   * which is normally called once per photo, before it's even loaded). */
+  _ensureFlakeCanvasSize() {
+    if (this._flakeCanvas.width !== this.genSize || this._flakeCanvas.height !== this.genSize) {
+      this._flakeCanvas.width = this.genSize;
+      this._flakeCanvas.height = this.genSize;
+    }
+  }
+
   _regenerateFloorTexture() {
     const gl = this.gl;
+    this._ensureFlakeCanvasSize();
     const ctx = this._flakeCtx;
     this._lastTextureKey = textureKeyFor(this.spec);
 
     if (this.spec.mode === 'metallic') {
-      renderMetallicSwatchTexture({ size: FLAKE_TEXTURE_SIZE, colorwayId: this.spec.metallicId }, ctx);
+      renderMetallicSwatchTexture(
+        { size: this.genSize, colorwayId: this.spec.metallicId, spanInches: this.spanInches },
+        ctx,
+      );
     } else {
       const components =
         this.spec.mode === 'solid'
@@ -855,20 +958,22 @@ export class FloorVisualizer {
             });
       renderFlakeTexture(
         {
-          size: FLAKE_TEXTURE_SIZE,
+          size: this.genSize,
+          spanInches: this.spanInches,
           baseCoatHex: this.spec.baseCoatHex,
           components,
           // Spec mapping table: solid color epoxy = base coat only, density 0.
           density: this.spec.mode === 'solid' ? 0 : this.spec.density,
           flakeSizeIn: this.spec.flakeSizeIn,
           seed: this.seed,
+          maxFlakeCount: MAX_FLAKE_COUNT,
         },
         ctx,
       );
     }
 
     this._disposeTexture(this.floorTex);
-    this.floorTex = createImageTexture(gl, this._flakeCanvas, { repeat: true });
+    this.floorTex = createImageTexture(gl, this._flakeCanvas, { mipmap: true });
     // See computeAverageColor's doc comment — feeds the shader's detail
     // fade at extreme minification.
     this._avgFloorColor = computeAverageColor(this._flakeCanvas);
@@ -880,22 +985,38 @@ export class FloorVisualizer {
   }
 
   /**
-   * Scales tileRepeat to the room's actual estimated square footage, so the
-   * apparent flake/tile size in the photo stays visually consistent whether
-   * the floor is a one-car garage or a sprawling multi-room great room (see
-   * this file's BASE_TILE_REPEAT/BASE_SQFT comment). Area scales with the
-   * square of linear size, so sqrt(sqFt/BASE_SQFT) approximates how much
-   * bigger the room is *linearly* relative to the already-tuned baseline —
-   * that's the factor tileRepeat should scale by. Safe to call before a
-   * photo is loaded (just updates the value used on the next render) and
+   * Derives spanInches (real-world inches the floor texture represents) and
+   * genSize (generation resolution) from the room's actual estimated square
+   * footage, so the no-tiling floor texture's chip density/apparent size and
+   * generation cost stay correct whether the floor is a one-car garage or a
+   * sprawling multi-room great room (see this file's BASE_SPAN_INCHES/
+   * BASE_GEN_SIZE comments). Area scales with the square of linear size, so
+   * sqrt(sqFt/BASE_SQFT) approximates how much bigger the room is *linearly*
+   * relative to the already-tuned baseline — both spanInches and genSize
+   * scale by that factor (genSize more mildly — see MAX_GEN_SIZE's comment
+   * on why generation resolution doesn't need to track room size as
+   * aggressively as the real-world span does). Safe to call before a photo
+   * is loaded (just updates the values used on the next regeneration) and
    * with any junk input (falls back to the baseline).
+   *
+   * Unlike the old tileRepeat (a shader uniform only), spanInches/genSize
+   * feed into the GENERATED texture content itself, so if a photo is
+   * already loaded this regenerates it immediately — matters if a caller
+   * ever updates the estimate's sqFt after the initial photo load (today's
+   * only caller sets this once, before loadPhoto, so this path is mostly
+   * future-proofing).
    * @param {number} sqFt
    */
   setSqFt(sqFt) {
     const area = Number(sqFt) > 0 ? Number(sqFt) : BASE_SQFT;
-    const scaled = BASE_TILE_REPEAT * Math.sqrt(area / BASE_SQFT);
-    this.tileRepeat = Math.min(MAX_TILE_REPEAT, Math.max(MIN_TILE_REPEAT, scaled));
-    if (this.ready) this.render();
+    const linearScale = Math.sqrt(area / BASE_SQFT);
+    this.spanInches = Math.min(MAX_SPAN_INCHES, Math.max(MIN_SPAN_INCHES, BASE_SPAN_INCHES * linearScale));
+    const idealGenSize = Math.round(BASE_GEN_SIZE * Math.sqrt(this.spanInches / BASE_SPAN_INCHES));
+    this.genSize = Math.min(MAX_GEN_SIZE, this.maxTextureSize, Math.max(MIN_GEN_SIZE, idealGenSize));
+    if (this.ready) {
+      this._regenerateFloorTexture();
+      this.render();
+    }
   }
 
   /** Render-on-demand (spec 3.5) — called only when a control, photo, or
@@ -925,10 +1046,10 @@ export class FloorVisualizer {
     gl.uniform1i(this.uniforms.uFloor, 3);
 
     gl.uniformMatrix3fv(this.uniforms.uHomographyInv, false, this.homographyInv);
-    gl.uniform1f(this.uniforms.uTileRepeat, this.tileRepeat);
     gl.uniform1f(this.uniforms.uWipePct, this.wipePct);
     gl.uniform1f(this.uniforms.uOpacity, 1);
     gl.uniform1f(this.uniforms.uFinish, this.spec.sheen === 'satin' ? 0 : 1);
+    gl.uniform1f(this.uniforms.uMetallic, this.spec.mode === 'metallic' ? 1 : 0);
     gl.uniform3fv(this.uniforms.uAvgFloorColor, this._avgFloorColor);
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
