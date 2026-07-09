@@ -4,6 +4,13 @@ import { FloorVisualizer } from './visualizer-gl.js';
 import { renderVisualizerControls, findBaseCoat, BASE_COAT_PALETTE } from './visualizer-controls.js';
 import { renderMaskAssist } from './visualizer-mask-assist.js';
 import { track } from './analytics.js';
+import { previewsNeedGeneration } from '/lib/preview-status.js';
+
+// Re-exported (not defined here) so api/estimates.js — a server-side
+// Vercel function — can import previewsNeedGeneration without pulling in
+// this file's browser-only WebGL visualizer imports above. See
+// lib/preview-status.js's doc comment for what broke when it lived here.
+export { previewsNeedGeneration };
 
 export function formatMoney(n) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
@@ -44,18 +51,6 @@ export function previewLoadingHtml(caption) {
     </div>
     <div class="cap">${escapeHtml(caption)}</div>
   </div>`;
-}
-
-export function previewsNeedGeneration(data = {}) {
-  // Visualizer-pipeline estimates never had (and will never get) a
-  // server-generated gen-AI preview image — the client composites live
-  // instead (visualizer-build-spec Part 3). Without this check, every GET
-  // of a new-style estimate would look like a "missing preview" and fall
-  // through to the old, expensive on-demand generateAllEstimatePreviews
-  // path — exactly the per-render cost/latency this feature replaces.
-  if (data.meta?.previewMode === 'visualizer') return false;
-  if (data.previewPaths?.some((item) => item.id === 'original' && item.path)) return false;
-  return !(data.previews || []).some((item) => item.id === 'original' && item.image);
 }
 
 export function estimatePayload(data) {

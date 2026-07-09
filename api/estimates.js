@@ -1,7 +1,7 @@
 import { getUserFromRequest } from '../lib/auth-request.js';
 import { createInstantSession } from '../lib/instant-auth.js';
 import { generateAllEstimatePreviews, generateEstimatePreview } from '../lib/generate-estimate-preview.js';
-import { previewsNeedGeneration } from '../calculator/estimate-view.js';
+import { previewsNeedGeneration } from '../lib/preview-status.js';
 import {
   estimateSummary,
   hydrateEstimateImages,
