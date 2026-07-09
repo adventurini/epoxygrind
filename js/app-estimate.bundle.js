@@ -177,9 +177,20 @@ void main() {
   // Verified visually against a real photo with strong overhead/skylight
   // lighting (scratch-flake-qa render): metallic reads as noticeably
   // glossy/reflective next to flake's more matte sheen from the same light.
+  //
+  // Bug fix: metallicLobe/metallicGlint were gated ONLY on uMetallic, with
+  // no uFinish dependence at all \u2014 their peak contribution (0.5+0.3=0.8) so
+  // far outweighs the flake/solid gloss/satin swing above (0.12-0.35) that
+  // toggling gloss/satin on a metallic floor produced no visible difference
+  // (measured: <0.005 mean pixel diff between the two, i.e. noise). Scale
+  // both terms by uFinish too \u2014 satin metallic is still glossier than
+  // flake's satin (unlike flake/solid, satin metallic keeps a real, dimmer
+  // highlight rather than going fully matte, since real metallic epoxy's
+  // satin option is still much more reflective than flake epoxy's) but
+  // gloss vs satin is now an actually visible choice.
   float shadeGradMag = length(vec2(dFdx(shade), dFdy(shade)));
-  float metallicLobe = smoothstep(1.42, 1.72, shade) * 0.5;
-  float metallicGlint = smoothstep(0.012, 0.05, shadeGradMag) * smoothstep(1.0, 1.3, shade) * 0.3;
+  float metallicLobe = smoothstep(1.42, 1.72, shade) * mix(0.22, 0.5, uFinish);
+  float metallicGlint = smoothstep(0.012, 0.05, shadeGradMag) * smoothstep(1.0, 1.3, shade) * mix(0.12, 0.3, uFinish);
   spec += uMetallic * (metallicLobe + metallicGlint);
 
   coated = coated + vec3(spec);
