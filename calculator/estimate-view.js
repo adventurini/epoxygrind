@@ -3,6 +3,7 @@ import { renderDesignEditor } from './design-editor.js';
 import { FloorVisualizer } from './visualizer-gl.js';
 import { renderVisualizerControls, findBaseCoat, BASE_COAT_PALETTE } from './visualizer-controls.js';
 import { renderMaskAssist } from './visualizer-mask-assist.js';
+import { getPatternsForFinish, COATING_TYPES } from './design-options.js';
 import { track } from './analytics.js';
 
 export function formatMoney(n) {
@@ -193,14 +194,21 @@ function wireDesignEditor(container, opts = {}) {
  * what they already chose instead of resetting to Gravel/medium-gray.
  */
 export function defaultFloorSpec(data) {
-  // `sheen` (spec 3.4) is a v2 addition — a floorSpec persisted before this
-  // shipped won't have it; default it to 'gloss' rather than leaving it
-  // undefined (spread order lets an existing sheen value still win).
-  if (data.floorSpec) return { sheen: 'gloss', ...data.floorSpec };
   const design = data.design || {};
   const finish = ['solid', 'flake', 'metallic'].includes(design.finish)
     ? design.finish
     : (data.meta?.finish || 'flake');
+  // `pattern` (real pattern selector, visualizer-controls.js) is a later
+  // addition — a persisted `design.pattern` (set by the original form, or
+  // by a prior visualizer pattern-selector change) wins when present;
+  // otherwise default to this finish's first pattern option.
+  const fallbackPattern = design.pattern || getPatternsForFinish(finish)[0]?.id;
+
+  // `sheen` (spec 3.4) and `pattern` are both v2 additions — a floorSpec
+  // persisted before either shipped won't have them; default both rather
+  // than leaving them undefined (spread order lets an existing value in a
+  // newer persisted floorSpec still win).
+  if (data.floorSpec) return { sheen: 'gloss', pattern: fallbackPattern, ...data.floorSpec };
   return {
     finish,
     baseCoatId: BASE_COAT_PALETTE.some((c) => c.id === design.baseColor) ? design.baseColor : 'medium-gray',
@@ -212,6 +220,7 @@ export function defaultFloorSpec(data) {
     // Spec 3.4/1.1: gloss vs satin. Gloss is the default (matches epoxy's
     // actual look).
     sheen: 'gloss',
+    pattern: fallbackPattern,
   };
 }
 
@@ -231,6 +240,20 @@ function visualizerBlockHtml() {
           </div>
         </div>
       </div>
+      <!-- Owner-only sqFt/coating-type editor: previously these were only
+      ever set once at form submission (no way to revisit them without
+      starting an entirely new estimate). Toggle-to-reveal, same UX as the
+      "Change color, finish, or pattern" affordance elsewhere in this file. -->
+      <div class="design-editor-toggle-row">
+        <button type="button" class="btn btn-o btn-sm" data-role="toggleProjFields">Edit square footage or coating</button>
+      </div>
+      <div class="design-editor" data-role="projFieldsPanel" hidden>
+        <div class="row-2">
+          <label class="fld"><span>Square footage</span><input type="number" min="1" step="1" inputmode="numeric" data-role="vizSqftInput"></label>
+          <label class="fld"><span>Coating type</span><select data-role="vizCoatingInput"></select></label>
+        </div>
+      </div>
+
       <div data-role="vizControlsMount"></div>
       <div class="viz-actions">
         <button type="button" class="btn btn-o btn-sm" data-role="vizDownload">Share / download my floor</button>
@@ -296,6 +319,59 @@ function wireWipeInteraction(track, handle, visualizer) {
 }
 
 /**
+ * Owner-only editable sqFt/coatingType controls, mounted inside the
+ * visualizer block. Deliberately lives here (not in visualizer-controls.js)
+ * rather than in visualizer-controls.js — sqFt/coatingType are pricing
+ * inputs, not FloorSpec/render inputs, but the sqFt edit needs to call
+ * visualizer.setSqFt() to regenerate the floor texture at the new room
+ * scale, and the live `visualizer` instance only exists in wireVisualizer's
+ * scope. Pricing/design recompute + persistence is handled by the caller
+ * via opts.onProjectFieldsChange (mirrors onVisualizerChange/onFinishChange
+ * below) — this function only owns the DOM and the visualizer regen call.
+ * @param {HTMLElement} container
+ * @param {object} data
+ * @param {import('./visualizer-gl.js').FloorVisualizer} visualizer
+ * @param {{onProjectFieldsChange?:(fields:{sqFt?:number, coatingType?:string})=>void}} opts
+ */
+function wireProjectFieldsEditor(container, data, visualizer, opts) {
+  const toggleBtn = container.querySelector('[data-role="toggleProjFields"]');
+  const panel = container.querySelector('[data-role="projFieldsPanel"]');
+  const sqftInput = container.querySelector('[data-role="vizSqftInput"]');
+  const coatingInput = container.querySelector('[data-role="vizCoatingInput"]');
+  if (!toggleBtn || !panel || !sqftInput || !coatingInput) return;
+
+  toggleBtn.addEventListener('click', () => {
+    panel.hidden = !panel.hidden;
+    toggleBtn.textContent = panel.hidden ? 'Edit square footage or coating' : 'Hide size & coating editor';
+  });
+
+  sqftInput.value = Math.round(data.analysis?.estimatedSqFt || data.pricing?.sqFt || 0) || '';
+  coatingInput.innerHTML = COATING_TYPES.map(
+    (c) => `<option value="${c.id}" title="${escapeHtml(c.description)}">${escapeHtml(c.label)}</option>`,
+  ).join('');
+  coatingInput.value = data.meta?.coatingType === 'polyaspartic' ? 'polyaspartic' : 'epoxy';
+
+  sqftInput.addEventListener('change', () => {
+    const val = Math.max(1, Math.round(Number(sqftInput.value) || 0));
+    sqftInput.value = val;
+    // setSqFt() re-derives spanInches/genSize from the new value and, when
+    // `visualizer.ready` (a photo has already been segmented), immediately
+    // regenerates the floor texture + re-renders — confirmed via
+    // visualizer-gl.js's setSqFt this is NOT a load-time-only calculation,
+    // it re-triggers correctly on every call, including this second one
+    // long after initial load.
+    visualizer.setSqFt(val);
+    opts.onProjectFieldsChange?.({ sqFt: val });
+    track('sqft_edited', { sqFt: val });
+  });
+
+  coatingInput.addEventListener('change', () => {
+    opts.onProjectFieldsChange?.({ coatingType: coatingInput.value });
+    track('coating_type_edited', { coatingType: coatingInput.value });
+  });
+}
+
+/**
  * Mounts the live WebGL visualizer + control panel into a rendered
  * visualizerBlockHtml() container. This is the owner-only interactive
  * path (spec Part 3/4) — a non-owner shared-link viewer instead sees the
@@ -305,6 +381,7 @@ function wireWipeInteraction(track, handle, visualizer) {
  * @param {object} opts
  * @param {(payload:{floorSpec:object, image:string})=>void} [opts.onVisualizerChange]
  * @param {(finish:string)=>void} [opts.onFinishChange]
+ * @param {(fields:{sqFt?:number, coatingType?:string})=>void} [opts.onProjectFieldsChange]
  */
 function wireVisualizer(container, data, opts = {}) {
   if (!container) return;
@@ -383,6 +460,8 @@ function wireVisualizer(container, data, opts = {}) {
       opts.onFinishChange?.(finish);
     },
   });
+
+  wireProjectFieldsEditor(container, data, visualizer, opts);
 
   wireWipeInteraction(wipeTrack, wipeHandle, visualizer);
   wipeTrack?.addEventListener('viz-wipe-interacted', () => track('slider_interacted', { pct: Number(wipeTrack.getAttribute('aria-valuenow')) }), { once: true });

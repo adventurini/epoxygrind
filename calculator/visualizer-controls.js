@@ -13,6 +13,7 @@
 import { renderFlakeTexture, defaultSeedFor } from '/lib/flake-texture-renderer.js';
 import { resolveRenderComponents, FLAKE_SOLID_COLORS, getBlendRecipe } from '/lib/flake-recipes.js';
 import { METALLIC_COLORWAYS, renderMetallicSwatchTexture } from '/lib/metallic-swatches.js';
+import { getPatternsForFinish } from './design-options.js';
 import { track } from './analytics.js';
 
 const CHIP_SIZE = 128;
@@ -139,7 +140,7 @@ function colorOptionsHtml(selectedCode) {
 
 /**
  * @param {HTMLElement} root
- * @param {{finish:string, baseCoatId:string, blendId:string, customComponents:Array|null, density:number, flakeSizeIn:number, metallicId:string, sheen:string}} state
+ * @param {{finish:string, baseCoatId:string, blendId:string, customComponents:Array|null, density:number, flakeSizeIn:number, metallicId:string, sheen:string, pattern:string}} state
  * @param {{onSpecChange:(partial:object)=>void, onFinishChange:(finish:string)=>void}} callbacks
  */
 export function renderVisualizerControls(root, state, callbacks) {
@@ -152,6 +153,21 @@ export function renderVisualizerControls(root, state, callbacks) {
         <button type="button" data-finish="flake">Flake</button>
         <button type="button" data-finish="solid">Solid Color</button>
         <button type="button" data-finish="metallic">Metallic</button>
+      </div>
+
+      <!-- Real pattern selector — parity with the initial form's Pattern
+      dropdown (calculator/calculator.js + design-options.js's PATTERNS),
+      replacing the old density-inferred-shortcut-only behavior. Uses the
+      same .viz-seg segmented-button style as Coverage/Flake size/Finish
+      below rather than the thumbnail chip style (blend/metallic) since
+      patterns other than flake's don't have per-pattern swatch art.
+      Deliberately price/label-only for most patterns for now (see
+      renderPattern's comment) — the visualizer already lets flake's
+      partial-vs-full-broadcast distinction show up visually via the
+      existing, independent Coverage/density slider below. -->
+      <div data-role="patternSection">
+        <p class="viz-label">Pattern</p>
+        <div class="viz-seg" data-role="patternSeg"></div>
       </div>
 
       <div data-role="flakeSection">
@@ -378,6 +394,42 @@ export function renderVisualizerControls(root, state, callbacks) {
     });
   }
 
+  /**
+   * Real pattern selector (visualizer-build-spec follow-up: the results
+   * view previously had no explicit pattern control at all — pricing was
+   * inferred from the density slider via app/estimate/estimate.js's
+   * densityToPatternId(), which only distinguished 2 of flake's 5 patterns
+   * and didn't cover solid or metallic at all). Options come from
+   * getPatternsForFinish(s.finish), same source of truth the initial form
+   * uses, so this always matches the form's pattern list per finish.
+   *
+   * Scope decision: selecting a pattern only updates price/label here — it
+   * does not change the WebGL render beyond what's already reachable via
+   * the existing density/blend/metallic-colorway controls (e.g. "Partial
+   * broadcast" already has a real, independent visual home in the Coverage
+   * slider above). None of flake's granite-look/confetti/double-broadcast
+   * or metallic's marble/ripple/lava have a distinct procedural renderer
+   * (lib/flake-texture-renderer.js and lib/metallic-swatches.js each only
+   * draw one style), and building 7 new renderer variants was out of scope
+   * for "add a real, visible, working selector with correct pricing" — this
+   * matches how the pattern dropdown already behaved on the initial form
+   * before any visualizer existed (price/label only, no live preview).
+   */
+  function renderPattern() {
+    const patterns = getPatternsForFinish(s.finish);
+    q('[data-role="patternSeg"]').innerHTML = patterns.map(
+      (p) => `<button type="button" class="${s.pattern === p.id ? 'on' : ''}" data-pattern="${p.id}" title="${p.description || p.label}">${p.label}</button>`,
+    ).join('');
+    q('[data-role="patternSeg"]').querySelectorAll('[data-pattern]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        s.pattern = btn.dataset.pattern;
+        onSpecChange({ pattern: s.pattern });
+        track('pattern_changed', { pattern: s.pattern });
+        renderPattern();
+      });
+    });
+  }
+
   function syncFinishSections() {
     q('[data-role="finishTabs"]').querySelectorAll('button').forEach((btn) => {
       btn.classList.toggle('on', btn.dataset.finish === s.finish);
@@ -391,7 +443,19 @@ export function renderVisualizerControls(root, state, callbacks) {
   q('[data-role="finishTabs"]').querySelectorAll('button').forEach((btn) => {
     btn.addEventListener('click', () => {
       s.finish = btn.dataset.finish;
+      // A pattern id valid for the previous finish may not exist in the new
+      // finish's pattern list (matches calculator.js's syncPatterns() on the
+      // initial form, which does the same reset-to-first-option on a finish
+      // switch) — fall back to the new finish's first pattern and persist
+      // the change like any other spec edit, rather than leaving a stale/
+      // invalid pattern id in the FloorSpec.
+      const patterns = getPatternsForFinish(s.finish);
+      if (!patterns.some((p) => p.id === s.pattern)) {
+        s.pattern = patterns[0]?.id;
+        onSpecChange({ pattern: s.pattern });
+      }
       syncFinishSections();
+      renderPattern();
       onFinishChange(s.finish);
     });
   });
@@ -403,6 +467,7 @@ export function renderVisualizerControls(root, state, callbacks) {
   renderMetallicChips();
   renderBaseCoat();
   renderSheen();
+  renderPattern();
   syncFinishSections();
 
   return {

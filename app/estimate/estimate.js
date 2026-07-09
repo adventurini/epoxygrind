@@ -6,6 +6,7 @@ import {
   previewLoadingHtml,
   humanizeLabel,
   formatMoney,
+  defaultFloorSpec,
 } from '/calculator/estimate-view.js';
 import {
   clearPendingEstimate,
@@ -107,6 +108,15 @@ function designSnapshot(data) {
  * density slider maps onto the SAME pattern ids lib/pricing.js already
  * knows about (partial-broadcast is priced lower) so this recomputes
  * pricing without adding a new pricing concept or touching lib/pricing.js.
+ *
+ * Fallback only: a real, explicit pattern selector now exists in
+ * visualizer-controls.js (floorSpec.pattern), and recomputeFromFloorSpec
+ * below always prefers it when present — this inference is only still used
+ * for a floorSpec persisted before the pattern selector shipped (it's
+ * flake-only, and only distinguishes 2 of flake's 5 patterns; solid and
+ * metallic never had a mapping at all). Kept rather than removed so an old
+ * saved estimate's price doesn't silently jump on next load purely because
+ * its stored floorSpec predates `pattern`.
  */
 function densityToPatternId(finish, density) {
   if (finish !== 'flake') return undefined;
@@ -114,18 +124,22 @@ function densityToPatternId(finish, density) {
 }
 
 /**
- * Recomputes design + pricing client-side from a visualizer FloorSpec —
- * this is the instant, network-free replacement for the old phase:'redesign'
- * server round trip (buildSinglePreview's gen-AI call is gone from this
- * path entirely; lib/pricing.js and lib/finish-design.js are pure
- * functions, safe to run in the browser exactly as-is).
+ * Recomputes design + pricing client-side from a visualizer FloorSpec, with
+ * optional sqFt/coatingType overrides (used by the results-view project-
+ * fields editor) — the instant, network-free replacement for the old
+ * phase:'redesign' server round trip (buildSinglePreview's gen-AI call is
+ * gone from this path entirely; lib/pricing.js and lib/finish-design.js are
+ * pure functions, safe to run in the browser exactly as-is).
+ * @param {string} finish
+ * @param {object} floorSpec
+ * @param {{sqFt?:number, coatingType?:string}} [overrides]
  */
-function recomputeFromFloorSpec(finish, floorSpec) {
+function recomputeFromFloorSpec(finish, floorSpec, overrides = {}) {
   const design = resolveDesign({
     finish,
     baseColor: floorSpec.baseCoatId,
     flakeColor: floorSpec.blendId !== 'CUSTOM' ? floorSpec.blendId : undefined,
-    pattern: densityToPatternId(finish, floorSpec.density),
+    pattern: floorSpec.pattern || densityToPatternId(finish, floorSpec.density),
   });
 
   if (floorSpec.blendId === 'CUSTOM' && floorSpec.customComponents?.length) {
@@ -135,11 +149,12 @@ function recomputeFromFloorSpec(finish, floorSpec) {
     design.summary = `${design.colorLabel} · ${design.patternLabel}`;
   }
 
-  const sqFt = currentEstimate?.analysis?.estimatedSqFt || currentEstimate?.pricing?.sqFt || 0;
+  const sqFt = overrides.sqFt ?? (currentEstimate?.analysis?.estimatedSqFt || currentEstimate?.pricing?.sqFt || 0);
+  const coatingType = overrides.coatingType ?? (currentEstimate?.meta?.coatingType || 'epoxy');
   const pricing = calculateEstimate(sqFt, finish, {
     design,
     regionalRates: currentEstimate?.pricing?.market || null,
-    coatingType: currentEstimate?.meta?.coatingType || 'epoxy',
+    coatingType,
   });
 
   return { design, pricing };
@@ -220,6 +235,60 @@ function onSegmentationReady(segmentation) {
   }
 }
 
+/**
+ * Owner-only sqFt/coatingType edit from the results view (wired to
+ * calculator/estimate-view.js's wireProjectFieldsEditor, gated by the same
+ * allowEdit the visualizer/design-editor already use). Reuses
+ * recomputeFromFloorSpec's pure design+pricing path — same as
+ * onVisualizerChange — rather than a server round trip.
+ *
+ * Uses defaultFloorSpec(currentEstimate) as the design source when this
+ * estimate's visualizer/pattern selector has never been touched: a freshly
+ * built estimate's `design` is still lib/pricing.js's SLIM
+ * {colorLabel, patternLabel, baseColorHex, flakeColorHex, summary} shape —
+ * no pattern/baseColor/flakeColor ids, no patternAddLow/High — so
+ * recomputing straight off currentEstimate.design would silently drop any
+ * pattern price premium. defaultFloorSpec() already knows how to derive a
+ * full FloorSpec from that slim shape (it's the same fallback the
+ * visualizer itself uses on first mount), so reusing it here keeps this
+ * edit correct regardless of whether the visualizer has recomputed pricing
+ * before.
+ */
+function onProjectFieldsChange({ sqFt, coatingType } = {}) {
+  if (!currentEstimate) return;
+  const floorSpec = currentEstimate.floorSpec || defaultFloorSpec(currentEstimate);
+  const finish = floorSpec.finish;
+  const { design, pricing } = recomputeFromFloorSpec(finish, floorSpec, { sqFt, coatingType });
+
+  currentEstimate = {
+    ...currentEstimate,
+    design,
+    pricing,
+    analysis: sqFt != null ? { ...currentEstimate.analysis, estimatedSqFt: sqFt } : currentEstimate.analysis,
+    meta: { ...currentEstimate.meta, coatingType: pricing.coatingType },
+  };
+  updatePriceDom(pricing);
+  const sqftStrong = doc.querySelector('.sqft-line strong');
+  if (sqftStrong) sqftStrong.textContent = `${Math.round(pricing.sqFt)} sq ft`;
+
+  if (estimateId) {
+    authFetch(`/api/estimates?id=${encodeURIComponent(estimateId)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        payload: {
+          pricing: currentEstimate.pricing,
+          design: currentEstimate.design,
+          analysis: currentEstimate.analysis,
+          meta: currentEstimate.meta,
+        },
+      }),
+    })
+      .then(() => track('project_fields_edited', { sqFt, coatingType }))
+      .catch(() => {});
+  }
+}
+
 function showEstimate(data) {
   currentEstimate = data;
   renderEstimate(doc, data, {
@@ -231,6 +300,7 @@ function showEstimate(data) {
     onSelectPreview: selectPreviewFromHistory,
     onVisualizerChange,
     onSegmentationReady,
+    onProjectFieldsChange,
   });
   loading.hidden = true;
   error.hidden = true;
