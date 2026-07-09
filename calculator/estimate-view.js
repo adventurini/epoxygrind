@@ -469,20 +469,18 @@ function wireVisualizer(container, data, opts = {}) {
     });
 }
 
+/**
+ * Reverted to the gen-AI preview pipeline (see lib/build-estimate.js's
+ * meta comment) — the WebGL visualizer's visualizerBlockHtml()/wireVisualizer()
+ * are unused dead code left in place for now (see visualizer-webgl-experiment
+ * branch), not deleted, in case any part of it is revisited later.
+ */
 function photoBlockHtml(data, opts) {
-  const { originalImage } = data;
-  const staticImage = data.visualizerResult?.image;
+  const { originalImage, previews = [] } = data;
+  const previewImage = previews.find((p) => p.id === 'original' && p.image)?.image;
 
-  // Owner: always the live, instant WebGL visualizer (spec: "replaces the
-  // current preview slot in the estimator's results view").
-  if (opts.allowEdit) {
-    return `<p class="label">Your new floor — drag to compare, then customize below</p>${visualizerBlockHtml()}`;
-  }
-
-  // Non-owner / shared link: the persisted static snapshot of whatever the
-  // homeowner last configured — no segmentation call, no controls.
-  if (staticImage) {
-    return `<p class="label">Before &amp; after — drag to compare</p>${beforeAfterHtml(originalImage, staticImage)}`;
+  if (previewImage) {
+    return beforeAfterBlockHtml(originalImage, previewImage, opts);
   }
 
   return `<p class="label">Uploaded photo</p><img src="${originalImage}" alt="Uploaded space">`;
@@ -661,10 +659,10 @@ export function renderEstimate(target, data, opts = {}) {
       <p class="muted">Generated ${new Date(meta.generatedAt).toLocaleString()}${meta.demoMode ? ' · Demo mode' : ''}</p>
     </footer>`;
 
-  initBeforeAfterSlider(target.querySelector('.ba-slider'));
-  if (opts.allowEdit) {
-    wireVisualizer(target.querySelector('#estimatePhotoBlock [data-role="vizWrap"]'), data, opts);
-  }
+  const photoBlock = target.querySelector('#estimatePhotoBlock');
+  initBeforeAfterSlider(photoBlock.querySelector('.ba-slider'));
+  wireDesignEditor(photoBlock, opts);
+  wireHistoryThumbnails(photoBlock, opts);
 }
 
 export function storageKey(id) {
