@@ -59,12 +59,12 @@
     "api/audit/request.js": {
       "maxDuration": 200,
       "memory": 3009,
-      "includeFiles": "node_modules/{lighthouse,axe-core,@paulirish/trace_engine,@sentry/node,chrome-launcher,configstore,csp_evaluator,devtools-protocol,enquirer,http-link-header,intl-messageformat,jpeg-js,js-library-detector,lighthouse-logger,lighthouse-stack-packs,lodash-es,lookup-closest-locale,metaviewport-parser,open,parse-cache-control,puppeteer-core,robots-parser,speedline-core,third-party-web,tldts-icann,ws,yargs,yargs-parser}/**"
+      "includeFiles": "node_modules/{lighthouse,axe-core,http-link-header}/**"
     },
     "api/admin/recrawl.js": {
       "maxDuration": 200,
       "memory": 3009,
-      "includeFiles": "node_modules/{lighthouse,axe-core,@paulirish/trace_engine,@sentry/node,chrome-launcher,configstore,csp_evaluator,devtools-protocol,enquirer,http-link-header,intl-messageformat,jpeg-js,js-library-detector,lighthouse-logger,lighthouse-stack-packs,lodash-es,lookup-closest-locale,metaviewport-parser,open,parse-cache-control,puppeteer-core,robots-parser,speedline-core,third-party-web,tldts-icann,ws,yargs,yargs-parser}/**"
+      "includeFiles": "node_modules/{lighthouse,axe-core,http-link-header}/**"
     },
     "api/admin/carousel/fill.js": {
       "maxDuration": 200
