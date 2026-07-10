@@ -19,6 +19,18 @@ export const BASE_COLORS = [
   { id: 'white', label: 'White', hex: '#F4F3EF' },
 ];
 
+/** Real acid-stain/water-based-stain color names — see lib/finish-design.js. */
+export const CONCRETE_COLORS = [
+  { id: 'natural-gray', label: 'Natural gray', hex: '#9C9890' },
+  { id: 'charcoal-stain', label: 'Charcoal', hex: '#3C3C3C' },
+  { id: 'coffee-brown', label: 'Coffee brown', hex: '#4A3728' },
+  { id: 'walnut', label: 'Walnut', hex: '#5C4033' },
+  { id: 'sahara-tan', label: 'Sahara tan', hex: '#C2A878' },
+  { id: 'terra-cotta', label: 'Terra cotta', hex: '#B5651D' },
+  { id: 'english-red', label: 'English red', hex: '#8B3A2E' },
+  { id: 'slate-gray', label: 'Slate gray', hex: '#6E7B7F' },
+];
+
 /** Real, named Torginol vinyl flake blends — see lib/finish-design.js. */
 export const FLAKE_COLORS = [
   { id: 'domino', label: 'Domino', hex: '#8C8C8A' },
@@ -63,6 +75,12 @@ const PATTERNS = {
     { id: 'marble', label: 'Marble flow' },
     { id: 'ripple', label: 'Ripple wave' },
     { id: 'lava', label: 'Lava glow' },
+  ],
+  concrete: [
+    { id: 'polished', label: 'Polished (no stain)' },
+    { id: 'stained', label: 'Stained & sealed' },
+    { id: 'overlay-smooth', label: 'Smooth overlay' },
+    { id: 'stamped', label: 'Stamped overlay' },
   ],
 };
 

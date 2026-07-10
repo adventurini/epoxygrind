@@ -64,7 +64,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing square footage.' });
       }
 
-      const finishKey = ['solid', 'flake', 'metallic'].includes(body.finish) ? body.finish : 'flake';
+      const finishKey = ['solid', 'flake', 'metallic', 'concrete'].includes(body.finish) ? body.finish : 'flake';
       const coatingType = body.coatingType === 'polyaspartic' ? 'polyaspartic' : 'epoxy';
       const design = resolveDesign({
         finish: finishKey,

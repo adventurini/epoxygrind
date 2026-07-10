@@ -199,7 +199,7 @@ export function defaultFloorSpec(data) {
   // undefined (spread order lets an existing sheen value still win).
   if (data.floorSpec) return { sheen: 'gloss', ...data.floorSpec };
   const design = data.design || {};
-  const finish = ['solid', 'flake', 'metallic'].includes(design.finish)
+  const finish = ['solid', 'flake', 'metallic', 'concrete'].includes(design.finish)
     ? design.finish
     : (data.meta?.finish || 'flake');
   return {

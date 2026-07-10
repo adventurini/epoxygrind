@@ -1,4 +1,4 @@
-import { BASE_COLORS, FLAKE_COLORS, COATING_TYPES, getPatternsForFinish } from './design-options.js';
+import { BASE_COLORS, CONCRETE_COLORS, FLAKE_COLORS, COATING_TYPES, getPatternsForFinish } from './design-options.js';
 import { initBeforeAfterSlider } from './before-after-slider.js';
 import { savePendingEstimate } from './submit-estimate.js';
 import { track } from './analytics.js';
@@ -90,12 +90,22 @@ function updateSubmitHint() {
 }
 
 function syncPatterns() {
-  const patterns = getPatternsForFinish($('finish').value);
+  const finish = $('finish').value;
+  const patterns = getPatternsForFinish(finish);
   const current = $('pattern').value;
   $('pattern').innerHTML = patterns.map((p) =>
     `<option value="${p.id}"${p.id === current || (!current && p.id === patterns[0].id) ? ' selected' : ''}>${p.label}</option>`,
   ).join('');
-  $('flakeWrap').hidden = $('finish').value !== 'flake';
+  $('flakeWrap').hidden = finish !== 'flake';
+  // Concrete doesn't have a coating chemistry choice (it's not epoxy or
+  // polyaspartic at all — it's the refinished slab itself), and it uses its
+  // own stain-color palette, not epoxy base coats.
+  $('coatingTypeWrap').hidden = finish === 'concrete';
+  const baseColors = finish === 'concrete' ? CONCRETE_COLORS : BASE_COLORS;
+  const baseDefault = finish === 'concrete' ? 'natural-gray' : 'charcoal';
+  const currentBase = $('baseColorPicker').value;
+  const baseStillValid = baseColors.some((c) => c.id === currentBase);
+  setColor($('baseColorPicker'), $('baseHex'), $('baseSwatch'), $('baseSwatches'), baseColors, baseStillValid ? currentBase : baseDefault);
 }
 
 /** Swatch-only color picker — no free hex, every option is a real,

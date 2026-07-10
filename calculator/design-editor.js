@@ -28,7 +28,7 @@ function swatchesHtml(colors, currentId) {
  * @param {(fields: {finish:string, coatingType:string, pattern:string, baseColor:string, flakeColor:string}) => void} onRegenerate
  */
 export function renderDesignEditor(root, current, onRegenerate) {
-  const finish = ['solid', 'flake', 'metallic'].includes(current.finish) ? current.finish : 'flake';
+  const finish = ['solid', 'flake', 'metallic', 'concrete'].includes(current.finish) ? current.finish : 'flake';
   const coatingType = current.coatingType === 'polyaspartic' ? 'polyaspartic' : 'epoxy';
   const patterns = getPatternsForFinish(finish);
   const baseColor = BASE_COLORS.find((c) => c.id === current.baseColor) || BASE_COLORS.find((c) => c.id === 'charcoal');
