@@ -226,6 +226,13 @@ section{padding:84px 0}
 .ok.show{display:block}
 .ok.err{background:#FDECEC;border-color:#B3261E;color:#B3261E}
 
+.audit-progress{text-align:center;padding:12px 0 4px}
+.audit-progress .step{font-family:var(--ff-m);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--blue);min-height:1.4em;transition:opacity .25s}
+.audit-progress .bar-track{margin:18px 0 14px;height:10px;border-radius:99px;background:var(--bg-2);border:1px solid var(--line-2);overflow:hidden}
+.audit-progress .bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--blue-deep));width:0%;transition:width .3s ease-out}
+.audit-progress .pct{font-family:var(--ff-d);font-size:15px;font-weight:800;color:var(--ink)}
+.audit-progress .site-label{font-family:var(--ff-m);font-size:13px;color:var(--muted);margin-top:14px;word-break:break-all}
+
 footer{background:var(--bg);border-top:1px solid var(--line);padding:50px 0 32px}
 .foot{display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;align-items:flex-start}
 .foot .muted{font-size:14px;max-width:340px;margin-top:14px}

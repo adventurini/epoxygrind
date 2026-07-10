@@ -24,6 +24,7 @@ const NAV_VARIANTS = {
       { href: '/diy/', label: 'DIY guides' },
       { href: '/contractors/', label: 'Find a contractor' },
       { href: '/', label: 'For contractors' },
+      { href: '/app/', label: 'Dashboard' },
       { href: '/app/new/', label: 'Get an estimate →', className: 'btn btn-p btn-sm' },
       { action: 'logout', label: 'Log out' },
     ],
@@ -41,6 +42,7 @@ const NAV_VARIANTS = {
     loggedIn: [
       TRACKING_PHONE,
       { href: '/estimator/', label: 'Estimator' },
+      { href: '/app/', label: 'Dashboard' },
       { action: 'logout', label: 'Log out' },
     ],
   },
@@ -101,16 +103,6 @@ export async function initAuthNav() {
   renderNav(nav, mobile, false, variant);
 
   const isLoggedIn = await checkAuthState();
-
-  // The homepage is the marketing landing page (now the contractor pitch)
-  // — a signed-in visitor hitting "/" directly (bookmark, typed URL, back
-  // button) means the dashboard, not another look at the pitch. Other
-  // marketing pages (DIY guides, contractor directory, /estimator/) stay
-  // freely browsable while logged in — this redirect is homepage-only.
-  if (isLoggedIn && window.location.pathname === '/') {
-    window.location.replace('/app/');
-    return;
-  }
 
   if (isLoggedIn) renderNav(nav, mobile, true, variant);
 }

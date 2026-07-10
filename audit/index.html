@@ -116,33 +116,18 @@
   var b=document.getElementById('burger'),m=document.getElementById('mobile');
   b.addEventListener('click',function(){m.classList.toggle('open')});
   m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});
-  document.getElementById('leadForm').addEventListener('submit', async function (ev) {
+  document.getElementById('leadForm').addEventListener('submit', function (ev) {
     ev.preventDefault();
     var f = ev.target, site = f.site.value.trim(), email = f.email.value.trim();
     if (!site || !email) { (site ? f.email : f.site).focus(); return; }
 
     var btn = document.getElementById('submitBtn');
-    var msg = document.getElementById('msg');
-    msg.classList.remove('show', 'err');
     btn.disabled = true;
-    var originalLabel = btn.textContent;
-    btn.textContent = 'Running your audit… (~60s)';
-
-    try {
-      var res = await fetch('/api/audit/request', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ site: site, email: email }),
-      });
-      var data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Something went wrong — please try again.');
-      window.location.href = data.redirect;
-    } catch (err) {
-      btn.disabled = false;
-      btn.textContent = originalLabel;
-      msg.textContent = err.message || 'Something went wrong — please try again.';
-      msg.classList.add('show', 'err');
-    }
+    btn.textContent = 'Starting your audit…';
+    // The actual crawl+score call happens on the running page, not here —
+    // this just hands off site/email and gets the visitor off this page
+    // immediately instead of leaving them staring at a disabled button.
+    window.location.href = '/audit/running/?site=' + encodeURIComponent(site) + '&email=' + encodeURIComponent(email);
   });
 </script>
 </body>

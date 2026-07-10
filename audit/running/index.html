@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, viewport-fit=cover">
+<title>Running your audit… | EpoxyGrind</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#1A5CD6">
+<style>
+@font-face{font-family:'Archivo';font-style:normal;font-weight:600 900;font-display:swap;src:url('/fonts/archivo-var.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url('/fonts/inter-var.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/ibm-plex-mono-500.woff2') format('woff2')}
+</style>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-var.woff2" crossorigin>
+<link rel="stylesheet" href="/services/services.css">
+<link rel="stylesheet" href="/auth/auth.css">
+</head>
+<body data-nav-variant="services">
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><img src="/logo-64.webp" srcset="/logo-64.webp 1x, /logo-128.webp 2x" alt="EpoxyGrind" width="32" height="32" decoding="async"> EpoxyGrind</a>
+    <div class="nav-auth" data-auth-nav>
+      <a href="/estimator/">Estimator</a>
+      <a href="/login/">Log in</a>
+      <a class="btn btn-p btn-sm" href="/signup/">Sign up</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+  <div class="mobile" id="mobile" data-auth-mobile>
+    <a href="/estimator/">Estimator</a>
+    <a href="/login/">Log in</a>
+    <a href="/signup/">Sign up</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="audit" style="min-height:auto;padding:64px 0 80px">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="wrap" style="max-width:560px;position:relative;z-index:1">
+      <div class="fcard">
+        <h3 id="headline">Running your audit…</h3>
+        <p class="sub" id="subhead">Crawling the site, scoring speed, SEO, and lead capture — this takes about a minute.</p>
+
+        <div class="audit-progress" id="progressBlock">
+          <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
+          <div class="pct" id="pct">0%</div>
+          <div class="step" id="stepLabel">Fetching the site…</div>
+          <div class="site-label" id="siteLabel"></div>
+        </div>
+
+        <div class="ok err" id="msg">
+          <span id="msgText"></span>
+          <p style="margin-top:12px"><a href="/audit/" class="btn btn-o" style="width:100%;justify-content:center">Try again</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href="/"><img src="/logo-64.webp" srcset="/logo-64.webp 1x, /logo-128.webp 2x" alt="EpoxyGrind" width="32" height="32" decoding="async"> EpoxyGrind</a>
+        <p class="muted">The marketing system built only for epoxy &amp; concrete coating contractors. Exclusive territory on our top tier.</p>
+      </div>
+      <div class="foot-links">
+        <div><h4>System</h4><a href="/estimator/">Estimator</a><a href="/">The System</a><a href="/pricing/">Pricing</a></div>
+        <div><h4>Start</h4><a href="/audit/">Free audit</a><a href="/#faq">FAQ</a></div>
+      </div>
+    </div>
+    <div class="legal">© 2026 EpoxyGrind. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="/js/nav.bundle.js" defer></script>
+<script>
+  document.documentElement.classList.remove('no-js');
+  var b=document.getElementById('burger'),m=document.getElementById('mobile');
+  b.addEventListener('click',function(){m.classList.toggle('open')});
+  m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open')})});
+
+  var params = new URLSearchParams(window.location.search);
+  var site = (params.get('site') || '').trim();
+  var email = (params.get('email') || '').trim();
+
+  var barFill = document.getElementById('barFill');
+  var pctEl = document.getElementById('pct');
+  var stepLabel = document.getElementById('stepLabel');
+  var siteLabel = document.getElementById('siteLabel');
+  var progressBlock = document.getElementById('progressBlock');
+  var msg = document.getElementById('msg');
+  var msgText = document.getElementById('msgText');
+  var headline = document.getElementById('headline');
+  var subhead = document.getElementById('subhead');
+
+  if (site) siteLabel.textContent = site;
+
+  var STEPS = [
+    'Fetching the site…',
+    'Checking mobile & page speed…',
+    'Scoring SEO & lead capture…',
+    'Reviewing project photos…',
+    'Finalizing your report…',
+  ];
+
+  function fail(text) {
+    progressBlock.style.display = 'none';
+    headline.textContent = "Couldn't finish that audit";
+    subhead.textContent = '';
+    msgText.textContent = text;
+    msg.classList.add('show');
+  }
+
+  if (!site || !email) {
+    fail('Missing a website or email — head back and try again.');
+  } else {
+    // No server-side progress signal for a single blocking crawl+score call,
+    // so this trickles toward 96% on an asymptotic curve (same approach as
+    // the estimator's preview-generation progress ring) and snaps to 100%
+    // on finish — the step labels below just give it a sense of motion.
+    var startedAt = Date.now();
+    var finished = false;
+    var stepTimer = setInterval(function () {
+      var elapsed = (Date.now() - startedAt) / 1000;
+      var idx = Math.min(STEPS.length - 1, Math.floor(elapsed / 12));
+      stepLabel.textContent = STEPS[idx];
+    }, 500);
+    var barTimer = setInterval(function () {
+      if (finished) return;
+      var elapsed = (Date.now() - startedAt) / 1000;
+      var pct = Math.min(96, Math.round(96 * (1 - Math.exp(-elapsed / 18))));
+      barFill.style.width = pct + '%';
+      pctEl.textContent = pct + '%';
+    }, 200);
+
+    fetch('/api/audit/request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ site: site, email: email }),
+    })
+      .then(function (res) {
+        return res.json().then(function (data) { return { ok: res.ok, data: data }; });
+      })
+      .then(function (result) {
+        finished = true;
+        clearInterval(stepTimer);
+        clearInterval(barTimer);
+        if (!result.ok) throw new Error(result.data.error || 'Something went wrong — please try again.');
+        barFill.style.width = '100%';
+        pctEl.textContent = '100%';
+        stepLabel.textContent = 'Done — opening your report…';
+        window.location.href = result.data.redirect;
+      })
+      .catch(function (err) {
+        finished = true;
+        clearInterval(stepTimer);
+        clearInterval(barTimer);
+        fail(err.message || 'Something went wrong — please try again.');
+      });
+  }
+</script>
+</body>
+</html>
