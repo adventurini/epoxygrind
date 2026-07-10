@@ -478,7 +478,19 @@ function photoBlockHtml(data, opts) {
     return beforeAfterBlockHtml(originalImage, previewImage, opts);
   }
 
-  return `<p class="label">Uploaded photo</p><img src="${originalImage}" alt="Uploaded space">`;
+  // Bug fix: this used to render just the plain uploaded photo with no
+  // indication a floor was being generated — generatePreviewInBackground()
+  // (app/estimate/estimate.js) calls createPreviewProgress(photoBlock)
+  // right after this renders, but that function only DRIVES an
+  // already-rendered progress ring (calculator/preview-progress.js — it
+  // does `root.querySelector('[data-preview-progress-fill]')` and no-ops
+  // if that's missing), it doesn't create one. With no progress markup in
+  // this branch, the user had zero feedback that anything was happening
+  // during the ~10-30s gen-AI call. previewLoadingHtml() is the same
+  // loading-card component regenerateDesign() already uses successfully
+  // for the "changing design" case — reused here for "first generation"
+  // instead of inventing a second loading treatment.
+  return previewLoadingHtml('Generating your floor preview…');
 }
 
 /** Swaps a photo block into the before/after slider once the preview image is ready. */
