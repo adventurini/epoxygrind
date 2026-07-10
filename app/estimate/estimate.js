@@ -2,7 +2,6 @@ import {
   renderEstimate,
   loadEstimateSession,
   previewsNeedGeneration,
-  renderBeforeAfterPreview,
   previewLoadingHtml,
   humanizeLabel,
   formatMoney,
@@ -37,35 +36,64 @@ const errorAction = document.getElementById('errorAction');
 
 let currentEstimate = null;
 let allowDesignEdit = false;
-// In-memory only (not persisted): lets a user flip back to a version they
-// generated earlier in this viewing session instead of only ever seeing
-// the latest regenerate. Most recent first; capped so it can't grow unbounded.
+// Every generated version is persisted server-side (lib/estimate-storage.js's
+// previewPaths — each generation gets its own never-overwritten storage
+// path, keyed by a unique id, alongside the always-latest 'original' entry
+// existing before/after-slider and previewsNeedGeneration() logic already
+// depend on) so this gallery survives a page reload instead of only living
+// in browser memory for the current tab. previewHistoryEntries()/
+// selectPreviewFromHistory() below just read/write currentEstimate.previews
+// directly — no separate array to keep in sync.
 const MAX_PREVIEW_HISTORY = 6;
-let previewHistory = [];
-let activeHistoryIndex = 0;
+let activeHistoryId = null;
 
-function pushPreviewHistory(entry) {
-  previewHistory = [entry, ...previewHistory].slice(0, MAX_PREVIEW_HISTORY);
-  activeHistoryIndex = 0;
-}
-
-function seedPreviewHistoryFromEstimate(data) {
-  const image = (data.previews || []).find((item) => item.id === 'original' && item.image)?.image;
-  previewHistory = image ? [{ image, design: data.design, pricing: data.pricing }] : [];
-  activeHistoryIndex = 0;
+/** Every generated version except the always-latest 'original' pointer,
+ * newest first. 'original' is a duplicate (same image) of whichever hist-*
+ * entry was generated most recently, so showing both would just repeat the
+ * newest thumbnail twice. */
+function previewHistoryEntries(data) {
+  return (data?.previews || [])
+    .filter((p) => p.id !== 'original' && p.image)
+    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+    .slice(0, MAX_PREVIEW_HISTORY);
 }
 
 function selectPreviewFromHistory(index) {
-  const entry = previewHistory[index];
+  const entries = previewHistoryEntries(currentEstimate);
+  const entry = entries[index];
   if (!entry || !currentEstimate) return;
-  activeHistoryIndex = index;
+  activeHistoryId = entry.id;
   currentEstimate = {
     ...currentEstimate,
-    design: entry.design,
-    pricing: entry.pricing,
-    previews: [{ id: 'original', label: 'Your garage (new floor)', image: entry.image }],
+    design: entry.design || currentEstimate.design,
+    pricing: entry.pricing || currentEstimate.pricing,
+    previews: [
+      { id: 'original', label: 'Your garage (new floor)', image: entry.image },
+      ...currentEstimate.previews.filter((p) => p.id !== 'original'),
+    ],
   };
   showEstimate(currentEstimate);
+}
+
+/** Builds the previews array for a PATCH/build payload after a new preview
+ * was generated: updates the 'original' pointer, adds the new version as
+ * its own permanent history entry, and carries every prior history entry
+ * forward via its already-known storagePath (never re-uploading — a stale/
+ * expired fal.media URL on an old entry would otherwise break re-saving it
+ * on every subsequent generation). */
+function accumulatePreviews(prevPreviews, { image, label, design, pricing }) {
+  const historyId = `hist-${Date.now()}`;
+  const createdAt = new Date().toISOString();
+  const carryForward = (prevPreviews || [])
+    .filter((p) => p.id !== 'original')
+    .map((p) => (p.storagePath
+      ? { id: p.id, label: p.label, storagePath: p.storagePath, createdAt: p.createdAt }
+      : { id: p.id, label: p.label, image: p.image, createdAt: p.createdAt }));
+  return [
+    { id: 'original', label, image },
+    { id: historyId, label, image, design, pricing, createdAt },
+    ...carryForward,
+  ];
 }
 
 function toast(msg) {
@@ -222,11 +250,13 @@ function onSegmentationReady(segmentation) {
 
 function showEstimate(data) {
   currentEstimate = data;
+  const historyEntries = previewHistoryEntries(data);
+  const activeHistoryIndex = Math.max(0, historyEntries.findIndex((e) => e.id === activeHistoryId));
   renderEstimate(doc, data, {
     allowEdit: allowDesignEdit,
     currentDesign: designSnapshot(data),
     onRegenerateDesign: regenerateDesign,
-    previewHistory,
+    previewHistory: historyEntries,
     activeHistoryIndex,
     onSelectPreview: selectPreviewFromHistory,
     onVisualizerChange,
@@ -278,15 +308,22 @@ async function regenerateDesign(fields) {
     const resData = await res.json();
     if (!res.ok) throw new Error(resData.error || 'Could not regenerate preview.');
 
+    const newPreviews = accumulatePreviews(currentEstimate.previews, {
+      image: resData.preview.image,
+      label: resData.preview.label,
+      design: resData.design,
+      pricing: resData.pricing,
+    });
+    activeHistoryId = newPreviews[1].id;
+
     currentEstimate = {
       ...currentEstimate,
       pricing: resData.pricing,
       design: resData.design,
       previewContext: resData.previewContext,
-      previews: [{ id: resData.preview.id, label: resData.preview.label, image: resData.preview.image }],
+      previews: newPreviews,
       meta: { ...currentEstimate.meta, finish: fields.finish, coatingType: fields.coatingType },
     };
-    pushPreviewHistory({ image: resData.preview.image, design: resData.design, pricing: resData.pricing });
 
     if (estimateId) {
       // Best-effort persistence — the view above already reflects the
@@ -341,16 +378,13 @@ async function generatePreviewInBackground(data) {
       return;
     }
     progress.finish();
+    // The server (generateAllEstimatePreviews, lib/generate-estimate-preview.js)
+    // already saved this generation as a permanent history entry alongside
+    // the 'original' pointer — apiData.previews already reflects that, no
+    // client-side accumulation needed for this (first-generation) path.
     currentEstimate = { ...currentEstimate, previews: apiData.previews, previewPaths: apiData.previewPaths || [] };
-    pushPreviewHistory({ image: previewImage, design: currentEstimate.design, pricing: currentEstimate.pricing });
-    renderBeforeAfterPreview(photoBlock, currentEstimate.originalImage, previewImage, {
-      allowEdit: allowDesignEdit,
-      currentDesign: designSnapshot(currentEstimate),
-      onRegenerateDesign: regenerateDesign,
-      previewHistory,
-      activeHistoryIndex,
-      onSelectPreview: selectPreviewFromHistory,
-    });
+    activeHistoryId = previewHistoryEntries(currentEstimate)[0]?.id ?? null;
+    showEstimate(currentEstimate);
   } catch (err) {
     toast(err.message || 'Could not generate floor preview.');
   } finally {
@@ -489,7 +523,7 @@ async function loadEstimateById(id, user) {
   const apiData = await loadFromApi(id);
   if (apiData) {
     allowDesignEdit = Boolean(user && apiData.userId && user.id === apiData.userId);
-    seedPreviewHistoryFromEstimate(apiData);
+    activeHistoryId = previewHistoryEntries(apiData)[0]?.id ?? null;
     showEstimate(apiData);
     return true;
   }
@@ -498,7 +532,7 @@ async function loadEstimateById(id, user) {
   if (sessionData) {
     // Cached client-side from this same browser session — always the owner.
     allowDesignEdit = true;
-    seedPreviewHistoryFromEstimate(sessionData);
+    activeHistoryId = previewHistoryEntries(sessionData)[0]?.id ?? null;
     showEstimate(sessionData);
     return true;
   }

@@ -136,9 +136,15 @@ function designEditorControlsHtml(opts = {}) {
     <div data-role="design-editor-mount" hidden></div>`;
 }
 
-/** Thumbnail strip of past generated versions so a user who doesn't like
- * the current render can compare against earlier attempts instead of only
- * ever seeing the latest one. In-memory for the current viewing session. */
+/** Gallery of every floor version generated for this estimate so far, so a
+ * user who doesn't love the current render can compare against or return to
+ * an earlier attempt instead of only ever seeing the latest one. Persisted
+ * server-side (lib/estimate-storage.js's previewPaths, one entry per
+ * generation, each with its own storage path — never overwritten) rather
+ * than kept only in browser memory, so it survives a page reload. Rendered
+ * in the summary column (see renderEstimate), not the photo column — the
+ * site owner specifically asked for it under "Estimated total", not
+ * alongside the before/after slider. */
 function historyThumbnailsHtml(opts = {}) {
   const history = opts.previewHistory || [];
   if (history.length < 2) return '';
@@ -151,7 +157,7 @@ function historyThumbnailsHtml(opts = {}) {
 }
 
 function beforeAfterBlockHtml(originalImage, previewImage, opts = {}) {
-  return `<p class="label">Before &amp; after — drag to compare</p>${beforeAfterHtml(originalImage, previewImage)}${historyThumbnailsHtml(opts)}${designEditorControlsHtml(opts)}`;
+  return `<p class="label">Before &amp; after — drag to compare</p>${beforeAfterHtml(originalImage, previewImage)}${designEditorControlsHtml(opts)}`;
 }
 
 /** Wires clicks on the version-history thumbnail strip. */
@@ -643,11 +649,12 @@ export function renderEstimate(target, data, opts = {}) {
     ${selectionsBlock(d, pricing, meta?.finish, locationLabel)}
     <div class="est-grid">
       <div class="est-photo" id="estimatePhotoBlock">${photoBlockHtml(data, opts)}</div>
-      <div class="est-summary">
+      <div class="est-summary" id="estimateSummaryBlock">
         ${priceBlock(pricing)}
         ${sqFtLine}
         <p class="analysis">${escapeHtml(analysis.analysisSummary || '')}</p>
         <ul class="issues">${(analysis.surfaceIssues || []).map((x) => `<li>${escapeHtml(x)}</li>`).join('')}</ul>
+        ${historyThumbnailsHtml(opts)}
       </div>
     </div>
     ${detailBlock('Scope & floor condition', scopeHtml)}
@@ -669,7 +676,7 @@ export function renderEstimate(target, data, opts = {}) {
   const photoBlock = target.querySelector('#estimatePhotoBlock');
   initBeforeAfterSlider(photoBlock.querySelector('.ba-slider'));
   wireDesignEditor(photoBlock, opts);
-  wireHistoryThumbnails(photoBlock, opts);
+  wireHistoryThumbnails(target.querySelector('#estimateSummaryBlock'), opts);
 }
 
 export function storageKey(id) {
