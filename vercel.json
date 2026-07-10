@@ -59,12 +59,12 @@
     "api/audit/request.js": {
       "maxDuration": 200,
       "memory": 3009,
-      "includeFiles": "node_modules/{lighthouse,axe-core,http-link-header}/**"
+      "includeFiles": "node_modules/{lighthouse,axe-core,http-link-header,js-library-detector}/**"
     },
     "api/admin/recrawl.js": {
       "maxDuration": 200,
       "memory": 3009,
-      "includeFiles": "node_modules/{lighthouse,axe-core,http-link-header}/**"
+      "includeFiles": "node_modules/{lighthouse,axe-core,http-link-header,js-library-detector}/**"
     },
     "api/admin/carousel/fill.js": {
       "maxDuration": 200
