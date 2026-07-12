@@ -53,6 +53,27 @@ export function previewLoadingHtml(caption) {
   </div>`;
 }
 
+/**
+ * Persistent (not a 3s toast) in-place error state for a failed preview
+ * generation — the failure is often something the user can actually act on
+ * (a photo the model rejected, a color/finish combination it couldn't
+ * render), so the real reason should stay on screen with a way to retry,
+ * not flash past in a toast they may not even be looking at (this fires
+ * from a background generation the user didn't directly trigger).
+ */
+export function previewErrorHtml(message) {
+  return `<div class="preview-card preview-error">
+    <p class="preview-error-msg">${escapeHtml(message || 'Could not generate your floor preview.')}</p>
+    <button type="button" class="btn btn-o btn-sm" data-role="retry-preview">Try again</button>
+  </div>`;
+}
+
+/** Wires the "Try again" button rendered by previewErrorHtml(). */
+export function wirePreviewError(container, onRetry) {
+  if (!container || typeof onRetry !== 'function') return;
+  container.querySelector('[data-role="retry-preview"]')?.addEventListener('click', onRetry);
+}
+
 export function estimatePayload(data) {
   return {
     analysis: data.analysis,

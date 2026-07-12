@@ -3,6 +3,8 @@ import {
   loadEstimateSession,
   previewsNeedGeneration,
   previewLoadingHtml,
+  previewErrorHtml,
+  wirePreviewError,
   humanizeLabel,
   formatMoney,
 } from '/calculator/estimate-view.js';
@@ -283,6 +285,7 @@ function showEstimate(data) {
 async function regenerateDesign(fields) {
   if (!currentEstimate) return;
 
+  const swappedPhoto = fields.photo || null;
   const photoBlock = document.getElementById('estimatePhotoBlock');
   if (photoBlock) photoBlock.innerHTML = previewLoadingHtml('Regenerating your floor preview…');
   const progress = photoBlock ? createPreviewProgress(photoBlock) : { finish() {}, destroy() {} };
@@ -299,7 +302,7 @@ async function regenerateDesign(fields) {
         baseColor: fields.baseColor,
         flakeColor: fields.flakeColor,
         sqFt: currentEstimate.analysis?.estimatedSqFt || currentEstimate.pricing?.sqFt,
-        originalImage: currentEstimate.originalImage,
+        originalImage: swappedPhoto || currentEstimate.originalImage,
         spaceDescription: currentEstimate.previewContext?.spaceDescription || '',
         regionalRates: currentEstimate.pricing?.market || null,
       }),
@@ -323,11 +326,19 @@ async function regenerateDesign(fields) {
       previewContext: resData.previewContext,
       previews: newPreviews,
       meta: { ...currentEstimate.meta, finish: fields.finish, coatingType: fields.coatingType },
+      // A swapped photo becomes the new "before" side of every future
+      // before/after comparison and regeneration, not just this one image —
+      // otherwise the before/after slider would show the OLD photo next to
+      // a floor generated from a DIFFERENT, NEW photo.
+      ...(swappedPhoto ? { originalImage: swappedPhoto } : null),
     };
 
     if (estimateId) {
       // Best-effort persistence — the view above already reflects the
       // change either way, so a failed/slow save shouldn't block the UI.
+      // persistEstimateImages (lib/estimate-storage.js) already uploads a
+      // data: URL passed as originalImage and swaps in the storage path —
+      // no separate upload step needed here for a swapped photo.
       authFetch(`/api/estimates?id=${encodeURIComponent(estimateId)}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -337,6 +348,7 @@ async function regenerateDesign(fields) {
             design: currentEstimate.design,
             previewContext: currentEstimate.previewContext,
             meta: currentEstimate.meta,
+            ...(swappedPhoto ? { originalImage: swappedPhoto } : null),
           },
           previews: currentEstimate.previews,
         }),
@@ -347,7 +359,24 @@ async function regenerateDesign(fields) {
     toast('Preview updated.');
   } catch (err) {
     showEstimate(currentEstimate);
-    toast(err.message || 'Could not regenerate preview.');
+    // The design editor is exactly where the user is looking when this
+    // fails (they just clicked "Generate another version" inside it) — a
+    // toast can go unnoticed, so reopen the editor and show the real
+    // reason right next to the controls that caused it. Field selections
+    // don't carry over across the re-render (showEstimate rebuilds from
+    // currentEstimate, which wasn't mutated on failure) — an accepted
+    // trade-off for a real, verifiable error message over a toast.
+    const refreshedBlock = document.getElementById('estimatePhotoBlock');
+    const toggleBtn = refreshedBlock?.querySelector('[data-role="toggle-design-editor"]');
+    const mount = refreshedBlock?.querySelector('[data-role="design-editor-mount"]');
+    const message = err.message || 'Could not regenerate preview.';
+    if (toggleBtn && mount) {
+      if (mount.hidden) toggleBtn.click();
+      if (mount.showRegenError) mount.showRegenError(message);
+      else toast(message);
+    } else {
+      toast(message);
+    }
   } finally {
     progress.destroy();
   }
@@ -363,6 +392,13 @@ async function regenerateDesign(fields) {
  * left this stuck forever with no network activity and no visible error,
  * since it was fired with `void` and nothing ever caught the rejection.
  */
+function showPreviewError(message) {
+  const photoBlock = document.getElementById('estimatePhotoBlock');
+  if (!photoBlock) { toast(message); return; }
+  photoBlock.innerHTML = previewErrorHtml(message);
+  wirePreviewError(photoBlock, () => generatePreviewInBackground(currentEstimate));
+}
+
 async function generatePreviewInBackground(data) {
   if (!data?.id || data.id.startsWith('local-')) return;
   if (!previewsNeedGeneration(data)) return;
@@ -374,7 +410,13 @@ async function generatePreviewInBackground(data) {
     const apiData = await loadFromApi(data.id);
     const previewImage = apiData?.previews?.find((item) => item.id === 'original' && item.image)?.image;
     if (!previewImage) {
-      toast('Could not generate floor preview.');
+      // The server actually attempted generation and failed (fal.ai
+      // rejected the photo/finish combo, timed out, etc.) — apiData.previewError
+      // carries the real, already-user-safe reason (see
+      // lib/preview-images.js's friendlyPreviewErrorMessage) rather than a
+      // generic toast the user might not even see, since this whole call
+      // runs unprompted in the background right after the estimate loads.
+      showPreviewError(apiData?.previewError || 'Could not generate floor preview.');
       return;
     }
     progress.finish();
@@ -386,7 +428,7 @@ async function generatePreviewInBackground(data) {
     activeHistoryId = previewHistoryEntries(currentEstimate)[0]?.id ?? null;
     showEstimate(currentEstimate);
   } catch (err) {
-    toast(err.message || 'Could not generate floor preview.');
+    showPreviewError(err.message || 'Could not generate floor preview.');
   } finally {
     progress.destroy();
   }

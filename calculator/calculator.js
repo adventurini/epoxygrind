@@ -12,8 +12,17 @@ const SQFT_PRESETS = {
   '4-car': 850,
   basement: 800,
   patio: 300,
+  // Kitchens, hallways, bedrooms, whole-floor jobs — too wide a range for a
+  // single default the way "2-car garage" reliably means ~450 sq ft.
+  'living-space': null,
   commercial: null,
 };
+
+// Sizes with no sensible single default — exact square footage is required,
+// same treatment as commercial (also too variable to guess at).
+function requiresExactSqft(size) {
+  return SQFT_PRESETS[size] === null;
+}
 
 const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
 
@@ -132,7 +141,7 @@ function selectSize(size) {
   document.querySelectorAll('.seg-btn').forEach((btn) => {
     btn.classList.toggle('on', btn.dataset.size === size);
   });
-  $('exactSqft').placeholder = size === 'commercial' ? 'Required for commercial spaces' : 'e.g. 450 (optional)';
+  $('exactSqft').placeholder = requiresExactSqft(size) ? 'Required for this space' : 'e.g. 450 (optional)';
   $('sizeError').hidden = true;
   syncSubmitState();
 }
@@ -162,8 +171,8 @@ function stepValid(n) {
   }
   if (!resolveSqFt()) {
     $('sizeError').hidden = false;
-    $('sizeError').textContent = selectedSize === 'commercial'
-      ? 'Enter exact square footage for commercial spaces'
+    $('sizeError').textContent = requiresExactSqft(selectedSize)
+      ? 'Enter exact square footage for this space'
       : 'Enter your space size';
     toast('Enter your space size.');
     return false;

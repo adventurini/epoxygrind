@@ -118,27 +118,33 @@
           <div class="panel-head"><h2>Project details</h2><span class="wiz-step-label" id="wizStepLabel">Step 1 of 4</span></div>
           <div class="wiz-progress"><div class="wiz-progress-fill" id="wizProgressFill" style="width:25%"></div></div>
 
-          <div class="wiz-step" data-step="1">
-            <div class="upload" id="uploadZone">
-              <input type="file" id="photoInput" accept="image/*" hidden>
-              <div class="upload-empty" id="uploadEmpty">
-                <span class="upload-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"></path><path d="M7 9l5-5 5 5"></path><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"></path></svg>
-                </span>
-                <p class="upload-title">Drop a photo or tap to upload</p>
-                <p class="upload-hint">JPG or PNG, up to 15MB</p>
-              </div>
-              <div class="upload-preview" id="uploadPreview" hidden>
-                <div class="upload-preview-frame">
-                  <img id="previewImg" alt="Uploaded space">
-                  <button type="button" class="upload-replace-btn" id="changePhoto" aria-label="Replace photo" title="Replace photo">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><polyline points="21 3 21 9 15 9"></polyline></svg>
-                  </button>
-                </div>
+          <!-- Persists across every step (not just step 1) — swapping steps
+               used to hide this whole block along with the rest of step 1's
+               fields, which shrank the panel's content height and made the
+               form visibly jump/bounce on Next. Keeping it mounted once,
+               outside the per-step wiz-step divs, keeps the panel's height
+               stable across the whole wizard. -->
+          <div class="upload" id="uploadZone">
+            <input type="file" id="photoInput" accept="image/*" hidden>
+            <div class="upload-empty" id="uploadEmpty">
+              <span class="upload-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"></path><path d="M7 9l5-5 5 5"></path><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"></path></svg>
+              </span>
+              <p class="upload-title">Drop a photo or tap to upload</p>
+              <p class="upload-hint">JPG or PNG, up to 15MB</p>
+            </div>
+            <div class="upload-preview" id="uploadPreview" hidden>
+              <div class="upload-preview-frame">
+                <img id="previewImg" alt="Uploaded space">
+                <button type="button" class="upload-replace-btn" id="changePhoto" aria-label="Replace photo" title="Replace photo">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><polyline points="21 3 21 9 15 9"></polyline></svg>
+                </button>
               </div>
             </div>
-            <p class="fld-error" id="photoError" hidden></p>
+          </div>
+          <p class="fld-error" id="photoError" hidden></p>
 
+          <div class="wiz-step" data-step="1">
             <div class="fld">
               <span>Space size</span>
               <div class="segmented" id="spaceSizeGroup" role="group" aria-label="Space size">
@@ -148,6 +154,7 @@
                 <button type="button" class="seg-btn" data-size="4-car">4-car garage</button>
                 <button type="button" class="seg-btn" data-size="basement">Basement</button>
                 <button type="button" class="seg-btn" data-size="patio">Patio</button>
+                <button type="button" class="seg-btn" data-size="living-space">Living space / Other</button>
                 <button type="button" class="seg-btn" data-size="commercial">Commercial</button>
               </div>
               <p class="fld-error" id="sizeError" hidden></p>

@@ -1,6 +1,7 @@
 import { getUserFromRequest } from '../lib/auth-request.js';
 import { createInstantSession } from '../lib/instant-auth.js';
 import { generateAllEstimatePreviews, generateEstimatePreview } from '../lib/generate-estimate-preview.js';
+import { friendlyPreviewErrorMessage } from '../lib/preview-images.js';
 import { previewsNeedGeneration } from '../lib/preview-status.js';
 import {
   estimateSummary,
@@ -69,12 +70,14 @@ export default async function handler(req, res) {
         // shared link works for anyone viewing it — a spouse or contractor
         // opening the link has no session, and would otherwise be stuck on
         // a spinner that can never complete (the PATCH path 401s for them).
+        let previewError = null;
         if (previewsNeedGeneration(row.payload)) {
           try {
             const generated = await generateAllEstimatePreviews(supabase, row.user_id, id, row);
-            row.payload = { ...row.payload, previews: generated.previews, previewPaths: generated.previewPaths };
+            row.payload = { ...row.payload, previews: generated.previews, previewPaths: generated.previewPaths, previewError: null };
           } catch (previewErr) {
             console.error('On-demand preview generation failed:', previewErr.message);
+            previewError = friendlyPreviewErrorMessage(previewErr.message);
           }
         }
 
@@ -86,6 +89,7 @@ export default async function handler(req, res) {
           ...row.payload,
           previewPaths,
         });
+        if (previewError) hydrated.previewError = previewError;
         return res.status(200).json(rowToClient(row, hydrated));
       } catch (err) {
         console.error(err);

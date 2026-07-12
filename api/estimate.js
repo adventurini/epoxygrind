@@ -11,6 +11,7 @@ import { getUserFromRequest } from '../lib/auth-request.js';
 import { spendCredit } from '../lib/credits.js';
 import { resolveDesign, buildDesignPrompt } from '../lib/finish-design.js';
 import { calculateEstimate } from '../lib/pricing.js';
+import { friendlyPreviewErrorMessage } from '../lib/preview-images.js';
 
 export const config = {
   api: {
@@ -90,7 +91,16 @@ export default async function handler(req, res) {
         flakeColorHex: design.flakeColorHex,
       };
 
-      const preview = await buildSinglePreview('original', previewContext);
+      let preview;
+      try {
+        preview = await buildSinglePreview('original', previewContext);
+      } catch (previewErr) {
+        // Raw fal.ai error text is a huge JSON blob (full prompt, signed
+        // image URL/token) — fine in server logs, not something to hand
+        // back to the browser as-is.
+        console.error('Redesign preview generation failed:', previewErr.message);
+        return res.status(502).json({ error: friendlyPreviewErrorMessage(previewErr.message) });
+      }
 
       return res.status(200).json({
         phase: 'redesign',
