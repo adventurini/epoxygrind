@@ -1,4 +1,5 @@
 import { parseEstimateInput, buildPricingEstimate } from '../lib/build-estimate.js';
+import { applyCors } from '../lib/cors.js';
 
 export const config = {
   api: {
@@ -10,6 +11,7 @@ export const config = {
 
 /** @deprecated Use POST /api/estimate — kept for compatibility */
 export default async function handler(req, res) {
+  if (applyCors(req, res)) return;
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });

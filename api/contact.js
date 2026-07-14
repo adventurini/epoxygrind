@@ -1,4 +1,5 @@
 import { getSupabase, isSupabaseConfigured } from '../lib/supabase.js';
+import { applyCors } from '../lib/cors.js';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -8,6 +9,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
  * defense — same pattern as api/contractor-lead.js.
  */
 export default async function handler(req, res) {
+  if (applyCors(req, res)) return;
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
