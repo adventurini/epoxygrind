@@ -66,6 +66,11 @@
       "memory": 3009,
       "includeFiles": "node_modules/{lighthouse,axe-core,http-link-header,js-library-detector,metaviewport-parser,csp_evaluator,image-ssim,jpeg-js,parse-cache-control,robots-parser,speedline-core}/**"
     },
+    "api/audit/self-check.js": {
+      "maxDuration": 200,
+      "memory": 3009,
+      "includeFiles": "node_modules/{lighthouse,axe-core,http-link-header,js-library-detector,metaviewport-parser,csp_evaluator,image-ssim,jpeg-js,parse-cache-control,robots-parser,speedline-core}/**"
+    },
     "api/admin/carousel/fill.js": {
       "maxDuration": 200
     },
